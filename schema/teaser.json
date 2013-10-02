@@ -1,0 +1,18 @@
+{
+	"name": "teaser",
+	"code":"<span>{{label}}</span>",
+	"attributes":[
+		{
+			"_type": "string",
+			"code": "url",
+			"type": "string"
+		},
+		{
+			"_type": "string",
+			"code": "label",
+			"type": "string"
+		}
+
+	]
+	
+}

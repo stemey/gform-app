@@ -1,0 +1,12 @@
+[
+	{
+		"id": "url",
+		"field": "url",
+		"name": "url"
+	},
+	{
+		"id": "template",
+		"field": "template",
+		"name": "template"
+	}
+]

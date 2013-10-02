@@ -1,0 +1,25 @@
+{
+	"name": "main",
+	"code":"<html><head><title>{{title}}</title></head><body>{{include teaser.url}}</body>",
+	"attributes":[
+		{
+			"_type": "string",
+			"code": "url",
+			"type": "string"
+		},
+		{
+			"_type": "string",
+			"code": "title",
+			"type": "string"
+		},
+		{
+			"_type": "ref",
+			"code": "teaser",
+			"type": "ref",
+			"url": "/page",
+			"searchProperty": "url"
+		}
+
+	]
+	
+}
