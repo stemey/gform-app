@@ -7,12 +7,13 @@ define([
 	"gform/schema/meta",
 	"dojo/when",
 	"dojo/promise/all",
-], function(declare, lang, json, Deferred, visit, metaHelper, when, all){
+ "mustachejs/mustache"
+], function(declare, lang, json, Deferred, visit, metaHelper, when, all, mustache){
 
 
 	
 return declare( [ ], {
-		renderer:null,
+		renderer:mustache,
 		pageStore:null,
 		templateStore:null,
 		visit: function(attribute, value, goon, ctx) {

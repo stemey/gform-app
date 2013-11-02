@@ -1,7 +1,6 @@
-define(["doh/runner","minicms/preview/mustache/Renderer", "mustachejs/mustache", "./MemoryStore", "dojo/when"], function(doh,Renderer, mustache, MemoryStore, when){
+define(["doh/runner","minicms/preview/mustache/Renderer", "./MemoryStore", "dojo/when"], function(doh,Renderer,  MemoryStore, when){
 
 		var renderer = new Renderer();
-		renderer.renderer=mustache;
 		renderer.templateStore = new MemoryStore();
 		renderer.templateStore.add("/template/t1.html", {
 			code: "<title>{{title}}</title>", 

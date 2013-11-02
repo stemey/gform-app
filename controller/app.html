@@ -7,10 +7,14 @@
 			<div id="toolbar.createTemplate" data-dojo-type="dijit/form/Button" data-dojo-props="region:top,iconClass:'plusIcon'" data-dojo-attach-event="onClick:createNewTemplate">new template</div>
 			<div id="toolbar.createNewPage" data-dojo-type="dijit/form/Button" data-dojo-props="region:top,iconClass:'plusIcon'" data-dojo-attach-event="onClick:createNewPage">new page</div>
 			<div id="toolbar.showTemplate" data-dojo-type="dijit/form/Button" data-dojo-props="region:top,iconClass:'plusIcon'" data-dojo-attach-event="onClick:showTemplate">display template</div>
+			<div id="toolbar.preview" data-dojo-type="dijit/form/Button" data-dojo-props="region:top,iconClass:'plusIcon'" data-dojo-attach-event="onClick:preview">preview</div>
 		</div>
 	</div>
-	<div data-dojo-type="minicms/controller/GridController" data-dojo-attach-point="gridController" style="width:30%" data-dojo-props="region:'left',splitters:true"></div>
-	<div data-dojo-type="dijit/layout/TabContainer" data-dojo-props="region:'center'" data-dojo-attach-point="tabContainer">
+	<div data-dojo-type="minicms/controller/GridController" data-dojo-attach-point="gridController" style="width:15%" data-dojo-props="region:'left',splitters:true"></div>
+	<div data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'center'" >
+		<div data-dojo-type="minicms/controller/Previewer" data-dojo-attach-point="previewer"></div>
+	</div>
+	<div data-dojo-type="dijit/layout/TabContainer" data-dojo-props="region:'right', splitters:true" style="width:45%"	 data-dojo-attach-point="tabContainer">
 	</div>
 	<div  data-dojo-props="region:'bottom'" data-dojo-type="gform/controller/ConfirmDialog" data-dojo-attach-point="confirmDialog"></div>
 </div>

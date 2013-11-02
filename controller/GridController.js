@@ -94,6 +94,14 @@ return declare( [ _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
 			} else {
 				return null;
 			}
+		},
+		getSelectedPage: function() {
+			var selectedArray = this.pageGrid.select.row.getSelected();
+			if (selectedArray.length==1) {
+				return selectedArray[0];
+			} else {
+				return null;
+			}
 		}
 	});
 

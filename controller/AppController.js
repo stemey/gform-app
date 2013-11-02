@@ -8,7 +8,7 @@ define([
 	"dijit/_WidgetsInTemplateMixin",
 	"dojo/text!./app.html",
 	"dojo/text!../schema/template.json",
-	"dojo/store/Memory",
+	"../util/Memory",
 	"../createEditorFactory",	
 	"gform/opener/SingleEditorTabOpener",
 	"gform/Context",
@@ -18,7 +18,14 @@ define([
 	"../SchemaRegistry",
 	"dojo/text!../schema/main.json",	
 	"dojo/text!../schema/teaser.json",	
+	"dojo/text!../schema/templateStub.json",	
+	"gform/controller/actions/Save",
+	"gform/controller/actions/Delete",
+	"./Preview",	
+	"../preview/mustache/Renderer",
+	"../preview/UrlBasedStore",
 
+	"./Previewer",
 	"dijit/layout/BorderContainer",
 	"dijit/layout/TabContainer",
 	"dijit/layout/ContentPane",
@@ -27,7 +34,7 @@ define([
 	"dijit/Toolbar",
 	"dijit/form/Button",
 	"gform/controller/ConfirmDialog",
-], function(declare, lang, aspect, json, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, template, templateSchema, Store, createEditorFactory, SingleEditorTabOpener, Context, convertSchema, refresolve, schemaGenerator, SchemaRegistry, mainTemplate, teaserTemplate){
+], function(declare, lang, aspect, json, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, template, templateSchema, Store, createEditorFactory, SingleEditorTabOpener, Context, convertSchema, refresolve, schemaGenerator, SchemaRegistry, mainTemplate, teaserTemplate, templateStub, Save, Delete, Preview, Renderer, UrlBasedStore){
 
 
 	
@@ -43,7 +50,8 @@ return declare( [ _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
 			opener.editorFactory = createEditorFactory();
 			opener.confirmDialog= this.confirmDialog;
 			opener.controllerConfig= {
-				plainValueFactory: this.createPlainValue
+				plainValueFactory: this.createPlainValue,
+				actionClasses: [Save, Delete, Preview]	
 			}
 			this.ctx = new Context();
 			this.ctx.opener = opener;
@@ -56,34 +64,34 @@ return declare( [ _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
 			templateStore.add(json.parse(teaserTemplate));
 
 			this.ctx.storeRegistry.register("/template", templateStore);
-			this.ctx.storeRegistry.register("/page", new Store());
+			var pageStore = new Store();
+			this.ctx.storeRegistry.register("/page", pageStore);
 			this.ctx.schemaRegistry = schemaRegistry;
 			this.gridController.set("ctx", this.ctx);	
+
+			this.previewer.renderer= new Renderer();
+			this.previewer.renderer.templateStore= new UrlBasedStore(templateStore);
+			this.previewer.renderer.pageStore= new UrlBasedStore(pageStore);
+
+
 
 			// we need an extra opener that for tempate where the opener's plainValueFactory is null.
 		},
 		createPlainValue: function(schema) {
-			// we only know the id not the store
+			// we only know the id not the store, so we do this for both pages and templates
+			if (schema.id=="/cms/template") {
+				return json.parse(templateStub);
+			}
 			return {template: "/template/"+schema.id}
+		},
+		preview: function() {
+			var selectedPageId= this.gridController.getSelectedPage();
+			this.previewer.display("/page/"+selectedPageId);
 		},
 		createNewTemplate: function() {
 			var me = this;
-			var callback= function(id) {
-				var page = me.ctx.storeRegistry.get("/template").get(id);
-				var urlAttribute = {
-					code: "url",
-					type: "string",
-					required: true
-				}
-				page.attributes.push(urlAttribute);
-				var templateAttribute = {
-					code: "template",
-					type: "string",
-				}
-				page.attributes.push(templateAttribute);
-				//me.ctx.storeRegistry.get("/page").put(page);
-			}
-			this.ctx.opener.createSingle({url:"/template", schemaUrl:"/template", callback:callback});
+	
+			this.ctx.opener.createSingle({url:"/template", schemaUrl:"/template"});//, callback:callback});
 		},
 		createNewPage: function() {
 			var selectedTemplate = this.gridController.getSelectedTemplate();

@@ -65,10 +65,10 @@ define([
 //			       				new MappedSelectAttributeFactory({editorFactory:editorFactory}),//
 //			       				new RefListAttributeFactory({editorFactory:editorFactory}),//
 			       				new PrimitiveListAttributeFactory({editorFactory:editorFactory}),//
-//			       				new NumberAttributeFactory({editorFactory:editorFactory}),//
+			       				new NumberAttributeFactory({editorFactory:editorFactory}),//
 			       				new ReferenceAttributeFactory({editorFactory:editorFactory}), //
 //			       				new SelectAttributeFactory({editorFactory:editorFactory}), // 
-//			       				new BooleanAttributeFactory({editorFactory:editorFactory}), // 
+			       				new BooleanAttributeFactory({editorFactory:editorFactory}), // 
 			       				new StringAttributeFactory({editorFactory:editorFactory}), //
 //			       				new MappedContentPaneFactory({editorFactory:editorFactory}) //
 			       				];
