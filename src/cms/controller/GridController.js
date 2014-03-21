@@ -61,7 +61,7 @@ return declare( [ _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
 				{
 					moduleClass: RowSelect,
 					multiple: false,
-					triggerOnCell: true,
+					triggerOnCell: true
 				},
 				RowHeader
 			];

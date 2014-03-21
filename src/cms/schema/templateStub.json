@@ -1,18 +1,18 @@
 {
 	"attributes":[
 		{
-			"_type": "number",
 			"code": "id",
 			"type": "number",
+            "editor":"number",
 			"visible":false
 		},
 		{
-			"_type": "string",
+            "editor":"string",
 			"code": "url",
 			"type": "string"
 		},
 		{
-			"_type": "string",
+            "editor":"string",
 			"code": "template",
 			"type": "string",
 			"visible":false

@@ -1,5 +1,6 @@
-define([ 
-"dojo/_base/lang",//
+define([
+    'gform/primitive/ace/AceTextAttributeFactory',
+    "dojo/_base/lang",//
 "gform/EditorFactory", //
 "gform/AttributeFactoryFinder",//
 "gform/group/GroupFactory",//
@@ -23,7 +24,7 @@ define([
 "gform/primitive/SimpleTextareaAttributeFactory",//
 "gform/primitive/NumberAttributeFactory",//
 "gform/primitive/CurrencyAmountAttributeFactory",//
-"gform/primitive/MappedContentPaneFactory",//
+//
 "gform/primitive/ReferenceAttributeFactory",//
 "gform/group/AttributeListWidget",//
 "gform/group/ColumnsGroupFactory",//
@@ -32,13 +33,13 @@ define([
 "gform/map_primitive/PrimitiveMapAttributeFactory",//
 "gform/list_table/RepeatedEmbeddedAttributeFactory"
 
-], function(lang,EditorFactory,AttributeFactoryFinder, GroupFactory, ListPaneGroupFactory, TabGroupFactory, //
+], function(AceTextAttributeFactory, lang,EditorFactory,AttributeFactoryFinder, GroupFactory, ListPaneGroupFactory, TabGroupFactory, //
 		TitlePaneGroupFactory, ListGroupFactory,PrimitiveListAttributeFactory, RefListAttributeFactory, StringAttributeFactory,
 		BooleanAttributeFactory, SelectAttributeFactory, CheckedSelectAttributeFactory, 
 		MappedCheckedMultiSelectAttributeFactory,
 		CheckedMultiSelectAttributeFactory, MappedSelectAttributeFactory, DateAttributeFactory, 
 		TimeAttributeFactory, EmbeddedAttributeFactory, TextareaAttributeFactory, SimpleTextareaAttributeFactory, NumberAttributeFactory, 
-		CurrencyAmountAttributeFactory, MappedContentPaneFactory, ReferenceAttributeFactory,
+		CurrencyAmountAttributeFactory, ReferenceAttributeFactory,
 		AttributeListWidget, ColumnsGroupFactory, MapAttributeFactory, RepeatedEmbeddedAttributeFactory, PrimitiveMapAttributeFactory, TableListAttributeFactory) {
 // module:
 //		gform/createLayoutEditorFactory
@@ -77,6 +78,7 @@ define([
 //			attributeFactoryFinder.addAttributeFactory("textarea", new TextareaAttributeFactory({editorFactory:editorFactory}));
 //			attributeFactoryFinder.addAttributeFactory("simpletextarea", new SimpleTextareaAttributeFactory({editorFactory:editorFactory}));
 //			attributeFactoryFinder.addAttributeFactory("checked_select",new CheckedSelectAttributeFactory({editorFactory:editorFactory}));
+			attributeFactoryFinder.addAttributeFactory(new AceTextAttributeFactory({editorFactory:editorFactory}));
 			attributeFactoryFinder.set("attributeFactories",attributeFactories);
 
 			editorFactory.set("attributeFactoryFinder",attributeFactoryFinder);

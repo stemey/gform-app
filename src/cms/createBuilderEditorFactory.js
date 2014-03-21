@@ -25,7 +25,7 @@ define([
 "../../primitive/SimpleTextareaAttributeFactory",//
 "../../primitive/NumberAttributeFactory",//
 "../../primitive/CurrencyAmountAttributeFactory",//
-"../../primitive/MappedContentPaneFactory",//
+//
 "../../group/AttributeListWidget",//
 "../../list_embedded/RepeatedEmbeddedAttributeFactory",//,
 "../../map_embedded/RepeatedEmbeddedAttributeFactory",//,
@@ -37,8 +37,7 @@ define([
 		MappedCheckedMultiSelectAttributeFactory,
 		CheckedMultiSelectAttributeFactory, MappedSelectAttributeFactory, DateAttributeFactory, 
 		TimeAttributeFactory, EmbeddedAttributeFactory, TextareaAttributeFactory, ReferenceAttributeFactory, SimpleTextareaAttributeFactory, NumberAttributeFactory, 
-		CurrencyAmountAttributeFactory, MappedContentPaneFactory,
-		AttributeListWidget, RepeatedEmbeddedAttributeFactory, MapAttributeFactory, TableListAttributeFactory) {
+		CurrencyAmountAttributeFactory, AttributeListWidget, RepeatedEmbeddedAttributeFactory, MapAttributeFactory, TableListAttributeFactory) {
 
 			var editorFactory = new EditorFactory();
 			editorFactory.addGroupFactory("list", new GroupFactory({editorFactory:editorFactory}));

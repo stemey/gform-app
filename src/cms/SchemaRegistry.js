@@ -1,10 +1,8 @@
 define([
 	"dojo/_base/declare",
-	"dojo/_base/lang",
-	"dojo/_base/array",
-	"dojo/request",
+    "dojo/request",
 	"gform/util/restHelper"
-], function(declare, lang, array, request, restHelper){
+], function(declare, request, restHelper){
 // module:
 //		gform/controller/SchemaRegistry
 
@@ -21,7 +19,7 @@ define([
 
 			get: function(url) {
 			// summary:
-			//		get the store for the id. If none exist then instantiate the default store with the given properties
+			//		get the schema for the id. If none exist then instantiate the default store with the given properties
 			// url: String
 			//		the url of the schema
 			// return: object | dojo/Promise

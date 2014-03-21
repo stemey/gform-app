@@ -1,3 +1,35 @@
+page ref:
+
+multi-ref
+    searchUrl:"news",
+      [
+        {
+            code:"news",
+            schemaUrl:"news",
+            url:"pages/news/"
+        },
+        {
+            code:"newsX",
+            schemaUrl:"newsX",
+            url:"pages/newsX/"
+        }
+      ]
+  code: "multi-ref",
+  url:"news"
+  searchUrl:"news",
+  types:[{label/code/schemaUrl},""] // search should add in clause "from news where type in [,,]"
+  typeProperty: type
+  schemaUrl:/template/{type} // alternative to schemaUrl in types array
+
+
+
+
+create button opens an editor with type selector.
+
+ref's value is url with type and id
+
+searchUrl?????
+
 opener:
 - when tab is opened with new entity, then saving, then opening again, a new tab is opened because id has changed.
 
@@ -6,7 +38,7 @@ template editor:
 add url 
 remove "_type"
 add groups that lazily create subforms for constraints.
-make code be the laelAttribute
+make code be the labelAttribute
 
 ref editor:
 

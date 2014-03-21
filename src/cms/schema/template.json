@@ -1,0 +1,43 @@
+{
+	"id": "/cms/template",
+	"description": "A template",
+    "editor":"tab",
+    "groups": [
+        {
+            "code":"general",
+            "label":"General",
+            "attributes": [
+                {
+                    "code": "name",
+                    "type": "string"
+                },
+                {
+                    "code": "description",
+                    "type": "string"
+                },
+                {
+                    "code": "id",
+                    "type": "number",
+                    "visible":false
+                }
+            ]
+        },{
+            "code":"template",
+            "label":"Template",
+            "attributes": [
+                {
+                    "code": "code",
+                    "editor":"acetext",
+                    "height": "600px",
+                    "type": "string"
+                }
+            ]
+        },{
+            "code":"attributes",
+            "label":"Form",
+            "attributes": [
+
+            ]
+        }
+    ]
+}

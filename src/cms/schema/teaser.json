@@ -3,23 +3,23 @@
 	"code":"<span>{{label}}</span>",
 	"attributes":[
 		{
-			"_type": "number",
+			"editor": "number",
 			"code": "id",
 			"type": "number",
 			"visible": false
 		},
 		{
-			"_type": "string",
+			"editor": "string",
 			"code": "url",
 			"type": "string"
 		},
 		{
-			"_type": "string",
+			"editor": "string",
 			"code": "label",
 			"type": "string"
 		},
 		{
-			"_type": "string",
+			"editor": "string",
 			"code": "template",
 			"type": "string",
 			"visible": false

@@ -1,0 +1,15 @@
+{
+  "name": "cms",
+  "version": "0.0.0",
+  "private": true,
+  "dependencies": {
+      "mustache":"janl/mustache.js",
+      "ace":"ajaxorg/ace",
+      "gform":"stemey/dojo-generate-form#>=0.20.6",
+      "gridx": "git://github.com/oria/gridx.git#>=1.2.0",
+      "dojo": "~1.9.1",
+      "dijit": "~1.9.1",
+      "dojox": "~1.9.1",
+      "util": "dojo-util#~1.9.1"
+  }
+}

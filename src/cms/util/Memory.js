@@ -1,8 +1,8 @@
 define([
 	"dojo/_base/declare",//
-	"dojo/_base/lang",//
+    //
 	"dojo/store/Memory"
-], function(declare, lang, Memory){
+], function(declare, Memory){
 // module:
 //		gform/controller/SchemaRegistry
 

@@ -1,4 +1,14 @@
 dist
 
+node_modules
+src/dojo
+src/dijit
+src/dojox
+src/ace
+src/mustache
+src/util
+src/gridx
+src/gform
 .settings
 *~
+.idea

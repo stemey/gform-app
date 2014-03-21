@@ -3,30 +3,30 @@
 	"code":"<html><head><title>{{title}}</title></head><body><h1>{{title}}</h1><p>My Teaser: <strong>{{{teaser}}}</strong></p></body></html>",
 	"attributes":[
 		{
-			"_type": "number",
+			"editor": "number",
 			"code": "id",
 			"type": "number",
 			"visible":false
 		},
 		{
-			"_type": "string",
+			"editor": "string",
 			"code": "url",
 			"type": "string"
 		},
 		{
-			"_type": "string",
+			"editor": "string",
 			"code": "title",
 			"type": "string"
 		},
 		{
-			"_type": "ref",
+			"editor": "ref",
 			"code": "teaser",
 			"type": "ref",
 			"url": "/page",
 			"searchProperty": "url"
 		},
 		{
-			"_type": "string",
+			"editor": "string",
 			"code": "template",
 			"type": "string",
 			"visible":false

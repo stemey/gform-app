@@ -1,8 +1,7 @@
 define([
 	"dojo/_base/declare",
-	"dojo/_base/lang",
-	"gform/util/restHelper"
-], function(declare, lang, restHelper){
+    "gform/util/restHelper"
+], function(declare, restHelper){
 
 
 	

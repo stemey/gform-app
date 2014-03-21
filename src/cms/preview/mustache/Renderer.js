@@ -7,7 +7,7 @@ define([
 	"gform/schema/meta",
 	"dojo/when",
 	"dojo/promise/all",
- "mustachejs/mustache"
+    "mustache/mustache"
 ], function(declare, lang, json, Deferred, visit, metaHelper, when, all, mustache){
 
 

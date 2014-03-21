@@ -58,4 +58,27 @@ extra property in attribute needed:
 usage=content | url
 
 
+cpage:
+
+idAttribute: need not be changed by template editor
+urlAttribute: template editor adds constraints
+templateAttribute: template editor adds add specials
+...
+
+attributes:
+
+
+->
+
+id attribute: string
+urlAttribute: string
+templateAttribute: string, choose one of the editors
+
+
+
+list of atributes
+
+
+
+
 
