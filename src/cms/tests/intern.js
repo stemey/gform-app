@@ -52,7 +52,9 @@ define({
 			{ name: 'dojo', location: 'src/dojo' },
 			{ name: 'dijit', location: 'src/dijit' },
 			{ name: 'dojox', location: 'src/dojox' },
-			{ name: 'cms', location: 'src/cms' }
+			{ name: 'cms', location: 'src/cms' },
+            { name: 'gform', location: 'src/gform' },
+            { name: 'mustache', location: 'src/mustache' }
 		]
 	},
 

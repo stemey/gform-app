@@ -1,7 +1,7 @@
 define([
 	"dojo/_base/declare",//
     //
-	"dojo/store/Memory"
+	"gform/store/GeneratingIdMemory"
 ], function(declare, Memory){
 // module:
 //		gform/controller/SchemaRegistry

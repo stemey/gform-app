@@ -55,7 +55,7 @@ define(["doh/runner","minicms/preview/mustache/Renderer", "./MemoryStore", "dojo
 					html= result;
 				});
 				doh.assertEqual("<p>hello</p>", html);
-      },
+      }
     ]);
 
 });

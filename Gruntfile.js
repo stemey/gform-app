@@ -1,6 +1,8 @@
 /*jshint node:true*/
 module.exports = function (grunt) {
-	require('load-grunt-tasks')(grunt, [ 'grunt-*', 'intern-geezer' ]);
+
+    grunt.loadNpmTasks('intern')
+	require('load-grunt-tasks')(grunt, [ 'grunt-*' ]);
 	var path = require('path');
 
 	var stripComments = /<\!--.*?-->/g,
@@ -101,4 +103,5 @@ module.exports = function (grunt) {
 		]);
 	});
 	grunt.registerTask('build', [ 'clean', 'dojo:dist', 'copy' ]);
+    grunt.registerTask('test', [ 'intern:local']);
 };

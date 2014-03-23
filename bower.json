@@ -5,7 +5,7 @@
   "dependencies": {
       "mustache":"janl/mustache.js",
       "ace":"ajaxorg/ace",
-      "gform":"stemey/dojo-generate-form#>=0.20.6",
+      "gform":"stemey/dojo-generate-form#>=0.21.0",
       "gridx": "git://github.com/oria/gridx.git#>=1.2.0",
       "dojo": "~1.9.1",
       "dijit": "~1.9.1",

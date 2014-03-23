@@ -1,37 +1,39 @@
 {
-	"name": "main",
-	"code":"<html><head><title>{{title}}</title></head><body><h1>{{title}}</h1><p>My Teaser: <strong>{{{teaser}}}</strong></p></body></html>",
-	"attributes":[
-		{
-			"editor": "number",
-			"code": "id",
-			"type": "number",
-			"visible":false
-		},
-		{
-			"editor": "string",
-			"code": "url",
-			"type": "string"
-		},
-		{
-			"editor": "string",
-			"code": "title",
-			"type": "string"
-		},
-		{
-			"editor": "ref",
-			"code": "teaser",
-			"type": "ref",
-			"url": "/page",
-			"searchProperty": "url"
-		},
-		{
-			"editor": "string",
-			"code": "template",
-			"type": "string",
-			"visible":false
-		}
+    "name": "main",
+    "code": "<html><head><title>{{title}}</title></head><body><h1>{{title}}</h1><p>My Teaser: <strong><ul>{{#teasers}}<li>{{{.}}}</li>{{/teasers}}</ul></strong></p></body></html>",
+    "attributes": [
+        {
+            "editor": "number",
+            "code": "id",
+            "type": "number",
+            "visible": false
+        },
+        {
+            "editor": "string",
+            "code": "url",
+            "type": "string"
+        },
+        {
+            "editor": "string",
+            "code": "title",
+            "type": "string"
+        },
+        {
+            "code": "teaser",
+            "editor": "multi-page-ref",
+            "idProperty": "id",
+            "type": "multi-ref",
+            "url": "/page",
+            "searchProperty": "url",
+            "typeProperty": "template"
+        },
+        {
+            "editor": "string",
+            "code": "template",
+            "type": "string",
+            "visible": false
+        }
 
-	]
-	
+    ]
+
 }

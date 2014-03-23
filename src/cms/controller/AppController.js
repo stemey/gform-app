@@ -1,4 +1,7 @@
 define([
+    'dojo/when',
+    '../meta/Resolver',
+    'gform/schema/transform',
     'dojo/parser',
     'dojo/topic',
     "dojo/_base/declare",
@@ -14,7 +17,7 @@ define([
     "gform/createFullEditorFactory",
     "gform/opener/SingleEditorTabOpener",
     "gform/Context",
-    "gform/schema/SchemaGenerator",
+    "../meta/SchemaGenerator",
     "../SchemaRegistry",
     "dojo/text!../schema/main.json",
     "dojo/text!../schema/teaser.json",
@@ -33,7 +36,7 @@ define([
     "dijit/Toolbar",
     "dijit/form/Button",
     "gform/controller/ConfirmDialog"
-], function (parser, topic, declare, lang, aspect, json, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, template, templateSchema, Store, createEditorFactory, SingleEditorTabOpener, Context, SchemaGenerator, SchemaRegistry, mainTemplate, teaserTemplate, templateStub, Save, Delete, Preview, Renderer, UrlBasedStore) {
+], function (when, Resolver, transform, parser, topic, declare, lang, aspect, json, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, template, templateSchema, Store, createEditorFactory, SingleEditorTabOpener, Context, SchemaGenerator, SchemaRegistry, mainTemplate, teaserTemplate, templateStub, Save, Delete, Preview, Renderer, UrlBasedStore) {
 
 
     return declare([ _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
@@ -46,6 +49,15 @@ define([
             var opener = new SingleEditorTabOpener();
             opener.tabContainer = this.tabContainer;
             opener.editorFactory = createEditorFactory();
+            var templateConverter = {
+                parse: function(value) {
+                    return "/template/"+value;
+                },
+                format: function(value) {
+                    return parseFloat(value.substring(10));
+                }
+            }
+            opener.editorFactory.addConverterForid(templateConverter,"templateConverter");
             opener.confirmDialog = this.confirmDialog;
             opener.controllerConfig = {
                 plainValueFactory: this.createPlainValue,
@@ -80,7 +92,7 @@ define([
             // we need an extra opener for templates where the opener's plainValueFactory is null.
         },
         tabSelected: function(page) {
-            if (page.editor.meta.attributes && page.editor.meta.id!="/cms/template") {
+            if (page.editor.meta.attributes && page.editor.meta && page.editor.meta.id!="/cms/template") {
                 var id = page.editor.getPlainValue()["id"];
                 if (id) {
                     this.previewer.display("/page/" + id);
@@ -132,8 +144,8 @@ define([
         },
         loadTemplateSchema: function () {
             var generator = new SchemaGenerator();
-            var promise = generator.loadDefault("./gform/schema/");
-            promise.then(lang.hitch(this, "onSchemaLoaded"));
+            var promise = generator.load();
+            when(promise).then(lang.hitch(this, "onSchemaLoaded"));
         },
         onSchemaLoaded: function (meta) {
             meta.store = "/schema";
