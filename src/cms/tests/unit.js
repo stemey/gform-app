@@ -50,8 +50,8 @@ define([
             renderer.pageStore = new MemoryStore();
             renderer.pageStore.add("/page/p1.html", {template: "/template/t1.html", title: "hello"});
             renderer.pageStore.add("/page/p2.html", {template: "/template/t2.html", content: {$ref:"/page/teaser.html"}});
-            renderer.pageStore.add("/page/teaser.html", {template: "/template/t3.html", text: "hello world"});
-            renderer.pageStore.add("/page/teaser2.html", {template: "/template/t3.html", text: "bye world"});
+            renderer.pageStore.add("/page/teaser.html", {template: "/template/t3.html", text: "hello world", partial:true});
+            renderer.pageStore.add("/page/teaser2.html", {template: "/template/t3.html", text: "bye world", partial:true});
             renderer.pageStore.add("/page/complex.html", {template: "/template/complex.html", complex: {text:"hello"}});
             renderer.pageStore.add("/page/list.html", {template: "/template/list.html", list: ["hello","bye"]});
             renderer.pageStore.add("/page/pageList.html", {template: "/template/pageList.html", list: [{"$ref":"/page/teaser.html"},{"$ref":"/page/teaser2.html"}]});

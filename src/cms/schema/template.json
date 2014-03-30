@@ -16,6 +16,11 @@
                     "type": "string"
                 },
                 {
+                    "code": "partial",
+                    "type": "boolean",
+                    "description":"the value of a referenced partial is the rendered html fragment."
+                },
+                {
                     "code": "id",
                     "type": "number",
                     "visible":false
@@ -28,8 +33,10 @@
                 {
                     "code": "code",
                     "editor":"acetext",
-                    "height": "600px",
-                    "type": "string"
+                    "height": "300px",
+                    "type": "string",
+                    "mode":"ace/mode/handlebars",
+                    "autoComplete":true
                 }
             ]
         },{

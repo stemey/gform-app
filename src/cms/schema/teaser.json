@@ -1,6 +1,7 @@
 {
 	"name": "teaser",
 	"code":"<span>{{label}}</span>",
+    "partial":true,
 	"attributes":[
 		{
 			"editor": "number",

@@ -144,7 +144,7 @@ define([
         },
         loadTemplateSchema: function () {
             var generator = new SchemaGenerator();
-            var promise = generator.load();
+            var promise = generator.loadTemplateSchema();
             when(promise).then(lang.hitch(this, "onSchemaLoaded"));
         },
         onSchemaLoaded: function (meta) {

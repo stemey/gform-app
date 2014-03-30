@@ -1,18 +1,18 @@
 
 define([
-    'gform/schema/transform',
+    'gform/schema/SchemaGenerator',
     'dojo/_base/declare',
-    './Resolver',
     'dojo/text!gform/schema/group.json'
-], function (transform, declare, Resolver, group) {
+], function (SchemaGenerator,  declare, group) {
 // module:
 //		gform/util/Resolver
 
 
-    return declare("cms.SchemaGenerator", [], {
-        load: function () {
-            var resolver = new Resolver({baseUrl: "./gform/schema/", transformations: transform});
-            return resolver.resolve(JSON.parse(group));
+    return declare("cms.SchemaGenerator", [SchemaGenerator], {
+        loadTemplateSchema: function () {
+            var t = this.createTransformer();
+            t.replace("gform/schema/attributes.json","cms/meta/attributes.json");
+            return this.load(JSON.parse(group), "gform/schema/", t);
         }
 
     })

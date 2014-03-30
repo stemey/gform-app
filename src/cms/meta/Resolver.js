@@ -13,6 +13,7 @@ define([
                 baseUrl = "gform/schema/";
             }
             var url = new Url(baseUrl, relUrl);
+            // need to intercept attributes-no-code.json
             if (url.uri=="gform/schema/attributes.json") {
                 return "cms/meta/attributes.json"
             } else {

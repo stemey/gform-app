@@ -16,8 +16,8 @@ define([
         pageStore: null,
         templateStore: null,
         visit: function (attribute, value, goon, ctx) {
-            if (metaHelper.getType(attribute) == "ref") {
-                when(this.render(value.$ref)).then(function (html) {
+            if (attribute.type == "ref" || attribute.type == "multi-ref") {
+                when(this.render(value.$ref, true)).then(function (html) {
                     ctx.page[attribute.code] = html;
                 })
             } else {
@@ -34,8 +34,8 @@ define([
             }
         },
         visitElement: function (type, value, goon, idx, ctx) {
-            if (type.type == "ref") {
-                when(this.render(value.$ref)).then(function (html) {
+            if (type.type == "ref" || type.type == "multi-ref") {
+                when(this.render(value.$ref, true)).then(function (html) {
                     ctx.page[idx] = html;
                 })
             } else {
@@ -43,8 +43,8 @@ define([
 
             }
         },
-        visitArray: function (attribute, value, goon,  ctx) {
-            ctx.page[attribute.code]=[];
+        visitArray: function (attribute, value, goon, ctx) {
+            ctx.page[attribute.code] = [];
             ctx = {page: ctx.page[attribute.code], promises: ctx.promises};
             goon(ctx);
         },
@@ -61,17 +61,21 @@ define([
             });
             return includesPromise;
         },
-        render: function (pageUrl) {
+        render: function (pageUrl, checkPartial) {
             var me = this;
             var renderPromise = new Deferred();
             when(me.pageStore.findByUrl(pageUrl)).then(function (page) {
-                when(me.templateStore.findByUrl(page.template)).then(function (template) {
-                    var includesPromise = me.renderIncludes(template, page);
-                    when(includesPromise).then(function (page) {
-                        var html = me.renderer.render(template.code, page);
-                        renderPromise.resolve(html);
+                if (!checkPartial || page.partial) {
+                    when(me.templateStore.findByUrl(page.template)).then(function (template) {
+                        var includesPromise = me.renderIncludes(template, page);
+                        when(includesPromise).then(function (page) {
+                            var html = me.renderer.render(template.code, page);
+                            renderPromise.resolve(html);
+                        });
                     });
-                });
+                } else {
+                    renderPromise.resolve(page);
+                }
             });
             return renderPromise;
 
