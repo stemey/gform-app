@@ -69,16 +69,19 @@ return declare( [ _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
 		},
 		startup: function() {
 			this.inherited(arguments);
-			this.createTemplateGrid();
-			this.createPageGrid();
-			this.templateGrid.select.row.connect(this.templateGrid.select.row, "onSelected",lang.hitch(this,"templateSelected"));
-			this.tabContainer.addChild(this.templateGrid);
-
-			this.pageGrid.select.row.connect(this.pageGrid.select.row, "onSelected",lang.hitch(this,"pageSelected"));
-			this.tabContainer.addChild(this.pageGrid);
 
 			//this.borderContainer.layout();
 		},
+        configure: function(ctx) {
+            this.ctx=ctx;
+            this.createTemplateGrid();
+            this.createPageGrid();
+            this.templateGrid.select.row.connect(this.templateGrid.select.row, "onSelected",lang.hitch(this,"templateSelected"));
+            this.tabContainer.addChild(this.templateGrid);
+
+            this.pageGrid.select.row.connect(this.pageGrid.select.row, "onSelected",lang.hitch(this,"pageSelected"));
+            this.tabContainer.addChild(this.pageGrid);
+        } ,
 		templateSelected: function(e) {
 			//this.ctx.opener.openSingle({url: "/template/"+e.id, schemaUrl: "/template"});
 		},

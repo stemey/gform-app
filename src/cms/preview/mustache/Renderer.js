@@ -65,17 +65,17 @@ define([
             var me = this;
             var renderPromise = new Deferred();
             when(me.pageStore.findByUrl(pageUrl)).then(function (page) {
-                if (!checkPartial || page.partial) {
                     when(me.templateStore.findByUrl(page.template)).then(function (template) {
-                        var includesPromise = me.renderIncludes(template, page);
-                        when(includesPromise).then(function (page) {
-                            var html = me.renderer.render(template.code, page);
-                            renderPromise.resolve(html);
-                        });
+                        if (!checkPartial || template.partial) {
+                            var includesPromise = me.renderIncludes(template, page);
+                            when(includesPromise).then(function (page) {
+                                var html = me.renderer.render(template.code, page);
+                                renderPromise.resolve(html);
+                            });
+                        } else {
+                            renderPromise.resolve(page);
+                        }
                     });
-                } else {
-                    renderPromise.resolve(page);
-                }
             });
             return renderPromise;
 

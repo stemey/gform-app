@@ -12,6 +12,7 @@ define([
     "dijit/_TemplatedMixin",
     "dijit/_WidgetsInTemplateMixin",
     "dojo/text!./app.html",
+    "../Configuration",
     "dojo/text!../schema/template.json",
     "../util/Memory",
     "gform/createFullEditorFactory",
@@ -36,7 +37,7 @@ define([
     "dijit/Toolbar",
     "dijit/form/Button",
     "gform/controller/ConfirmDialog"
-], function (when, Resolver, transform, parser, topic, declare, lang, aspect, json, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, template, templateSchema, Store, createEditorFactory, SingleEditorTabOpener, Context, SchemaGenerator, SchemaRegistry, mainTemplate, teaserTemplate, templateStub, Save, Delete, Preview, Renderer, UrlBasedStore) {
+], function (when, Resolver, transform, parser, topic, declare, lang, aspect, json, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, template, Configuration, templateSchema, Store, createEditorFactory, SingleEditorTabOpener, Context, SchemaGenerator, SchemaRegistry, mainTemplate, teaserTemplate, templateStub, Save, Delete, Preview, Renderer, UrlBasedStore) {
 
 
     return declare([ _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
@@ -46,66 +47,83 @@ define([
         gridController: null,
         confirmDialog: null,
         postCreate: function () {
+
+
+            this.ctx = new Context();
+            var opener = this._createOpener();
+            this.ctx.opener = opener;
+
+            this.configuration = new Configuration();
+            this.configuration.load().then(lang.hitch(this, "_onConfigured")).otherwise(function (e) {
+                alert("error");
+                console.log(e.message, e.stack)
+            });
+
+            // we need an extra opener for templates where the opener's plainValueFactory is null.
+        },
+        _createOpener: function () {
             var opener = new SingleEditorTabOpener();
             opener.tabContainer = this.tabContainer;
             opener.editorFactory = createEditorFactory();
             var templateConverter = {
-                parse: function(value) {
-                    return "/template/"+value;
+                parse: function (value) {
+                    return "/template/" + value;
                 },
-                format: function(value) {
+                format: function (value) {
                     return parseFloat(value.substring(10));
                 }
             }
-            opener.editorFactory.addConverterForid(templateConverter,"templateConverter");
+            opener.editorFactory.addConverterForid(templateConverter, "templateConverter");
             opener.confirmDialog = this.confirmDialog;
             opener.controllerConfig = {
                 plainValueFactory: this.createPlainValue,
                 actionClasses: [Save, Delete, Preview]
             }
-            this.ctx = new Context();
-            this.ctx.opener = opener;
+
             opener.ctx = this.ctx;
+            return opener;
+        },
+        _onConfigured: function () {
+
             this.schemaRegistry = new SchemaRegistry();
-            var templateStore = new Store();
+            var templateStore = this.configuration.templateStore;
             this.schemaRegistry.registerStore("/template", templateStore);
             this.loadTemplateSchema();
             templateStore.add(json.parse(mainTemplate));
             templateStore.add(json.parse(teaserTemplate));
 
             this.ctx.storeRegistry.register("/template", templateStore);
-            var pageStore = new Store();
+            var pageStore = this.configuration.pageStore;
             this.ctx.storeRegistry.register("/page", pageStore);
             aspect.after(pageStore, "put", lang.hitch(this, "onPageUpdated"));
             this.ctx.schemaRegistry = this.schemaRegistry;
-            this.gridController.set("ctx", this.ctx);
+
+            this.gridController.configure(this.ctx);
+
 
             this.previewer.renderer = new Renderer();
-            this.previewer.renderer.templateStore = new UrlBasedStore(templateStore);
-            this.previewer.renderer.pageStore = new UrlBasedStore(pageStore);
+            this.previewer.renderer.templateStore = templateStore;
+            this.previewer.renderer.pageStore = pageStore;
 
-            aspect.after(this.gridController,"pageSelected",lang.hitch(this,"pageSelected"));
+            aspect.after(this.gridController, "pageSelected", lang.hitch(this, "pageSelected"));
 
-            topic.subscribe(this.tabContainer.id+"-selectChild", lang.hitch(this, "tabSelected"));
-
-
-            // we need an extra opener for templates where the opener's plainValueFactory is null.
+            topic.subscribe(this.tabContainer.id + "-selectChild", lang.hitch(this, "tabSelected"));
         },
-        tabSelected: function(page) {
-            if (page.editor.meta.attributes && page.editor.meta && page.editor.meta.id!="/cms/template") {
+        tabSelected: function (page) {
+            if (page.editor.meta.attributes && page.editor.meta && page.editor.meta.id != "/cms/template") {
                 var id = page.editor.getPlainValue()["id"];
                 if (id) {
                     this.previewer.display("/page/" + id);
                 }
             }
         },
-        onPageUpdated: function(id, entity) {
+        onPageUpdated: function (id, entity) {
             if (id) {
                 this.previewer.display("/page/" + id);
             }
             return id;
         },
-        pageSelected: function(e) {
+        pageSelected: function (e) {
             this.preview();
         },
         createPlainValue: function (schema) {
