@@ -1,12 +1,6 @@
 {
 	"attributes":[
 		{
-			"code": "id",
-			"type": "number",
-            "editor":"number",
-			"visible":false
-		},
-		{
             "editor":"string",
 			"code": "url",
 			"type": "string"

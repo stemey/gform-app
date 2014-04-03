@@ -1,0 +1,14 @@
+{
+    "pageStore": {
+        "type": "cms/util/Memory",
+        "options": {
+            "idProperty": "id"
+        }
+    },
+    "templateStore": {
+        "type": "cms/util/Memory",
+        "options": {
+            "idProperty": "id"
+        }
+    }
+}

@@ -19,11 +19,6 @@
                     "code": "partial",
                     "type": "boolean",
                     "description":"the value of a referenced partial is the rendered html fragment."
-                },
-                {
-                    "code": "id",
-                    "type": "number",
-                    "visible":false
                 }
             ]
         },{

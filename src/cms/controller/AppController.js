@@ -76,7 +76,7 @@ define([
             opener.editorFactory.addConverterForid(templateConverter, "templateConverter");
             opener.confirmDialog = this.confirmDialog;
             opener.controllerConfig = {
-                plainValueFactory: this.createPlainValue,
+                plainValueFactory: lang.hitch(this, "createPlainValue"),
                 actionClasses: [Save, Delete, Preview]
             }
 
@@ -95,7 +95,7 @@ define([
             this.ctx.storeRegistry.register("/template", templateStore);
             var pageStore = this.configuration.pageStore;
             this.ctx.storeRegistry.register("/page", pageStore);
-            aspect.after(pageStore, "put", lang.hitch(this, "onPageUpdated"));
+            aspect.around(pageStore, "put", lang.hitch(this, "onPageUpdated"));
             this.ctx.schemaRegistry = this.schemaRegistry;
 
             this.gridController.configure(this.ctx);
@@ -117,11 +117,15 @@ define([
                 }
             }
         },
-        onPageUpdated: function (id, entity) {
-            if (id) {
-                this.previewer.display("/page/" + id);
+        onPageUpdated: function (superCall) {
+            var me =this;
+            return function(entity) {
+                var result = superCall.apply(this, arguments);
+                if (entity) {
+                    me.previewer.display("/page/" + entity[me.configuration.pageStore.idProperty]);
+                }
+                return result;
             }
-            return id;
         },
         pageSelected: function (e) {
             this.preview();
@@ -129,9 +133,13 @@ define([
         createPlainValue: function (schema) {
             // we only know the id not the store, so we do this for both pages and templates
             if (schema.id == "/cms/template") {
-                return json.parse(templateStub);
+                var template = json.parse(templateStub);
+                var conf = this.configuration.templateStore;
+                template.attributes.push({code: conf.idProperty, "type": conf.idType,"editor": conf.idType, "visible": false});
+                return template;
+            } else {
+                return {template: "/template/" + schema[this.configuration.templateStore.idProperty]}
             }
-            return {template: "/template/" + schema.id}
         },
         preview: function () {
             var selectedPageId = this.gridController.getSelectedPage();
@@ -163,13 +171,17 @@ define([
         loadTemplateSchema: function () {
             var generator = new SchemaGenerator();
             var promise = generator.loadTemplateSchema();
-            when(promise).then(lang.hitch(this, "onSchemaLoaded"));
+            when(promise).then(lang.hitch(this, "onTemplateSchemaLoaded"));
         },
-        onSchemaLoaded: function (meta) {
+        onTemplateSchemaLoaded: function (meta) {
             meta.store = "/schema";
             // get attributes of root.listpane
             var attributes = meta.attributes[0].groups[0].attributes[2];
             var baseSchema = json.parse(templateSchema)
+            var idAttribute={};
+            idAttribute["type"]=this.configuration.templateStore.idType;
+            idAttribute["code"]=this.configuration.templateStore.idProperty;
+            baseSchema.groups[0].attributes.push(idAttribute);
 
 
             baseSchema.groups[2].attributes.push(attributes);

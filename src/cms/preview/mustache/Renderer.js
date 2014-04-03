@@ -17,7 +17,9 @@ define([
         templateStore: null,
         visit: function (attribute, value, goon, ctx) {
             if (attribute.type == "ref" || attribute.type == "multi-ref") {
-                when(this.render(value.$ref, true)).then(function (html) {
+                var p = this.render(value.$ref, true);
+                ctx.promises.push(p);
+                when(p).then(function (html) {
                     ctx.page[attribute.code] = html;
                 })
             } else {
@@ -35,7 +37,9 @@ define([
         },
         visitElement: function (type, value, goon, idx, ctx) {
             if (type.type == "ref" || type.type == "multi-ref") {
-                when(this.render(value.$ref, true)).then(function (html) {
+                var p = this.render(value.$ref, true);
+                ctx.promises.push(p);
+                when(p).then(function (html) {
                     ctx.page[idx] = html;
                 })
             } else {

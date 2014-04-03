@@ -1,14 +1,18 @@
 {
     "pageStore": {
-        "type": "cms/util/Memory",
+        "type": "cms/util/MongoRest",
         "options": {
-            "idProperty": "id"
+            "idProperty": "_id",
+            "idType": "string",
+            "target":"http://localhost:3000/test/page/"
         }
     },
     "templateStore": {
-        "type": "cms/util/Memory",
+        "type": "cms/util/MongoRest",
         "options": {
-            "idProperty": "id"
+            "idProperty": "_id",
+            "idType": "string",
+            "target":"http://localhost:3000/test/template/"
         }
     }
 }
