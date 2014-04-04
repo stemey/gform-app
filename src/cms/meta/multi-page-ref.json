@@ -47,6 +47,13 @@
             "label": "schemas",
             "attributes": [
                 {
+                    "code": "usage",
+                    "description": "transform of linked page to ctx attribute.",
+                    "type": "string",
+                    "values": ["html","link","partial"],
+                    "required": true
+                },
+                {
                     "code": "typeProperty",
                     "description": "The type property in the referenced resources",
                     "type": "string",

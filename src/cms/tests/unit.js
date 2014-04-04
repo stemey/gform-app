@@ -29,6 +29,12 @@ define([
                     {code: "text", type: "string"}
                 ]
             });
+            renderer.templateStore.add("/template/partial.html", {
+                code: "<body>{{#partial}}{{>partial}}{{/partial}}</body>",
+                attributes:[
+                    {code: "partial", type: "ref", usage:"partial"}
+                ]
+            });
             renderer.templateStore.add("/template/complex.html", {
                 code: "<p>{{complex.text}}</p>",
                 attributes:[
@@ -44,7 +50,7 @@ define([
             renderer.templateStore.add("/template/pageList.html", {
                 code: "{{#list}}{{{.}}},{{/list}}",
                 attributes:[
-                    {code: "list", type:"array", element:{type:"ref"}}
+                    {code: "list", type:"array", element:{type:"ref", "usage":"html"}}
                 ]
             });
             renderer.pageStore = new MemoryStore();
@@ -53,6 +59,7 @@ define([
             renderer.pageStore.add("/page/teaser.html", {template: "/template/t3.html", text: "hello world"});
             renderer.pageStore.add("/page/teaser2.html", {template: "/template/t3.html", text: "bye world"});
             renderer.pageStore.add("/page/complex.html", {template: "/template/complex.html", complex: {text:"hello"}});
+            renderer.pageStore.add("/page/partial.html", {template: "/template/partial.html", partial: {$ref:"/page/teaser.html"}});
             renderer.pageStore.add("/page/list.html", {template: "/template/list.html", list: ["hello","bye"]});
             renderer.pageStore.add("/page/pageList.html", {template: "/template/pageList.html", list: [{"$ref":"/page/teaser.html"},{"$ref":"/page/teaser2.html"}]});
         });
@@ -77,6 +84,12 @@ define([
         bdd.it('page should render complex content', function () {
             return when(renderer.render("/page/complex.html"), function(result) {
                 assert.equal(result[0],"<p>hello</p>");
+            });
+        });
+
+        bdd.it('page should render partial', function () {
+            return when(renderer.render("/page/partial.html"), function(result) {
+                assert.equal(result[0],"<body><p>hello world</p></body>");
             });
         });
 
