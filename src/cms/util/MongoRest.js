@@ -21,7 +21,7 @@ define([
 
             var queryParams = this.transform.transform(query);
             if (queryParams) {
-                params.conditions = JSON.stringify(queryParams);
+                params.query = JSON.stringify(queryParams);
             } else {
                 lang.mixin(params, query);
             }

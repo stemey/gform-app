@@ -4,7 +4,7 @@
         "options": {
             "idProperty": "_id",
             "idType": "string",
-            "target":"http://localhost:3000/test/page/"
+            "target": "http://localhost:3000/test/page2/"
         }
     },
     "templateStore": {
@@ -12,7 +12,8 @@
         "options": {
             "idProperty": "_id",
             "idType": "string",
-            "target":"http://localhost:3000/test/template/"
+            "target": "http://localhost:3000/test/template2/"
         }
-    }
+    },
+    "templateConverter": "cms/util/stringTemplateConverter"
 }

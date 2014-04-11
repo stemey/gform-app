@@ -1,8 +1,6 @@
 define([
+    '../meta/TemplateSchemaTransformer',
     'dojo/when',
-    '../meta/Resolver',
-    'gform/schema/transform',
-    'dojo/parser',
     'dojo/topic',
     "dojo/_base/declare",
     "dojo/_base/lang",
@@ -15,19 +13,16 @@ define([
     "../Configuration",
     "dojo/text!../schema/template.json",
     "../util/Memory",
-    "gform/createFullEditorFactory",
+    "../createBuilderEditorFactory",
     "gform/opener/SingleEditorTabOpener",
     "gform/Context",
     "../meta/SchemaGenerator",
     "../SchemaRegistry",
-    "dojo/text!../schema/main.json",
-    "dojo/text!../schema/teaser.json",
     "dojo/text!../schema/templateStub.json",
     "gform/controller/actions/Save",
     "gform/controller/actions/Delete",
     "./Preview",
     "../preview/mustache/Renderer",
-    "../preview/UrlBasedStore",
     "./Previewer",
     "dijit/layout/BorderContainer",
     "dijit/layout/TabContainer",
@@ -37,7 +32,7 @@ define([
     "dijit/Toolbar",
     "dijit/form/Button",
     "gform/controller/ConfirmDialog"
-], function (when, Resolver, transform, parser, topic, declare, lang, aspect, json, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, template, Configuration, templateSchema, Store, createEditorFactory, SingleEditorTabOpener, Context, SchemaGenerator, SchemaRegistry, mainTemplate, teaserTemplate, templateStub, Save, Delete, Preview, Renderer, UrlBasedStore) {
+], function (TemplateSchemaTransformer, when, topic, declare, lang, aspect, json, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, template, Configuration, templateSchema, Store, createEditorFactory, SingleEditorTabOpener, Context, SchemaGenerator, SchemaRegistry,  templateStub, Save, Delete, Preview, Renderer) {
 
 
     return declare([ _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
@@ -65,15 +60,6 @@ define([
             var opener = new SingleEditorTabOpener();
             opener.tabContainer = this.tabContainer;
             opener.editorFactory = createEditorFactory();
-            var templateConverter = {
-                parse: function (value) {
-                    return "/template/" + value;
-                },
-                format: function (value) {
-                    return parseFloat(value.substring(10));
-                }
-            }
-            opener.editorFactory.addConverterForid(templateConverter, "templateConverter");
             opener.confirmDialog = this.confirmDialog;
             opener.controllerConfig = {
                 plainValueFactory: lang.hitch(this, "createPlainValue"),
@@ -85,12 +71,18 @@ define([
         },
         _onConfigured: function () {
 
-            this.schemaRegistry = new SchemaRegistry();
             var templateStore = this.configuration.templateStore;
+
+            var templateConverter=this.configuration.templateConverter;
+            this.ctx.opener.editorFactory.addConverterForid(templateConverter, "templateConverter");
+
+            this.schemaRegistry = new SchemaRegistry();
+
+            var templateToSchemaTransformer =new TemplateSchemaTransformer(templateStore);
+            this.schemaRegistry.transformer =templateToSchemaTransformer
+
             this.schemaRegistry.registerStore("/template", templateStore);
             this.loadTemplateSchema();
-            templateStore.add(json.parse(mainTemplate));
-            templateStore.add(json.parse(teaserTemplate));
 
             this.ctx.storeRegistry.register("/template", templateStore);
             var pageStore = this.configuration.pageStore;
@@ -104,6 +96,7 @@ define([
             this.previewer.renderer = new Renderer();
             this.previewer.renderer.templateStore = templateStore;
             this.previewer.renderer.pageStore = pageStore;
+            this.previewer.renderer.templateToSchemaTransformer = templateToSchemaTransformer;
 
             aspect.after(this.gridController, "pageSelected", lang.hitch(this, "pageSelected"));
 
@@ -159,7 +152,7 @@ define([
                 var callback = function (id) {
                     var page = me.ctx.storeRegistry.get("/page").get(id);
                     page.template = "/template/" + selectedTemplate;
-                    //me.ctx.storeRegistry.get("/page").put(page);
+
                 }
                 this.ctx.opener.createSingle({url: "/page", schemaUrl: "/template/" + selectedTemplate, callback: callback});
             }
@@ -183,11 +176,10 @@ define([
             idAttribute["code"]=this.configuration.templateStore.idProperty;
             baseSchema.groups[0].attributes.push(idAttribute);
 
+            var group =meta.attributes[0];
+            group.requiredAttributes=["url"];
+            baseSchema.groups[3].attributes.push(group);
 
-            baseSchema.groups[2].attributes.push(attributes);
-
-
-            //baseSchema.groups[2].attributes=meta.attributes;
 
             this.schemaRegistry.register("/template", baseSchema);
         }

@@ -27,9 +27,12 @@ define([
         },
         convertQueryValue: function (value) {
             if (typeof value === "object") {
-                value = value.toString();
-            }
-            if (value.length > 0 && value.substring(value.length - 1) == "*") {
+                if ("$in" in value) {
+                    return value;
+                }else {
+                    value = value.toString();
+                }
+            } else if (value.length > 0 && value.substring(value.length - 1) == "*") {
                 return {$regex: value.substring(0, value.length - 1)};
             } else {
                 return value;

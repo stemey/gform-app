@@ -1,11 +1,11 @@
 {
-	"id": "/cms/template",
-	"description": "A template",
-    "editor":"tab",
+    "id": "/cms/template",
+    "description": "A template",
+    "editor": "tab",
     "groups": [
         {
-            "code":"general",
-            "label":"General",
+            "code": "general",
+            "label": "General",
             "attributes": [
                 {
                     "code": "name",
@@ -18,25 +18,53 @@
                 {
                     "code": "partial",
                     "type": "boolean",
-                    "description":"the value of a referenced partial is the rendered html fragment."
+                    "description": "the value of a referenced partial is the rendered html fragment."
+                },
+                {
+                    "code": "schema",
+                    "type": "string",
+                    "required": true,
+                    "values": ["template"]
                 }
             ]
-        },{
-            "code":"template",
-            "label":"Template",
+        },
+        {
+            "code": "template",
+            "label": "Template",
             "attributes": [
                 {
                     "code": "code",
-                    "editor":"acetext",
+                    "editor": "acetext",
                     "height": "300px",
                     "type": "string",
-                    "mode":"ace/mode/handlebars",
-                    "autoComplete":true
+                    "mode": "ace/mode/handlebars",
+                    "autoComplete": true
                 }
             ]
-        },{
-            "code":"attributes",
-            "label":"Form",
+        },
+        {
+            "code": "partials",
+            "label": "Partials",
+            "attributes": [
+                {
+                    "code": "partials",
+                    "type": "map",
+                    "keyAttribute": {},
+                    "valueAttribute": {
+                        "type": "multi-ref",
+                        "typeProperty":"template",
+                        "schemas":[],
+                        "idProperty": "_id",
+                        "url":"/page",
+                        "searchProperty": "url"
+
+                    }
+                }
+            ]
+        },
+        {
+            "code": "form",
+            "label": "Form",
             "attributes": [
 
             ]

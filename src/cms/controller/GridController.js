@@ -1,4 +1,5 @@
 define([
+    'gform/layout/_InvisibleMixin',
     'dojo/when',
     "dojo/_base/declare",
     "dojo/_base/lang",
@@ -20,11 +21,11 @@ define([
     "dijit/_WidgetsInTemplateMixin",
     "dojo/text!./grid.html",
     "dijit/layout/TabContainer",
-    "dijit/layout/ContentPane",
-], function (when, declare, lang, aspect, Grid, Cache, VirtualVScroller, ColumnResizer, SingleSort, Filter, Focus, RowHeader, RowSelect, json, templateColumns, pageColumns, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, template) {
+    "dijit/layout/ContentPane"
+], function (InvisibleMixin, when, declare, lang, aspect, Grid, Cache, VirtualVScroller, ColumnResizer, SingleSort, Filter, Focus, RowHeader, RowSelect, json, templateColumns, pageColumns, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, template) {
 
 
-    return declare([ _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
+    return declare([ _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, InvisibleMixin], {
         baseClass: "gformGridController",
         templateString: template,
         ctx: null,
@@ -43,7 +44,7 @@ define([
                 {
                     moduleClass: RowSelect,
                     multiple: false,
-                    triggerOnCell: true,
+                    triggerOnCell: true
                 },
                 RowHeader
             ];

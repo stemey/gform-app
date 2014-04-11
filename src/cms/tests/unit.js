@@ -35,6 +35,12 @@ define([
                     {code: "partial", type: "ref", usage:"partial"}
                 ]
             });
+            renderer.templateStore.add("/template/link.html", {
+                code: "<a href='{{page}}'></a>",
+                attributes:[
+                    {code: "page", type: "ref", usage:"link"}
+                ]
+            });
             renderer.templateStore.add("/template/complex.html", {
                 code: "<p>{{complex.text}}</p>",
                 attributes:[
@@ -47,6 +53,12 @@ define([
                     {code: "list",  type:"array", element:{type:"string"}}
                 ]
             });
+            renderer.templateStore.add("/template/partiallist.html", {
+                code: "{{#list}}{{#x}}{{>x}}{{/x}}{{/list}}",
+                attributes:[
+                    {code: "list",  type:"array", group:{type:"object",attributes:[{code:"x",type:"ref",usage:"partial"}]}}
+                ]
+            });
             renderer.templateStore.add("/template/pageList.html", {
                 code: "{{#list}}{{{.}}},{{/list}}",
                 attributes:[
@@ -54,7 +66,8 @@ define([
                 ]
             });
             renderer.pageStore = new MemoryStore();
-            renderer.pageStore.add("/page/p1.html", {template: "/template/t1.html", title: "hello"});
+            renderer.pageStore.add("/page/p1.html", {template: "/template/t1.html", title: "hello", url:"p1.html"});
+            renderer.pageStore.add("/page/link.html", {template: "/template/link.html", page: {$ref:"/page/p1.html"}});
             renderer.pageStore.add("/page/p2.html", {template: "/template/t2.html", content: {$ref:"/page/teaser.html"}});
             renderer.pageStore.add("/page/teaser.html", {template: "/template/t3.html", text: "hello world"});
             renderer.pageStore.add("/page/teaser2.html", {template: "/template/t3.html", text: "bye world"});
@@ -62,6 +75,7 @@ define([
             renderer.pageStore.add("/page/partial.html", {template: "/template/partial.html", partial: {$ref:"/page/teaser.html"}});
             renderer.pageStore.add("/page/list.html", {template: "/template/list.html", list: ["hello","bye"]});
             renderer.pageStore.add("/page/pageList.html", {template: "/template/pageList.html", list: [{"$ref":"/page/teaser.html"},{"$ref":"/page/teaser2.html"}]});
+            renderer.pageStore.add("/page/partiallist.html", {template: "/template/partiallist.html",list: [{x:{"$ref":"/page/teaser.html"}},{x:{"$ref":"/page/teaser2.html"}}]});
         });
 
         bdd.after(function () {
@@ -81,6 +95,12 @@ define([
             });
         });
 
+        bdd.it('page should render url of other page', function () {
+            return when(renderer.render("/page/link.html"), function(result) {
+                assert.equal(result[0],"<a href='p1.html'></a>");
+            });
+        });
+
         bdd.it('page should render complex content', function () {
             return when(renderer.render("/page/complex.html"), function(result) {
                 assert.equal(result[0],"<p>hello</p>");
@@ -90,6 +110,12 @@ define([
         bdd.it('page should render partial', function () {
             return when(renderer.render("/page/partial.html"), function(result) {
                 assert.equal(result[0],"<body><p>hello world</p></body>");
+            });
+        });
+
+        bdd.it('page should render array of partial', function () {
+            return when(renderer.render("/page/partiallist.html"), function(result) {
+                assert.equal(result[0],"<p>hello world</p><p>bye world</p>");
             });
         });
 

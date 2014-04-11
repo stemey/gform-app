@@ -1,8 +1,10 @@
 define([
-	"dojo/_base/declare",
+    'dojo/when',
+    'dojo/Deferred',
+    "dojo/_base/declare",
     "dojo/request",
 	"gform/util/restHelper"
-], function(declare, request, restHelper){
+], function(when, Deferred, declare, request, restHelper){
 // module:
 //		gform/controller/SchemaRegistry
 
@@ -17,6 +19,8 @@ define([
 		
 			name2Store: {},
 
+            transformer:null,
+
 			get: function(url) {
 			// summary:
 			//		get the schema for the id. If none exist then instantiate the default store with the given properties
@@ -27,13 +31,25 @@ define([
 				if (cached) {
 					return cached;
 				} else {
+                    var p;
 					var ref = restHelper.decompose(url);
 					var store = this.name2Store[ref.url];
 					if (store) {
-						return store.get(ref.id);
+						p= store.get(ref.id);
 					} else {	
-						return request.get(url, {handleAs: "json"});
+						p= request.get(url, {handleAs: "json"});
 					}
+                    var transformedSchema = new Deferred();
+                    var me =this;
+                    when(p).then(function(schema) {
+                        if (me.transformer) {
+                            var t = me.transformer.transform(schema);
+                            transformedSchema.resolve(t);
+                        } else {
+                            transformedSchema.resolve(schema);
+                        }
+                    }).otherwise(transformedSchema);
+                    return transformedSchema;
 				}
 
 			},

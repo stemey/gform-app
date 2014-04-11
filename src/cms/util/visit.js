@@ -43,8 +43,10 @@ define([
             array.forEach(model, function (el, idx) {
                 var single = meta.element || meta.group;
                 var me = this;
-                this.visitor.visitElement(single, el, function (x) {
-                    //me.visitAttribute(single, el, x);
+                this.visitor.visitElement(single, el, function (newCtx) {
+                    if (meta.group) {
+                        me.visit(single, el, newCtx);
+                    }
                 }, idx, ctx);
             }, this);
         },

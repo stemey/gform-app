@@ -11,7 +11,10 @@ define([
             var configuration = JSON.parse(config);
             var pageStore = this._loadStore(configuration.pageStore, "pageStore");
             var templateStore = this._loadStore(configuration.templateStore, "templateStore");
-            return all([pageStore, templateStore]);
+            var templateConverter = this._load(configuration.templateConverter, "templateConverter");
+
+
+            return all([pageStore, templateStore,templateConverter]);
         },
         _loadStore: function(config, prop){
             var me =this;
@@ -20,6 +23,15 @@ define([
                 store = new Store(config.options);
                 me[prop] = store;
                 deferred.resolve(store);
+            });
+            return deferred;
+        },
+        _load: function(type, prop){
+            var me =this;
+            var deferred = new Deferred();
+            require([type], function(obj){
+                me[prop] = obj;
+                deferred.resolve(obj);
             });
             return deferred;
         }
