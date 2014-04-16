@@ -1,0 +1,27 @@
+{
+    "code": "template-ref",
+    "editor": "tab",
+    "description": "",
+    "groups": [
+        {
+            "$ref": "../../gform/schema/attributes/header.json"
+        },
+        {
+            "label": "template",
+            "attributes": [
+                {
+                    "code": "template",
+                    "type": "ref",
+                    "searchProperty": "name",
+                    "idProperty":"_id",
+                    "url": "/template",
+                    "schemaUrl": "/template"
+                }
+            ]
+        },
+        {
+            "$ref": "../../gform/schema/attributes/messages.json"
+        }
+    ]
+
+}

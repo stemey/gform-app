@@ -9,6 +9,7 @@ src/mustache
 src/util
 src/gridx
 src/gform
+src/handlebars
 .settings
 *~
 .idea

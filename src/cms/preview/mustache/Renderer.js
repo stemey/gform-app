@@ -15,6 +15,9 @@ define([
         templateStore: null,
         templateToSchemaTransformer: null,
         handlePageRef: function (attribute, value, ctx, idx, templateKey) {
+            if (!value.$ref) {
+                return;
+            }
             var me = this;
             if (attribute.usage === "link") {
                 var p = this.pageStore.findByUrl(value.$ref);
@@ -41,6 +44,11 @@ define([
         visit: function (attribute, value, goon, ctx) {
             if (attribute.type == "ref" || attribute.type == "multi-ref") {
                 this.handlePageRef(attribute, value, ctx, attribute.code, attribute.code);
+            } else if (attribute.editor == "template-ref") {
+                ctx.page[attribute.code] = value;
+                ctx.templates[attribute.code] = attribute.template.code;
+                ctx = {page: ctx.page[attribute.code], promises: ctx.promises, templates: ctx.templates};
+                visit(this, attribute.template.group, ctx.page, ctx);
             } else {
                 if (metaHelper.isComplex(attribute)) {
                     ctx.page[attribute.code] = {};
@@ -85,11 +93,14 @@ define([
             if (this.templateToSchemaTransformer) {
                 template = this.templateToSchemaTransformer.transform(template);
             }
-            visit(this, template, page, ctx);
             var includesPromise = new Deferred();
-            when(all(ctx.promises)).then(function () {
-                includesPromise.resolve(ctx);
-            });
+            var me = this;
+            when(template).then(function (template) {
+                visit(me, template, page, ctx);
+                when(all(ctx.promises)).then(function () {
+                    includesPromise.resolve(ctx);
+                });
+            })
             return includesPromise;
         },
         render: function (pageUrl, checkPartial) {
@@ -103,7 +114,8 @@ define([
                             var partialPromises = [];
                             if (template.partials) {
                                 Object.keys(template.partials).forEach(function (key) {
-                                    var p = me.render(template.partials[key].$ref);
+                                    //var p = me.render(template.partials[key].$ref);
+                                    var p = me.render(template.partials[key]);
                                     partialPromises.push(p);
                                     when(p).then(function (html) {
                                         ctx.page[key] = html;
@@ -115,7 +127,8 @@ define([
                                 renderPromise.resolve(html);
                             });
                         }).otherwise(function (e) {
-                                alert("error during rendering " + e.stack)
+                                console.error("error during rendering " + e.stack);
+                                alert("error during rendering " + e.stack);
                             });
                     } else {
                         renderPromise.resolve(page);
@@ -150,8 +163,5 @@ define([
             return renderPromise;
         }
     })
-        ;
-
-
 })
-;
+

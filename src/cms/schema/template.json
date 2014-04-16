@@ -52,6 +52,7 @@
                     "keyAttribute": {},
                     "valueAttribute": {
                         "type": "multi-ref",
+                        "converter":"urlConverter",
                         "typeProperty":"template",
                         "schemas":[],
                         "idProperty": "_id",

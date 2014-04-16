@@ -12,7 +12,7 @@
                 {
                     "code": "type",
                     "type": "string",
-                    "visible": true,
+                    "visible": false,
                     "required": true,
                     "values": ["multi-ref"]
                 },
@@ -20,15 +20,15 @@
                     "code": "idProperty",
                     "description": "The id property in the referenced resources",
                     "type": "string",
-                    "visible": true,
+                    "visible": false,
                     "required": true,
-                    "values": ["id"]
+                    "values": ["_id"]
                 },
                 {
                     "code": "searchProperty",
                     "description": "The property displayed and matched against the user input.",
                     "type": "string",
-                    "visible": true,
+                    "visible": false,
                     "required": true,
                     "values": ["url"]
                 },
@@ -37,15 +37,10 @@
                     "required": true,
                     "description": "the url of the resources referenced by this property.",
                     "type": "string",
-                    "visible": true,
+                    "visible": false,
                     "required": true,
                     "values": ["/page"]
-                }
-            ]
-        },
-        {
-            "label": "schemas",
-            "attributes": [
+                },
                 {
                     "code": "usage",
                     "description": "transform of linked page to ctx attribute.",
@@ -57,7 +52,7 @@
                     "code": "typeProperty",
                     "description": "The type property in the referenced resources",
                     "type": "string",
-                    "visible": true,
+                    "visible": false,
                     "required": true,
                     "values":["template"]
                 },
