@@ -5,12 +5,16 @@ define([
     "gform/schema/meta",
     "dojo/when",
     "dojo/promise/all",
-    "mustache/mustache"
-], function (declare, Deferred, visit, metaHelper, when, all, mustache) {
+    "handlebars/handlebars"
+], function (declare, Deferred, visit, metaHelper, when, all) {
 
+    Handlebars.registerHelper('equals', function(a, b, options) {
+        if(a== b) {
+            return options.fn(this);
+        }
+    });
 
     return declare([ ], {
-        renderer: mustache,
         pageStore: null,
         templateStore: null,
         templateToSchemaTransformer: null,
@@ -123,7 +127,7 @@ define([
                                 });
                             }
                             when(all(partialPromises)).then(function () {
-                                var html = me.renderer.render(template.code, ctx.page, ctx.templates);
+                                var html = me.renderTemplate(template.code, ctx.page, ctx.templates);
                                 renderPromise.resolve(html);
                             });
                         }).otherwise(function (e) {
@@ -143,6 +147,13 @@ define([
             ;
             return renderPromise;
 
+        },
+        renderTemplate: function(code, ctx, partials) {
+            Object.keys(partials).forEach(function(key) {
+                Handlebars.registerPartial(key, partials[key]);
+            });
+            var template = Handlebars.compile(code);
+            return template(ctx);
         },
         getTemplateAndData: function (pageUrl) {
             var me = this;
