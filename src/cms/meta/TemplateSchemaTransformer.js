@@ -15,10 +15,16 @@ define([
             this.idProperty = templateStore.idProperty;
             this.idType = templateStore.idType;
         },
-        transform: function (schema) {
+        transform: function (schema, skipResolve) {
             var d = new Deferred();
             var resolver = new Resolver();
-            var p = resolver.resolve(schema);
+            resolver.idProperty = this.idProperty;
+            var p;
+            if (!skipResolve) {
+                p = resolver.resolve(schema);
+            } else {
+                p=schema;
+            }
             var me = this;
             when(p).then(function () {
                 if (schema.schema == "template") {

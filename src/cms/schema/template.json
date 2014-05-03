@@ -47,6 +47,14 @@
             "label": "Partials",
             "attributes": [
                 {
+                    "code": "outer",
+                    "type": "ref",
+                    "idProperty":"_id",
+                    "url":"/template",
+                    "required":false,
+                    "searchProperty":"name"
+                },
+                {
                     "code": "partials",
                     "type": "map",
                     "keyAttribute": {},
@@ -58,6 +66,20 @@
                         "idProperty": "_id",
                         "url":"/page",
                         "searchProperty": "url"
+
+                    }
+                },
+                {
+                    "code": "partialTemplates",
+                    "type": "map",
+                    "keyAttribute": {},
+                    "valueAttribute": {
+                        "type": "multi-ref",
+                        "typeProperty":"template",
+                        "schemas":[],
+                        "idProperty": "_id",
+                        "url":"/template",
+                        "searchProperty": "name"
 
                     }
                 }

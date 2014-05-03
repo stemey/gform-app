@@ -43,9 +43,9 @@
                 },
                 {
                     "code": "usage",
-                    "description": "transform of linked page to ctx attribute.",
+                    "description": "options to include references page in rendering: <ul><li>rendered html snippet</li><li>only the url</li><li>partial</li><li>the top-level data (references not resolved)</li></ul>.",
                     "type": "string",
-                    "values": ["html","link","partial"],
+                    "values": ["html","link","partial","data"],
                     "required": true
                 },
                 {

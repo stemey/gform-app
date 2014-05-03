@@ -16,6 +16,10 @@
                     "idProperty":"_id",
                     "url": "/template",
                     "schemaUrl": "/template"
+                },
+                {
+                    "code": "outer",
+                    "type": "boolean"
                 }
             ]
         },

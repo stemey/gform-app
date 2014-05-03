@@ -83,17 +83,10 @@ define([
             this.tabContainer.addChild(this.pageGrid);
         },
         templateSelected: function (e) {
-            //this.ctx.opener.openSingle({url: "/template/"+e.id, schemaUrl: "/template"});
+            this.ctx.opener.openSingle({url: "/template/"+e.id, schemaUrl: "/template"});
         },
         pageSelected: function (e) {
-            var page = this.ctx.storeRegistry.get("/page").get(e.id);
-            var me = this;
-            when(page).then(function (p) {
-                // TODO page should really be multi-typed
-                me.ctx.opener.openSingle({url: "/page/" + e.id, schemaUrl: p.template});
-            }).otherwise(function (e) {
-                    alert("cannot load entity: " + e.stack);
-                });
+
         },
         getSelectedTemplate: function () {
             var selectedArray = this.templateGrid.select.row.getSelected();

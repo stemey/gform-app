@@ -11,17 +11,20 @@ define([
         constructor: function (visitor) {
             this.visitor = visitor;
         },
-        visit: function (meta, model, ctx) {
-            var attributes = meta.attributes;
-            array.forEach(attributes, function (attribute) {
-                if (metaHelper.isSingleComplex(attribute)) {
-                    this.goonComplex(attribute, model[attribute.code], ctx);
-                } else if (metaHelper.isArray(attribute)) {
-                    this.goonArray(attribute, model[attribute.code], ctx);
-                } else {
-                    this.goon(attribute, model[attribute.code], ctx);
-                }
-            }, this);
+        visit: function (schema, model, ctx) {
+            if (model) {
+                var attributes = metaHelper.collectAttributes(schema);
+                array.forEach(attributes, function (attribute) {
+                    if (metaHelper.isSingleComplex(attribute)) {
+                        this.goonComplex(attribute, model[attribute.code], ctx);
+                    } else if (metaHelper.isArray(attribute)) {
+                        this.goonArray(attribute, model[attribute.code], ctx);
+                    } else {
+                        this.goon(attribute, model[attribute.code], ctx);
+                    }
+                }, this);
+
+            }
         },
         visitAttribute: function (meta, model, ctx) {
             var type = metaHelper.getComplexType(meta, model);

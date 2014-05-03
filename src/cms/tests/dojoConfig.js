@@ -9,7 +9,7 @@ var dojoConfig = {
 		'dijit',
 		'dojox',
 		'cms',
-        'mustache'
+        'handlebars'
 	],
 	deps: [ 'cms/tests/ready' ]
 };

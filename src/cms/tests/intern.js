@@ -54,7 +54,8 @@ define({
 			{ name: 'dojox', location: 'src/dojox' },
 			{ name: 'cms', location: 'src/cms' },
             { name: 'gform', location: 'src/gform' },
-            { name: 'mustache', location: 'src/mustache' }
+            { name: 'mustache', location: 'src/mustache' },
+            { name: 'handlebars', location: 'src/handlebars' }
 		]
 	},
 

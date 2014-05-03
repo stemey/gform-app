@@ -11,7 +11,10 @@
     {
         "$ref": "template-ref.json"
     },
-	{
+    {
+        "$ref": "../../gform/schema/attributes/boolean.json"
+    },
+    {
 		"$ref": "../../gform/schema/attributes/object.json"
 	},
 	{

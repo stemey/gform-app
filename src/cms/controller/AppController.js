@@ -1,4 +1,6 @@
 define([
+    'dojo/dom-geometry',
+    'dijit/form/ToggleButton',
     '../meta/TemplateSchemaTransformer',
     'dojo/when',
     'dojo/topic',
@@ -32,7 +34,7 @@ define([
     "dijit/Toolbar",
     "dijit/form/Button",
     "gform/controller/ConfirmDialog"
-], function (TemplateSchemaTransformer, when, topic, declare, lang, aspect, json, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, template, Configuration, templateSchema, Store, createEditorFactory, SingleEditorTabOpener, Context, SchemaGenerator, SchemaRegistry,  templateStub, Save, Delete, Preview, Renderer) {
+], function (domGeometry, ToggleButton, TemplateSchemaTransformer, when, topic, declare, lang, aspect, json, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, template, Configuration, templateSchema, Store, createEditorFactory, SingleEditorTabOpener, Context, SchemaGenerator, SchemaRegistry, templateStub, Save, Delete, Preview, Renderer) {
 
 
     return declare([ _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
@@ -41,6 +43,8 @@ define([
         tabContainer: null,
         gridController: null,
         confirmDialog: null,
+        fullSize: false,
+
         postCreate: function () {
 
 
@@ -73,13 +77,13 @@ define([
 
             var templateStore = this.configuration.templateStore;
 
-            var templateConverter=this.configuration.templateConverter;
+            var templateConverter = this.configuration.templateConverter;
             this.ctx.opener.editorFactory.addConverterForid(templateConverter, "templateConverter");
 
             this.schemaRegistry = new SchemaRegistry();
 
-            var templateToSchemaTransformer =new TemplateSchemaTransformer(templateStore);
-            this.schemaRegistry.transformer =templateToSchemaTransformer
+            var templateToSchemaTransformer = new TemplateSchemaTransformer(templateStore);
+            this.schemaRegistry.transformer = templateToSchemaTransformer
 
             this.schemaRegistry.registerStore("/template", templateStore);
             this.loadTemplateSchema();
@@ -87,6 +91,7 @@ define([
             this.ctx.storeRegistry.register("/template", templateStore);
             var pageStore = this.configuration.pageStore;
             this.ctx.storeRegistry.register("/page", pageStore);
+            aspect.around(templateStore, "put", lang.hitch(this, "onTemplateUpdated"));
             aspect.around(pageStore, "put", lang.hitch(this, "onPageUpdated"));
             this.ctx.schemaRegistry = this.schemaRegistry;
 
@@ -98,45 +103,77 @@ define([
             this.previewer.renderer.pageStore = pageStore;
             this.previewer.renderer.templateToSchemaTransformer = templateToSchemaTransformer;
 
+            window.appController = this;
             aspect.after(this.gridController, "pageSelected", lang.hitch(this, "pageSelected"));
 
             topic.subscribe(this.tabContainer.id + "-selectChild", lang.hitch(this, "tabSelected"));
         },
         tabSelected: function (page) {
             if (page.editor.meta.attributes && page.editor.meta && page.editor.meta.id != "/cms/template") {
-                var id = page.editor.getPlainValue()["id"];
+                var id = page.editor.getPlainValue()[this.configuration.pageStore.idProperty];
                 if (id) {
                     this.previewer.display("/page/" + id);
                 }
             }
         },
         onPageUpdated: function (superCall) {
-            var me =this;
-            return function(entity) {
+            var me = this;
+            return function (entity) {
                 var result = superCall.apply(this, arguments);
-                if (entity) {
-                    me.previewer.display("/page/" + entity[me.configuration.pageStore.idProperty]);
-                }
+                me.refreshPreview();
                 return result;
             }
         },
-        pageSelected: function (e) {
-            this.preview();
+        onTemplateUpdated: function (superCall) {
+            var me = this;
+            return function (entity) {
+                var result = superCall.apply(this, arguments);
+                me.refreshPreview();
+                return result;
+            }
+        },
+        pageSelected: function () {
+            var id = this.gridController.getSelectedPage();
+            this.preview(id);
         },
         createPlainValue: function (schema) {
             // we only know the id not the store, so we do this for both pages and templates
             if (schema.id == "/cms/template") {
                 var template = json.parse(templateStub);
                 var conf = this.configuration.templateStore;
-                template.attributes.push({code: conf.idProperty, "type": conf.idType,"editor": conf.idType, "visible": false});
+                template.attributes.push({code: conf.idProperty, "type": conf.idType, "editor": conf.idType, "visible": false});
                 return template;
             } else {
                 return {template: "/template/" + schema[this.configuration.templateStore.idProperty]}
             }
         },
-        preview: function () {
-            var selectedPageId = this.gridController.getSelectedPage();
-            this.previewer.display("/page/" + selectedPageId);
+        refreshPreview: function () {
+            this.previewer.refresh();
+        },
+        preview: function (id) {
+            var store = this.ctx.storeRegistry.get("/page");
+            var page = store.get(id);
+            var me = this;
+            when(page).then(function (p) {
+                // TODO page should really be multi-typed
+                me.ctx.opener.openSingle({url: "/page/" + id, schemaUrl: p.template});
+            }).otherwise(function (e) {
+                    alert("cannot load entity: " + e.stack);
+                });
+            this.previewer.display("/page/" + id);
+        },
+        previewByUrl: function (url) {
+            var me = this;
+            var store = this.ctx.storeRegistry.get("/page");
+            var page = store.query({url: url});
+            when(page).then(function (pageResults) {
+                var id = store.getIdentity(pageResults[0]);
+                me.preview(id);
+            });
+        },
+        followPreviewLink: function (url) {
+            //this.pageSelected()
+            this.previewByUrl(url);
         },
         createNewTemplate: function () {
             var me = this;
@@ -171,17 +208,45 @@ define([
             // get attributes of root.listpane
             var attributes = meta.attributes[0].groups[0].attributes[2];
             var baseSchema = json.parse(templateSchema)
-            var idAttribute={};
-            idAttribute["type"]=this.configuration.templateStore.idType;
-            idAttribute["code"]=this.configuration.templateStore.idProperty;
+            var idAttribute = {};
+            idAttribute["type"] = this.configuration.templateStore.idType;
+            idAttribute["code"] = this.configuration.templateStore.idProperty;
             baseSchema.groups[0].attributes.push(idAttribute);
 
-            var group =meta.attributes[0];
-            group.requiredAttributes=["url"];
+            var group = meta.attributes[0];
+            group.requiredAttributes = true;
             baseSchema.groups[3].attributes.push(group);
 
 
             this.schemaRegistry.register("/template", baseSchema);
+        },
+        closeTabs: function () {
+            var closeables = [];
+            this.tabContainer.getChildren().forEach(function (tab) {
+                if (!tab.editor.hasChanged()) {
+                    closeables.push(tab);
+                }
+            });
+            closeables.forEach(function (tab) {
+                this.tabContainer.closeChild(tab);
+            }, this);
+        },
+        toggleFullSize: function () {
+            this.fullSize = !this.fullSize;
+
+            if (this.fullSize) {
+                this.originalSizes = {};
+                var size = domGeometry.getContentBox(this.gridController.domNode);
+                this.originalSizes[this.gridController.id] = size.w;
+                size = domGeometry.getContentBox(this.tabContainer.domNode);
+                this.originalSizes[this.tabContainer.id] = size.w;
+                this.borderContainer._layoutChildren(this.gridController.id, 0);
+                this.borderContainer._layoutChildren(this.tabContainer.id, 0);
+            } else {
+                Object.keys(this.originalSizes).forEach(function (key) {
+                    this.borderContainer._layoutChildren(key, this.originalSizes[key]);
+                }, this)
+            }
         }
     });
 

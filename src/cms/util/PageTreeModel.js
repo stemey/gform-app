@@ -22,3 +22,9 @@ parameter:
     productName:{url: /entities/product?productName={productName}}
 
 ]
+
+getCHildren
+return $regex(parent/[^/]*);
+getRoot
+return $regex(!/)
+

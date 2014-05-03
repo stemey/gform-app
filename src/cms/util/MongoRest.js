@@ -16,6 +16,21 @@ define([
         constructor: function () {
             this.transform = new ToMongoQueryTransform();
         },
+        _getRegex: function(parentUrl) {
+             return "^"+parentUrl+"\/[^\/]+$";
+        },
+        getChildren: function(parent, onComplete, onError) {
+            query({url:{$regex:this._getRegex(parentUrl)}}).then(onComplete);
+        },
+        getRoot: function(onItem) {
+            onItem({url:""});
+        },
+        getLabel: function(item) {
+            return item.url;
+        },
+        mayHaveChildren: function(object) {
+            return true;
+        },
         query: function (query, options) {
             var params = {};
 
@@ -26,7 +41,7 @@ define([
                 lang.mixin(params, query);
             }
 
-            if (options.sort) {
+            if (options && options.sort) {
                 var sort = [];
                 options.sort.forEach(function (col) {
                     sort.push(col.attribute + (col.descending ? "-" : ""));
@@ -35,8 +50,10 @@ define([
 
             }
 
-            params.skip = options.start;
-            params.limit = options.count;
+            if (options) {
+                params.skip = options.start;
+                params.limit = options.count;
+            }
             var results = xhr.get(this.target, {query: params, handleAs: "json"});
             var countParams = {count: true};
             results.total = xhr.get(this.target, {query: countParams, handleAs: "json"});

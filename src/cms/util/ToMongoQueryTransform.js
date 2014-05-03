@@ -4,6 +4,7 @@ define([
 ], function (lang, declare) {
 
     return declare([  ], {
+        selectIsStartsWith: true,
         transform: function (gquery) {
             if (gquery.op === "or") {
                 var conditions = this.conditions(gquery.data);
@@ -29,13 +30,25 @@ define([
             if (typeof value === "object") {
                 if ("$in" in value) {
                     return value;
-                }else {
-                    value = value.toString();
+                } else if (value.test) {
+                    return this.convertRegexToQuery(value);
+                } else {
+                    return value.toString();
                 }
             } else if (value.length > 0 && value.substring(value.length - 1) == "*") {
-                return {$regex: value.substring(0, value.length - 1)};
+                return this.convertRegexToQuery(value);
             } else {
                 return value;
+            }
+        },
+        convertRegexToQuery: function (regexValue) {
+            // assuming a regex that works like startsWith : "start*". This is the way it is used by dijit.form._AutoCompleterMixin
+            var str = regexValue.toString();
+            if (str.length == 0) {
+                return "";
+            } else {
+                str = "."+str;
+                return {$regex: this.selectIsStartsWith ? "^" + str : str};
             }
         },
         conditions: function (data) {

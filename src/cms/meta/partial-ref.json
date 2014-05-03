@@ -45,7 +45,7 @@
                     "code": "usage",
                     "description": "transform of linked page to ctx attribute.",
                     "type": "string",
-                    "values": ["html","link","partial"],
+                    "values": ["html","link","partial","data"],
                     "required": true
                 },
                 {
