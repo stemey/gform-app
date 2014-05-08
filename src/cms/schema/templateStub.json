@@ -9,7 +9,7 @@
             "editor":"string",
 			"code": "template",
 			"type": "string",
-			"visible":false
+			"visible":true
 		}
 	]
 }

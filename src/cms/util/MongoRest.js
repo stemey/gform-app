@@ -16,20 +16,40 @@ define([
         constructor: function () {
             this.transform = new ToMongoQueryTransform();
         },
-        _getRegex: function(parentUrl) {
-             return "^"+parentUrl+"\/[^\/]+$";
+        getChildren: function (parent, onComplete, onError) {
+            var parentUrl = parent ? parent.url : "";
+            var results = this.query({url: {$regex: this._getRegex(parentUrl)}});
+            results.then(function (r) {
+                var children = [];
+                var files = {};
+                r.forEach(function (node) {
+                    var path = node.url.substring(parentUrl.length);
+                    var matches = path.match(/^\/?([^\/]+)/);
+                    if (matches && matches.length > 1) {
+                        var name = matches[1]
+                        var existingFile=files[name];
+                        var exactMatch=node.url==parentUrl+matches[0];
+                        var folder = !!existingFile || !exactMatch;
+                        var id = exactMatch?node._id:(existingFile?existingFile.id:null);
+                        files[name] = {id:id,url:matches[0],name: name, folder:folder};
+                    }
+                }, this);
+                Object.keys(files).forEach(
+                    function (key) {
+                        children.push(files[key]);
+                    });
+
+                onComplete(children);
+            });
         },
-        getChildren: function(parent, onComplete, onError) {
-            query({url:{$regex:this._getRegex(parentUrl)}}).then(onComplete);
+        getRoot: function (onItem) {
+            onItem({name: "", url:"",folder:true});
         },
-        getRoot: function(onItem) {
-            onItem({url:""});
+        getLabel: function (item) {
+            return item.name;
         },
-        getLabel: function(item) {
-            return item.url;
-        },
-        mayHaveChildren: function(object) {
-            return true;
+        mayHaveChildren: function (object) {
+            return object.folder;
         },
         query: function (query, options) {
             var params = {};

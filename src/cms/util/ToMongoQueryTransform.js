@@ -30,6 +30,8 @@ define([
             if (typeof value === "object") {
                 if ("$in" in value) {
                     return value;
+                } else if ("$regex" in value) {
+                    return value;
                 } else if (value.test) {
                     return this.convertRegexToQuery(value);
                 } else {

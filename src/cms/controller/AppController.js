@@ -112,7 +112,8 @@ define([
             if (page.editor.meta.attributes && page.editor.meta && page.editor.meta.id != "/cms/template") {
                 var id = page.editor.getPlainValue()[this.configuration.pageStore.idProperty];
                 if (id) {
-                    this.previewer.display("/page/" + id);
+                    // already loaded!!
+                    topic.publish("page/focus", {id: id, source: this})
                 }
             }
         },
@@ -137,7 +138,6 @@ define([
             this.preview(id);
         },
         createPlainValue: function (schema) {
-            // we only know the id not the store, so we do this for both pages and templates
             if (schema.id == "/cms/template") {
                 var template = json.parse(templateStub);
                 var conf = this.configuration.templateStore;

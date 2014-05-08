@@ -1,9 +1,11 @@
 define([
+    'dojo/topic',
+    '../util/UrlTreeModel',
+    'dijit/Tree',
     'gform/layout/_InvisibleMixin',
     'dojo/when',
     "dojo/_base/declare",
     "dojo/_base/lang",
-    "dojo/aspect",
     "gridx/Grid",
     'gridx/core/model/cache/Async',
     "gridx/modules/VirtualVScroller",
@@ -22,7 +24,7 @@ define([
     "dojo/text!./grid.html",
     "dijit/layout/TabContainer",
     "dijit/layout/ContentPane"
-], function (InvisibleMixin, when, declare, lang, aspect, Grid, Cache, VirtualVScroller, ColumnResizer, SingleSort, Filter, Focus, RowHeader, RowSelect, json, templateColumns, pageColumns, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, template) {
+], function (topic, UrlTreeModel, Tree, InvisibleMixin, when, declare, lang, Grid, Cache, VirtualVScroller, ColumnResizer, SingleSort, Filter, Focus, RowHeader, RowSelect, json, templateColumns, pageColumns, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, template) {
 
 
     return declare([ _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, InvisibleMixin], {
@@ -65,7 +67,10 @@ define([
                 },
                 RowHeader
             ];
-            this.pageGrid = new Grid(props);
+            //this.pageGrid = new Grid(props);
+            var tree = new Tree({model: new UrlTreeModel({store: store}), onClick: lang.hitch(this, "nodeClicked")});
+            this.tabContainer.addChild(tree);
+
         },
         startup: function () {
             this.inherited(arguments);
@@ -79,13 +84,36 @@ define([
             this.templateGrid.select.row.connect(this.templateGrid.select.row, "onSelected", lang.hitch(this, "templateSelected"));
             this.tabContainer.addChild(this.templateGrid);
 
-            this.pageGrid.select.row.connect(this.pageGrid.select.row, "onSelected", lang.hitch(this, "pageSelected"));
-            this.tabContainer.addChild(this.pageGrid);
+            //this.pageGrid.select.row.connect(this.pageGrid.select.row, "onSelected", lang.hitch(this, "pageSelected"));
+            //this.tabContainer.addChild(this.pageGrid);
         },
         templateSelected: function (e) {
-            this.ctx.opener.openSingle({url: "/template/"+e.id, schemaUrl: "/template"});
+            this.ctx.opener.openSingle({url: "/template/" + e.id, schemaUrl: "/template"});
+        },
+        nodeClicked: function (node) {
+            if (node.id) {
+                topic.publish("page/focus", {id: node.id, source:this})
+
+                var page = this.ctx.storeRegistry.get("/page").get(node.id);
+                var me = this;
+                when(page).then(function (p) {
+                    // TODO page should really be multi-typed
+                    me.ctx.opener.openSingle({url: "/page/" + node.id, schemaUrl: p.template});
+                }).otherwise(function (e) {
+                        alert("cannot load entity: " + e.stack);
+                    });
+            }
+
         },
         pageSelected: function (e) {
+            var page = this.ctx.storeRegistry.get("/page").get(e.id);
+            var me = this;
+            when(page).then(function (p) {
+                // TODO page should really be multi-typed
+                me.ctx.opener.openSingle({url: "/page/" + e.id, schemaUrl: p.template});
+            }).otherwise(function (e) {
+                    alert("cannot load entity: " + e.stack);
+                });
 
         },
         getSelectedTemplate: function () {
