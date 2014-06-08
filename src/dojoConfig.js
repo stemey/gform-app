@@ -9,7 +9,7 @@ var dojoConfig = {
 		'dijit',
 		'dojox',
 		'cms',
-        {name: 'ace', location: 'ace/lib/ace'}
+        {name: 'ace', location: 'ace-builds/src-noconflict'}
 	],
 	deps: [ 'cms' ],
 	callback: function (cms) {

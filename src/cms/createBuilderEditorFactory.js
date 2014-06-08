@@ -14,6 +14,8 @@ define([
         attributeFactoryFinder.addAttributeFactory(new TemplateRefAttributeFactory({editorFactory: ef}));
         ef.addValidator("requiredAttributes", RequiredAttributes);
         ef.addConverterForid(urlConverter,"urlConverter");
+        ef.getAttributeFactory({type:"binary"}).fileServerUrl="http://localhost:4444/upload";
+        ef.getAttributeFactory({type:"binary"}).baseUrl="http://localhost:4444/";
         return ef;
     }
 

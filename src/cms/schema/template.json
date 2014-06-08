@@ -31,16 +31,16 @@
         {
             "code": "template",
             "label": "Template",
-            "attributes": [
-                {
-                    "code": "code",
-                    "editor": "acetext",
-                    "height": "300px",
-                    "type": "string",
-                    "mode": "ace/mode/handlebars",
-                    "autoComplete": true
-                }
-            ]
+            "editor": "single",
+            "attribute": {
+                "code": "code",
+                "editor": "acetext",
+                "height": "300px",
+                "type": "string",
+                "mode": "ace/mode/handlebars",
+                "autoComplete": true
+            }
+
         },
         {
             "code": "partials",
@@ -49,10 +49,10 @@
                 {
                     "code": "outer",
                     "type": "ref",
-                    "idProperty":"_id",
-                    "url":"/template",
-                    "required":false,
-                    "searchProperty":"name"
+                    "idProperty": "_id",
+                    "url": "/template",
+                    "required": false,
+                    "searchProperty": "name"
                 },
                 {
                     "code": "partials",
@@ -60,11 +60,11 @@
                     "keyAttribute": {},
                     "valueAttribute": {
                         "type": "multi-ref",
-                        "converter":"urlConverter",
-                        "typeProperty":"template",
-                        "schemas":[],
+                        "converter": "urlConverter",
+                        "typeProperty": "template",
+                        "schemas": [],
                         "idProperty": "_id",
-                        "url":"/page",
+                        "url": "/page",
                         "searchProperty": "url"
 
                     }
@@ -75,10 +75,10 @@
                     "keyAttribute": {},
                     "valueAttribute": {
                         "type": "multi-ref",
-                        "typeProperty":"template",
-                        "schemas":[],
+                        "typeProperty": "template",
+                        "schemas": [],
                         "idProperty": "_id",
-                        "url":"/template",
+                        "url": "/template",
                         "searchProperty": "name"
 
                     }

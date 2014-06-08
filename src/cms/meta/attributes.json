@@ -6,6 +6,9 @@
         "$ref": "../../gform/schema/attributes/string.json"
     },
     {
+        "$ref": "../../gform/schema/attributes/binary.json"
+    },
+    {
         "$ref": "multi-page-ref.json"
     },
     {

@@ -10,6 +10,7 @@ src/util
 src/gridx
 src/gform
 src/handlebars
+src/ace-builds
 .settings
 *~
 .idea
