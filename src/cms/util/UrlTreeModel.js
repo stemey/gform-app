@@ -1,10 +1,11 @@
 define([
+    'dijit/tree/ObjectStoreModel',
     'dojo/when',
     "dojo/_base/lang",
     "dojo/_base/declare"
-], function (when, lang, declare) {
+], function (ObjectStoreModel, when, lang, declare) {
 
-    return declare(null, {
+    return declare([ObjectStoreModel], {
         store: null,
         constructor: function (kwArgs) {
             lang.mixin(this, kwArgs);

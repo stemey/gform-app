@@ -3,6 +3,9 @@
         "$ref": "../../gform/schema/attributes/textarea.json"
     },
     {
+        "$ref": "../../gform/schema/attributes/richtext.json"
+    },
+    {
         "$ref": "../../gform/schema/attributes/string.json"
     },
     {

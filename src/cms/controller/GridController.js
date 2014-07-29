@@ -1,4 +1,5 @@
 define([
+    'dojo/store/Observable',
     'dojo/topic',
     '../util/UrlTreeModel',
     'dijit/Tree',
@@ -24,7 +25,7 @@ define([
     "dojo/text!./grid.html",
     "dijit/layout/TabContainer",
     "dijit/layout/ContentPane"
-], function (topic, UrlTreeModel, Tree, InvisibleMixin, when, declare, lang, Grid, Cache, VirtualVScroller, ColumnResizer, SingleSort, Filter, Focus, RowHeader, RowSelect, json, templateColumns, pageColumns, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, template) {
+], function (Observable, topic, UrlTreeModel, Tree, InvisibleMixin, when, declare, lang, Grid, Cache, VirtualVScroller, ColumnResizer, SingleSort, Filter, Focus, RowHeader, RowSelect, json, templateColumns, pageColumns, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, template) {
 
 
     return declare([ _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, InvisibleMixin], {

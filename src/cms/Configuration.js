@@ -1,9 +1,10 @@
 define([
+    'dojo/store/Observable',
     'dojo/promise/all',
     'dojo/_base/Deferred',
     "dojo/_base/declare",
     "dojo/text!./config.json"
-], function (all, Deferred, declare, config) {
+], function (Observable, all, Deferred, declare, config) {
 
 
     return declare([ ], {
@@ -20,7 +21,7 @@ define([
             var me =this;
             var deferred = new Deferred();
             require([config.type], function(Store){
-                store = new Store(config.options);
+                store = Observable(new Store(config.options));
                 me[prop] = store;
                 deferred.resolve(store);
             });

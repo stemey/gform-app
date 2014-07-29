@@ -1,0 +1,59 @@
+{
+    "group": {
+        "description": null,
+        "labelAttribute": null,
+        "attributes": [
+            {
+                "code": "attributes",
+                "typeProperty": "editor",
+                "type": "array",
+                "groups": [
+                    {
+                        "code": "ss",
+                        "attributes": [
+                            {
+                                "code": "ddd",
+                                "type": "ref"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "code": "ddd",
+                "label": null,
+                "description": null,
+                "required": true,
+                "converter": null,
+                "type": "array",
+                "group": {
+                    "label": null,
+                    "description": null,
+                    "labelAttribute": null,
+                    "attributes": [
+                        {
+                            "code": "attribute-ef",
+                            "label": null,
+                            "description": null,
+                            "required": false,
+                            "converter": null,
+                            "emptyValueLabel": null,
+                            "type": "string",
+                            "values": [],
+                            "placeHolder": null,
+                            "invalidMessage": null,
+                            "missingMessage": null,
+                            "editor": "select"
+                        }
+                    ],
+                    "editor": "listpane"
+                },
+                "reorderable": false,
+                "minItems": null,
+                "maxItems": null,
+                "editor": "array"
+            }
+        ],
+        "editor": "listpane"
+    }
+}

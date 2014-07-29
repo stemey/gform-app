@@ -32,6 +32,8 @@ define([
                     html+="</ul>";
                 }
                 var ifrm = (me.iframe.contentWindow) ? me.iframe.contentWindow : (me.iframe.contentDocument.document) ? me.iframe.contentDocument.document : me.iframe.contentDocument;
+                // remove preexisting amd define
+                delete ifrm.define;
                 ifrm.document.open();
                 ifrm.document.write(html);
                 ifrm.document.close();
