@@ -35,6 +35,11 @@ define([
         templateStore: null,
         resolver: null,
         templateToSchemaTransformer: null,
+        findByUrl: function(url) {
+            //var res =url.match(/page\/([^\/]+)/);
+            //var store=pageStoreRegistry.get(template).get(res[1]);
+            return this.pageStore.findByUrl(url);
+        },
         handlePageRef: function (attribute, value, ctx, idx, templateKey) {
             if (!value) {
                 return;
@@ -45,7 +50,7 @@ define([
             var me = this;
             if (attribute.usage === "link") {
                 console.log("link " + idx);
-                var p = this.pageStore.findByUrl(value.$ref);
+                var p = this.findByUrl(value.$ref);
                 ctx.promises.push(p);
                 when(p).then(function (page) {
                     ctx.page[idx] = page.url;
@@ -249,8 +254,8 @@ define([
                 ]});
             }
 
-            when(me.pageStore.findByUrl(pageUrl)).then(function (page) {
-                when(me.templateStore.findByUrl(page.template)).then(function (template) {
+            when(me.findByUrl(pageUrl)).then(function (page) {
+                when(me.templateStore.findByUrl("/template/"+page.template)).then(function (template) {
                     console.log("renderInternally p=" + page.url + "  t=" + template.name);
                     if (!checkPartial || template.partial) {
                         var includesPromise = me.renderIncludes(template, page);
@@ -345,8 +350,8 @@ define([
                 this.tadCache[pageUrl] = renderPromise;
             }
             console.log(" get TemplateAndData " + pageUrl);
-            when(me.pageStore.findByUrl(pageUrl)).then(function (page) {
-                when(me.templateStore.findByUrl(page.template)).then(function (template) {
+            when(me.findByUrl(pageUrl)).then(function (page) {
+                when(me.templateStore.findByUrl("/template/"+page.template)).then(function (template) {
                     var includesPromise = me.renderIncludes(template, page);
                     when(includesPromise).then(function (ctx) {
 
@@ -373,7 +378,7 @@ define([
             var me = this;
             var renderPromise = new Deferred();
             console.log("getData " + pageUrl);
-            when(me.pageStore.findByUrl(pageUrl)).then(function (page) {
+            when(me.findByUrl(pageUrl)).then(function (page) {
                 renderPromise.resolve({page: page});
             }).otherwise(function (e) {
                     var errors = [

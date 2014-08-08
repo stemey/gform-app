@@ -11,9 +11,9 @@ define([
     return declare("cms.TemplateSchemaTransfomer", [], {
         idType: null,
         idProperty: null,
-        constructor: function (templateStore) {
-            this.idProperty = templateStore.idProperty;
-            this.idType = templateStore.idType;
+        constructor: function (store) {
+            this.idProperty = store.idProperty;
+            this.idType = store.idType;
         },
         transform: function (schema, skipResolve) {
             var d = new Deferred();
@@ -42,12 +42,12 @@ define([
         },
         _transformTemplate: function (schema) {
             var attributes = this._findAttributes(schema);
-            var idAttribute = {};
-            idAttribute.code = this.idProperty;
-            idAttribute.type = this.idType;
-            idAttribute.editor = this.idType;
-            idAttribute.disabled = true;
-            attributes.push(idAttribute);
+            //var idAttribute = {};
+            //idAttribute.code = this.idProperty;
+            //idAttribute.type = this.idType;
+            //idAttribute.editor = this.idType;
+            //idAttribute.disabled = true;
+            //attributes.push(idAttribute);
             attributes.push({code: "template", type: "string", "editor": "string", visible: false});
             return schema;
 

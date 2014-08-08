@@ -1,18 +1,18 @@
 {
     "pageStore": {
-        "type": "cms/util/MongoRest",
+        "type": "cms/util/JsonRest",
         "options": {
-            "idProperty": "_id",
+            "idProperty": "identifier",
             "idType": "string",
-            "target": "http://localhost:3000/test/page2/"
+            "target": "http://localhost:8080/entity/base/"
         }
     },
     "templateStore": {
-        "type": "cms/util/MongoRest",
+        "type": "cms/util/JcrTemplateRest",
         "options": {
-            "idProperty": "_id",
+            "idProperty": "code",
             "idType": "string",
-            "target": "http://localhost:3000/test/template2/"
+            "target": "http://localhost:8080/schema/"
         }
     },
     "templateConverter": "cms/util/stringTemplateConverter"

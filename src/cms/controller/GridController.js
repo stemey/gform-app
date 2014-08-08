@@ -1,7 +1,10 @@
 define([
+    'dojo/aspect',
+    'cms/util/JsonRest',
+    'gform/util/restHelper',
     'dojo/store/Observable',
     'dojo/topic',
-    '../util/UrlTreeModel',
+    'cms/util/TreeStore',
     'dijit/Tree',
     'gform/layout/_InvisibleMixin',
     'dojo/when',
@@ -25,7 +28,7 @@ define([
     "dojo/text!./grid.html",
     "dijit/layout/TabContainer",
     "dijit/layout/ContentPane"
-], function (Observable, topic, UrlTreeModel, Tree, InvisibleMixin, when, declare, lang, Grid, Cache, VirtualVScroller, ColumnResizer, SingleSort, Filter, Focus, RowHeader, RowSelect, json, templateColumns, pageColumns, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, template) {
+], function (aspect, JsonRest, restHelper, Observable, topic, UrlTreeModel, Tree, InvisibleMixin, when, declare, lang, Grid, Cache, VirtualVScroller, ColumnResizer, SingleSort, Filter, Focus, RowHeader, RowSelect, json, templateColumns, pageColumns, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, template) {
 
 
     return declare([ _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, InvisibleMixin], {
@@ -57,7 +60,7 @@ define([
             var props = { id: "pageGrid", title: "pages"};
             props.cacheClass = Cache;
             props.structure = json.parse(pageColumns);
-            var store = this.ctx.getStore("/page");
+            var store = new Observable(JsonRest({target:"http://localhost:8080/tree/",idProperty:"id"}));//this.ctx.getStore("/page");
             props.store = store;
             props.modules = [
                 VirtualVScroller,
@@ -68,8 +71,16 @@ define([
                 },
                 RowHeader
             ];
-            //this.pageGrid = new Grid(props);
-            var tree = new Tree({model: new UrlTreeModel({store: store}), onClick: lang.hitch(this, "nodeClicked")});
+           // var result=this.configuration.pageStore.query();
+            // result.observe(function(){
+            //  store.notify(arguments);
+            //});
+
+            var model=new UrlTreeModel({store: store});
+            topic.subscribe("/page/added", function(evt) {
+                model.notify(evt.url);
+            });
+            var tree = new Tree({title:"pages",label:"  ",labelAttr:"name",model: model, onClick: lang.hitch(this, "nodeClicked")});
             this.tabContainer.addChild(tree);
 
         },
@@ -78,8 +89,9 @@ define([
 
             //this.borderContainer.layout();
         },
-        configure: function (ctx) {
+        configure: function (ctx, configuration) {
             this.ctx = ctx;
+            this.configuration=configuration;
             this.createTemplateGrid();
             this.createPageGrid();
             this.templateGrid.select.row.connect(this.templateGrid.select.row, "onSelected", lang.hitch(this, "templateSelected"));
@@ -89,17 +101,18 @@ define([
             //this.tabContainer.addChild(this.pageGrid);
         },
         templateSelected: function (e) {
-            this.ctx.opener.openSingle({url: "/template/" + e.id, schemaUrl: "/template"});
+            var url=restHelper.compose(this.configuration.getTemplateUrl(), e.id);
+            this.ctx.opener.openSingle({url: "/template/"+ e.id, schemaUrl: "/template"});
         },
         nodeClicked: function (node) {
             if (node.id) {
-                topic.publish("page/focus", {id: node.id, source:this})
+                topic.publish("/page/focus", {id: node.id, source:this, template:node.template});
 
                 var page = this.ctx.storeRegistry.get("/page").get(node.id);
                 var me = this;
                 when(page).then(function (p) {
                     // TODO page should really be multi-typed
-                    me.ctx.opener.openSingle({url: "/page/" + node.id, schemaUrl: p.template});
+                    me.ctx.opener.openSingle({url: "/page/" + node.id, schemaUrl: "/template/"+p.template});
                 }).otherwise(function (e) {
                         alert("cannot load entity: " + e.stack);
                     });

@@ -14,7 +14,7 @@ define([
         iframe: null,
         renderer: null,
         postCreate: function() {
-          topic.subscribe("page/focus", lang.hitch(this, "onPageSelected"));
+          topic.subscribe("/page/focus", lang.hitch(this, "onPageSelected"));
         },
         onPageSelected: function(evt) {
             this.display("/page/"+evt.id);

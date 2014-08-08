@@ -19,7 +19,8 @@ define([
 
         name2Store: {},
 
-        transformer: null,
+        templateTransformer: null,
+        pageTransformer: null,
 
         get: function (url) {
             // summary:
@@ -31,6 +32,7 @@ define([
             if (cached) {
                 return cached;
             } else {
+                var transformer = url=="/template"?this.templateTransformer:this.pageTransformer;
                 var p;
                 var ref = restHelper.decompose(url);
                 var store = this.name2Store[ref.url];
@@ -42,8 +44,8 @@ define([
                 var transformedSchema = new Deferred();
                 var me = this;
                 when(p).then(function (schema) {
-                    if (me.transformer) {
-                        var t = me.transformer.transform(schema);
+                    if (transformer) {
+                        var t = transformer.transform(schema);
                         when(t).then(function (transformed) {
                             transformedSchema.resolve(transformed);
                         }).otherwise(function (e) {

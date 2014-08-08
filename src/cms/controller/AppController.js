@@ -1,4 +1,5 @@
 define([
+    '../util/AtemStoreRegistry',
     'dojo/dom-geometry',
     'dijit/form/ToggleButton',
     '../meta/TemplateSchemaTransformer',
@@ -34,7 +35,7 @@ define([
     "dijit/Toolbar",
     "dijit/form/Button",
     "gform/controller/ConfirmDialog"
-], function (domGeometry, ToggleButton, TemplateSchemaTransformer, when, topic, declare, lang, aspect, json, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, template, Configuration, templateSchema, Store, createEditorFactory, SingleEditorTabOpener, Context, SchemaGenerator, SchemaRegistry, templateStub, Save, Delete, Preview, Renderer) {
+], function (AtemStoreRegistry, domGeometry, ToggleButton, TemplateSchemaTransformer, when, topic, declare, lang, aspect, json, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, template, Configuration, templateSchema, Store, createEditorFactory, SingleEditorTabOpener, Context, SchemaGenerator, SchemaRegistry, templateStub, Save, Delete, Preview, Renderer) {
 
 
     return declare([ _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
@@ -74,7 +75,6 @@ define([
             return opener;
         },
         _onConfigured: function () {
-
             var templateStore = this.configuration.templateStore;
 
             var templateConverter = this.configuration.templateConverter;
@@ -82,12 +82,14 @@ define([
 
             this.schemaRegistry = new SchemaRegistry();
 
-            var templateToSchemaTransformer = new TemplateSchemaTransformer(templateStore);
-            this.schemaRegistry.transformer = templateToSchemaTransformer
+            var templateToSchemaTransformer = new TemplateSchemaTransformer(this.configuration.templateStore);
+            this.schemaRegistry.pageTransformer = templateToSchemaTransformer
+            this.schemaRegistry.templateTransformer = new TemplateSchemaTransformer(templateStore);
 
             this.schemaRegistry.registerStore("/template", templateStore);
             this.loadTemplateSchema();
 
+            this.ctx.storeRegistry = new AtemStoreRegistry();
             this.ctx.storeRegistry.register("/template", templateStore);
             var pageStore = this.configuration.pageStore;
             this.ctx.storeRegistry.register("/page", pageStore);
@@ -95,7 +97,7 @@ define([
             aspect.around(pageStore, "put", lang.hitch(this, "onPageUpdated"));
             this.ctx.schemaRegistry = this.schemaRegistry;
 
-            this.gridController.configure(this.ctx);
+            this.gridController.configure(this.ctx, this.configuration);
 
 
             this.previewer.renderer = new Renderer();
@@ -111,9 +113,10 @@ define([
         tabSelected: function (page) {
             if (page.editor.meta.attributes && page.editor.meta && page.editor.meta.id != "/cms/template") {
                 var id = page.editor.getPlainValue()[this.configuration.pageStore.idProperty];
+                var template = page.editor.getPlainValue()["template"];
                 if (id) {
                     // already loaded!!
-                    topic.publish("page/focus", {id: id, source: this})
+                    topic.publish("page/focus", {id: id, source: this,template:template})
                 }
             }
         },
@@ -144,7 +147,7 @@ define([
                 template.attributes.push({code: conf.idProperty, "type": conf.idType, "editor": conf.idType, "visible": false});
                 return template;
             } else {
-                return {template: "/template/" + schema[this.configuration.templateStore.idProperty]}
+                return {template:  schema[this.configuration.templateStore.idProperty]}
             }
         },
         refreshPreview: function () {
@@ -187,11 +190,11 @@ define([
             } else {
                 var me = this;
                 var callback = function (id) {
-                    var page = me.ctx.storeRegistry.get("/page").get(id);
-                    page.template = "/template/" + selectedTemplate;
+                    //var page = me.ctx.storeRegistry.get("/page").get(id);
+                    //page.template =  selectedTemplate;
 
                 }
-                this.ctx.opener.createSingle({url: "/page", schemaUrl: "/template/" + selectedTemplate, callback: callback});
+                this.ctx.opener.createSingle({url: "http://localhost:8080/entity/base/", schemaUrl: "/template/" + selectedTemplate, callback: callback});
             }
         },
         showTemplate: function () {

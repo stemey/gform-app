@@ -21,7 +21,8 @@ define([
             var me =this;
             var deferred = new Deferred();
             require([config.type], function(Store){
-                store = Observable(new Store(config.options));
+                // needs to be Observable and provide FindByUrl
+                store = new Observable(Store(config.options));
                 me[prop] = store;
                 deferred.resolve(store);
             });
@@ -35,6 +36,9 @@ define([
                 deferred.resolve(obj);
             });
             return deferred;
+        },
+        getTemplateUrl: function() {
+            return this.templateStore.target;
         }
     })
 });
