@@ -44,22 +44,22 @@ define([
             if (!value) {
                 return;
             }
-            if (!value.$ref) {
+            if (!value) {
                 return;
             }
             var me = this;
             if (attribute.usage === "link") {
                 console.log("link " + idx);
-                var p = this.findByUrl(value.$ref);
+                var p = this.findByUrl(value);
                 ctx.promises.push(p);
                 when(p).then(function (page) {
                     ctx.page[idx] = page.url;
                 }).otherwise(function (e) {
-                        ctx.errors.push({message: "error during getting link of " + value.$ref, error: e});
+                        ctx.errors.push({message: "error during getting link of " + value, error: e});
                     });
             } else if (attribute.usage === "partial") {
                 console.log("getTemplateAndData " + idx);
-                var p = this.getTemplateAndData(value.$ref, ctx);
+                var p = this.getTemplateAndData(value, ctx);
                 ctx.promises.push(p);
                 when(p).then(function (result) {
                     if (result.errors) {
@@ -67,17 +67,17 @@ define([
                     } else {
 
                         ctx.page[idx] = result.page;
-                        ctx.templates[templateKey] = result.template.code;
+                        ctx.templates[templateKey] = result.template.sourceCode;
                         Object.keys(result.templates).forEach(function (key) {
                             ctx.templates[key] = result.templates[key];
                         })
                     }
                 }).otherwise(function (e) {
-                        ctx.errors.push({message: "error during getting template and data of " + value.$ref, error: e});
+                        ctx.errors.push({message: "error during getting template and data of " + value, error: e});
                     });
             } else if (attribute.usage === "data") {
                 console.log("getData " + idx);
-                var p = this.getData(value.$ref);
+                var p = this.getData(value);
                 ctx.promises.push(p);
                 when(p).then(function (data) {
                     if (data.errors) {
@@ -87,11 +87,11 @@ define([
                     }
 
                 }).otherwise(function (e) {
-                        ctx.errors.push({message: "error while getting data for " + value.$ref, error: e});
+                        ctx.errors.push({message: "error while getting data for " + value, error: e});
                     });
             } else {
-                console.log("render pag-ref " + idx);
-                var p = this.renderInternally(value.$ref);
+                console.log("render page ref " + idx);
+                var p = this.renderInternally(value);
                 ctx.promises.push(p);
                 when(p).then(function (result) {
                     ctx.page[idx] = result.html;
@@ -99,7 +99,7 @@ define([
                         ctx.errors=ctx.errors.concat(result.errors)
                     }
                 }).otherwise(function (e) {
-                        ctx.errors.push({message: "error during rendering of " + value.$ref, error: e});
+                        ctx.errors.push({message: "error during rendering of " + value, error: e});
                     });
             }
         },
@@ -110,7 +110,7 @@ define([
             if (attribute.outer) {
                 ctx.outer = attribute;
             } else {
-                ctx.templates[attribute.code] = attribute.template.code;
+                ctx.templates[attribute.code] = attribute.template.sourceCode;
             }
             ctx.page[attribute.code] = value;
             if (value && attribute.template.partials) {
@@ -132,7 +132,7 @@ define([
             }
             if (attribute.template.partialTemplates) {
                 Object.keys(attribute.template.partialTemplates).forEach(function (key) {
-                    ctx.templates[key] = attribute.template.partialTemplates[key].code;
+                    ctx.templates[key] = attribute.template.partialTemplates[key].sourceCode;
                 });
             }
             var newCtx = {page: ctx.page[attribute.code], promises: ctx.promises, templates: ctx.templates, errors: ctx.errors};
@@ -300,12 +300,12 @@ define([
 
                             if (template.partialTemplates) {
                                 Object.keys(template.partialTemplates).forEach(function (key) {
-                                    ctx.templates[key] = template.partialTemplates[key].code;
+                                    ctx.templates[key] = template.partialTemplates[key].sourceCode;
                                 });
                             }
                             when(all(partialPromises)).then(function () {
                                 if (outerTemplate) {
-                                    ctx.templates["inner"] = template.code;
+                                    ctx.templates["inner"] = template.sourceCode;
                                     if (ctx.outer) {
                                         var inner = newPage;
                                         newPage = ctx.page[ctx.outer.code];
@@ -314,7 +314,7 @@ define([
                                         newPage.inner = newPage;
                                     }
                                 }
-                                var sourceCode = outerTemplate ? outerTemplate.code : template.code;
+                                var sourceCode = outerTemplate ? outerTemplate.sourceCode : template.sourceCode;
                                 var html = me.renderTemplate(sourceCode, newPage, ctx.templates);
                                 renderPromise.resolve({html: html, errors:ctx.errors});
                             }).otherwise(function (e) {

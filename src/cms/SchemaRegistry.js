@@ -32,7 +32,11 @@ define([
             if (cached) {
                 return cached;
             } else {
-                var transformer = url=="/template"?this.templateTransformer:this.pageTransformer;
+                if (!url.match(/^\/template\//)) {
+                    url="/template/"+url;
+                }
+
+                var transformer = this.pageTransformer;
                 var p;
                 var ref = restHelper.decompose(url);
                 var store = this.name2Store[ref.url];

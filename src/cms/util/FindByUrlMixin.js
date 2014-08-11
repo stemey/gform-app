@@ -7,8 +7,12 @@ define([
     return declare([], {
 
         findByUrl: function (url) {
-            var id = restHelper.decompose(url).id;
-            return this.get(id);
+            if (url.indexOf("/")==-1) {
+                return this.get(url);
+            }else{
+                var id = restHelper.decompose(url).id;
+                return this.get(id);
+            }
         }
 
     });

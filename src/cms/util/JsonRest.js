@@ -12,7 +12,14 @@ define([
     return declare([JsonRest, FindByUrlMixin], {
         // summary:
         //		A registry for stores. Makes it easy to reuse and mock stores.
-
+       query: function(query,options) {
+           for (var key in query) {
+               if (query[key].$in) {
+                   query[key]=query[key].$in;
+               }
+           }
+           return this.inherited(arguments);
+       },
         add: function(item) {
             var result= this.inherited(arguments);
             when(result).then(function(){topic.publish("/page/added",{url:item.url})});

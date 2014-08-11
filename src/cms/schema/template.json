@@ -34,7 +34,7 @@
             "label": "Template",
             "editor": "single",
             "attribute": {
-                "code": "code",
+                "code": "sourceCode",
                 "editor": "acetext",
                 "height": "300px",
                 "type": "string",
@@ -61,7 +61,6 @@
                     "keyAttribute": {},
                     "valueAttribute": {
                         "type": "multi-ref",
-                        "converter": "urlConverter",
                         "typeProperty": "template",
                         "schemas": [],
                         "idProperty": "_id",
@@ -90,7 +89,6 @@
             "code": "form",
             "label": "Form",
             "attributes": [
-
             ]
         }
     ]

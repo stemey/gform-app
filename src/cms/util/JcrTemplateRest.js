@@ -14,6 +14,7 @@ define([
         transform: null,
         query: function (query, options) {
             var params = {};
+            lang.mixin(params,query);
 
 
             if (options && options.sort) {
@@ -30,6 +31,7 @@ define([
                 params.limit = options.count;
                 totalCount=options.start;
             }
+
             var results = xhr.get(this.target, {query: params, handleAs: "json"});
             var totalPromise = new Deferred();
             results.then(function(res) {

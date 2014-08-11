@@ -142,9 +142,17 @@ define([
         },
         createPlainValue: function (schema) {
             if (schema.id == "/cms/template") {
+                var attributes=[];
+                attributes.push({code:"url","editor":"string",type:"string", required:true});
+                attributes.push({code:"identifier","editor":"string",type:"string", required:false});
+                attributes.push({code:"template","editor":"string",type:"string", required:false});
+
+                var group={editor:"listpane",attributes:attributes};
+
                 var template = json.parse(templateStub);
                 var conf = this.configuration.templateStore;
                 template.attributes.push({code: conf.idProperty, "type": conf.idType, "editor": conf.idType, "visible": false});
+                template.group=group;
                 return template;
             } else {
                 return {template:  schema[this.configuration.templateStore.idProperty]}

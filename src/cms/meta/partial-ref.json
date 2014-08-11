@@ -30,7 +30,7 @@
                     "type": "string",
                     "visible": false,
                     "required": true,
-                    "values": ["url"]
+                    "values": ["path"]
                 },
                 {
                     "code": "url",

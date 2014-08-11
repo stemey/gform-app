@@ -20,6 +20,13 @@
                 {
                     "code": "outer",
                     "type": "boolean"
+                },
+                {
+                    "code": "type",
+                    "values": ["ref"],
+                    "required":true,
+                    "visible":false,
+                    "type":"string"
                 }
             ]
         },
