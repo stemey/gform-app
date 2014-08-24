@@ -1,7 +1,7 @@
 define([
     'dojo/when',
     'dojo/Deferred',
-    'gform/util/Resolver',
+    './Resolver',
     'dojo/_base/declare'
 ], function (when, Deferred, Resolver, declare) {
 // module:
@@ -11,17 +11,20 @@ define([
     return declare("cms.TemplateSchemaTransfomer", [], {
         idType: null,
         idProperty: null,
+        baseUrl:null,
         constructor: function (store) {
             this.idProperty = store.idProperty;
             this.idType = store.idType;
+            this.baseUrl=store.target;
         },
         transform: function (schema, skipResolve) {
             var d = new Deferred();
             var resolver = new Resolver();
             resolver.idProperty = this.idProperty;
+            resolver.baseUrl=this.baseUrl;
             var p;
             if (!skipResolve) {
-                p = resolver.resolve(schema);
+                p = resolver.resolve(schema, this.baseUrl);
             } else {
                 p=schema;
             }

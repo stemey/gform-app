@@ -1,10 +1,11 @@
 define([
+    'gform/primitive/refConverter',
     'gform/primitive/nullablePrimitiveConverter',
     './meta/TemplateRefAttributeFactory',
     'cms/RequiredAttributes',
     './meta/CmsGroupFactory',
     'gform/createFullEditorFactory'
-], function (converter, TemplateRefAttributeFactory, RequiredAttributes, CmsGroupFactory, createFullEditorFactory) {
+], function (refConverter, converter, TemplateRefAttributeFactory, RequiredAttributes, CmsGroupFactory, createFullEditorFactory) {
 
 
     return function () {
@@ -19,6 +20,7 @@ define([
 
         ef.addConverterForType(converter, "ref");
         ef.addConverterForType(converter, "multi-ref");
+        ef.addConverterForid(refConverter, "refConverter");
 
         return ef;
     }

@@ -63,7 +63,7 @@
                         "type": "multi-ref",
                         "typeProperty": "template",
                         "schemas": [],
-                        "idProperty": "_id",
+                        "idProperty": "identifier",
                         "url": "/page",
                         "searchProperty": "url"
 
@@ -75,11 +75,11 @@
                     "keyAttribute": {},
                     "valueAttribute": {
                         "type": "multi-ref",
-                        "typeProperty": "template",
-                        "schemas": [],
-                        "idProperty": "_id",
+                        "searchProperty": "name",
+                        "idProperty":"code",
+                        "converter":"refConverter",
                         "url": "/template",
-                        "searchProperty": "name"
+                        "schemas": []
 
                     }
                 }

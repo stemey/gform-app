@@ -10,12 +10,13 @@
             "label": "template",
             "attributes": [
                 {
-                    "code": "template",
-                    "type": "ref",
-                    "searchProperty": "name",
-                    "idProperty":"_id",
-                    "url": "/template",
-                    "schemaUrl": "/template"
+                        "code": "template",
+                        "type": "ref",
+                        "searchProperty": "name",
+                        "idProperty":"code",
+                        "converter":"refConverter",
+                        "url": "/template",
+                        "schemaUrl": "/template"
                 },
                 {
                     "code": "outer",

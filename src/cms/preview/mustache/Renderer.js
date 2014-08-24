@@ -1,5 +1,5 @@
 define([
-    'gform/util/Resolver',
+    '../../meta/Resolver',
     'dojo/_base/lang',
     "dojo/_base/declare",
     "dojo/Deferred",
@@ -117,7 +117,7 @@ define([
                 Object.keys(attribute.template.partials).forEach(function (key) {
                     var url = attribute.template.partials[key];
                     console.log("render partial of template-ref " + key);
-                    var p = this.renderInternally(url, ctx.page);
+                    var p = this.renderInternally("page/"+url, ctx.page);
                     ctx.promises.push(p);
                     when(p).then(function (result) {
                         ctx.page[attribute.code][key] = result.html;
@@ -140,11 +140,11 @@ define([
         },
         visit: function (attribute, value, goon, ctx) {
             var me = this;
-            if (attribute.type == "ref" || attribute.type == "multi-ref") {
-                this.handlePageRef(attribute, value, ctx, attribute.code, attribute.code);
-            } else if (attribute.editor == "template-ref") {
+            if (attribute.editor == "template-ref") {
                 this.handleTemplateRef(attribute, value, goon, ctx);
-            } else {
+            } else if (attribute.type == "ref" || attribute.type == "multi-ref") {
+                this.handlePageRef(attribute, value, ctx, attribute.code, attribute.code);
+            } else  {
                 if (metaHelper.isComplex(attribute)) {
                     ctx.page[attribute.code] = {};
                     if (attribute.type_code) {
@@ -191,12 +191,13 @@ define([
             lang.mixin(ctx.page, page);
             console.log("renderIncludes p=" + page.url + "  t=" + template.name);
             if (this.templateToSchemaTransformer) {
-                var cached = this.tmpls[template._id]
+                var cached = this.tmpls[template.code]//TODO 'code' is hardcoded
                 if (cached) {
                     var resolved = cached;
                 } else {
                     this.resolver = new Resolver();
-                    var resolved = this.resolver.resolve(template, page.template);
+                    this.resolver.baseUrl=this.templateStore.target;
+                    var resolved = this.resolver.resolve(template, "http://localhost:8080/schema/"+page.template);
                     this.tmpls[template._id] = resolved;
                 }
                 templatePromise = new Deferred();
@@ -318,6 +319,7 @@ define([
                                 var html = me.renderTemplate(sourceCode, newPage, ctx.templates);
                                 renderPromise.resolve({html: html, errors:ctx.errors});
                             }).otherwise(function (e) {
+                                console.error("error during rendering " + e.stack);
                                     error(ctx);
                                 });
                         }).otherwise(function (e) {
@@ -378,7 +380,7 @@ define([
             var me = this;
             var renderPromise = new Deferred();
             console.log("getData " + pageUrl);
-            when(me.findByUrl(pageUrl)).then(function (page) {
+            when(me.findByUrl("/page/"+pageUrl)).then(function (page) {
                 renderPromise.resolve({page: page});
             }).otherwise(function (e) {
                     var errors = [

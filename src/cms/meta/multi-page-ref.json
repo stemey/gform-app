@@ -68,7 +68,6 @@
                     "required": true,
                     "element": {
                         "type": "ref",
-                        "converter": "templateConverter",
                         "schemaUrl": "/template",
                         "url": "/template",
                         "idProperty": "code",
