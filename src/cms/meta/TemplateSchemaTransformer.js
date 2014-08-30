@@ -51,6 +51,7 @@ define([
             //idAttribute.editor = this.idType;
             //idAttribute.disabled = true;
             //attributes.push(idAttribute);
+            // TODO make this configurable
             attributes.push({code: "template", type: "string", "editor": "string", visible: false});
             return schema;
 

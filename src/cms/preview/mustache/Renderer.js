@@ -191,7 +191,7 @@ define([
             lang.mixin(ctx.page, page);
             console.log("renderIncludes p=" + page.url + "  t=" + template.name);
             if (this.templateToSchemaTransformer) {
-                var cached = this.tmpls[template.code]//TODO 'code' is hardcoded
+                var cached = this.tmpls[template.code]//TODO 'code' is hardcoded. Only correct for atem dynamic types.
                 if (cached) {
                     var resolved = cached;
                 } else {

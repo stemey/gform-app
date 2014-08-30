@@ -20,6 +20,7 @@ define([
             this.display("/page/"+evt.id);
         },
         display: function (url) {
+            // TODO improve error reporting
             var me = this;
             this.url =url;
             when(me.renderer.render(url)).then(function (result) {

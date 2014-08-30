@@ -3,7 +3,7 @@ define([
     "dojo/_base/declare"
 ], function (restHelper, declare) {
 
-
+// TODO can we get rid of this?
     return declare([], {
 
         findByUrl: function (url) {

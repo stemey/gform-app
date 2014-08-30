@@ -40,6 +40,7 @@ define([
         tabContainer: null,
         borderContainer: null,
         createTemplateGrid: function () {
+            // TODO add quick filter
             var props = { id: "templateGrid", title: "template"};
             props.cacheClass = Cache;
             props.structure = json.parse(templateColumns);
@@ -57,24 +58,11 @@ define([
             this.templateGrid = new Grid(props);
         },
         createPageGrid: function () {
-            var props = { id: "pageGrid", title: "pages"};
-            props.cacheClass = Cache;
-            props.structure = json.parse(pageColumns);
+
+            // TODO make store and model configurable
+
             var store = new Observable(JsonRest({target:"http://localhost:8080/tree/",idProperty:"id"}));//this.ctx.getStore("/page");
-            props.store = store;
-            props.modules = [
-                VirtualVScroller,
-                {
-                    moduleClass: RowSelect,
-                    multiple: false,
-                    triggerOnCell: true
-                },
-                RowHeader
-            ];
-           // var result=this.configuration.pageStore.query();
-            // result.observe(function(){
-            //  store.notify(arguments);
-            //});
+
 
             var model=new UrlTreeModel({store: store});
             topic.subscribe("/page/added", function(evt) {
@@ -84,11 +72,6 @@ define([
             this.tabContainer.addChild(tree);
 
         },
-        startup: function () {
-            this.inherited(arguments);
-
-            //this.borderContainer.layout();
-        },
         configure: function (ctx, configuration) {
             this.ctx = ctx;
             this.configuration=configuration;
@@ -97,14 +80,14 @@ define([
             this.templateGrid.select.row.connect(this.templateGrid.select.row, "onSelected", lang.hitch(this, "templateSelected"));
             this.tabContainer.addChild(this.templateGrid);
 
-            //this.pageGrid.select.row.connect(this.pageGrid.select.row, "onSelected", lang.hitch(this, "pageSelected"));
-            //this.tabContainer.addChild(this.pageGrid);
         },
         templateSelected: function (e) {
             var url=restHelper.compose(this.configuration.getTemplateUrl(), e.id);
+            // TODO move opening of template in tabto topic subscriber
             this.ctx.opener.openSingle({url: "/template/"+ e.id, schemaUrl: "/template"});
         },
         nodeClicked: function (node) {
+            // TODO move opening of page in tabto topic subscriber
             if (node.id) {
                 topic.publish("/page/focus", {id: node.id, source:this, template:node.template});
 
@@ -119,18 +102,8 @@ define([
             }
 
         },
-        pageSelected: function (e) {
-            var page = this.ctx.storeRegistry.get("/page").get(e.id);
-            var me = this;
-            when(page).then(function (p) {
-                // TODO page should really be multi-typed
-                me.ctx.opener.openSingle({url: "/page/" + e.id, schemaUrl: p.template});
-            }).otherwise(function (e) {
-                    alert("cannot load entity: " + e.stack);
-                });
-
-        },
         getSelectedTemplate: function () {
+            // TODO should be unnecessary
             var selectedArray = this.templateGrid.select.row.getSelected();
             if (selectedArray.length == 1) {
                 return selectedArray[0];
@@ -139,6 +112,7 @@ define([
             }
         },
         getSelectedPage: function () {
+            // TODO should be unnecessary
             var selectedArray = this.pageGrid.select.row.getSelected();
             if (selectedArray.length == 1) {
                 return selectedArray[0];

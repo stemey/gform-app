@@ -39,7 +39,7 @@ define([
 
 
     return declare([ _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
-        baseClass: "gformGridController",
+        baseClass: "gformGridController",// TODO use proper base class
         templateString: template,
         tabContainer: null,
         gridController: null,
@@ -64,11 +64,12 @@ define([
         _createOpener: function () {
             var opener = new SingleEditorTabOpener();
             opener.tabContainer = this.tabContainer;
+            // TODO editorFactory needs to be configurable
             opener.editorFactory = createEditorFactory();
             opener.confirmDialog = this.confirmDialog;
             opener.controllerConfig = {
-                plainValueFactory: lang.hitch(this, "createPlainValue"),
-                actionClasses: [Save, Delete, Preview]
+                plainValueFactory: lang.hitch(this, "createPlainValue"), // make plainValueFactory configurable
+                actionClasses: [Save, Delete, Preview] // TODO actionClasses don't work. use actionFactory
             }
 
             opener.ctx = this.ctx;
@@ -106,7 +107,7 @@ define([
             this.previewer.renderer.templateToSchemaTransformer = templateToSchemaTransformer;
 
             window.appController = this;
-            aspect.after(this.gridController, "pageSelected", lang.hitch(this, "pageSelected"));
+            aspect.after(this.gridController, "pageSelected", lang.hitch(this, "pageSelected")); // TODO move to gridController and use topic
 
             topic.subscribe(this.tabContainer.id + "-selectChild", lang.hitch(this, "tabSelected"));
         },
@@ -121,6 +122,7 @@ define([
             }
         },
         onPageUpdated: function (superCall) {
+            // TODO use generic topic message
             var me = this;
             return function (entity) {
                 var result = superCall.apply(this, arguments);
@@ -129,6 +131,7 @@ define([
             }
         },
         onTemplateUpdated: function (superCall) {
+            // TODO use generic topic message
             var me = this;
             return function (entity) {
                 var result = superCall.apply(this, arguments);
@@ -141,6 +144,7 @@ define([
             this.preview(id);
         },
         createPlainValue: function (schema) {
+            // TODO move to configuration
             if (schema.id == "/cms/template") {
                 var attributes=[];
                 attributes.push({code:"url","editor":"string",type:"string", required:true});
@@ -162,11 +166,11 @@ define([
             this.previewer.refresh();
         },
         preview: function (id) {
+            // TODO move to previewer
             var store = this.ctx.storeRegistry.get("/page");
             var page = store.get(id);
             var me = this;
             when(page).then(function (p) {
-                // TODO page should really be multi-typed
                 me.ctx.opener.openSingle({url: "/page/" + id, schemaUrl: p.template});
             }).otherwise(function (e) {
                     alert("cannot load entity: " + e.stack);
@@ -174,6 +178,7 @@ define([
             this.previewer.display("/page/" + id);
         },
         previewByUrl: function (url) {
+            // TODO move to previewer
             var me = this;
             var store = this.ctx.storeRegistry.get("/page");
             var page = store.query({url: url});
@@ -183,15 +188,16 @@ define([
             });
         },
         followPreviewLink: function (url) {
+            // TODO move to previewer
             //this.pageSelected()
             this.previewByUrl(url);
         },
         createNewTemplate: function () {
             var me = this;
-
             this.ctx.opener.createSingle({url: "/template", schemaUrl: "/template"});//, callback:callback});
         },
         createNewPage: function () {
+            // TODO template should be selectable in select next to create button
             var selectedTemplate = this.gridController.getSelectedTemplate();
             if (!selectedTemplate) {
                 alert("select a template");
