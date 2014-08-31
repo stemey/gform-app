@@ -1,14 +1,13 @@
 define([
     './FindByUrlMixin',
     'dojo/request/handlers',
-    'gform/util/restHelper',
     'dojo/request/xhr',
     'dojo/store/util/QueryResults',
     'dojo/Deferred',
     "dojo/_base/lang",
     "dojo/_base/declare",
     "dojo/store/JsonRest"//
-], function (FindByUrlMixin, handlers, restHelper, xhr, QueryResults, Deferred, lang, declare, JsonRest) {
+], function (FindByUrlMixin, handlers, xhr, QueryResults, Deferred, lang, declare, JsonRest) {
 
     return declare([ JsonRest , FindByUrlMixin], {
         transform: null,

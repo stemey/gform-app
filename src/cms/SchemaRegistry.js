@@ -1,10 +1,8 @@
 define([
     'dojo/when',
     'dojo/Deferred',
-    "dojo/_base/declare",
-    "dojo/request",
-    "gform/util/restHelper"
-], function (when, Deferred, declare, request, restHelper) {
+    "dojo/_base/declare"
+], function (when, Deferred, declare) {
 // module:
 //		gform/controller/SchemaRegistry
 
@@ -38,13 +36,12 @@ define([
 
                 var transformer = this.pageTransformer;
                 var p;
-                var ref = restHelper.decompose(url);
-                var store = this.name2Store[ref.url];
+                var id = url.substr("/template/".length);
+                var store = this.name2Store["/template"];
                 if (store) {
-                    p = store.get(ref.id);
-                } else {
-                    p = request.get(url, {handleAs: "json"});
+                    p = store.get(id);
                 }
+
                 var transformedSchema = new Deferred();
                 var me = this;
                 when(p).then(function (schema) {

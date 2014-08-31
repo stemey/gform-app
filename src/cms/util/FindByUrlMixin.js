@@ -1,7 +1,6 @@
 define([
-    'gform/util/restHelper',
     "dojo/_base/declare"
-], function (restHelper, declare) {
+], function (declare) {
 
 // TODO can we get rid of this?
     return declare([], {
@@ -10,7 +9,14 @@ define([
             if (url.indexOf("/")==-1) {
                 return this.get(url);
             }else{
-                var id = restHelper.decompose(url).id;
+                // TODO should always start with / or never
+                var path = url.match(/^\/?[^\/]+\/(.*)/);
+                if (path!=null && path.length>=2) {
+                    var id = path[1];
+                } else {
+                    throw new Error("cannot find "+url);
+                }
+
                 return this.get(id);
             }
         }
