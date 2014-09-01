@@ -10,6 +10,7 @@ define([
     "handlebars/handlebars"
 ], function (Resolver, lang, declare, Deferred, visit, metaHelper, when, all) {
 
+    // TODO extract helpers to customer and standard configuration folders
     Handlebars.registerHelper('equals', function (a, b, options) {
         if (a == b) {
             return options.fn(this);
@@ -335,6 +336,7 @@ define([
 
         },
         renderTemplate: function (code, ctx, partials) {
+            // extract super class or add handlebars as pluggable internal renderer
             Object.keys(partials).forEach(function (key) {
                 Handlebars.registerPartial(key, partials[key]);
             });

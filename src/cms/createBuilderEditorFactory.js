@@ -9,7 +9,6 @@ define([
 
     return function () {
         var ef = createFullEditorFactory();
-        // TODO is cms group still necessary?
         var attributeFactoryFinder = ef.get("attributeFactoryFinder");
         attributeFactoryFinder.addAttributeFactory(new TemplateRefAttributeFactory({editorFactory: ef}));
         ef.addValidator("requiredAttributes", RequiredAttributes);

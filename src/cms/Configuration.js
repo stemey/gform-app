@@ -21,7 +21,7 @@ define([
             var me =this;
             var deferred = new Deferred();
             require([config.type], function(Store){
-                // needs to be Observable and provide FindByUrl
+                // TODO needs to be Observable and provide FindByUrl
                 store = new Observable(Store(config.options));
                 me[prop] = store;
                 deferred.resolve(store);

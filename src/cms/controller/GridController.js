@@ -82,8 +82,8 @@ define([
         },
         templateSelected: function (e) {
             var url=restHelper.compose(this.configuration.getTemplateUrl(), e.id);
-            // TODO move opening of template in tabto topic subscriber
-            this.ctx.opener.openSingle({url: "/template/"+ e.id, schemaUrl: "/template"});
+            // TODO move opening of template in tab to topic subscriber
+            this.ctx.opener.openSingle({url: "/template",id:e.id, schemaUrl: "/template"});
         },
         nodeClicked: function (node) {
             // TODO move opening of page in tabto topic subscriber
@@ -94,7 +94,7 @@ define([
                 var me = this;
                 when(page).then(function (p) {
                     // TODO page should really be multi-typed
-                    me.ctx.opener.openSingle({url: "/page/" + node.id, schemaUrl: "/template/"+p.template});
+                    me.ctx.opener.openSingle({url: "/page", id: node.id, schemaUrl: "/template/"+p.template});
                 }).otherwise(function (e) {
                         alert("cannot load entity: " + e.stack);
                     });

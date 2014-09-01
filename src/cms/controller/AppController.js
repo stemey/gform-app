@@ -171,7 +171,7 @@ define([
             var page = store.get(id);
             var me = this;
             when(page).then(function (p) {
-                me.ctx.opener.openSingle({url: "/page/" + id, schemaUrl: p.template});
+                me.ctx.opener.openSingle({url: "/page",id: id, schemaUrl: p.template});
             }).otherwise(function (e) {
                     alert("cannot load entity: " + e.stack);
                 });
@@ -213,7 +213,7 @@ define([
         },
         showTemplate: function () {
             var selectedTemplate = this.gridController.getSelectedTemplate();
-            this.ctx.opener.openSingle({url: "/template/" + selectedTemplate, schemaUrl: "/template"});
+            this.ctx.opener.openSingle({url: "/template",id: selectedTemplate, schemaUrl: "/template"});
         },
         loadTemplateSchema: function () {
             var generator = new SchemaGenerator();
