@@ -117,7 +117,7 @@ define([
                 Object.keys(attribute.template.partials).forEach(function (key) {
                     var url = attribute.template.partials[key];
                     console.log("render partial of template-ref " + key);
-                    var p = this.renderInternally("page/"+url, ctx.page);
+                    var p = this.renderInternally("/page/"+url, ctx.page);
                     ctx.promises.push(p);
                     when(p).then(function (result) {
                         ctx.page[attribute.code][key] = result.html;

@@ -90,7 +90,7 @@ define([
                     attributes: []
                 },
                 partials:{
-                    partial:"/page/p1.html"
+                    partial:"p1.html"
                 }
 
             };
@@ -120,20 +120,20 @@ define([
             });
             renderer.pageStore = new MemoryStore();
             renderer.pageStore.add("/page/p1.html", {template: "t1.html", title: "hello", url: "p1.html"});
-            renderer.pageStore.add("/page/link.html", {template: "link.html", page: {$ref: "/page/p1.html"}});
-            renderer.pageStore.add("/page/p2.html", {template: "t2.html", content: {$ref: "/page/teaser.html"}});
+            renderer.pageStore.add("/page/link.html", {template: "link.html", page: "/page/p1.html"});
+            renderer.pageStore.add("/page/p2.html", {template: "t2.html", content: "/page/teaser.html"});
             renderer.pageStore.add("/page/teaser.html", {template: "t3.html", text: "hello world"});
             renderer.pageStore.add("/page/teaser2.html", {template: "t3.html", text: "bye world"});
             renderer.pageStore.add("/page/complex.html", {template: "complex.html", complex: {text: "hello"}});
-            renderer.pageStore.add("/page/partial.html", {template: "partial.html", partial: {$ref: "/page/teaser.html"}});
+            renderer.pageStore.add("/page/partial.html", {template: "partial.html", partial: "/page/teaser.html"});
             renderer.pageStore.add("/page/list.html", {template: "list.html", list: ["hello", "bye"]});
             renderer.pageStore.add("/page/pageList.html", {template: "pageList.html", list: [
-                {"$ref": "/page/teaser.html"},
-                {"$ref": "/page/teaser2.html"}
+                "/page/teaser.html",
+                "/page/teaser2.html"
             ]});
             renderer.pageStore.add("/page/partiallist.html", {template: "partiallist.html", list: [
-                {x: {"$ref": "/page/teaser.html"}},
-                {x: {"$ref": "/page/teaser2.html"}}
+                {x: "/page/teaser.html"},
+                {x: "/page/teaser2.html"}
             ]});
             renderer.pageStore.add("/page/inner.html", {template: "inner.html", outer: {}, title: "hello"});
             renderer.pageStore.add("/page/innerWithPartials.html", {template: "innerWithPartials.html", outer: {}});
