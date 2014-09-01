@@ -24,7 +24,7 @@ define([
     "dojo/text!../schema/templateStub.json",
     "gform/controller/actions/Save",
     "gform/controller/actions/Delete",
-    "./Preview",
+    "./actions/Preview",
     "../preview/mustache/Renderer",
     "./Previewer",
     "dijit/layout/BorderContainer",

@@ -21,14 +21,13 @@ define([
     'gridx/modules/select/Row',
     "dojo/json",
     "dojo/text!./template_columns.json",
-    "dojo/text!./page_columns.json",
     "dijit/_WidgetBase",
     "dijit/_TemplatedMixin",
     "dijit/_WidgetsInTemplateMixin",
     "dojo/text!./grid.html",
     "dijit/layout/TabContainer",
     "dijit/layout/ContentPane"
-], function (aspect, JsonRest, restHelper, Observable, topic, UrlTreeModel, Tree, InvisibleMixin, when, declare, lang, Grid, Cache, VirtualVScroller, ColumnResizer, SingleSort, Filter, Focus, RowHeader, RowSelect, json, templateColumns, pageColumns, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, template) {
+], function (aspect, JsonRest, restHelper, Observable, topic, UrlTreeModel, Tree, InvisibleMixin, when, declare, lang, Grid, Cache, VirtualVScroller, ColumnResizer, SingleSort, Filter, Focus, RowHeader, RowSelect, json, templateColumns, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, template) {
 
 
     return declare([ _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, InvisibleMixin], {

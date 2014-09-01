@@ -1,5 +1,5 @@
 define([
-	"dojo/_base/declare",
+	"../../../dojo/_base/declare",
     "gform/controller/actions/_ActionMixin"
     //"dojo/i18n!../../nls/messages",
 	
