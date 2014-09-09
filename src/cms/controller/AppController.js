@@ -17,7 +17,7 @@ define([
     "dojo/text!../schema/template.json",
     "../util/Memory",
     "../createBuilderEditorFactory",
-    "gform/opener/SingleEditorTabOpener",
+    "./TabOpener",
     "gform/Context",
     "../meta/SchemaGenerator",
     "../SchemaRegistry",
@@ -49,9 +49,6 @@ define([
         postCreate: function () {
 
 
-            this.ctx = new Context();
-            var opener = this._createOpener();
-            this.ctx.opener = opener;
 
             this.configuration = new Configuration();
             this.configuration.load().then(lang.hitch(this, "_onConfigured")).otherwise(function (e) {
@@ -72,13 +69,18 @@ define([
                 actionClasses: [Save, Delete, Preview] // TODO actionClasses don't work. use actionFactory
             }
 
+            opener.configuration=this.configuration;
             opener.ctx = this.ctx;
+            opener.init();
             return opener;
         },
         _onConfigured: function () {
             var templateStore = this.configuration.templateStore;
 
             var templateConverter = this.configuration.templateConverter;
+            this.ctx = new Context();
+            var opener = this._createOpener();
+            this.ctx.opener = opener;
             this.ctx.opener.editorFactory.addConverterForid(templateConverter, "templateConverter");
 
             this.schemaRegistry = new SchemaRegistry();
@@ -103,33 +105,24 @@ define([
             this.gridController.configure(this.ctx, this.configuration);
 
 
+            this.previewer.pageStore=pageStore;
             this.previewer.renderer = new Renderer();
             this.previewer.renderer.templateStore = templateStore;
             this.previewer.renderer.pageStore = pageStore;
             this.previewer.renderer.templateToSchemaTransformer = templateToSchemaTransformer;
 
             window.appController = this;
-            aspect.after(this.gridController, "pageSelected", lang.hitch(this, "pageSelected")); // TODO move to gridController and use topic
 
-            topic.subscribe(this.tabContainer.id + "-selectChild", lang.hitch(this, "tabSelected"));
+
         },
-        tabSelected: function (page) {
-            if (page.editor.meta.attributes && page.editor.meta && page.editor.meta.id != "/cms/template") {
-                var id = page.editor.getPlainValue()[this.configuration.pageStore.idProperty];
-                var template = page.editor.getPlainValue()["template"];
-                if (id) {
-                    // already loaded!!
-                    topic.publish("page/focus", {id: id, source: this,template:template})
-                }
-            }
-        },
+
         onPageUpdated: function (superCall) {
             // TODO use generic topic message
             var me = this;
             return function (entity) {
                 var result = superCall.apply(this, arguments);
                 result.then(function() {
-                  me.refreshPreview();
+                  //me.refreshPreview();
                   topic.publish("/page/updated",{entity:entity})
                 });
                 return result;
@@ -140,7 +133,7 @@ define([
             var me = this;
             return function (entity) {
                 var result = superCall.apply(this, arguments);
-                me.refreshPreview();
+                //me.refreshPreview();
                 topic.publish("/page/deleted",{entity:entity})
                 return result;
             }
@@ -150,13 +143,9 @@ define([
             var me = this;
             return function (entity) {
                 var result = superCall.apply(this, arguments);
-                me.refreshPreview();
+                //me.refreshPreview();
                 return result;
             }
-        },
-        pageSelected: function () {
-            var id = this.gridController.getSelectedPage();
-            this.preview(id);
         },
         createPlainValue: function (schema) {
             // TODO move to configuration
@@ -180,32 +169,9 @@ define([
         refreshPreview: function () {
             this.previewer.refresh();
         },
-        preview: function (id) {
-            // TODO move to previewer
-            var store = this.ctx.storeRegistry.get("/page");
-            var page = store.get(id);
-            var me = this;
-            when(page).then(function (p) {
-                me.ctx.opener.openSingle({url: "/page",id: id, schemaUrl: p.template});
-            }).otherwise(function (e) {
-                    alert("cannot load entity: " + e.stack);
-                });
-            this.previewer.display("/page/" + id);
-        },
-        previewByUrl: function (url) {
-            // TODO move to previewer
-            var me = this;
-            var store = this.ctx.storeRegistry.get("/page");
-            var page = store.query({url: url});
-            when(page).then(function (pageResults) {
-                var id = store.getIdentity(pageResults[0]);
-                me.preview(id);
-            });
-        },
         followPreviewLink: function (url) {
             // TODO move to previewer
-            //this.pageSelected()
-            this.previewByUrl(url);
+            this.previewer.displayByUrl(url);
         },
         createNewTemplate: function () {
             var me = this;

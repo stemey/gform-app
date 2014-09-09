@@ -61,7 +61,7 @@ define([
             // TODO make store and model configurable
 
             var store = new Observable(JsonRest({target:"http://localhost:8080/tree/",idProperty:"id"}));//this.ctx.getStore("/page");
-
+            var me =this;
 
             var model=new UrlTreeModel({store: store});
             topic.subscribe("/page/added", function(evt) {
@@ -73,6 +73,10 @@ define([
             topic.subscribe("/page/deleted", function(evt) {
                 model.deleteEntity(evt.entity);
             });
+          topic.subscribe("/page/focus", function(evt) {
+            me.onPageFocus(evt.entity);
+          });
+
           var tree = new Tree({title:"pages",label:"  ",labelAttr:"name",model: model, onClick: lang.hitch(this, "nodeClicked")});
             this.tabContainer.addChild(tree);
 
@@ -90,22 +94,17 @@ define([
             var url=restHelper.compose(this.configuration.getTemplateUrl(), e.id);
             // TODO move opening of template in tab to topic subscriber
             this.ctx.opener.openSingle({url: "/template",id:e.id, schemaUrl: "/template"});
+          topic.publish("/template/focus", {id: e.id, source:this})
+        },
+        onPageFocus: function(evt) {
+          if (evt.source!=this) {
+            // select in tree??
+          }
         },
         nodeClicked: function (node) {
-            // TODO move opening of page in tabto topic subscriber
             if (node.id) {
                 topic.publish("/page/focus", {id: node.id, source:this, template:node.template});
-
-                var page = this.ctx.storeRegistry.get("/page").get(node.id);
-                var me = this;
-                when(page).then(function (p) {
-                    // TODO page should really be multi-typed
-                    me.ctx.opener.openSingle({url: "/page", id: node.id, schemaUrl: "/template/"+p.template});
-                }).otherwise(function (e) {
-                        alert("cannot load entity: " + e.stack);
-                    });
             }
-
         },
         getSelectedTemplate: function () {
             // TODO should be unnecessary

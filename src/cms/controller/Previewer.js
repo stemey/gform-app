@@ -11,13 +11,30 @@ define([
 
     return declare("cms.Previewer",[ _WidgetBase, _TemplatedMixin], {
         templateString: template,
+        pageStore:null,
         iframe: null,
         renderer: null,
         postCreate: function() {
-          topic.subscribe("/page/focus", lang.hitch(this, "onPageSelected"));
+          topic.subscribe("/page/focus", lang.hitch(this, "onPageFocus"));
+          topic.subscribe("/page/updated", lang.hitch(this, "onPageUpdated"));
+          topic.subscribe("/page/deleted", lang.hitch(this, "onPageDeleted"));
         },
-        onPageSelected: function(evt) {
+        onPageFocus: function(evt) {
             this.display("/page/"+evt.id);
+        },
+        onPageUpdated: function(evt) {
+            this.display("/page/"+evt.entity[this.pageStore.idProperty]);
+        },
+        onPageDeleted: function(evt) {
+            // this.display("/page/"+evt.id);
+        },
+        displayByUrl: function(url) {
+            var me = this;
+            var page = this.pageStore.query({url: url});
+            when(page).then(function (pageResults) {
+                var id = me.pageStore.getIdentity(pageResults[0]);
+                me.displayById(id);
+            });
         },
         display: function (url) {
             // TODO improve error reporting
@@ -41,6 +58,9 @@ define([
             }).otherwise(function (e) {
                     alert("cannot render " + e.stack)
                 });
+        },
+        displayById: function (id) {
+          this.display("/page/" + id);
         },
         refresh: function() {
             if (this.url) {

@@ -45,7 +45,6 @@ define([
           this.loadChildren(parents);
         },
         updateEntity: function(entity) {
-          var parent = this.getParent(entity);
           var name = entity.url.match(/[^/]+$/)[0];
           var x = this.onChange({id:entity.identifier, name:name, template:entity.template, folder:false});
           //this.deleteEntity(entity.identifier);
