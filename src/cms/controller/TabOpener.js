@@ -7,13 +7,18 @@ define(['dojo/_base/declare',
     return declare([SingleEditorTabOpener], {
         configuration:null,
         init: function () {
-            topic.subscribe("/page/focus", lang.hitch(this, "onPageFocus"));
+            topic.subscribe("/template/focus", lang.hitch(this, "onTemplateFocus"));
             topic.subscribe("/page/focus", lang.hitch(this, "onPageFocus"));
             topic.subscribe(this.tabContainer.id + "-selectChild", lang.hitch(this, "tabSelected"));
         },
         onPageFocus: function (evt) {
             if (evt.source!=this) {
                 this.openSingle({url: "/page", id: evt.id, schemaUrl: "/template/" + evt.template});
+            }
+        },
+        onTemplateFocus: function (evt) {
+            if (evt.source!=this) {
+                this.openSingle({url: "/template",id:evt.id, schemaUrl: "/template"});
             }
         },
         tabSelected: function (page) {

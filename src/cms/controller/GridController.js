@@ -91,9 +91,6 @@ define([
 
         },
         templateSelected: function (e) {
-            var url=restHelper.compose(this.configuration.getTemplateUrl(), e.id);
-            // TODO move opening of template in tab to topic subscriber
-            this.ctx.opener.openSingle({url: "/template",id:e.id, schemaUrl: "/template"});
           topic.publish("/template/focus", {id: e.id, source:this})
         },
         onPageFocus: function(evt) {

@@ -39,7 +39,7 @@ define([
 
 
     return declare([ _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
-        baseClass: "gformGridController",// TODO use proper base class
+        baseClass: "gformAppController",// TODO use proper base class
         templateString: template,
         tabContainer: null,
         gridController: null,
@@ -47,16 +47,11 @@ define([
         fullSize: false,
 
         postCreate: function () {
-
-
-
             this.configuration = new Configuration();
             this.configuration.load().then(lang.hitch(this, "_onConfigured")).otherwise(function (e) {
                 alert("error");
                 console.log(e.message, e.stack)
             });
-
-            // we need an extra opener for templates where the opener's plainValueFactory is null.
         },
         _createOpener: function () {
             var opener = new SingleEditorTabOpener();
@@ -183,12 +178,6 @@ define([
             if (!selectedTemplate) {
                 alert("select a template");
             } else {
-                var me = this;
-                var callback = function (id) {
-                    //var page = me.ctx.storeRegistry.get("/page").get(id);
-                    //page.template =  selectedTemplate;
-
-                }
                 this.ctx.opener.createSingle({url: "http://localhost:8080/entity/base/", schemaUrl: "/template/" + selectedTemplate, callback: callback});
             }
         },
