@@ -95,7 +95,9 @@ define([
             var pageStore = this.configuration.pageStore;
             this.ctx.storeRegistry.register("/page", pageStore);
             aspect.around(templateStore, "put", lang.hitch(this, "onTemplateUpdated"));
+            // TODO should be published by controller along with oldUrl/oldparentId to implement moving in tree.
             aspect.around(pageStore, "put", lang.hitch(this, "onPageUpdated"));
+            aspect.around(pageStore, "remove", lang.hitch(this, "onPageDeleted"));
             this.ctx.schemaRegistry = this.schemaRegistry;
 
             this.gridController.configure(this.ctx, this.configuration);
@@ -126,7 +128,20 @@ define([
             var me = this;
             return function (entity) {
                 var result = superCall.apply(this, arguments);
+                result.then(function() {
+                  me.refreshPreview();
+                  topic.publish("/page/updated",{entity:entity})
+                });
+                return result;
+            }
+        },
+        onPageDeleted: function (superCall) {
+            // TODO use generic topic message
+            var me = this;
+            return function (entity) {
+                var result = superCall.apply(this, arguments);
                 me.refreshPreview();
+                topic.publish("/page/deleted",{entity:entity})
                 return result;
             }
         },

@@ -65,9 +65,15 @@ define([
 
             var model=new UrlTreeModel({store: store});
             topic.subscribe("/page/added", function(evt) {
-                model.notify(evt.url);
+                model.createEntity(evt.url);
             });
-            var tree = new Tree({title:"pages",label:"  ",labelAttr:"name",model: model, onClick: lang.hitch(this, "nodeClicked")});
+            topic.subscribe("/page/updated", function(evt) {
+                model.updateEntity(evt.entity);
+            });
+            topic.subscribe("/page/deleted", function(evt) {
+                model.deleteEntity(evt.entity);
+            });
+          var tree = new Tree({title:"pages",label:"  ",labelAttr:"name",model: model, onClick: lang.hitch(this, "nodeClicked")});
             this.tabContainer.addChild(tree);
 
         },

@@ -13,25 +13,62 @@ define([
             return object.folder;
         },
         loadChildren: function(parents) {
+          // ["","/test","/test/tt"]
             var me = this;
-            if (parents.length>0) {
-                var parent = parents[0];
-                if(parents.length==1 || this.childrenCache[parents[1]]==null ) {
-                    when(this.store.getChildren({id:parent}), function(result) {
-                        me.onChildrenChange({id:parent}, result);
-                        me.loadChildren(parents.slice(1))
-                    });
-                }else {
-                    this.loadChildren(parents.slice(1))
+            var unloadedParents = [];
+          if (parents.length>1) {
+            for (var i = 0; i<parents.length-2; i++)  {
+              var next = "/pages"+parents[i+1];
+                if (this.childrenCache[next]==null) {
+                  unloadedParents.push("/pages"+parents[i]);
                 }
-            }
+              };
+          }
+          unloadedParents.push("/pages"+parents[parents.length-2]);
+          this.doload(unloadedParents);
+        }
+        ,
+        doload: function(paths) {
+            var me = this;
+          if (paths.length>0) {
+            // check if immediate parent is loaded
+
+            var path = paths[0];
+            when(this.store.getChildren({id:path}), function(result) {
+              me.onChildrenChange({id:path}, result);
+              me.doload(paths.slice(1))
+            });
+          }
         },
-        notify: function(url) {
-            var parents = this.getParents(url);
-            this.loadChildren(parents);
+        createEntity: function(url) {
+          var parents = this.getParents(url);
+          this.loadChildren(parents);
+        },
+        updateEntity: function(entity) {
+          var parent = this.getParent(entity);
+          var name = entity.url.match(/[^/]+$/)[0];
+          var x = this.onChange({id:entity.identifier, name:name, template:entity.template, folder:false});
+          //this.deleteEntity(entity.identifier);
+          //this.createEntity(entity.url);
+        },
+        getParent: function(entity) {
+          var url = entity.url;
+          var parents = this.getParents(url);
+          var parent = "/pages"+parents[parents.length-1];
+          if (this.childrenCache[parent]!=null) {
+            var found = this.childrenCache[parent].filter(function(item) {
+              return item.id=entity.id;
+            });
+            return found.length>0;
+          } else {
+            return null;
+          }
+        },
+        deleteEntity: function(id) {
+          this.onDelete({id:id});
         },
         getParents: function(url) {
-            var parents=["/"];
+            var parents=[""];
             var parts=url.split("/");
             var c="";
             if (parts.length>2) {

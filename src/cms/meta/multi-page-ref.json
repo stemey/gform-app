@@ -60,7 +60,7 @@
                    "code":"schemaUrlPrefix",
                     "type":"string",
                     "required":true,
-                    "values":["/template/"]
+                    "values":[""]
                 },
                 {
                     "code": "schemas",
