@@ -1,4 +1,6 @@
 define([
+    '../factory/GridFactory',
+    '../factory/TreeFactory',
     'dojo/aspect',
     'cms/util/JsonRest',
     'gform/util/restHelper',
@@ -20,6 +22,8 @@ define([
     'gridx/modules/RowHeader',
     'gridx/modules/select/Row',
     "dojo/json",
+    "dojo/text!../config/template-grid.json",
+    "dojo/text!../config/page-tree.json",
     "dojo/text!./template_columns.json",
     "dijit/_WidgetBase",
     "dijit/_TemplatedMixin",
@@ -27,7 +31,7 @@ define([
     "dojo/text!./grid.html",
     "dijit/layout/TabContainer",
     "dijit/layout/ContentPane"
-], function (aspect, JsonRest, restHelper, Observable, topic, UrlTreeModel, Tree, InvisibleMixin, when, declare, lang, Grid, Cache, VirtualVScroller, ColumnResizer, SingleSort, Filter, Focus, RowHeader, RowSelect, json, templateColumns, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, template) {
+], function (GridFactory, TreeFactory, aspect, JsonRest, restHelper, Observable, topic, UrlTreeModel, Tree, InvisibleMixin, when, declare, lang, Grid, Cache, VirtualVScroller, ColumnResizer, SingleSort, Filter, Focus, RowHeader, RowSelect, json, templateGridJson, pageTreeJson, templateColumns, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, template) {
 
 
     return declare([ _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, InvisibleMixin], {
@@ -39,46 +43,13 @@ define([
         tabContainer: null,
         borderContainer: null,
         createTemplateGrid: function () {
-            // TODO add quick filter
-            var props = { id: "templateGrid", title: "template"};
-            props.cacheClass = Cache;
-            props.structure = json.parse(templateColumns);
-            var store = this.ctx.getStore("/template");
-            props.store = store;
-            props.modules = [
-                VirtualVScroller,
-                {
-                    moduleClass: RowSelect,
-                    multiple: false,
-                    triggerOnCell: true
-                },
-                RowHeader
-            ];
-            this.templateGrid = new Grid(props);
+            this.templateGrid = new GridFactory().create(this.ctx, JSON.parse(templateGridJson));
+
         },
         createPageGrid: function () {
 
-            // TODO make store and model configurable
-
-            var store = new Observable(JsonRest({target:"http://localhost:8080/tree/",idProperty:"id"}));//this.ctx.getStore("/page");
-            var me =this;
-
-            var model=new UrlTreeModel({store: store});
-            topic.subscribe("/page/added", function(evt) {
-                model.createEntity(evt.url);
-            });
-            topic.subscribe("/page/updated", function(evt) {
-                model.updateEntity(evt.entity);
-            });
-            topic.subscribe("/page/deleted", function(evt) {
-                model.deleteEntity(evt.entity);
-            });
-          topic.subscribe("/page/focus", function(evt) {
-            me.onPageFocus(evt.entity);
-          });
-
-          var tree = new Tree({title:"pages",label:"  ",labelAttr:"name",model: model, onClick: lang.hitch(this, "nodeClicked")});
-            this.tabContainer.addChild(tree);
+          var tree =  new TreeFactory().create(this.ctx, JSON.parse(pageTreeJson));
+          this.tabContainer.addChild(tree);
 
         },
         configure: function (ctx, configuration) {

@@ -1,4 +1,5 @@
 define([
+    '../util/JsonRest',
     '../util/AtemStoreRegistry',
     'dojo/dom-geometry',
     'dijit/form/ToggleButton',
@@ -35,7 +36,7 @@ define([
     "dijit/Toolbar",
     "dijit/form/Button",
     "gform/controller/ConfirmDialog"
-], function (AtemStoreRegistry, domGeometry, ToggleButton, TemplateSchemaTransformer, when, topic, declare, lang, aspect, json, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, template, Configuration, templateSchema, Store, createEditorFactory, SingleEditorTabOpener, Context, SchemaGenerator, SchemaRegistry, templateStub, Save, Delete, Preview, Renderer) {
+], function (JsonRest, AtemStoreRegistry, domGeometry, ToggleButton, TemplateSchemaTransformer, when, topic, declare, lang, aspect, json, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, template, Configuration, templateSchema, Store, createEditorFactory, SingleEditorTabOpener, Context, SchemaGenerator, SchemaRegistry, templateStub, Save, Delete, Preview, Renderer) {
 
 
     return declare([ _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
@@ -70,6 +71,9 @@ define([
             return opener;
         },
         _onConfigured: function () {
+
+            var pageTreeStore =new JsonRest({target:"http://localhost:8080/tree/",idProperty:"id"});
+
             var templateStore = this.configuration.templateStore;
 
             var templateConverter = this.configuration.templateConverter;
@@ -88,6 +92,7 @@ define([
             this.loadTemplateSchema();
 
             this.ctx.storeRegistry = new AtemStoreRegistry();
+            this.ctx.storeRegistry.register("/pagetree", pageTreeStore);
             this.ctx.storeRegistry.register("/template", templateStore);
             var pageStore = this.configuration.pageStore;
             this.ctx.storeRegistry.register("/page", pageStore);

@@ -1,0 +1,10 @@
+{
+    "storeId": "/template",
+    "columns": [
+        {
+            "id": "name",
+            "field": "name",
+            "name": "name"
+        }
+    ]
+}
