@@ -15,6 +15,7 @@ define([
         iframe: null,
         renderer: null,
         postCreate: function() {
+            this.inherited(arguments);
           topic.subscribe("/page/focus", lang.hitch(this, "onPageFocus"));
           topic.subscribe("/page/updated", lang.hitch(this, "onPageUpdated"));
           topic.subscribe("/page/deleted", lang.hitch(this, "onPageDeleted"));

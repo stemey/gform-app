@@ -30,7 +30,7 @@ define([
                 RowHeader
             ];
             var templateGrid = new Grid(props);
-            var selected = function () {
+            var selected = function (e) {
                 topic.publish("/template/focus", {id: e.id, source: this})
             }
             aspect.after(templateGrid, "startup", function() {

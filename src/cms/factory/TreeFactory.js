@@ -26,12 +26,16 @@ define([
                 model.deleteEntity(evt.entity);
             });
             topic.subscribe("/page/focus", function(evt) {
-                me.onPageFocus(evt.entity);
+                //me.onPageFocus(evt.entity);
             });
 
             var nodeClicked = function (node) {
                 if (node.id) {
+                    try {
                     topic.publish("/page/focus", {id: node.id, source:this, template:node.template});
+                    } catch (e) {
+                        console.log(e.stack);
+                    }
                 }
             }
             var tree = new Tree({label:"  ",labelAttr:config.labelAttribute,model: model, onClick: nodeClicked});

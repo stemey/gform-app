@@ -1,4 +1,10 @@
 define([
+    'dojox/mvc/_atBindingExtension',
+    '../factory/BorderContainerFactory',
+    '../factory/PreviewerFactory',
+    '../factory/TabOpenerFactory',
+    'dijit/layout/TabContainer',
+    '../factory/TabFactory',
     '../util/JsonRest',
     '../util/AtemStoreRegistry',
     'dojo/dom-geometry',
@@ -15,6 +21,7 @@ define([
     "dijit/_WidgetsInTemplateMixin",
     "dojo/text!./app.html",
     "../Configuration",
+    "../config/main",
     "dojo/text!../schema/template.json",
     "../util/Memory",
     "../createBuilderEditorFactory",
@@ -36,51 +43,31 @@ define([
     "dijit/Toolbar",
     "dijit/form/Button",
     "gform/controller/ConfirmDialog"
-], function (JsonRest, AtemStoreRegistry, domGeometry, ToggleButton, TemplateSchemaTransformer, when, topic, declare, lang, aspect, json, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, template, Configuration, templateSchema, Store, createEditorFactory, SingleEditorTabOpener, Context, SchemaGenerator, SchemaRegistry, templateStub, Save, Delete, Preview, Renderer) {
+], function (atBindingExtension, BorderContainerFactory, PreviewerFactory, TabOpenerFactory, TabContainer, TabFactory, JsonRest, AtemStoreRegistry, domGeometry, ToggleButton, TemplateSchemaTransformer, when, topic, declare, lang, aspect, json, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, template, Configuration, main, templateSchema, Store, createEditorFactory, SingleEditorTabOpener, Context, SchemaGenerator, SchemaRegistry, templateStub, Save, Delete, Preview, Renderer) {
 
 
     return declare([ _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
         baseClass: "gformAppController",// TODO use proper base class
         templateString: template,
         tabContainer: null,
-        gridController: null,
+        //gridController: null,
         confirmDialog: null,
+        base:null,
         fullSize: false,
 
         postCreate: function () {
+            this.inherited(arguments);
             this.configuration = new Configuration();
             this.configuration.load().then(lang.hitch(this, "_onConfigured")).otherwise(function (e) {
                 alert("error");
                 console.log(e.message, e.stack)
             });
         },
-        _createOpener: function () {
-            var opener = new SingleEditorTabOpener();
-            opener.tabContainer = this.tabContainer;
-            // TODO editorFactory needs to be configurable
-            opener.editorFactory = createEditorFactory();
-            opener.confirmDialog = this.confirmDialog;
-            opener.controllerConfig = {
-                plainValueFactory: lang.hitch(this, "createPlainValue"), // make plainValueFactory configurable
-                actionClasses: [Save, Delete, Preview] // TODO actionClasses don't work. use actionFactory
-            }
-
-            opener.configuration=this.configuration;
-            opener.ctx = this.ctx;
-            opener.init();
-            return opener;
-        },
         _onConfigured: function () {
 
             var pageTreeStore =new JsonRest({target:"http://localhost:8080/tree/",idProperty:"id"});
 
             var templateStore = this.configuration.templateStore;
-
-            var templateConverter = this.configuration.templateConverter;
-            this.ctx = new Context();
-            var opener = this._createOpener();
-            this.ctx.opener = opener;
-            this.ctx.opener.editorFactory.addConverterForid(templateConverter, "templateConverter");
 
             this.schemaRegistry = new SchemaRegistry();
 
@@ -91,26 +78,32 @@ define([
             this.schemaRegistry.registerStore("/template", templateStore);
             this.loadTemplateSchema();
 
-            this.ctx.storeRegistry = new AtemStoreRegistry();
-            this.ctx.storeRegistry.register("/pagetree", pageTreeStore);
-            this.ctx.storeRegistry.register("/template", templateStore);
+            var storeRegistry = new AtemStoreRegistry();
+            storeRegistry.register("/pagetree", pageTreeStore);
+            storeRegistry.register("/template", templateStore);
             var pageStore = this.configuration.pageStore;
-            this.ctx.storeRegistry.register("/page", pageStore);
+            storeRegistry.register("/page", pageStore);
             aspect.around(templateStore, "put", lang.hitch(this, "onTemplateUpdated"));
             // TODO should be published by controller along with oldUrl/oldparentId to implement moving in tree.
             aspect.around(pageStore, "put", lang.hitch(this, "onPageUpdated"));
             aspect.around(pageStore, "remove", lang.hitch(this, "onPageDeleted"));
+
+
+
+
+
+            // TODO this should not be the gform context but a sepearate instance with different features
+            this.ctx = new Context();
             this.ctx.schemaRegistry = this.schemaRegistry;
+            this.ctx.storeRegistry = storeRegistry;
 
-            this.gridController.configure(this.ctx, this.configuration);
 
+            var borderContainer=new BorderContainerFactory().create(this.ctx,main);
+            borderContainer.set("style",{"width":"100%","height":"100%"});
 
-            this.previewer.pageStore=pageStore;
-            this.previewer.renderer = new Renderer();
-            this.previewer.renderer.templateStore = templateStore;
-            this.previewer.renderer.pageStore = pageStore;
-            this.previewer.renderer.templateToSchemaTransformer = templateToSchemaTransformer;
-
+            borderContainer.placeAt(this.domNode);
+            borderContainer.startup();
+            borderContainer.resize();
             window.appController = this;
 
 
@@ -147,25 +140,6 @@ define([
                 return result;
             }
         },
-        createPlainValue: function (schema) {
-            // TODO move to configuration
-            if (schema.id == "/cms/template") {
-                var attributes=[];
-                attributes.push({code:"url","editor":"string",type:"string", required:true});
-                attributes.push({code:"identifier","editor":"string",type:"string", required:false});
-                attributes.push({code:"template","editor":"string",type:"string", required:false});
-
-                var group={editor:"listpane",attributes:attributes};
-
-                var template = json.parse(templateStub);
-                var conf = this.configuration.templateStore;
-                template.attributes.push({code: conf.idProperty, "type": conf.idType, "editor": conf.idType, "visible": false});
-                template.group=group;
-                return template;
-            } else {
-                return {template:  schema[this.configuration.templateStore.idProperty]}
-            }
-        },
         refreshPreview: function () {
             this.previewer.refresh();
         },
@@ -187,8 +161,8 @@ define([
             }
         },
         showTemplate: function () {
-            var selectedTemplate = this.gridController.getSelectedTemplate();
-            this.ctx.opener.openSingle({url: "/template",id: selectedTemplate, schemaUrl: "/template"});
+            //var selectedTemplate = this.gridController.getSelectedTemplate();
+            //this.ctx.opener.openSingle({url: "/template",id: selectedTemplate, schemaUrl: "/template"});
         },
         loadTemplateSchema: function () {
             var generator = new SchemaGenerator();

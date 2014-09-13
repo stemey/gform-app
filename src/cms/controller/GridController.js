@@ -57,40 +57,13 @@ define([
             this.configuration=configuration;
             this.createTemplateGrid();
             this.createPageGrid();
-            this.templateGrid.select.row.connect(this.templateGrid.select.row, "onSelected", lang.hitch(this, "templateSelected"));
             this.tabContainer.addChild(this.templateGrid);
 
-        },
-        templateSelected: function (e) {
-          topic.publish("/template/focus", {id: e.id, source:this})
         },
         onPageFocus: function(evt) {
           if (evt.source!=this) {
             // select in tree??
           }
-        },
-        nodeClicked: function (node) {
-            if (node.id) {
-                topic.publish("/page/focus", {id: node.id, source:this, template:node.template});
-            }
-        },
-        getSelectedTemplate: function () {
-            // TODO should be unnecessary
-            var selectedArray = this.templateGrid.select.row.getSelected();
-            if (selectedArray.length == 1) {
-                return selectedArray[0];
-            } else {
-                return null;
-            }
-        },
-        getSelectedPage: function () {
-            // TODO should be unnecessary
-            var selectedArray = this.pageGrid.select.row.getSelected();
-            if (selectedArray.length == 1) {
-                return selectedArray[0];
-            } else {
-                return null;
-            }
         }
     });
 

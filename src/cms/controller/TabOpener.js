@@ -5,7 +5,6 @@ define(['dojo/_base/declare',
 
 
     return declare([SingleEditorTabOpener], {
-        configuration:null,
         init: function () {
             topic.subscribe("/template/focus", lang.hitch(this, "onTemplateFocus"));
             topic.subscribe("/page/focus", lang.hitch(this, "onPageFocus"));
@@ -23,7 +22,7 @@ define(['dojo/_base/declare',
         },
         tabSelected: function (page) {
             if (page.editor.meta && page.editor.meta.id != "/cms/template") {
-                var id = page.editor.getPlainValue()[this.configuration.pageStore.idProperty];
+                var id = page.editor.getPlainValue()[this.ctx.getStore("/page").idProperty];
                 var template = page.editor.getPlainValue()["template"];
                 if (id) {
                     // already loaded!!
