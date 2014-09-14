@@ -10,6 +10,7 @@ define([
             var container = new BorderContainer();
             this.addChildren(ctx, container, config, function(child, cfg) {
                 child.region=cfg.region;
+                child.splitter = cfg.splitter === true;
             });
             return container;
         }

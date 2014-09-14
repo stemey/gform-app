@@ -145,7 +145,8 @@ define([
         },
         followPreviewLink: function (url) {
             // TODO move to previewer
-            this.previewer.displayByUrl(url);
+            topic.publish("/page/navigate",{url: url})
+            //this.previewer.displayByUrl(url);
         },
         createNewTemplate: function () {
             var me = this;

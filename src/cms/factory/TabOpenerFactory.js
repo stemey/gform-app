@@ -5,8 +5,9 @@ define([
     '../controller/TabOpener',
     'dijit/layout/TabContainer',
     "dojo/_base/declare",
-    "../createBuilderEditorFactory"
-], function (registry, Context, lang, TabOpener, TabContainer, declare, createBuilderEditorFactory) {
+    "../createBuilderEditorFactory",
+    "dojo/text!../schema/templateStub.json"
+], function (registry, Context, lang, TabOpener, TabContainer, declare, createBuilderEditorFactory, templateStub) {
 
 
     return declare([], {
@@ -53,20 +54,22 @@ define([
 
                 var group = {editor: "listpane", attributes: attributes};
 
-                var template = json.parse(templateStub);
-                var conf = this.configuration.templateStore;
+                var template = JSON.parse(templateStub);
+                var conf = this.templateStore;
                 template.attributes.push({code: conf.idProperty, "type": conf.idType, "editor": conf.idType, "visible": false});
                 template.group = group;
                 return template;
             } else {
-                return {template: schema[this.configuration.templateStore.idProperty]}
+                return {template: schema[this.templateStore.idProperty]}
             }
         },
         create: function (ctx, config) {
 
+            this.templateStore = ctx.getStore("/template");
             var props = {};
             props.region = config.region;
-            props.style = {display:"block", splitter:true};
+            props.splitter=true;
+            props.style={};
             props.style.width = config.width;
             var tabContainer = new TabContainer(props);
             //tabContainer.set("style", {height: "100%", width: "40%"});

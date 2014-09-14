@@ -32,7 +32,8 @@ define([
             var nodeClicked = function (node) {
                 if (node.id) {
                     try {
-                    topic.publish("/page/focus", {id: node.id, source:this, template:node.template});
+                        var template = node.template || null;
+                    topic.publish("/page/focus", {id: node.id, source:this, template: template});
                     } catch (e) {
                         console.log(e.stack);
                     }

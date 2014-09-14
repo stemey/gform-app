@@ -7,7 +7,12 @@ define([
 
     return [
         {
+            "region":"top",
+            "factoryId":"cms/factory/ToolbarFactory"
+        },
+        {
             "region":"left",
+            "splitter": true,
             "factoryId":"cms/factory/TabFactory",
             "children": [
                 {
@@ -33,12 +38,14 @@ define([
         },
         {
             "region":"center",
-            "factoryId":"cms/factory/PreviewerFactory"
+            "factoryId":"cms/factory/PreviewerFactory",
+            "splitter": true
         },
         {
             "width":"40%",
             "region":"right",
-            "factoryId":"cms/factory/TabOpenerFactory"
+            "factoryId":"cms/factory/TabOpenerFactory",
+            "splitter": true
         }
     ]
 

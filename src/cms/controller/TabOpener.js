@@ -9,6 +9,7 @@ define(['dojo/_base/declare',
             topic.subscribe("/template/focus", lang.hitch(this, "onTemplateFocus"));
             topic.subscribe("/page/focus", lang.hitch(this, "onPageFocus"));
             topic.subscribe(this.tabContainer.id + "-selectChild", lang.hitch(this, "tabSelected"));
+            topic.subscribe("/new", lang.hitch(this, "onNew"));
         },
         onPageFocus: function (evt) {
             if (evt.source!=this) {
@@ -19,6 +20,9 @@ define(['dojo/_base/declare',
             if (evt.source!=this) {
                 this.openSingle({url: "/template",id:evt.id, schemaUrl: "/template"});
             }
+        },
+        onNew: function(evt) {
+            this.createSingle({url: evt.url, schemaUrl: evt.schemaUrl});
         },
         tabSelected: function (page) {
             if (page.editor.meta && page.editor.meta.id != "/cms/template") {
