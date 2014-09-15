@@ -1,4 +1,5 @@
 define([
+    './ToggleSizeFactory',
     '../controller/tools/Create',
     '../controller/tools/Brand',
     'dijit/form/Button',
@@ -8,7 +9,7 @@ define([
     "dojo/_base/declare",
     "dijit/layout/TabContainer",
     "dijit/layout/ContentPane"
-], function (Create, Brand, Button, Toolbar, ContentPane, topic, declare) {
+], function (ToggleSizeFactory, Create, Brand, Button, Toolbar, ContentPane, topic, declare) {
 
 
     return declare([], {
@@ -25,6 +26,9 @@ define([
                     topic.publish("/new", {schemaUrl: "/template", url:"/template"})
                 }}));
             toolbar.addChild(new Create({label:"create", store:ctx.getStore("/template")}));
+
+            var button = new ToggleSizeFactory().create(ctx,null);
+            toolbar.addChild(button);
             return pane;
 
         }

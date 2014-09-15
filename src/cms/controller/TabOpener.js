@@ -1,7 +1,9 @@
-define(['dojo/_base/declare',
+define(['dijit/MenuItem',
+    'dijit/registry',
+    'dojo/_base/declare',
     'dojo/_base/lang',
     'gform/opener/SingleEditorTabOpener',
-    'dojo/topic'], function (declare, lang, SingleEditorTabOpener, topic) {
+    'dojo/topic'], function (MenuItem, registry, declare, lang, SingleEditorTabOpener, topic) {
 
 
     return declare([SingleEditorTabOpener], {
@@ -10,18 +12,45 @@ define(['dojo/_base/declare',
             topic.subscribe("/page/focus", lang.hitch(this, "onPageFocus"));
             topic.subscribe(this.tabContainer.id + "-selectChild", lang.hitch(this, "tabSelected"));
             topic.subscribe("/new", lang.hitch(this, "onNew"));
+
+            var menu = registry.byId(this.tabContainer.id + "_tablist_Menu");
+
+            var me = this;
+            menu.addChild(
+                new MenuItem({
+                    label: "Alle Schließen",
+                    ownerDocument: this.tabContainer.ownerDocument,
+                    dir: this.tabContainer.dir,
+                    lang: this.tabContainer.lang,
+                    textDir: this.tabContainer.textDir,
+                    onClick: function (evt) {
+                        me.closeTabs();
+                    }
+                })
+            );
         },
         onPageFocus: function (evt) {
-            if (evt.source!=this) {
+            if (evt.source != this) {
                 this.openSingle({url: "/page", id: evt.id, schemaUrl: "/template/" + evt.template});
             }
         },
         onTemplateFocus: function (evt) {
-            if (evt.source!=this) {
-                this.openSingle({url: "/template",id:evt.id, schemaUrl: "/template"});
+            if (evt.source != this) {
+                this.openSingle({url: "/template", id: evt.id, schemaUrl: "/template"});
             }
         },
-        onNew: function(evt) {
+        closeTabs: function () {
+            var closeables = [];
+            this.tabContainer.getChildren().forEach(function (tab) {
+                if (!tab.editor.hasChanged()) {
+                    closeables.push(tab);
+                }
+            });
+            closeables.forEach(function (tab) {
+                this.tabContainer.closeChild(tab);
+            }, this);
+        },
+        onNew: function (evt) {
             this.createSingle({url: evt.url, schemaUrl: evt.schemaUrl});
         },
         tabSelected: function (page) {

@@ -1,5 +1,5 @@
 define([
-    'dijit/layout/BorderContainer',
+    '../controller/BorderContainer',
     './ContainerFactory',
     "dojo/_base/declare"
 ], function (BorderContainer, ContainerFactory, declare) {
