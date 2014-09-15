@@ -12,6 +12,7 @@ define([
                 child.region=cfg.region;
                 child.splitter = cfg.splitter === true;
             });
+            container.resize();
             return container;
         }
     });

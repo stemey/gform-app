@@ -8,7 +8,24 @@ define([
     return [
         {
             "region":"top",
-            "factoryId":"cms/factory/ToolbarFactory"
+            "factoryId":"cms/factory/ToolbarFactory",
+            "children": [
+                {
+                    "factoryId":"cms/factory/BrandFactory",
+                    "label":"mini cms"
+                },
+                {
+                    "factoryId":"cms/factory/CreateFactory",
+                    "storeId":"/template",
+                    "label":"+ page"
+                },
+                {
+                    "factoryId":"cms/factory/CreateFactory",
+                    "url":"/template",
+                    "schemaUrl":"/template",
+                    "label":"+ template"
+                }
+            ]
         },
         {
             "region":"left",
