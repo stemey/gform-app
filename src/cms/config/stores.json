@@ -1,0 +1,8 @@
+[
+    {
+        "factoryId":"cms/factory/StoreFactory",
+        "name":"/pagetree",
+        "target":"http://localhost:8080/tree/",
+        "idProperty":"id    "
+    }
+]

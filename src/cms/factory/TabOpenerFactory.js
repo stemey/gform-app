@@ -76,7 +76,7 @@ define([
 
 
             var opener = this._createOpener(tabContainer, ctx);
-            var store = ctx.getStore(config.storeId);
+            //var store = ctx.getStore(config.storeId);
 
 
             return tabContainer;

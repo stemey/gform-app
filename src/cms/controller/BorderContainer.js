@@ -3,11 +3,8 @@ define([
     'dojo/_base/lang',
     'dojo/topic',
     'dojo/dom-geometry',
-    "dojo/_base/declare",
-    "dijit/_WidgetBase",
-    "dijit/_TemplatedMixin",
-    "dijit/_WidgetsInTemplateMixin"
-], function (BorderContainer, lang, topic, domGeometry, declare, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin) {
+    "dojo/_base/declare"
+], function (BorderContainer, lang, topic, domGeometry, declare) {
 
 
     return declare([ BorderContainer], {

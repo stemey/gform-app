@@ -1,4 +1,5 @@
 define([
+    '../factory/StoreRegistryFactory',
     'dojox/mvc/_atBindingExtension',
     '../factory/BorderContainerFactory',
     '../factory/PreviewerFactory',
@@ -39,11 +40,10 @@ define([
     "dijit/layout/TabContainer",
     "dijit/layout/ContentPane",
     "gform/controller/ConfirmDialog",
-    "./GridController",
     "dijit/Toolbar",
     "dijit/form/Button",
     "gform/controller/ConfirmDialog"
-], function (atBindingExtension, BorderContainerFactory, PreviewerFactory, TabOpenerFactory, TabContainer, TabFactory, JsonRest, AtemStoreRegistry, domGeometry, ToggleButton, TemplateSchemaTransformer, when, topic, declare, lang, aspect, json, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, template, Configuration, main, templateSchema, Store, createEditorFactory, SingleEditorTabOpener, Context, SchemaGenerator, SchemaRegistry, templateStub, Save, Delete, Preview, Renderer) {
+], function (StoreRegistryFactory, atBindingExtension, BorderContainerFactory, PreviewerFactory, TabOpenerFactory, TabContainer, TabFactory, JsonRest, AtemStoreRegistry, domGeometry, ToggleButton, TemplateSchemaTransformer, when, topic, declare, lang, aspect, json, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, template, Configuration, main, templateSchema, Store, createEditorFactory, SingleEditorTabOpener, Context, SchemaGenerator, SchemaRegistry, templateStub, Save, Delete, Preview, Renderer) {
 
 
     return declare([ _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
@@ -58,31 +58,27 @@ define([
         postCreate: function () {
             this.inherited(arguments);
             this.configuration = new Configuration();
-            this.configuration.load().then(lang.hitch(this, "_onConfigured")).otherwise(function (e) {
-                alert("error");
-                console.log(e.message, e.stack)
-            });
+
+
+            new StoreRegistryFactory().create(main.storeRegistry).then(lang.hitch(this, "_onConfigured"));
+
+
         },
-        _onConfigured: function () {
+        _onConfigured: function (storeRegistry) {
 
-            var pageTreeStore =new JsonRest({target:"http://localhost:8080/tree/",idProperty:"id"});
 
-            var templateStore = this.configuration.templateStore;
 
             this.schemaRegistry = new SchemaRegistry();
 
-            var templateToSchemaTransformer = new TemplateSchemaTransformer(this.configuration.templateStore);
+            var templateStore = storeRegistry.get("/template");
+            var templateToSchemaTransformer = new TemplateSchemaTransformer(templateStore);
             this.schemaRegistry.pageTransformer = templateToSchemaTransformer
-            this.schemaRegistry.templateTransformer = new TemplateSchemaTransformer(templateStore);
+            this.schemaRegistry.templateTransformer =templateToSchemaTransformer;
 
             this.schemaRegistry.registerStore("/template", templateStore);
             this.loadTemplateSchema();
 
-            var storeRegistry = new AtemStoreRegistry();
-            storeRegistry.register("/pagetree", pageTreeStore);
-            storeRegistry.register("/template", templateStore);
-            var pageStore = this.configuration.pageStore;
-            storeRegistry.register("/page", pageStore);
+            var pageStore = storeRegistry.get("/page");
             aspect.around(templateStore, "put", lang.hitch(this, "onTemplateUpdated"));
             // TODO should be published by controller along with oldUrl/oldparentId to implement moving in tree.
             aspect.around(pageStore, "put", lang.hitch(this, "onPageUpdated"));
@@ -98,12 +94,10 @@ define([
             this.ctx.storeRegistry = storeRegistry;
 
 
-            var borderContainer=new BorderContainerFactory().create(this.ctx,main);
-            borderContainer.set("style",{"width":"100%","height":"100%"});
+            var borderContainer=new BorderContainerFactory().create(this.ctx,main.views);
 
             borderContainer.placeAt(this.domNode);
             borderContainer.startup();
-            borderContainer.resize();
             window.appController = this;
 
 
@@ -146,24 +140,6 @@ define([
         followPreviewLink: function (url) {
             // TODO move to previewer
             topic.publish("/page/navigate",{url: url})
-            //this.previewer.displayByUrl(url);
-        },
-        createNewTemplate: function () {
-            var me = this;
-            this.ctx.opener.createSingle({url: "/template", schemaUrl: "/template"});//, callback:callback});
-        },
-        createNewPage: function () {
-            // TODO template should be selectable in select next to create button
-            var selectedTemplate = this.gridController.getSelectedTemplate();
-            if (!selectedTemplate) {
-                alert("select a template");
-            } else {
-                this.ctx.opener.createSingle({url: "http://localhost:8080/entity/base/", schemaUrl: "/template/" + selectedTemplate, callback: callback});
-            }
-        },
-        showTemplate: function () {
-            //var selectedTemplate = this.gridController.getSelectedTemplate();
-            //this.ctx.opener.openSingle({url: "/template",id: selectedTemplate, schemaUrl: "/template"});
         },
         loadTemplateSchema: function () {
             var generator = new SchemaGenerator();
@@ -176,8 +152,8 @@ define([
             var attributes = meta.attributes[0].groups[0].attributes[2];
             var baseSchema = json.parse(templateSchema)
             var idAttribute = {};
-            idAttribute["type"] = this.configuration.templateStore.idType;
-            idAttribute["code"] = this.configuration.templateStore.idProperty;
+            idAttribute["type"] = "string";//this.configuration.templateStore.idType;
+            idAttribute["code"] = "code";//this.configuration.templateStore.idProperty;
             baseSchema.groups[0].attributes.push(idAttribute);
 
             var group = meta.attributes[0];

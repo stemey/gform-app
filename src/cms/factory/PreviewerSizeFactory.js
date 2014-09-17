@@ -23,7 +23,7 @@ define([
             menu.addChild(menuItem1);
 
 
-            menu.startup();
+            //menu.startup();
 
             var button = new ComboButton({
                 label: "size",

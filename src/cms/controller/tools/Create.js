@@ -16,7 +16,7 @@ define([
         store:null,
         postCreate: function () {
             this.inherited(arguments);
-            this.button.set("label", this.label);
+            //this.button.set("label", this.label);
             this.select.set("labelAttr","name");
             this.select.setStore(new ObjectStore(this.store));
         },

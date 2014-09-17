@@ -26,8 +26,7 @@ define([
             //		the properties of the store (e.g.: target/url and idProperty)
             var cached = this.id2store[id];
             if (!cached) {
-                cached = new this.StoreClass(props);
-                this.id2store[id] = cached;
+                throw new Error("store "+id+ " does not exist");
             }
             return cached;
         },
