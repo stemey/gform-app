@@ -5,11 +5,12 @@ define([
     "dojo/_base/declare",
     "dijit/_WidgetBase",
     "dijit/_TemplatedMixin",
-    "dojo/text!./create.html"
+    "dojo/text!./create.html",
+    "dijit/form/Select"
 ], function (topic, ObjectStore, WidgetsInTemplateMixin, declare, _WidgetBase, _TemplatedMixin, template) {
 
 
-    return declare("cms.Toolbar", [ _WidgetBase, _TemplatedMixin, WidgetsInTemplateMixin], {
+    return declare("cms.Create", [ _WidgetBase, _TemplatedMixin, WidgetsInTemplateMixin], {
         templateString: template,
         select: null,
         button: null,

@@ -61,6 +61,10 @@ define([
                             "url": "/template",
                             "schemaUrl": "/template",
                             "label": "+ template"
+                        },
+                        {
+                            "factoryId": "cms/factory/ToggleSizeFactory",
+                            "label": "full size"
                         }
                     ]
                 },
