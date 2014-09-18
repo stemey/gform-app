@@ -37,6 +37,11 @@ define([
                     }
                 ]
             },
+            "schemaRegistry":{
+                "factoryId":"cms/factory/schema/SchemaRegistryFactory",
+                "registryClass":"cms/SchemaRegistry",
+                "storeId":"/template"
+            },
             "views": [
                 {
                     "region": "top",

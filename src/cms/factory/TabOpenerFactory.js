@@ -12,7 +12,7 @@ define([
 
     return declare([], {
         _createOpener: function (tabContainer, ectx) {
-            var ctx = ectx;//new Context();
+            var ctx = ectx.context;//new Context();
             //lang.mixin(ctx, ectx);
             var opener = new TabOpener();
             opener.tabContainer = tabContainer;

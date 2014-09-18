@@ -1,4 +1,6 @@
 define([
+    '../factory/FactoryContext',
+    '../factory/schema/SchemaRegistryFactory',
     '../factory/StoreRegistryFactory',
     'dojox/mvc/_atBindingExtension',
     '../factory/BorderContainerFactory',
@@ -43,7 +45,7 @@ define([
     "dijit/Toolbar",
     "dijit/form/Button",
     "gform/controller/ConfirmDialog"
-], function (StoreRegistryFactory, atBindingExtension, BorderContainerFactory, PreviewerFactory, TabOpenerFactory, TabContainer, TabFactory, JsonRest, AtemStoreRegistry, domGeometry, ToggleButton, TemplateSchemaTransformer, when, topic, declare, lang, aspect, json, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, template, Configuration, main, templateSchema, Store, createEditorFactory, SingleEditorTabOpener, Context, SchemaGenerator, SchemaRegistry, templateStub, Save, Delete, Preview, Renderer) {
+], function (FactoryContext, SchemaRegistryFactory, StoreRegistryFactory, atBindingExtension, BorderContainerFactory, PreviewerFactory, TabOpenerFactory, TabContainer, TabFactory, JsonRest, AtemStoreRegistry, domGeometry, ToggleButton, TemplateSchemaTransformer, when, topic, declare, lang, aspect, json, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, template, Configuration, main, templateSchema, Store, createEditorFactory, SingleEditorTabOpener, Context, SchemaGenerator, SchemaRegistry, templateStub, Save, Delete, Preview, Renderer) {
 
 
     return declare([ _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
@@ -52,7 +54,7 @@ define([
         tabContainer: null,
         //gridController: null,
         confirmDialog: null,
-        base:null,
+        base: null,
         fullSize: false,
 
         postCreate: function () {
@@ -66,35 +68,29 @@ define([
         },
         _onConfigured: function (storeRegistry) {
 
-
-
-            this.schemaRegistry = new SchemaRegistry();
-
-            var templateStore = storeRegistry.get("/template");
-            var templateToSchemaTransformer = new TemplateSchemaTransformer(templateStore);
-            this.schemaRegistry.pageTransformer = templateToSchemaTransformer
-            this.schemaRegistry.templateTransformer =templateToSchemaTransformer;
-
-            this.schemaRegistry.registerStore("/template", templateStore);
-            this.loadTemplateSchema();
-
+            var ctx = new FactoryContext({storeRegistry:storeRegistry});
+            ctx.context = new Context();
+            ctx.context.storeRegistry=storeRegistry;
             var pageStore = storeRegistry.get("/page");
+            var templateStore = storeRegistry.get("/template");
             aspect.around(templateStore, "put", lang.hitch(this, "onTemplateUpdated"));
             // TODO should be published by controller along with oldUrl/oldparentId to implement moving in tree.
             aspect.around(pageStore, "put", lang.hitch(this, "onPageUpdated"));
             aspect.around(pageStore, "remove", lang.hitch(this, "onPageDeleted"));
 
+            var p = new SchemaRegistryFactory().create(ctx,main.schemaRegistry);
+            p.then(lang.hitch(this, "_onRegistry",ctx));
 
-
-
+        },
+        _onRegistry: function (ctx, registry) {
+            this.schemaRegistry = registry;
+            ctx.context.schemaRegistry=registry;
+            this.loadTemplateSchema();
 
             // TODO this should not be the gform context but a sepearate instance with different features
-            this.ctx = new Context();
-            this.ctx.schemaRegistry = this.schemaRegistry;
-            this.ctx.storeRegistry = storeRegistry;
 
 
-            var borderContainer=new BorderContainerFactory().create(this.ctx,main.views);
+            var borderContainer = new BorderContainerFactory().create(ctx, main.views);
 
             borderContainer.placeAt(this.domNode);
             borderContainer.startup();
@@ -108,9 +104,9 @@ define([
             var me = this;
             return function (entity) {
                 var result = superCall.apply(this, arguments);
-                result.then(function() {
-                  //me.refreshPreview();
-                  topic.publish("/page/updated",{entity:entity})
+                result.then(function () {
+                    //me.refreshPreview();
+                    topic.publish("/page/updated", {entity: entity})
                 });
                 return result;
             }
@@ -121,7 +117,7 @@ define([
             return function (entity) {
                 var result = superCall.apply(this, arguments);
                 //me.refreshPreview();
-                topic.publish("/page/deleted",{entity:entity})
+                topic.publish("/page/deleted", {entity: entity})
                 return result;
             }
         },
@@ -139,7 +135,7 @@ define([
         },
         followPreviewLink: function (url) {
             // TODO move to previewer
-            topic.publish("/page/navigate",{url: url})
+            topic.publish("/page/navigate", {url: url})
         },
         loadTemplateSchema: function () {
             var generator = new SchemaGenerator();
