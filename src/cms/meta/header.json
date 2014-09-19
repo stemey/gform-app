@@ -1,0 +1,34 @@
+{
+    "label": "general",
+    "attributes": [
+        {
+            "$ref": "../../gform/schema/attributes/properties/code.json"
+        },
+        {
+            "$ref": "../../gform/schema/attributes/properties/label.json"
+        },
+        {
+            "$ref": "../../gform/schema/attributes/properties/description.json"
+        },
+        {
+            "$ref": "../../gform/schema/attributes/properties/required.json"
+        },
+        {
+            "code": "disabled",
+            "type": "boolean"
+        },
+        {
+            "code": "visible",
+            "type": "boolean"
+        },
+        {
+            "code": "mock",
+            "type": "boolean",
+            "description":"Attribute is only for preview. <br> Data will be provided by another source in production environment"
+        },
+        {
+            "$ref": "../../gform/schema/attributes/properties/converter.json"
+        }
+
+    ]
+}

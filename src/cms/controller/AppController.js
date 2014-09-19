@@ -32,7 +32,6 @@ define([
 
         },
         followPreviewLink: function (url) {
-            // TODO move to previewer
             topic.publish("/page/navigate", {url: url})
         }
     });

@@ -44,6 +44,7 @@ define([
 
             idAttribute["type"] = store.idType || "string";
             idAttribute["code"] = store.idProperty;
+            idAttribute["disabled"]=true;
             baseSchema.groups[0].attributes.push(idAttribute);
 
             var group = meta.attributes[0];

@@ -12,7 +12,7 @@ define([
         create: function (config) {
             var me =this;
             return load([config.storeClass], function (storeClass) {
-                var store = new storeClass({name: config.name, target: config.target, idProperty: config.idProperty});
+                var store = new storeClass({name: config.name, target: config.target, idProperty: config.idProperty, idType: config.idType});
                 aspect.around(store, "put", lang.hitch(me, "onPageUpdated"));
                 aspect.around(store, "remove", lang.hitch(me, "onPageDeleted"));
 
@@ -20,7 +20,6 @@ define([
             });
         },
         onPageUpdated: function (superCall) {
-            // TODO use generic topic message
             var me = this;
             return function (entity) {
                 var result = superCall.apply(this, arguments);
@@ -31,7 +30,6 @@ define([
             }
         },
         onPageDeleted: function (superCall) {
-            // TODO use generic topic message
             var me = this;
             return function (entity) {
                 var result = superCall.apply(this, arguments);

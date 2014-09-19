@@ -12,6 +12,7 @@ define([
         loadTemplateSchema: function () {
             var t = this.createTransformer();
             t.replace("gform/schema/attributes.json","cms/meta/attributes.json");
+            t.replace("gform/schema/attributes/header.json","cms/meta/header.json");
             return this.load(JSON.parse(group), "gform/schema/", t);
         }
 

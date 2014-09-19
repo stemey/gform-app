@@ -49,7 +49,7 @@ define([
             if (schema.id == "/cms/template") {
                 var attributes = [];
                 attributes.push({code: "url", "editor": "string", type: "string", required: true});
-                attributes.push({code: "identifier", "editor": "string", type: "string", required: false});
+                attributes.push({code: "identifier", "editor": "string", type: "string", required: false, disabled:true});
                 attributes.push({code: "template", "editor": "string", type: "string", required: false});
 
                 var group = {editor: "listpane", attributes: attributes};
