@@ -8,6 +8,11 @@ define([
     "dojo/text!cms/schema/template.json"
 ], function (lang, when, SchemaGenerator, TemplateSchemaTransformer, load, declare, templateSchema) {
 
+    /**
+     * store to store our schemas.
+     * schema that provide a meta schema for the store.
+     *
+     */
 
     return declare([], {
         create: function (ctx, config) {
@@ -20,24 +25,25 @@ define([
                 var templateToSchemaTransformer = new TemplateSchemaTransformer(store);
                 registry.pageTransformer = templateToSchemaTransformer
                 registry.templateTransformer =templateToSchemaTransformer;
-                me.loadTemplateSchema(registry);
+                me.loadTemplateSchema(store,registry);
 
                 return registry;
             });
         },
-        loadTemplateSchema: function (registry) {
+        loadTemplateSchema: function (store, registry) {
             var generator = new SchemaGenerator();
             var promise = generator.loadTemplateSchema();
-            when(promise).then(lang.hitch(this, "onTemplateSchemaLoaded", registry));
+            when(promise).then(lang.hitch(this, "onTemplateSchemaLoaded", store, registry));
         },
-        onTemplateSchemaLoaded: function (registry, meta) {
+        onTemplateSchemaLoaded: function (store, registry, meta) {
             meta.store = "/schema";
             // get attributes of root.listpane
             var attributes = meta.attributes[0].groups[0].attributes[2];
             var baseSchema = JSON.parse(templateSchema)
             var idAttribute = {};
-            idAttribute["type"] = "string";//this.configuration.templateStore.idType;
-            idAttribute["code"] = "code";//this.configuration.templateStore.idProperty;
+
+            idAttribute["type"] = store.idType || "string";
+            idAttribute["code"] = store.idProperty;
             baseSchema.groups[0].attributes.push(idAttribute);
 
             var group = meta.attributes[0];
