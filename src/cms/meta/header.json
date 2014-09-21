@@ -18,10 +18,6 @@
             "type": "boolean"
         },
         {
-            "code": "visible",
-            "type": "boolean"
-        },
-        {
             "code": "mock",
             "type": "boolean",
             "description":"Attribute is only for preview. <br> Data will be provided by another source in production environment"

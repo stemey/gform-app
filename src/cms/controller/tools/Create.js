@@ -1,4 +1,5 @@
 define([
+    'dojo/_base/lang',
     'dojo/topic',
     'dojo/data/ObjectStore',
     'dijit/_WidgetsInTemplateMixin',
@@ -7,7 +8,7 @@ define([
     "dijit/_TemplatedMixin",
     "dojo/text!./create.html",
     "dijit/form/Select"
-], function (topic, ObjectStore, WidgetsInTemplateMixin, declare, _WidgetBase, _TemplatedMixin, template) {
+], function (lang, topic, ObjectStore, WidgetsInTemplateMixin, declare, _WidgetBase, _TemplatedMixin, template) {
 
 
     return declare("cms.Create", [ _WidgetBase, _TemplatedMixin, WidgetsInTemplateMixin], {
@@ -19,6 +20,12 @@ define([
             this.inherited(arguments);
             //this.button.set("label", this.label);
             this.select.set("labelAttr","name");
+            this.select.setStore(new ObjectStore(this.store));
+            topic.subscribe("/template/added", lang.hitch(this,"updatedStore"));
+            topic.subscribe("/template/updated", lang.hitch(this,"updatedStore"));
+            topic.subscribe("/template/deleted", lang.hitch(this,"updatedStore"));
+        },
+        updatedStore: function() {
             this.select.setStore(new ObjectStore(this.store));
         },
         click: function () {
