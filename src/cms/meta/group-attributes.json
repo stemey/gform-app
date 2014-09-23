@@ -1,0 +1,11 @@
+{
+
+    "code": "attributes",
+    "description":"An array of attributes.",
+    "type": "array",
+    "element": {
+        "type": "string",
+        "editor": "attribute-ref",
+        "required": "true"
+    }
+}

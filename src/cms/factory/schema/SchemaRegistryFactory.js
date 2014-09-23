@@ -38,7 +38,7 @@ define([
         onTemplateSchemaLoaded: function (store, registry, meta) {
             meta.store = "/schema";
             // get attributes of root.listpane
-            var attributes = meta.attributes[0].groups[0].attributes[2];
+            //var attributes = meta.attributes[0].groups[0].attributes[2];
             var baseSchema = JSON.parse(templateSchema)
             var idAttribute = {};
 

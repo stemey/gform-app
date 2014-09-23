@@ -1,10 +1,13 @@
 define([
+    'gform/special/formbuilder/FormValidator',
+    'gform/special/formbuilder/AttributeRefFactory',
+    'gform/special/formbuilder/FormAttributeFactory',
     'gform/primitive/refConverter',
     'gform/primitive/nullablePrimitiveConverter',
     './meta/TemplateRefAttributeFactory',
     'cms/RequiredAttributes',
     'gform/createFullEditorFactory'
-], function (refConverter, converter, TemplateRefAttributeFactory, RequiredAttributes, createFullEditorFactory) {
+], function (FormValidator, AttributeRefFactory, FormAttributeFactory, refConverter, converter, TemplateRefAttributeFactory, RequiredAttributes, createFullEditorFactory) {
 
 
     return function () {
@@ -20,6 +23,11 @@ define([
         ef.addConverterForType(converter, "ref");
         ef.addConverterForType(converter, "multi-ref");
         ef.addConverterForid(refConverter, "refConverter");
+
+        ef.addAttributeFactory(new FormAttributeFactory({editorFactory: ef}));
+        ef.addAttributeFactory(new AttributeRefFactory({editorFactory: ef}));
+        ef.addCtrValidator("form",FormValidator);
+
 
         return ef;
     }

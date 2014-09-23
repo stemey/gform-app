@@ -15,7 +15,7 @@ define([
                 var store = new storeClass({name: config.name, target: config.target, idProperty: config.idProperty, idType: config.idType});
                 aspect.around(store, "put", lang.hitch(me, "onPageUpdated"));
                 aspect.around(store, "remove", lang.hitch(me, "onPageDeleted"));
-                aspect.around(store, "add", lang.hitch(me, "onPageAdded"));
+                //aspect.around(store, "add", lang.hitch(me, "onPageAdded"));
 
                 return store;
             });

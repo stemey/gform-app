@@ -36,7 +36,7 @@ define([
         templateStore: null,
         resolver: null,
         templateToSchemaTransformer: null,
-        findByUrl: function(url) {
+        findByUrl: function (url) {
             //var res =url.match(/page\/([^\/]+)/);
             //var store=pageStoreRegistry.get(template).get(res[1]);
             return this.pageStore.findByUrl(url);
@@ -64,7 +64,7 @@ define([
                 ctx.promises.push(p);
                 when(p).then(function (result) {
                     if (result.errors) {
-                        ctx.errors=ctx.errors.concat(result.errors);
+                        ctx.errors = ctx.errors.concat(result.errors);
                     } else {
 
                         ctx.page[idx] = result.page;
@@ -82,7 +82,7 @@ define([
                 ctx.promises.push(p);
                 when(p).then(function (data) {
                     if (data.errors) {
-                        ctx.errors=ctx.errors.concat(data.errors);
+                        ctx.errors = ctx.errors.concat(data.errors);
                     } else {
                         ctx.page[idx] = data.page;
                     }
@@ -97,7 +97,7 @@ define([
                 when(p).then(function (result) {
                     ctx.page[idx] = result.html;
                     if (result.errors) {
-                        ctx.errors=ctx.errors.concat(result.errors)
+                        ctx.errors = ctx.errors.concat(result.errors)
                     }
                 }).otherwise(function (e) {
                         ctx.errors.push({message: "error during rendering of " + value, error: e});
@@ -118,12 +118,12 @@ define([
                 Object.keys(attribute.template.partials).forEach(function (key) {
                     var url = attribute.template.partials[key];
                     console.log("render partial of template-ref " + key);
-                    var p = this.renderInternally("/page/"+url, ctx.page);
+                    var p = this.renderInternally("/page/" + url, ctx.page);
                     ctx.promises.push(p);
                     when(p).then(function (result) {
                         ctx.page[attribute.code][key] = result.html;
                         if (result.errors) {
-                            ctx.errors=ctx.errors.concat(result.errors);
+                            ctx.errors = ctx.errors.concat(result.errors);
                         }
                     }).otherwise(function (e) {
                             console.error("error during rendering " + e.stack);
@@ -141,11 +141,14 @@ define([
         },
         visit: function (attribute, value, goon, ctx) {
             var me = this;
-            if (attribute.editor == "template-ref") {
+            if (attribute.code === "template") {
+                // TODO make template property configurable
+                // nothing
+            } else if (attribute.editor == "template-ref") {
                 this.handleTemplateRef(attribute, value, goon, ctx);
             } else if (attribute.type == "ref" || attribute.type == "multi-ref") {
                 this.handlePageRef(attribute, value, ctx, attribute.code, attribute.code);
-            } else  {
+            } else {
                 if (metaHelper.isComplex(attribute)) {
                     ctx.page[attribute.code] = {};
                     if (attribute.type_code) {
@@ -197,8 +200,8 @@ define([
                     var resolved = cached;
                 } else {
                     this.resolver = new Resolver();
-                    this.resolver.baseUrl=this.templateStore.target;
-                    var resolved = this.resolver.resolve(template, "http://localhost:8080/schema/"+page.template);
+                    this.resolver.baseUrl = this.templateStore.target;
+                    var resolved = this.resolver.resolve(template, "http://localhost:8080/schema/" + page.template);
                     this.tmpls[template._id] = resolved;
                 }
                 templatePromise = new Deferred();
@@ -257,7 +260,7 @@ define([
             }
 
             when(me.findByUrl(pageUrl)).then(function (page) {
-                when(me.templateStore.findByUrl("/template/"+page.template)).then(function (template) {
+                when(me.templateStore.findByUrl("/template/" + page.template)).then(function (template) {
                     console.log("renderInternally p=" + page.url + "  t=" + template.name);
                     if (!checkPartial || template.partial) {
                         var includesPromise = me.renderIncludes(template, page);
@@ -292,7 +295,7 @@ define([
                                     when(p).then(function (result) {
                                         newPage[key] = result.html;
                                         if (result.errors) {
-                                            ctx.errors=ctx.errors.concat(result.errors);
+                                            ctx.errors = ctx.errors.concat(result.errors);
                                         }
                                     }).otherwise(function (e) {
                                             console.error("error during rendering " + e.stack);
@@ -318,9 +321,9 @@ define([
                                 }
                                 var sourceCode = outerTemplate ? outerTemplate.sourceCode : template.sourceCode;
                                 var html = me.renderTemplate(sourceCode, newPage, ctx.templates);
-                                renderPromise.resolve({html: html, errors:ctx.errors});
+                                renderPromise.resolve({html: html, errors: ctx.errors});
                             }).otherwise(function (e) {
-                                console.error("error during rendering " + e.stack);
+                                    console.error("error during rendering " + e.stack);
                                     error(ctx);
                                 });
                         }).otherwise(function (e) {
@@ -355,7 +358,7 @@ define([
             }
             console.log(" get TemplateAndData " + pageUrl);
             when(me.findByUrl(pageUrl)).then(function (page) {
-                when(me.templateStore.findByUrl("/template/"+page.template)).then(function (template) {
+                when(me.templateStore.findByUrl("/template/" + page.template)).then(function (template) {
                     var includesPromise = me.renderIncludes(template, page);
                     when(includesPromise).then(function (ctx) {
 
@@ -382,7 +385,7 @@ define([
             var me = this;
             var renderPromise = new Deferred();
             console.log("getData " + pageUrl);
-            when(me.findByUrl("/page/"+pageUrl)).then(function (page) {
+            when(me.findByUrl("/page/" + pageUrl)).then(function (page) {
                 renderPromise.resolve({page: page});
             }).otherwise(function (e) {
                     var errors = [
