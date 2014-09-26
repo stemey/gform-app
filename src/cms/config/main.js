@@ -22,8 +22,10 @@ define([
                         "factoryId": "cms/factory/StoreFactory",
                         "name": "/page",
                         "storeClass": "cms/util/JsonRest",
+                        "templateStore":"/template",
                         "idProperty": "identifier",
                         "idType": "string",
+                        "typeProperty":"template",
                         "target": "http://localhost:8080/entity/base/"
                     },
                     {
@@ -32,7 +34,8 @@ define([
                         "storeClass": "cms/util/JcrTemplateRest",
                         "idProperty": "code",
                         "idType": "string",
-                        "target": "http://localhost:8080/schema/"
+                        "target": "http://localhost:8080/schema/",
+                        "template":"/template"
 
                     }
                 ]
@@ -53,13 +56,13 @@ define([
                         },
                         {
                             "factoryId": "cms/factory/CreateFactory",
-                            "storeId": "/template",
+                            "storeId": "/page",
                             "label": "+"
                         },
                         {
                             "factoryId": "cms/factory/CreateFactory",
                             "url": "/template",
-                            "schemaUrl": "/template",
+                            "storeId": "/template",
                             "label": "+ template"
                         },
                         {

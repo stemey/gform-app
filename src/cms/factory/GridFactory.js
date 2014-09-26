@@ -31,7 +31,7 @@ define([
             ];
             var templateGrid = new Grid(props);
             var selected = function (e) {
-                topic.publish("/template/focus", {id: e.id, source: this})
+                topic.publish("/focus", {store: store.name,id: e.id,  source: this})
             }
             aspect.after(templateGrid, "startup", function() {
                 templateGrid.select.row.connect(templateGrid.select.row, "onSelected", selected);

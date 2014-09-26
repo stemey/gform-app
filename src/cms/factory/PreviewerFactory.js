@@ -13,8 +13,7 @@ define([
             var pageStore = ctx.getStore("/page");
             var templateStore = ctx.getStore("/template");
 
-            var previewer = new Previewer();
-            previewer.pageStore=pageStore;
+            var previewer = new Previewer({pageStore:pageStore});
             var renderer = new Renderer();
             renderer.templateStore = templateStore;
             renderer.pageStore = pageStore;

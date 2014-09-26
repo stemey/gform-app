@@ -22,15 +22,13 @@ define([
         },
         _onConfigured: function (storeRegistry) {
             var ctx = new FactoryContext({storeRegistry: storeRegistry});
-            ctx.context = new Context();
-            ctx.context.storeRegistry = storeRegistry;
             var p = new SchemaRegistryFactory().create(ctx, this.config.schemaRegistry);
             p.then(lang.hitch(this, "_onRegistry", ctx));
 
         },
         _onRegistry: function (ctx, registry) {
             this.schemaRegistry = registry;
-            ctx.context.schemaRegistry = registry;
+            ctx.schemaRegistry = registry;
             var borderContainer = new BorderContainerFactory().create(ctx, this.config.views);
             this.deferred.resolve(borderContainer);
 

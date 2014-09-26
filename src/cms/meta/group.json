@@ -1,22 +1,31 @@
 {
-    "attributes": [
-        {
-            "code": "group",
-            "type": "object",
-            "typeProperty": "editor",
-            "editor": "form",
-            "required": true,
-            "form": true,
-            "group": {
+    "code": "group",
+    "type": "object",
+    "typeProperty": "editor",
+    "editor": "form",
+    "required": true,
+    "form": true,
+    "group": {
+        "editor": "tab",
+        "groups": [
+            {
+                "label": "attributes",
                 "attributes": [
                     {
                         "code": "attributes",
                         "type": "array",
                         "required": true,
                         "uniqueProperties": ["code"],
-                        "typeProperty":"editor",
-                        "groups": {"$ref":"../../gform/schema/attributes.json"}
-                    },
+                        "typeProperty": "editor",
+                        "groups": {
+                            "$ref": "../../gform/schema/attributes.json"
+                        }
+                    }
+                ]
+            },
+            {
+                "label": "layout",
+                "attributes": [
                     {
                         "code": "group",
                         "label": "layout",
@@ -30,6 +39,7 @@
                     }
                 ]
             }
-        }
-    ]
+        ]
+    }
 }
+

@@ -7,11 +7,13 @@ define(['dijit/MenuItem',
 
 
     return declare([SingleEditorTabOpener], {
-        init: function () {
-            topic.subscribe("/template/focus", lang.hitch(this, "onTemplateFocus"));
-            topic.subscribe("/page/focus", lang.hitch(this, "onPageFocus"));
+        opening: false,
+        init: function() {
+            //topic.subscribe("/template/focus", lang.hitch(this, "onTemplateFocus"));
+            topic.subscribe("/focus", lang.hitch(this, "onPageFocus"));
             topic.subscribe(this.tabContainer.id + "-selectChild", lang.hitch(this, "tabSelected"));
             topic.subscribe("/new", lang.hitch(this, "onNew"));
+
 
             var menu = registry.byId(this.tabContainer.id + "_tablist_Menu");
 
@@ -29,16 +31,31 @@ define(['dijit/MenuItem',
                 })
             );
         },
+        openSingle: function (param) {
+            if (!this.opening) {
+                topic.publish("/focus", {store: param.url, id: param.id});
+            }
+            this.inherited(arguments);
+        },
         onPageFocus: function (evt) {
+            var me = this;
             if (evt.source != this) {
-                this.openSingle({url: "/page", id: evt.id, schemaUrl: "/template/" + evt.template});
+                this.ctx.getSchemaUrl(evt.store, evt.id).then(function (schemaUrl) {
+                    me.opening=true;
+                    try {
+                        // TODO rather use openMulti, so entity is not loaded twice
+                        me.openSingle({url: evt.store, id: evt.id, schemaUrl: schemaUrl});
+                    } finally {
+                        me.opening=false;
+                    }
+                });
             }
         },
-        onTemplateFocus: function (evt) {
-            if (evt.source != this) {
-                this.openSingle({url: "/template", id: evt.id, schemaUrl: "/template"});
-            }
-        },
+//        onTemplateFocus: function (evt) {
+//            if (evt.source != this) {
+//                this.openSingle({url: "/template", id: evt.id, schemaUrl: "/template"});
+//            }
+//        },
         closeTabs: function () {
             var closeables = [];
             this.tabContainer.getChildren().forEach(function (tab) {
@@ -51,17 +68,20 @@ define(['dijit/MenuItem',
             }, this);
         },
         onNew: function (evt) {
-            this.createSingle({url: evt.url, schemaUrl: evt.schemaUrl});
+            this.createSingle({url: evt.store, schemaUrl: evt.schemaUrl});
         },
         tabSelected: function (page) {
-            if (page.editor.meta && page.editor.meta.id != "/cms/template") {
-                var id = page.editor.getPlainValue()[this.ctx.getStore("/page").idProperty];
-                var template = page.editor.getPlainValue()["template"];
+            //if (page.editor.meta && page.editor.meta.id != "/cms/template") {
+                // TODO getting store from crudController is lame
+                var store = page.store;
+                var id = store.getIdentity(page.editor.getPlainValue());
+                // TODO template property needs to be configurable
+                //var template = page.editor.getPlainValue()[store.typePropery];
                 if (id) {
                     // already loaded!!
-                    topic.publish("/page/focus", {id: id, source: this, template: template})
+                    topic.publish("/focus", {id: id, store: store.name, source: this})
                 }
-            }
+            //}
         }
     });
 

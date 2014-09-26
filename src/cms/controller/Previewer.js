@@ -1,6 +1,6 @@
 define([
     'dojo/_base/lang',
-    'dojo/topic',
+    '../util/topic',
     "dojo/_base/declare",
     "dojo/when",
     "dijit/_WidgetBase",
@@ -16,16 +16,17 @@ define([
         renderer: null,
         postCreate: function () {
             this.inherited(arguments);
+
             topic.subscribe("/page/navigate", lang.hitch(this, "onPageNavigate"));
-            topic.subscribe("/page/focus", lang.hitch(this, "onPageFocus"));
-            topic.subscribe("/page/updated", lang.hitch(this, "onPageUpdated"));
-            topic.subscribe("/page/deleted", lang.hitch(this, "onPageDeleted"));
+            topic.subscribeStore("/focus", lang.hitch(this, "onPageFocus"), this.pageStore.name);
+            topic.subscribeStore("/updated", lang.hitch(this, "onPageUpdated"), this.pageStore.name);
+            topic.subscribeStore("/deleted", lang.hitch(this, "onPageDeleted"), this.pageStore.name);
         },
         onPageFocus: function (evt) {
-            this.display("/page/" + evt.id);
+            this.display(evt.store + "/" + evt.id);
         },
         onPageUpdated: function (evt) {
-            this.display("/page/" + evt.entity[this.pageStore.idProperty]);
+            this.display(evt.store + "/" + evt.entity[this.pageStore.idProperty]);
         },
         onPageDeleted: function (evt) {
             // this.display("/page/"+evt.id);
@@ -36,7 +37,7 @@ define([
             var page = this.pageStore.query({url: evt.url});
             when(page).then(function (pageResults) {
                 var id = me.pageStore.getIdentity(pageResults[0]);
-                topic.publish("/page/focus", {id: id, template: pageResults[0].template, source: this});
+                topic.publish("/focus", {id: id, store: this.pageStore.name, template: pageResults[0].template, source: this});
             });
         },
         display: function (url) {

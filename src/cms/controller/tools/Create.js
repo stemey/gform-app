@@ -16,6 +16,7 @@ define([
         select: null,
         button: null,
         store:null,
+        entityStore:null,
         postCreate: function () {
             this.inherited(arguments);
             //this.button.set("label", this.label);
@@ -29,7 +30,7 @@ define([
             this.select.setStore(new ObjectStore(this.store));
         },
         click: function () {
-            topic.publish("/new",{source:this, url:"/page", schemaUrl:"/template/"+this.select.get("value")})
+            topic.publish("/new",{source:this, store:this.entityStore.name, schemaUrl:this.store.name+"/"+this.select.get("value")})
         }
     })
 });

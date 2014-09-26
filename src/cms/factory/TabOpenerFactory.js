@@ -1,19 +1,21 @@
 define([
     'dijit/registry',
-    'gform/Context',
+    '../CmsContext',
     'dojo/_base/lang',
     '../controller/TabOpener',
     'dijit/layout/TabContainer',
     "dojo/_base/declare",
     "../createBuilderEditorFactory",
     "dojo/text!../schema/templateStub.json"
-], function (registry, Context, lang, TabOpener, TabContainer, declare, createBuilderEditorFactory, templateStub) {
+], function (registry, CmsContext, lang, TabOpener, TabContainer, declare, createBuilderEditorFactory, templateStub) {
 
 
     return declare([], {
         _createOpener: function (tabContainer, ectx) {
-            var ctx = ectx.context;//new Context();
-            //lang.mixin(ctx, ectx);
+            var ctx = new CmsContext();
+            ctx.storeRegistry = ectx.storeRegistry;
+            ctx.schemaRegistry = ectx.schemaRegistry;
+
             var opener = new TabOpener();
             opener.tabContainer = tabContainer;
             // TODO editorFactory needs to be configurable

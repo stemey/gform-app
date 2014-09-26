@@ -13,19 +13,19 @@ define([
         create: function (ctx, config) {
 
             var store = ctx.getStore(config.storeId);
-            var me =this;
+            var me = this;
 
-            var model=new UrlTreeModel({store: store});
-            topic.subscribe("/page/added", function(evt) {
-                model.createEntity(evt.url);
+            var model = new UrlTreeModel({store: store});
+            topic.subscribe("/added", function (evt) {
+                model.createEntity(evt.entity.url);
             });
-            topic.subscribe("/page/updated", function(evt) {
-                model.updateEntity(evt.entity);
+            topic.subscribe("/updated", function (evt) {
+                //model.updateEntity(evt.entity);
             });
-            topic.subscribe("/page/deleted", function(evt) {
-                model.deleteEntity(evt.entity);
+            topic.subscribe("/deleted", function (evt) {
+                //model.deleteEntity(evt.entity);
             });
-            topic.subscribe("/page/focus", function(evt) {
+            topic.subscribe("/focus", function (evt) {
                 //me.onPageFocus(evt.entity);
             });
 
@@ -33,13 +33,14 @@ define([
                 if (node.id) {
                     try {
                         var template = node.template || null;
-                    topic.publish("/page/focus", {id: node.id, source:this, template: template});
+                        // TODO configure the tree elements real store. and use it as store param.
+                        topic.publish("/focus", {id: node.id, store: "/page", source: this, template: template});
                     } catch (e) {
                         console.log(e.stack);
                     }
                 }
             }
-            var tree = new Tree({label:"  ",labelAttr:config.labelAttribute,model: model, onClick: nodeClicked});
+            var tree = new Tree({label: "  ", labelAttr: config.labelAttribute, model: model, onClick: nodeClicked});
             return tree;
         }
     });

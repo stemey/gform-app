@@ -8,14 +8,16 @@ define([
 
     return declare([], {
         create: function (ctx, config) {
-            if (config.storeId) {
-                return new Create({label:config.label, store:ctx.getStore(config.storeId)})
-            } else {
+            var entityStore = ctx.getStore(config.storeId);
+            if (entityStore.template) {
                 return new Button({
                     label: config.label,
                     onClick: function () {
-                        topic.publish("/new", {schemaUrl: config.schemaUrl, url:config.url})
+                        topic.publish("/new", {store: entityStore.name, schemaUrl: entityStore.template})
                     }})
+            } else {
+                var store = ctx.getStore(entityStore.templateStore);
+                return new Create({label: config.label, entityStore: entityStore, store: store})
             }
         }
     });

@@ -22,7 +22,7 @@ define([
 
         get: function (url) {
             // summary:
-            //		get the schema for the id. If none exist then instantiate the default store with the given properties
+            //		get the schema for the id.
             // url: String
             //		the url of the schema
             // return: object | dojo/Promise
@@ -30,6 +30,7 @@ define([
             if (cached) {
                 return cached;
             } else {
+                // TODO is this still necessaryy
                 if (!url.match(/^\/template\//)) {
                     url="/template/"+url;
                 }
