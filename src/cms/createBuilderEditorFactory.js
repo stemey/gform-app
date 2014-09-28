@@ -1,4 +1,9 @@
 define([
+    './controller/actions/Save',
+    'gform/controller/actions/Close',
+    'gform/controller/actions/Discard',
+    'gform/controller/actions/Delete',
+    'gform/controller/actions/ActionFactory',
     'gform/special/formbuilder/FormValidator',
     'gform/special/formbuilder/AttributeRefFactory',
     'gform/special/formbuilder/FormAttributeFactory',
@@ -7,7 +12,7 @@ define([
     './meta/TemplateRefAttributeFactory',
     'cms/RequiredAttributes',
     'gform/createFullEditorFactory'
-], function (FormValidator, AttributeRefFactory, FormAttributeFactory, refConverter, converter, TemplateRefAttributeFactory, RequiredAttributes, createFullEditorFactory) {
+], function (Save, Close, Discard, Delete, ActionFactory, FormValidator, AttributeRefFactory, FormAttributeFactory, refConverter, converter, TemplateRefAttributeFactory, RequiredAttributes, createFullEditorFactory) {
 
 
     return function () {
@@ -27,6 +32,14 @@ define([
         ef.addAttributeFactory(new FormAttributeFactory({editorFactory: ef}));
         ef.addAttributeFactory(new AttributeRefFactory({editorFactory: ef}));
         ef.addCtrValidator("form",FormValidator);
+
+        var af = new ActionFactory();
+        af.add({type:Save})
+        af.add({type:Discard})
+        af.add({type:Delete})
+        af.add({type:Close})
+
+        ef.actionFactory=af;
 
 
         return ef;

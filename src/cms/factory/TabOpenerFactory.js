@@ -21,9 +21,9 @@ define([
             // TODO editorFactory needs to be configurable
             opener.editorFactory = createBuilderEditorFactory();
 
-            // TODO reactivate confirmDialog
-            //
             opener.confirmDialog = registry.byId("confirmDialog");
+
+
 
             opener.controllerConfig = {
                 plainValueFactory: lang.hitch(this, "createPlainValue") // make plainValueFactory configurable
@@ -51,7 +51,7 @@ define([
             if (schema.id == "/cms/template") {
                 var attributes = [];
                 attributes.push({code: "url", "editor": "string", type: "string", required: true});
-                attributes.push({code: "identifier", "editor": "string", type: "string", required: false, disabled:true});
+                attributes.push({code: "identifier", "editor": "string", type: "string", required: false, disabled: true});
                 attributes.push({code: "template", "editor": "string", type: "string", required: false});
 
                 var group = {editor: "listpane", attributes: attributes};
@@ -70,8 +70,8 @@ define([
             this.templateStore = ctx.getStore("/template");
             var props = {};
             props.region = config.region;
-            props.splitter=true;
-            props.style={};
+            props.splitter = true;
+            props.style = {};
             props.style.width = config.width;
             var tabContainer = new TabContainer(props);
             //tabContainer.set("style", {height: "100%", width: "40%"});

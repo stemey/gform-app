@@ -17,18 +17,19 @@ define([
             // ["","/test","/test/tt"]
             var me = this;
             var unloadedParents = [];
-            if (parents.length>1) {
+            if (parents.length > 1) {
                 for (var i = 1; i <= parents.length - 1; i++) {
                     var current = this.basePath + parents[i];
-                    var parent = this.basePath + parents[i-1];
-                    if (i==parents.length-1 || this.childrenCache[current] == null) {
+                    var parent = this.basePath + parents[i - 1];
+                    if (i == parents.length - 1 || this.childrenCache[current] == null) {
                         unloadedParents.push(parent);
                     }
-                };
+                }
+                ;
             }
-            unloadedParents.push(this.basePath+parents[parents.length-1]);
-            
-            
+            unloadedParents.push(this.basePath + parents[parents.length - 1]);
+
+
             return unloadedParents;
         },
         loadChildren: function (parents) {
@@ -51,11 +52,17 @@ define([
             var parents = this.getParents(url);
             this.loadChildren(parents);
         },
-        updateEntity: function (entity) {
+        updateEntity: function (entity, oldEntity) {
             var name = entity.url.match(/[^/]+$/)[0];
-            this.onChange({id: entity.identifier, name: name, template: entity.template, folder: false});
-            //this.deleteEntity(entity.identifier);
-            //this.createEntity(entity.url);
+            var oldName = oldEntity.url.match(/[^/]+$/)[0];
+            var path = entity.url.substring(0,entity.url.length-name.length);
+            var oldPath= oldEntity.url.substring(0,oldEntity.url.length-oldName.length);
+            if (path!=oldPath) {
+                this.deleteEntity(oldEntity.identifier);
+                this.createEntity(entity.url);
+            } else {
+                this.onChange({id: entity.identifier, name: name, template: entity.template, folder: false});
+            }
         },
         getParent: function (entity) {
             var url = entity.url;

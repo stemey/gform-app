@@ -13,7 +13,7 @@ define([
             var me = this;
             return load([config.storeClass], function (storeClass) {
                 var store = new storeClass(config);
-                aspect.around(store, "put", lang.hitch(me, "onPageUpdated", store));
+                //aspect.around(store, "put", lang.hitch(me, "onPageUpdated", store));
                 aspect.around(store, "remove", lang.hitch(me, "onPageDeleted", store));
                 aspect.around(store, "add", lang.hitch(me, "onPageAdded", store));
 

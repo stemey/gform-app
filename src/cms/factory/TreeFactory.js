@@ -14,17 +14,18 @@ define([
 
             var store = ctx.getStore(config.storeId);
             var me = this;
+            var realStore="/page";
 
             var model = new UrlTreeModel({store: store});
             topic.subscribeStore("/added", function (evt) {
                 model.createEntity(evt.entity.url);
-            }, store.name);
+            }, realStore);
             topic.subscribeStore("/updated", function (evt) {
-                model.updateEntity(evt.entity);
-            }, store.name);
+                model.updateEntity(evt.entity, evt.oldEntity);
+            }, realStore);
             topic.subscribeStore("/deleted", function (evt) {
                 model.deleteEntity(evt.entity);
-            }, store.name);
+            }, realStore);
             topic.subscribeStore("/focus", function (evt) {
                 //me.onPageFocus(evt.entity);
             });
