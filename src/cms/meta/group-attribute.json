@@ -1,0 +1,8 @@
+{
+
+    "code": "attribute",
+    "description": "An attribute.",
+    "type": "string",
+    "editor": "attribute-ref",
+    "required": "true"
+}

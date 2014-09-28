@@ -37,7 +37,7 @@ define([
             var page = this.pageStore.query({url: evt.url});
             when(page).then(function (pageResults) {
                 var id = me.pageStore.getIdentity(pageResults[0]);
-                topic.publish("/focus", {id: id, store: this.pageStore.name, template: pageResults[0].template, source: this});
+                topic.publish("/focus", {id: id, store: me.pageStore.name, template: pageResults[0].template, source: this});
             });
         },
         display: function (url) {

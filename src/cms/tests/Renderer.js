@@ -5,7 +5,7 @@ define([
     'intern/chai!assert',
     '../preview/mustache/Renderer'
 ], function (when, MemoryStore, bdd, assert, Renderer) {
-    bdd.describe('demo widget', function () {
+    bdd.describe('Renderer', function () {
         var renderer;
 
         bdd.before(function () {

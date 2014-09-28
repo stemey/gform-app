@@ -16,16 +16,16 @@ define([
             var me = this;
 
             var model = new UrlTreeModel({store: store});
-            topic.subscribe("/added", function (evt) {
+            topic.subscribeStore("/added", function (evt) {
                 model.createEntity(evt.entity.url);
-            });
-            topic.subscribe("/updated", function (evt) {
-                //model.updateEntity(evt.entity);
-            });
-            topic.subscribe("/deleted", function (evt) {
-                //model.deleteEntity(evt.entity);
-            });
-            topic.subscribe("/focus", function (evt) {
+            }, store.name);
+            topic.subscribeStore("/updated", function (evt) {
+                model.updateEntity(evt.entity);
+            }, store.name);
+            topic.subscribeStore("/deleted", function (evt) {
+                model.deleteEntity(evt.entity);
+            }, store.name);
+            topic.subscribeStore("/focus", function (evt) {
                 //me.onPageFocus(evt.entity);
             });
 

@@ -1,6 +1,7 @@
 define([
     './UrlTreeModel',
-    './Renderer'
+    './Renderer',
+    './TreeStore'
 ], function () {
     }
 );

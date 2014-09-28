@@ -34,7 +34,7 @@ define([
             var me = this;
             return function (entity) {
                 var result = superCall.apply(this, arguments);
-                topic.publish("/page/deleted", {store: store.name, id: store.getIdentity(entity), entity: entity})
+                topic.publish("/deleted", {store: store.name, id: store.getIdentity(entity), entity: entity})
                 return result;
             }
         },
@@ -42,7 +42,9 @@ define([
             var me = this;
             return function (entity) {
                 var result = superCall.apply(this, arguments);
-                topic.publish("/added", {store: store.name, id: result, entity:entity})
+                result.then(function (id) {
+                    topic.publish("/added", {store: store.name, id: id, entity: entity})
+                });
                 return result;
             }
         }

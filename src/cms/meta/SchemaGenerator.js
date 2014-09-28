@@ -13,6 +13,7 @@ define([
             var t = this.createTransformer();
             t.replace("gform/schema/attributes.json","cms/meta/attributes.json");
             t.replace("gform/schema/attributes/header.json","cms/meta/header.json");
+            t.replace("gform/schema/group/properties/attribute.json","cms/meta/group-attribute.json");
             t.replace("gform/schema/group/properties/attributes.json","cms/meta/group-attributes.json");
             t.replace("gform/schema/attributes/properties/group.json","cms/meta/group.json");
             var base = JSON.parse(group)

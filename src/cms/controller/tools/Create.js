@@ -1,6 +1,6 @@
 define([
     'dojo/_base/lang',
-    'dojo/topic',
+    '../../util/topic',
     'dojo/data/ObjectStore',
     'dijit/_WidgetsInTemplateMixin',
     "dojo/_base/declare",
@@ -22,9 +22,9 @@ define([
             //this.button.set("label", this.label);
             this.select.set("labelAttr","name");
             this.select.setStore(new ObjectStore(this.store));
-            topic.subscribe("/template/added", lang.hitch(this,"updatedStore"));
-            topic.subscribe("/template/updated", lang.hitch(this,"updatedStore"));
-            topic.subscribe("/template/deleted", lang.hitch(this,"updatedStore"));
+            topic.subscribeStore("/added", lang.hitch(this,"updatedStore"), this.store.name);
+            topic.subscribeStore("/updated", lang.hitch(this,"updatedStore"), this.store.name);
+            topic.subscribeStore("/deleted", lang.hitch(this,"updatedStore"), this.store.name);
         },
         updatedStore: function() {
             this.select.setStore(new ObjectStore(this.store));
