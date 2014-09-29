@@ -1,9 +1,10 @@
-define(['dijit/MenuItem',
+define(['dojo/i18n!../nls/messages',
+    'dijit/MenuItem',
     'dijit/registry',
     'dojo/_base/declare',
     'dojo/_base/lang',
     'gform/opener/SingleEditorTabOpener',
-    'dojo/topic'], function (MenuItem, registry, declare, lang, SingleEditorTabOpener, topic) {
+    'dojo/topic'], function (messages, MenuItem, registry, declare, lang, SingleEditorTabOpener, topic) {
 
 
     return declare([SingleEditorTabOpener], {
@@ -20,7 +21,7 @@ define(['dijit/MenuItem',
             var me = this;
             menu.addChild(
                 new MenuItem({
-                    label: "Alle Schließen",
+                    label: messages["tabopener.closeall"],
                     ownerDocument: this.tabContainer.ownerDocument,
                     dir: this.tabContainer.dir,
                     lang: this.tabContainer.lang,
