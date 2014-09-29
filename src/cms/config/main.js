@@ -35,7 +35,8 @@ define([
                         "idProperty": "code",
                         "idType": "string",
                         "target": "http://localhost:8080/schema/",
-                        "template":"/template"
+                        "template":"/template",
+                        "instanceStore":"/page"
 
                     }
                 ]

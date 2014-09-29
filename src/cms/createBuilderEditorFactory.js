@@ -1,4 +1,5 @@
 define([
+    './controller/actions/CreateInstance',
     './controller/actions/Save',
     'gform/controller/actions/Close',
     'gform/controller/actions/Discard',
@@ -12,7 +13,7 @@ define([
     './meta/TemplateRefAttributeFactory',
     'cms/RequiredAttributes',
     'gform/createFullEditorFactory'
-], function (Save, Close, Discard, Delete, ActionFactory, FormValidator, AttributeRefFactory, FormAttributeFactory, refConverter, converter, TemplateRefAttributeFactory, RequiredAttributes, createFullEditorFactory) {
+], function (CreateInstance, Save, Close, Discard, Delete, ActionFactory, FormValidator, AttributeRefFactory, FormAttributeFactory, refConverter, converter, TemplateRefAttributeFactory, RequiredAttributes, createFullEditorFactory) {
 
 
     return function () {
@@ -37,7 +38,8 @@ define([
         af.add({type:Save})
         af.add({type:Discard})
         af.add({type:Delete})
-        af.add({type:Close})
+        af.add({type:Close});
+        af.add({type:CreateInstance});
 
         ef.actionFactory=af;
 
