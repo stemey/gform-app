@@ -64,7 +64,7 @@ define([
                             "factoryId": "cms/factory/CreateFactory",
                             "url": "/template",
                             "storeId": "/template",
-                            "label": "+ template"
+                            "label": "add template"
                         },
                         {
                             "factoryId": "cms/factory/ToggleSizeFactory",

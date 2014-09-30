@@ -1,5 +1,6 @@
-<span class="dijitInline">
-    <span data-dojo-attach-point="button">+</span>
-    <span data-dojo-type="dijit/form/Select" data-dojo-attach-point="select"  data-dojo-attach-event="change:click">
-    </span>
+<span style='white-space: nowrap' class='dijit dijitReset dijitInline'>
+    <input data-dojo-type='dijit/form/Select' required='false'
+           data-dojo-attach-point="select"
+           class='dijitFontNameCombo' tabIndex='-1' id='${selectId}' data-dojo-attach-point='select' value=''/>
+    <button data-dojo-type="dijit/form/Button" class='dijitLeft dijitInline' data-dojo-attach-event="click">${label}</button>
 </span>
