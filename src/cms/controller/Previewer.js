@@ -65,6 +65,7 @@ define([
                         ifrm.document.open();
                         ifrm.document.write(html);
                         ifrm.document.close();
+                        ifrm.scrollTo(0,0);
                     }
                 }).otherwise(function (e) {
                     alert("cannot render " + e.stack)
