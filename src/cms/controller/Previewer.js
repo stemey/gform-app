@@ -37,7 +37,10 @@ define([
             var page = this.pageStore.query({url: evt.url});
             when(page).then(function (pageResults) {
                 var id = me.pageStore.getIdentity(pageResults[0]);
-                topic.publish("/focus", {id: id, store: me.pageStore.name, template: pageResults[0].template, source: this});
+                var template = pageResults[0].template;
+                if (template) {
+                    topic.publish("/focus", {id: id, store: me.pageStore.name, template: template, source: this});
+                }
             });
         },
         display: function (url) {
@@ -46,20 +49,23 @@ define([
             this.url = url;
             when(me.renderer.render(url))
                 .then(function (result) {
-                    var html = result.html;
-                    if (result.errors && result.errors.length > 0) {
-                        html = "<ul>";
-                        result.errors.forEach(function (error) {
-                            html += "<li>" + error.message + "</li>";
-                        });
-                        html += "</ul>";
+                    if (!result.noPage) {
+
+                        var html = result.html;
+                        if (result.errors && result.errors.length > 0) {
+                            html = "<ul>";
+                            result.errors.forEach(function (error) {
+                                html += "<li>" + error.message + "</li>";
+                            });
+                            html += "</ul>";
+                        }
+                        var ifrm = (me.iframe.contentWindow) ? me.iframe.contentWindow : (me.iframe.contentDocument.document) ? me.iframe.contentDocument.document : me.iframe.contentDocument;
+                        // remove preexisting amd define
+                        delete ifrm.define;
+                        ifrm.document.open();
+                        ifrm.document.write(html);
+                        ifrm.document.close();
                     }
-                    var ifrm = (me.iframe.contentWindow) ? me.iframe.contentWindow : (me.iframe.contentDocument.document) ? me.iframe.contentDocument.document : me.iframe.contentDocument;
-                    // remove preexisting amd define
-                    delete ifrm.define;
-                    ifrm.document.open();
-                    ifrm.document.write(html);
-                    ifrm.document.close();
                 }).otherwise(function (e) {
                     alert("cannot render " + e.stack)
                 });
