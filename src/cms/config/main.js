@@ -16,7 +16,8 @@ define([
                         "storeClass": "cms/util/JsonRest",
                         "name": "/pagetree",
                         "target": "http://localhost:8080/tree/",
-                        "idProperty": "id"
+                        "idProperty": "id",
+                        "mainStore":"/page"
                     },
                     {
                         "factoryId": "cms/factory/StoreFactory",

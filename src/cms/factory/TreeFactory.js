@@ -14,7 +14,7 @@ define([
 
             var store = ctx.getStore(config.storeId);
             var me = this;
-            var realStore="/page";
+            var realStore = store.mainStore ? store.mainStore : store.name;
 
             var model = new UrlTreeModel({store: store});
             topic.subscribeStore("/added", function (evt) {
@@ -35,13 +35,13 @@ define([
                     try {
                         var template = node.template || null;
                         // TODO configure the tree elements real store. and use it as store param.
-                        topic.publish("/focus", {id: node.id, store: "/page", source: this, template: template});
+                        topic.publish("/focus", {id: node.id, store: realStore, source: this, template: template});
                     } catch (e) {
                         console.log(e.stack);
                     }
                 }
             }
-            var tree = new Tree({label: "  ", labelAttr: config.labelAttribute, model: model, onClick: nodeClicked});
+            var tree = new Tree({label: "", labelAttr: config.labelAttribute, model: model, onClick: nodeClicked});
             return tree;
         }
     });
