@@ -1,4 +1,6 @@
 define([
+    '../factory/ToggleSizeFactory',
+    '../factory/FindPageFactory',
     '../factory/CreateFactory',
     '../factory/BrandFactory',
     '../factory/ToolbarFactory',
@@ -55,6 +57,11 @@ define([
                         {
                             "factoryId": "cms/factory/BrandFactory",
                             "label": "mini cms"
+                        },
+                        {
+                            "factoryId": "cms/factory/FindPageFactory",
+                            "storeId": "/page",
+                            "label": "open"
                         },
                         {
                             "factoryId": "cms/factory/CreateFactory",

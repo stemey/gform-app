@@ -1,4 +1,5 @@
 define([
+    'dijit/_CssStateMixin',
     'dojo/_base/lang',
     '../../util/topic',
     'dojo/data/ObjectStore',
@@ -7,11 +8,11 @@ define([
     "dijit/_WidgetBase",
     "dijit/_TemplatedMixin",
     "dojo/text!./create.html",
-    "dijit/form/Select"
-], function (lang, topic, ObjectStore, WidgetsInTemplateMixin, declare, _WidgetBase, _TemplatedMixin, template) {
+    "dijit/form/FilteringSelect"
+], function (CssStateMixin, lang, topic, ObjectStore, WidgetsInTemplateMixin, declare, _WidgetBase, _TemplatedMixin, template) {
 
 
-    return declare("cms.Create", [ _WidgetBase, _TemplatedMixin, WidgetsInTemplateMixin], {
+    return declare("cms.Create", [ _WidgetBase, _TemplatedMixin, WidgetsInTemplateMixin,CssStateMixin], {
         templateString: template,
         select: null,
         button: null,
@@ -19,6 +20,7 @@ define([
         selectId:null,
         entityStore:null,
         label:"create",
+        baseClass:"search",
         postMixInProperties: function() {
             this.selectId=this.id;
             this.inherited(arguments);
@@ -28,8 +30,8 @@ define([
             //this.button.set("label", this.label);
             this.select.set("labelAttr","code");
             this.select.set("placeHolder","find template..")
-            this.select.set("searchAttr","code");
-            this.select.setStore(new ObjectStore(this.store));
+            this.select.set("searchAttr","name");
+            this.select.set("store",new ObjectStore(this.store));
             topic.subscribeStore("/added", lang.hitch(this,"updatedStore"), this.store.name);
             topic.subscribeStore("/updated", lang.hitch(this,"updatedStore"), this.store.name);
             topic.subscribeStore("/deleted", lang.hitch(this,"updatedStore"), this.store.name);
