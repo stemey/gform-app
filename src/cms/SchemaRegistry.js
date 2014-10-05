@@ -1,8 +1,6 @@
 define([
-    'dojo/when',
-    'dojo/Deferred',
     "dojo/_base/declare"
-], function (when, Deferred, declare) {
+], function (declare) {
 // module:
 //		gform/controller/SchemaRegistry
 
@@ -16,9 +14,6 @@ define([
         url2schema: {},
 
         name2Store: {},
-
-        templateTransformer: null,
-        pageTransformer: null,
 
         get: function (url) {
             // summary:
@@ -35,29 +30,16 @@ define([
                     url="/template/"+url;
                 }
 
-                var transformer = this.pageTransformer;
                 var p;
+                // TODO configure url to template store
                 var id = url.substr("/template/".length);
                 var store = this.name2Store["/template"];
                 if (store) {
                     p = store.get(id);
                 }
 
-                var transformedSchema = new Deferred();
-                var me = this;
-                when(p).then(function (schema) {
-                    if (transformer) {
-                        var t = transformer.transform(schema);
-                        when(t).then(function (transformed) {
-                            transformedSchema.resolve(transformed);
-                        }).otherwise(function (e) {
-                                transformedSchema.reject(e);
-                            });
-                    } else {
-                        transformedSchema.resolve(schema);
-                    }
-                }).otherwise(transformedSchema);
-                return transformedSchema;
+
+                return p;
             }
 
         },

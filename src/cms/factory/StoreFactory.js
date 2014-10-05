@@ -1,11 +1,12 @@
 define([
+    'dojo/_base/Deferred',
     'dojo/_base/lang',
     'dojo/topic',
     'dojo/aspect',
     './load',
     './ContainerFactory',
     "dojo/_base/declare"
-], function (lang, topic, aspect, load, ContainerFactory, declare) {
+], function (Deferred, lang, topic, aspect, load, ContainerFactory, declare) {
 
 
     return declare([ContainerFactory], {
@@ -16,8 +17,16 @@ define([
                 //aspect.around(store, "put", lang.hitch(me, "onPageUpdated", store));
                 aspect.around(store, "remove", lang.hitch(me, "onPageDeleted", store));
                 aspect.around(store, "add", lang.hitch(me, "onPageAdded", store));
-
-                return store;
+                if (config.plainValueFactory)  {
+                    var deferred = new Deferred();
+                    require([config.plainValueFactory], function(factory) {
+                        store.getDefault=factory;
+                        deferred.resolve(store);
+                    });
+                    return deferred;
+                }else{
+                    return store;
+                }
             });
         },
         onPageUpdated: function (store, superCall) {

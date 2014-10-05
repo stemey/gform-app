@@ -19,16 +19,16 @@ define([
                         "name": "/pagetree",
                         "target": "http://localhost:8080/tree/",
                         "idProperty": "id",
-                        "mainStore":"/page"
+                        "mainStore": "/page"
                     },
                     {
                         "factoryId": "cms/factory/StoreFactory",
                         "name": "/page",
                         "storeClass": "cms/util/JsonRest",
-                        "templateStore":"/template",
+                        "templateStore": "/template",
                         "idProperty": "identifier",
                         "idType": "string",
-                        "typeProperty":"template",
+                        "typeProperty": "template",
                         "target": "http://localhost:8080/entity/base/"
                     },
                     {
@@ -38,16 +38,23 @@ define([
                         "idProperty": "code",
                         "idType": "string",
                         "target": "http://localhost:8080/schema/",
-                        "template":"/template",
-                        "instanceStore":"/page"
+                        "template": "/template",
+                        "instanceStore": "/page",
+                        "plainValueFactory":"cms/default/createTemplateValueFactory"
 
                     }
                 ]
             },
-            "schemaRegistry":{
-                "factoryId":"cms/factory/schema/SchemaRegistryFactory",
-                "registryClass":"cms/SchemaRegistry",
-                "storeId":"/template"
+            "schemaRegistry": {
+                "factoryId": "cms/factory/schema/SchemaRegistryFactory",
+                "registryClass": "cms/SchemaRegistry",
+                "stores": ["/template"],
+                "schemaGenerators": [
+                    {
+                        "factoryId": "cms/factory/schema/SchemaGenerator",
+                        "store": "/template"
+                    }
+                ]
             },
             "views": [
                 {

@@ -4,11 +4,15 @@ define([
     'dojo/promise/all'
 ], function (Deferred, load, all) {
 
-    return function (result, configs, callback) {
+    return function (result, configs, callback, ctx) {
         var promises = [];
         configs.forEach(function (config) {
             var p = load([config.factoryId], function (Factory) {
-                return new Factory().create(config);
+                if (ctx) {
+                    return new Factory().create(ctx, config);
+                } else {
+                    return new Factory().create(config);
+                }
             })
             promises.push(p);
         }, this);

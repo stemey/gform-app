@@ -1,13 +1,11 @@
 define([
     'dijit/registry',
     '../CmsContext',
-    'dojo/_base/lang',
     '../controller/TabOpener',
     'dijit/layout/TabContainer',
     "dojo/_base/declare",
-    "../createBuilderEditorFactory",
-    "dojo/text!../schema/templateStub.json"
-], function (registry, CmsContext, lang, TabOpener, TabContainer, declare, createBuilderEditorFactory, templateStub) {
+    "../createBuilderEditorFactory"
+], function (registry, CmsContext, TabOpener, TabContainer, declare, createBuilderEditorFactory) {
 
 
     return declare([], {
@@ -23,48 +21,30 @@ define([
 
             opener.confirmDialog = registry.byId("confirmDialog");
 
-
+            createPlainValue = function (schema) {
+                if (this.store.getDefault) {
+                    return this.store.getDefault(schema, ctx);
+                } else {
+                    return {};
+                }
+            }
 
             opener.controllerConfig = {
-                plainValueFactory: lang.hitch(this, "createPlainValue") // make plainValueFactory configurable
-                //actionClasses: [Save, Delete, Preview]
-                // TODO actionClasses don't work. use actionFactory
+                plainValueFactory: createPlainValue
             }
 
             // TODO move into editorFactory
             require(["cms/util/stringTemplateConverter"], function (templateConverter) {
                 opener.editorFactory.addConverterForid(templateConverter, "templateConverter");
             });
-            //var templateConverter = this.configuration.templateConverter;
-            //this.ctx.opener.editorFactory.addConverterForid(templateConverter, "templateConverter");
 
-
-            //opener.configuration = this.configuration;
             opener.ctx = ctx;
             ctx.opener = opener;
             opener.init();
             return opener;
         },
 
-        createPlainValue: function (schema) {
-            // TODO move to configuration
-            if (schema.id == "/cms/template") {
-                var attributes = [];
-                attributes.push({code: "url", "editor": "string", type: "string", required: true});
-                attributes.push({code: "identifier", "editor": "string", type: "string", required: false, disabled: true});
-                attributes.push({code: "template", "editor": "string", type: "string", required: false});
 
-                var group = {editor: "listpane", attributes: attributes};
-
-                var template = JSON.parse(templateStub);
-                var conf = this.templateStore;
-                template.attributes.push({code: conf.idProperty, "type": conf.idType, "editor": conf.idType, "visible": false});
-                template.group = group;
-                return template;
-            } else {
-                return {template: schema[this.templateStore.idProperty]}
-            }
-        },
         create: function (ctx, config) {
 
             this.templateStore = ctx.getStore("/template");
@@ -74,11 +54,9 @@ define([
             props.style = {};
             props.style.width = config.width;
             var tabContainer = new TabContainer(props);
-            //tabContainer.set("style", {height: "100%", width: "40%"});
 
 
             var opener = this._createOpener(tabContainer, ctx);
-            //var store = ctx.getStore(config.storeId);
 
 
             return tabContainer;
