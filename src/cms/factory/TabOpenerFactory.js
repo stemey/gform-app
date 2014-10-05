@@ -3,9 +3,8 @@ define([
     '../CmsContext',
     '../controller/TabOpener',
     'dijit/layout/TabContainer',
-    "dojo/_base/declare",
-    "../createBuilderEditorFactory"
-], function (registry, CmsContext, TabOpener, TabContainer, declare, createBuilderEditorFactory) {
+    "dojo/_base/declare"
+], function (registry, CmsContext, TabOpener, TabContainer, declare) {
 
 
     return declare([], {
@@ -16,8 +15,6 @@ define([
 
             var opener = new TabOpener();
             opener.tabContainer = tabContainer;
-            // TODO editorFactory needs to be configurable
-            opener.editorFactory = createBuilderEditorFactory();
 
             opener.confirmDialog = registry.byId("confirmDialog");
 
@@ -33,10 +30,7 @@ define([
                 plainValueFactory: createPlainValue
             }
 
-            // TODO move into editorFactory
-            require(["cms/util/stringTemplateConverter"], function (templateConverter) {
-                opener.editorFactory.addConverterForid(templateConverter, "templateConverter");
-            });
+
 
             opener.ctx = ctx;
             ctx.opener = opener;
@@ -47,7 +41,6 @@ define([
 
         create: function (ctx, config) {
 
-            this.templateStore = ctx.getStore("/template");
             var props = {};
             props.region = config.region;
             props.splitter = true;

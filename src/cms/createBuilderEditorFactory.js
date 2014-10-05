@@ -1,4 +1,5 @@
 define([
+    './util/stringTemplateConverter',
     './controller/actions/CreateInstance',
     './controller/actions/Save',
     'gform/controller/actions/Close',
@@ -13,7 +14,7 @@ define([
     './meta/TemplateRefAttributeFactory',
     'cms/RequiredAttributes',
     'gform/createFullEditorFactory'
-], function (CreateInstance, Save, Close, Discard, Delete, ActionFactory, FormValidator, AttributeRefFactory, FormAttributeFactory, refConverter, converter, TemplateRefAttributeFactory, RequiredAttributes, createFullEditorFactory) {
+], function (stringTemplateConverter, CreateInstance, Save, Close, Discard, Delete, ActionFactory, FormValidator, AttributeRefFactory, FormAttributeFactory, refConverter, converter, TemplateRefAttributeFactory, RequiredAttributes, createFullEditorFactory) {
 
 
     return function () {
@@ -29,6 +30,7 @@ define([
         ef.addConverterForType(converter, "ref");
         ef.addConverterForType(converter, "multi-ref");
         ef.addConverterForid(refConverter, "refConverter");
+        ef.addConverterForid(stringTemplateConverter, "templateConverter");
 
         ef.addAttributeFactory(new FormAttributeFactory({editorFactory: ef}));
         ef.addAttributeFactory(new AttributeRefFactory({editorFactory: ef}));

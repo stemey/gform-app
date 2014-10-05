@@ -29,7 +29,8 @@ define([
                         "idProperty": "identifier",
                         "idType": "string",
                         "typeProperty": "template",
-                        "target": "http://localhost:8080/entity/base/"
+                        "target": "http://localhost:8080/entity/base/",
+                        "createEditorFactory":"cms/createBuilderEditorFactory"
                     },
                     {
                         "factoryId": "cms/factory/StoreFactory",
@@ -40,7 +41,8 @@ define([
                         "target": "http://localhost:8080/schema/",
                         "template": "/template",
                         "instanceStore": "/page",
-                        "plainValueFactory":"cms/default/createTemplateValueFactory"
+                        "plainValueFactory":"cms/default/createTemplateValueFactory",
+                        "createEditorFactory":"cms/createBuilderEditorFactory"
 
                     }
                 ]

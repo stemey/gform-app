@@ -9,8 +9,7 @@ define(['dojo/i18n!../nls/messages',
 
     return declare([SingleEditorTabOpener], {
         opening: false,
-        init: function() {
-            //topic.subscribe("/template/focus", lang.hitch(this, "onTemplateFocus"));
+        init: function () {
             topic.subscribe("/focus", lang.hitch(this, "onPageFocus"));
             topic.subscribe(this.tabContainer.id + "-selectChild", lang.hitch(this, "tabSelected"));
             topic.subscribe("/new", lang.hitch(this, "onNew"));
@@ -42,21 +41,16 @@ define(['dojo/i18n!../nls/messages',
             var me = this;
             if (evt.source != this) {
                 this.ctx.getSchemaUrl(evt.store, evt.id).then(function (schemaUrl) {
-                    me.opening=true;
+                    me.opening = true;
                     try {
-                        // TODO rather use openMulti, so entity is not loaded twice
+                        // TODO rather use typeProperty as param to openSingle, so entity is not loaded twice
                         me.openSingle({url: evt.store, id: evt.id, schemaUrl: schemaUrl});
                     } finally {
-                        me.opening=false;
+                        me.opening = false;
                     }
                 });
             }
         },
-//        onTemplateFocus: function (evt) {
-//            if (evt.source != this) {
-//                this.openSingle({url: "/template", id: evt.id, schemaUrl: "/template"});
-//            }
-//        },
         closeTabs: function () {
             var closeables = [];
             this.tabContainer.getChildren().forEach(function (tab) {
@@ -69,20 +63,16 @@ define(['dojo/i18n!../nls/messages',
             }, this);
         },
         onNew: function (evt) {
-            this.createSingle({url: evt.store, schemaUrl: evt.schemaUrl});
+            var ef = this.ctx.getStore(evt.store).editorFactory;
+            this.createSingle({url: evt.store, schemaUrl: evt.schemaUrl, editorFactory: ef});
         },
         tabSelected: function (page) {
-            //if (page.editor.meta && page.editor.meta.id != "/cms/template") {
-                // TODO getting store from crudController is lame
-                var store = page.store;
-                var id = store.getIdentity(page.editor.getPlainValue());
-                // TODO template property needs to be configurable
-                //var template = page.editor.getPlainValue()[store.typePropery];
-                if (id) {
-                    // already loaded!!
-                    topic.publish("/focus", {id: id, store: store.name, source: this})
-                }
-            //}
+            // TODO getting store from crudController is lame
+            var store = page.store;
+            var id = store.getIdentity(page.editor.getPlainValue());
+            if (id) {
+                topic.publish("/focus", {id: id, store: store.name, source: this})
+            }
         }
     });
 

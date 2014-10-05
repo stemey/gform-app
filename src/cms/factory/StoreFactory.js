@@ -17,16 +17,30 @@ define([
                 //aspect.around(store, "put", lang.hitch(me, "onPageUpdated", store));
                 aspect.around(store, "remove", lang.hitch(me, "onPageDeleted", store));
                 aspect.around(store, "add", lang.hitch(me, "onPageAdded", store));
-                if (config.plainValueFactory)  {
-                    var deferred = new Deferred();
-                    require([config.plainValueFactory], function(factory) {
-                        store.getDefault=factory;
-                        deferred.resolve(store);
+                var modules = [];
+                if (config.plainValueFactory) {
+                    modules.push({id: config.plainValueFactory, fn: function (factory) {
+                        store.getDefault = factory;
+                    }
                     });
-                    return deferred;
-                }else{
-                    return store;
                 }
+                if (config.createEditorFactory) {
+                    modules.push({id: config.createEditorFactory, fn: function (createEditorFactory) {
+                        store.editorFactory = createEditorFactory();
+                    }
+                    });
+                }
+                var deferred = new Deferred;
+                require(modules.map(function (m) {
+                    return m.id
+                }), function () {
+                    for (var idx = 0; idx < arguments.length; idx++) {
+                        modules[idx].fn(arguments[idx]);
+                    }
+                    deferred.resolve(store);
+                })
+                return deferred;
+
             });
         },
         onPageUpdated: function (store, superCall) {
@@ -58,6 +72,4 @@ define([
             }
         }
     });
-
-
 });
