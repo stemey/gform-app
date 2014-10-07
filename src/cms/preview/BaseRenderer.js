@@ -1,34 +1,14 @@
 define([
-    '../../meta/Resolver',
+    '../meta/Resolver',
     'dojo/_base/lang',
     "dojo/_base/declare",
-    "dojo/Deferred",
-    "../../util/visit",
+    "dojo/_base/Deferred",
+    "../util/visit",
     "gform/schema/meta",
     "dojo/when",
-    "dojo/promise/all",
-    "handlebars/handlebars"
+    "dojo/promise/all"
 ], function (Resolver, lang, declare, Deferred, visit, metaHelper, when, all) {
 
-    // TODO extract helpers to customer and standard configuration folders
-    Handlebars.registerHelper('equals', function (a, b, options) {
-        if (a == b) {
-            return options.fn(this);
-        }
-    });
-    Handlebars.registerHelper('gt', function (a, b, options) {
-        if (a > b) {
-            return options.fn(this);
-        }
-    });
-    Handlebars.registerHelper('gte', function (a, b, options) {
-        if (a >= b) {
-            return options.fn(this);
-        }
-    });
-    Handlebars.registerHelper('link', function (url, options) {
-        return "javascript:preview('" + url + "');";
-    });
 
 
     return declare([ ], {
@@ -343,15 +323,7 @@ define([
             return renderPromise;
 
         },
-        renderTemplate: function (code, ctx, partials) {
-            // extract super class or add handlebars as pluggable internal renderer
-            Object.keys(partials).forEach(function (key) {
-                Handlebars.registerPartial(key, partials[key]);
-            });
-            var template = Handlebars.compile(code);
-            return template(ctx);
-        },
-        tadCache: {},
+         tadCache: {},
         getTemplateAndData: function (pageUrl) {
             var me = this;
             var renderPromise = new Deferred();

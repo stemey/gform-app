@@ -47,6 +47,10 @@ define([
             // TODO improve error reporting
             var me = this;
             this.url = url;
+            if (!me.renderer) {
+                // not instantiated yet
+                return;
+            }
             when(me.renderer.render(url))
                 .then(function (result) {
                     if (!result.noPage) {

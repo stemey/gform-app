@@ -1,10 +1,9 @@
 define([
-    '../preview/mustache/Renderer',
     '../meta/TemplateSchemaTransformer',
     '../controller/Previewer',
     'dijit/layout/ContentPane',
     "dojo/_base/declare"
-], function (Renderer, TemplateSchemaTransformer, Previewer, ContentPane, declare) {
+], function (TemplateSchemaTransformer, Previewer, ContentPane, declare) {
 
 
     return declare([], {
@@ -14,14 +13,15 @@ define([
             var templateStore = ctx.getStore("/template");
 
             var previewer = new Previewer({pageStore:pageStore});
-            var renderer = new Renderer();
-            renderer.templateStore = templateStore;
-            renderer.pageStore = pageStore;
+            require([config.rendererClass], function(Renderer) {
+                var renderer=new Renderer(config);
+                renderer.templateStore = templateStore;
+                renderer.pageStore = pageStore;
+                var templateToSchemaTransformer = new TemplateSchemaTransformer(templateStore);
+                renderer.templateToSchemaTransformer = templateToSchemaTransformer;
+                previewer.renderer= renderer;
+            });
 
-            previewer.renderer= renderer;
-
-            var templateToSchemaTransformer = new TemplateSchemaTransformer(templateStore);
-            renderer.templateToSchemaTransformer = templateToSchemaTransformer;
 
             var pane =new ContentPane();
             pane.addChild(previewer);

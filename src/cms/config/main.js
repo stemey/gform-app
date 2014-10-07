@@ -1,4 +1,5 @@
 define([
+    'cms/preview/handlebars/Renderer',
     '../factory/ToggleSizeFactory',
     '../factory/FindPageFactory',
     '../factory/CreateFactory',
@@ -118,7 +119,8 @@ define([
                 {
                     "region": "center",
                     "factoryId": "cms/factory/PreviewerFactory",
-                    "splitter": true
+                    "splitter": true,
+                    "rendererClass":"cms/preview/handlebars/Renderer"
                 },
                 {
                     "width": "40%",
