@@ -24,8 +24,7 @@ define([
                     if (i == parents.length - 1 || this.childrenCache[current] == null) {
                         unloadedParents.push(parent);
                     }
-                }
-                ;
+                };
             }
             unloadedParents.push(this.basePath + parents[parents.length - 1]);
 

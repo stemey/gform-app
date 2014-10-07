@@ -40,15 +40,20 @@ define(['dojo/i18n!../nls/messages',
         onPageFocus: function (evt) {
             var me = this;
             if (evt.source != this) {
-                this.ctx.getSchemaUrl(evt.store, evt.id).then(function (schemaUrl) {
+                //this.ctx.getSchemaUrl(evt.store, evt.id).then(function (schemaUrl) {
                     me.opening = true;
                     try {
-                        // TODO rather use typeProperty as param to openSingle, so entity is not loaded twice
-                        me.openSingle({url: evt.store, id: evt.id, schemaUrl: schemaUrl});
+                        var store=this.ctx.getStore(evt.store)
+                        var typeProperty=store.typeProperty;
+                        if (!typeProperty) {
+                            me.openSingle({url: evt.store, id: evt.id, schemaUrl: store.template});
+                        } else {
+                            me.openSingle({url: evt.store, id: evt.id, schemaUrls: [],typeProperty:typeProperty});
+                        }
                     } finally {
                         me.opening = false;
                     }
-                });
+                //});
             }
         },
         closeTabs: function () {
@@ -64,10 +69,10 @@ define(['dojo/i18n!../nls/messages',
         },
         onNew: function (evt) {
             var ef = this.ctx.getStore(evt.store).editorFactory;
-            this.createSingle({url: evt.store, schemaUrl: evt.schemaUrl, editorFactory: ef});
-        },
+            this.createSingle({url: evt.store, editorFactory: ef, typeProperty:"template", schemaUrls:[evt.schemaUrl]});
+        }, 
         tabSelected: function (page) {
-            // TODO getting store from crudController is lame
+            // TODO getting store from crudController is lame - move to crudController.onShow??
             var store = page.store;
             var id = store.getIdentity(page.editor.getPlainValue());
             if (id) {

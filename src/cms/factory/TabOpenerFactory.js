@@ -12,12 +12,9 @@ define([
             var ctx = new CmsContext();
             ctx.storeRegistry = ectx.storeRegistry;
             ctx.schemaRegistry = ectx.schemaRegistry;
-
             var opener = new TabOpener();
             opener.tabContainer = tabContainer;
-
             opener.confirmDialog = registry.byId("confirmDialog");
-
             createPlainValue = function (schema) {
                 if (this.store.getDefault) {
                     return this.store.getDefault(schema, ctx);
@@ -25,13 +22,9 @@ define([
                     return {};
                 }
             }
-
             opener.controllerConfig = {
                 plainValueFactory: createPlainValue
             }
-
-
-
             opener.ctx = ctx;
             ctx.opener = opener;
             opener.init();
@@ -47,11 +40,7 @@ define([
             props.style = {};
             props.style.width = config.width;
             var tabContainer = new TabContainer(props);
-
-
             var opener = this._createOpener(tabContainer, ctx);
-
-
             return tabContainer;
         }
     });

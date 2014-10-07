@@ -5,7 +5,7 @@ define([
     "dojo/_base/declare",
     "dijit/layout/TabContainer",
     "dijit/layout/ContentPane"
-], function (topic, UrlTreeModel, Tree, declare) {
+], function (topic, TreeStore, Tree, declare) {
 
 
     return declare([], {
@@ -16,7 +16,7 @@ define([
             var me = this;
             var realStore = store.mainStore ? store.mainStore : store.name;
 
-            var model = new UrlTreeModel({store: store});
+            var model = new TreeStore({store: store});
             topic.subscribeStore("/added", function (evt) {
                 model.createEntity(evt.entity.url);
             }, realStore);
@@ -31,7 +31,7 @@ define([
             });
 
             var nodeClicked = function (node) {
-                if (node.id) {
+                if (node.id) {  
                     try {
                         var template = node.template || null;
                         // TODO configure the tree elements real store. and use it as store param.

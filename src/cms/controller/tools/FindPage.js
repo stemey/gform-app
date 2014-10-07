@@ -29,7 +29,7 @@ define([
             topic.subscribeStore("/deleted", lang.hitch(this, "updatedStore"), this.store.name);
         },
         updatedStore: function () {
-            this.select.setStore(new ObjectStore(this.store));
+            this.select.set("store",new ObjectStore(this.store));
         },
         click: function (evt) {
             var id = this.select.get("value");
