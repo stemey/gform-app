@@ -16,6 +16,9 @@ define([
         templateStore: null,
         resolver: null,
         templateToSchemaTransformer: null,
+        constructor: function() {
+          this.tmpls={};
+        },
         findByUrl: function (url) {
             //var res =url.match(/page\/([^\/]+)/);
             //var store=pageStoreRegistry.get(template).get(res[1]);
@@ -163,7 +166,7 @@ define([
             ctx = {arrayCode: attribute.code, page: ctx.page[attribute.code], promises: ctx.promises, templates: ctx.templates, errors: ctx.errors};
             goon(ctx);
         },
-        tmpls: {},
+        tmpls: null,
         renderIncludes: function (template, page) {
             // summary:
             //		finds all referenced pages in the template and renders them.
@@ -181,7 +184,7 @@ define([
                 } else {
                     this.resolver = new Resolver();
                     this.resolver.baseUrl = this.templateStore.target;
-                    var resolved = this.resolver.resolve(template, "http://localhost:8080/schema/" + page.template);
+                    var resolved = this.resolver.resolve(template, "http://localhost:8080/schema/" + page[this.pageStore.store.typeProperty]);
                     this.tmpls[template._id] = resolved;
                 }
                 templatePromise = new Deferred();
@@ -240,7 +243,8 @@ define([
             }
 
             when(me.findByUrl(pageUrl)).then(function (page) {
-                if (page.template) {
+                if (page[me.pageStore.store.typeProperty]) {
+                    // TODO replace finbyUrl by getById
                     when(me.templateStore.findByUrl("/template/" + page.template)).then(function (template) {
                         //console.log("renderInternally p=" + page.url + "  t=" + template.name);
                         if (!checkPartial || template.partial) {
@@ -266,7 +270,7 @@ define([
                                     });
 
                                 } else if (ctx.outer) {
-                                    outerTemplate = ctx.outer.template;
+                                    outerTemplate = ctx.outer[me.pageStore.store.typeProperty];
 
                                 }
                                 if (partials) {
@@ -335,6 +339,7 @@ define([
             }
             //console.log(" get TemplateAndData " + pageUrl);
             when(me.findByUrl(pageUrl)).then(function (page) {
+                // TODO replace findByUrl by getById
                 when(me.templateStore.findByUrl("/template/" + page.template)).then(function (template) {
                     var includesPromise = me.renderIncludes(template, page);
                     when(includesPromise).then(function (ctx) {
@@ -362,6 +367,7 @@ define([
             var me = this;
             var renderPromise = new Deferred();
             //console.log("getData " + pageUrl);
+            // TODO replace findByUrl by getById
             when(me.findByUrl("/page/" + pageUrl)).then(function (page) {
                 renderPromise.resolve({page: page});
             }).otherwise(function (e) {

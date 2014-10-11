@@ -1,4 +1,5 @@
 define([
+    './controller/actions/Preview',
     './util/stringTemplateConverter',
     './controller/actions/CreateInstance',
     './controller/actions/Save',
@@ -14,7 +15,7 @@ define([
     './meta/TemplateRefAttributeFactory',
     'cms/RequiredAttributes',
     'gform/createFullEditorFactory'
-], function (stringTemplateConverter, CreateInstance, Save, Close, Discard, Delete, ActionFactory, FormValidator, AttributeRefFactory, FormAttributeFactory, refConverter, converter, TemplateRefAttributeFactory, RequiredAttributes, createFullEditorFactory) {
+], function (Preview, stringTemplateConverter, CreateInstance, Save, Close, Discard, Delete, ActionFactory, FormValidator, AttributeRefFactory, FormAttributeFactory, refConverter, converter, TemplateRefAttributeFactory, RequiredAttributes, createFullEditorFactory) {
 
 
     return function () {
@@ -42,6 +43,7 @@ define([
         af.add({type:Delete})
         af.add({type:Close});
         af.add({type:CreateInstance});
+        af.add({type:Preview});
 
         ef.actionFactory=af;
 

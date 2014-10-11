@@ -1,4 +1,5 @@
 define([
+    'dojo/aspect',
     'dojo/_base/lang',
     '../util/topic',
     "dojo/_base/declare",
@@ -6,53 +7,66 @@ define([
     "dijit/_WidgetBase",
     "dijit/_TemplatedMixin",
     "dojo/text!./Previewer.html"
-], function (lang, topic, declare, when, _WidgetBase, _TemplatedMixin, template) {
+], function (aspect, lang, topic, declare, when, _WidgetBase, _TemplatedMixin, template) {
 
 
     return declare("cms.Previewer", [ _WidgetBase, _TemplatedMixin], {
         templateString: template,
         pageStore: null,
         iframe: null,
-        renderer: null,
         postCreate: function () {
             this.inherited(arguments);
 
             topic.subscribe("/page/navigate", lang.hitch(this, "onPageNavigate"));
-            topic.subscribeStore("/focus", lang.hitch(this, "onPageFocus"), this.pageStore.name);
-            topic.subscribeStore("/updated", lang.hitch(this, "onPageUpdated"), this.pageStore.name);
-            topic.subscribeStore("/deleted", lang.hitch(this, "onPageDeleted"), this.pageStore.name);
+            topic.subscribeStore("/focus", lang.hitch(this, "onPageFocus"), this.pageStore.store.name);
+            topic.subscribeStore("/updated", lang.hitch(this, "onPageUpdated"), this.pageStore.store.name);
+            topic.subscribeStore("/deleted", lang.hitch(this, "onPageDeleted"), this.pageStore.store.name);
+
+            // TODO this results in two callbacks??? that is why we need to check if rendering===true
+            aspect.after(this.pageStore,"onUpdate",lang.hitch(this,"refresh"));
+            //topic.subscribeStore("/modify/update", lang.hitch(this, "onPageRefresh"), this.pageStore.name);
         },
         onPageFocus: function (evt) {
             this.display(evt.store + "/" + evt.id);
         },
         onPageUpdated: function (evt) {
-            this.display(evt.store + "/" + evt.entity[this.pageStore.idProperty]);
+            this.display(evt.store + "/" + evt.entity[this.pageStore.store.idProperty]);
         },
         onPageDeleted: function (evt) {
             // this.display("/page/"+evt.id);
         },
+        onPageRefresh: function(evt) {
+              this.refresh();
+        },
         onPageNavigate: function (evt) {
             //TODO move to general component or AppController
             var me = this;
-            var page = this.pageStore.query({url: evt.url});
+            var page = this.pageStore.store.query({url: evt.url});
             when(page).then(function (pageResults) {
-                var id = me.pageStore.getIdentity(pageResults[0]);
+                var id = me.pageStore.store.getIdentity(pageResults[0]);
                 var template = pageResults[0].template;
                 if (template) {
-                    topic.publish("/focus", {id: id, store: me.pageStore.name, template: template, source: this});
+                    topic.publish("/focus", {id: id, store: me.pageStore.store.name, template: template, source: this});
                 }
             });
         },
+        rendering:false,
         display: function (url) {
             // TODO improve error reporting
-            var me = this;
-            this.url = url;
-            if (!me.renderer) {
-                // not instantiated yet
+            // TODO fix the threadsafety of previewer.
+            if (this.rendering) {
+                console.log("already rendering");
                 return;
+            }else{
+                this.rendering=true;
             }
-            when(me.renderer.render(url))
+            var me = this;
+            var scollToTop=this.url!==url;
+            this.url = url;
+            var renderer = this.createRenderer();
+            when(renderer.render(url))
                 .then(function (result) {
+                    me.rendering=false;
                     if (!result.noPage) {
 
                         var html = result.html;
@@ -69,9 +83,12 @@ define([
                         ifrm.document.open();
                         ifrm.document.write(html);
                         ifrm.document.close();
-                        ifrm.scrollTo(0,0);
+                        if (scollToTop){
+                            ifrm.scrollTo(0,0);
+                        }
                     }
                 }).otherwise(function (e) {
+                    me.rendering=false;
                     alert("cannot render " + e.stack)
                 });
         },

@@ -10,7 +10,6 @@ define([
 ], function (FindByUrlMixin, handlers, xhr, QueryResults, Deferred, lang, declare, JsonRest) {
 
     return declare([ JsonRest , FindByUrlMixin], {
-        transform: null,
         query: function (query, options) {
             var params = {};
             lang.mixin(params,query);

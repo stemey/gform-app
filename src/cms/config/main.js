@@ -120,7 +120,8 @@ define([
                     "region": "center",
                     "factoryId": "cms/factory/PreviewerFactory",
                     "splitter": true,
-                    "rendererClass":"cms/preview/handlebars/Renderer"
+                    "rendererClass":"cms/preview/handlebars/Renderer",
+                    "pageStore":"/page"
                 },
                 {
                     "width": "40%",

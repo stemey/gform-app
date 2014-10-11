@@ -1,4 +1,7 @@
 define([
+    'gridx/modules/Filter',
+    "gridx/modules/filter/QuickFilter",
+    'dojo/on',
     'dojo/aspect',
     'dojo/topic',
     "dojo/_base/declare",
@@ -8,7 +11,7 @@ define([
     'gridx/modules/RowHeader',
     'gridx/modules/select/Row',
     "dojo/json"
-], function (aspect, topic, declare, Grid, Cache, VirtualVScroller, RowHeader, RowSelect, json) {
+], function (Filter, QuickFilter, on, aspect, topic, declare, Grid, Cache, VirtualVScroller, RowHeader, RowSelect, json) {
 
 
     return declare([], {
@@ -21,7 +24,8 @@ define([
             var store = ctx.getStore(config.storeId);
             props.store = store;
             props.modules = [
-                VirtualVScroller,
+                Filter,
+                QuickFilter,
                 {
                     moduleClass: RowSelect,
                     multiple: false,
@@ -35,6 +39,10 @@ define([
             }
             aspect.after(templateGrid, "startup", function() {
                 templateGrid.select.row.connect(templateGrid.select.row, "onSelected", selected);
+                templateGrid.connect(templateGrid, 'onRowClick', function(e){
+                    var id =templateGrid.select.row.getSelected();
+                    topic.publish("/focus", {store: store.name,id: id,  source: this})
+                });
             });
             return templateGrid;
         }
