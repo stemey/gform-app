@@ -17,7 +17,6 @@ define([
             topic.publish("/modify/cancel", this._getEvent());
         },
         onChange: function () {
-            console.log("update");
             topic.publish("/modify/update", this._getEvent({value: this.ctrl.editor.getPlainValue()}));
         },
         _getEvent: function (evt) {

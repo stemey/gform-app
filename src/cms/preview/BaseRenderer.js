@@ -33,7 +33,7 @@ define([
             }
             var me = this;
             if (attribute.usage === "link") {
-                //console.log("link " + idx);
+                ////console.log("link " + idx);
                 var p = this.findByUrl(value);
                 ctx.promises.push(p);
                 when(p).then(function (page) {
@@ -42,7 +42,7 @@ define([
                         ctx.errors.push({message: "error during getting link of " + value, error: e});
                     });
             } else if (attribute.usage === "partial") {
-                //console.log("getTemplateAndData " + idx);
+                ////console.log("getTemplateAndData " + idx);
                 var p = this.getTemplateAndData(value, ctx);
                 ctx.promises.push(p);
                 when(p).then(function (result) {
@@ -60,7 +60,7 @@ define([
                         ctx.errors.push({message: "error during getting template and data of " + value, error: e});
                     });
             } else if (attribute.usage === "data") {
-                //console.log("getData " + idx);
+                ////console.log("getData " + idx);
                 var p = this.getData(value);
                 ctx.promises.push(p);
                 when(p).then(function (data) {
@@ -74,7 +74,7 @@ define([
                         ctx.errors.push({message: "error while getting data for " + value, error: e});
                     });
             } else {
-                console.log("render page ref " + idx);
+                //console.log("render page ref " + idx);
                 var p = this.renderInternally(value);
                 ctx.promises.push(p);
                 when(p).then(function (result) {
@@ -100,7 +100,7 @@ define([
             if (value && attribute.template.partials) {
                 Object.keys(attribute.template.partials).forEach(function (key) {
                     var url = attribute.template.partials[key];
-                    //console.log("render partial of template-ref " + key);
+                    ////console.log("render partial of template-ref " + key);
                     var p = this.renderInternally("/page/" + url, ctx.page);
                     ctx.promises.push(p);
                     when(p).then(function (result) {
@@ -109,7 +109,7 @@ define([
                             ctx.errors = ctx.errors.concat(result.errors);
                         }
                     }).otherwise(function (e) {
-                            console.error("error during rendering " + e.stack);
+                            //console.error("error during rendering " + e.stack);
                         });
 
                 }, this);
@@ -176,7 +176,7 @@ define([
             var ctx = {page: {}, promises: [], templates: {}, errors: []};
             var templatePromise = template;
             lang.mixin(ctx.page, page);
-            console.log("renderIncludes p=" + page.url + "  t=" + template.name);
+            //console.log("renderIncludes p=" + page.url + "  t=" + template.name);
             if (this.templateToSchemaTransformer) {
                 var cached = this.tmpls[template.code]//TODO 'code' is hardcoded. Only correct for atem dynamic types.
                 if (cached) {
@@ -193,10 +193,10 @@ define([
                     when(p).then(function (resolvedTemplateX) {
                         templatePromise.resolve(resolvedTemplateX);
                     }).otherwise(function (e) {
-                            console.error("error during rendering " + e.stack);
+                            //console.error("error during rendering " + e.stack);
                         });
                 }).otherwise(function (e) {
-                        console.error("error during rendering " + e.stack);
+                        //console.error("error during rendering " + e.stack);
                     });
             }
             var includesPromise = new Deferred();
@@ -206,10 +206,10 @@ define([
                 when(all(ctx.promises)).then(function () {
                     includesPromise.resolve(ctx);
                 }).otherwise(function (e) {
-                        console.error("error during rendering " + e.stack);
+                        //console.error("error during rendering " + e.stack);
                     });
             }).otherwise(function (e) {
-                    console.error("error during rendering " + e.stack);
+                    //console.error("error during rendering " + e.stack);
                 });
             return includesPromise;
         },
@@ -244,9 +244,13 @@ define([
 
             when(me.findByUrl(pageUrl)).then(function (page) {
                 if (page[me.pageStore.store.typeProperty]) {
-                    // TODO replace finbyUrl by getById
+                    // TODO replace findByUrl by getById
                     when(me.templateStore.findByUrl("/template/" + page.template)).then(function (template) {
-                        //console.log("renderInternally p=" + page.url + "  t=" + template.name);
+                        ////console.log("renderInternally p=" + page.url + "  t=" + template.name);
+                        if (!template.sourceCode) {
+                            renderPromise.resolve({noPage:true});
+                            return;
+                        }
                         if (!checkPartial || template.partial) {
                             var includesPromise = me.renderIncludes(template, page);
                             when(includesPromise).then(function (ctx) {
@@ -283,7 +287,7 @@ define([
                                                 ctx.errors = ctx.errors.concat(result.errors);
                                             }
                                         }).otherwise(function (e) {
-                                                console.error("error during rendering " + e.stack);
+                                                //console.error("error during rendering " + e.stack);
                                             });
                                     });
                                 }
@@ -308,11 +312,11 @@ define([
                                     var html = me.renderTemplate(sourceCode, newPage, ctx.templates);
                                     renderPromise.resolve({html: html, errors: ctx.errors});
                                 }).otherwise(function (e) {
-                                        console.error("error during rendering " + e.stack);
+                                        //console.error("error during rendering " + e.stack);
                                         error(ctx);
                                     });
                             }).otherwise(function (e) {
-                                    console.error("error during rendering " + e.stack);
+                                    //console.error("error during rendering " + e.stack);
                                     //alert("error during rendering " + e.stack);
                                 });
                         } else {
@@ -337,7 +341,7 @@ define([
             } else {
                 this.tadCache[pageUrl] = renderPromise;
             }
-            //console.log(" get TemplateAndData " + pageUrl);
+            ////console.log(" get TemplateAndData " + pageUrl);
             when(me.findByUrl(pageUrl)).then(function (page) {
                 // TODO replace findByUrl by getById
                 when(me.templateStore.findByUrl("/template/" + page.template)).then(function (template) {
@@ -346,7 +350,7 @@ define([
 
                         renderPromise.resolve({template: template, page: ctx.page, templates: ctx.templates});
                     }).otherwise(function (e) {
-                            console.error("error during rendering " + e.stack);
+                            //console.error("error during rendering " + e.stack);
                         });
                 }).otherwise(function (e) {
                         var errors = [
@@ -366,7 +370,7 @@ define([
         getData: function (pageUrl) {
             var me = this;
             var renderPromise = new Deferred();
-            //console.log("getData " + pageUrl);
+            ////console.log("getData " + pageUrl);
             // TODO replace findByUrl by getById
             when(me.findByUrl("/page/" + pageUrl)).then(function (page) {
                 renderPromise.resolve({page: page});

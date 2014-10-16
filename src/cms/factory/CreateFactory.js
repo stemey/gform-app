@@ -1,9 +1,13 @@
 define([
+    'dojo/_base/lang',
+    'dijit/form/DropDownButton',
+    'dijit/MenuItem',
+    'dijit/DropDownMenu',
     'dijit/form/Button',
     '../controller/tools/Create',
     'dojo/topic',
     "dojo/_base/declare"
-], function (Button, Create, topic, declare) {
+], function (lang, DropDownButton, MenuItem, DropDownMenu, Button, Create, topic, declare) {
 
 
     return declare([], {

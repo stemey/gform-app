@@ -40,20 +40,18 @@ define(['dojo/i18n!../nls/messages',
         onPageFocus: function (evt) {
             var me = this;
             if (evt.source != this) {
-                //this.ctx.getSchemaUrl(evt.store, evt.id).then(function (schemaUrl) {
-                    me.opening = true;
-                    try {
-                        var store=this.ctx.getStore(evt.store)
-                        var typeProperty=store.typeProperty;
-                        if (!typeProperty) {
-                            me.openSingle({url: evt.store, id: evt.id, schemaUrl: store.template});
-                        } else {
-                            me.openSingle({url: evt.store, id: evt.id, schemaUrls: [],typeProperty:typeProperty});
-                        }
-                    } finally {
-                        me.opening = false;
+                me.opening = true;
+                try {
+                    var store = this.ctx.getStore(evt.store)
+                    var typeProperty = store.typeProperty;
+                    if (!typeProperty) {
+                        me.openSingle({url: evt.store, id: evt.id, schemaUrl: store.template});
+                    } else {
+                        me.openSingle({url: evt.store, id: evt.id, schemaUrls: [], typeProperty: typeProperty});
                     }
-                //});
+                } finally {
+                    me.opening = false;
+                }
             }
         },
         closeTabs: function () {
@@ -69,8 +67,8 @@ define(['dojo/i18n!../nls/messages',
         },
         onNew: function (evt) {
             var ef = this.ctx.getStore(evt.store).editorFactory;
-            this.createSingle({url: evt.store, editorFactory: ef, typeProperty:"template", schemaUrls:[evt.schemaUrl]});
-        }, 
+            this.createSingle({url: evt.store, editorFactory: ef, typeProperty: "template", schemaUrls: [evt.schemaUrl],value:evt.value});
+        },
         tabSelected: function (page) {
             // TODO getting store from crudController is lame - move to crudController.onShow??
             var store = page.store;

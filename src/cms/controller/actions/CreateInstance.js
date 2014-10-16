@@ -1,10 +1,11 @@
 define([
+    'dojo/aspect',
     'dojo/topic',
     'dojo/i18n!cms/nls/messages',
     'gform/controller/actions/_ActionMixin',
     "dojo/_base/declare"
 
-], function (topic, messages, ActionMixin, declare) {
+], function (aspect, topic, messages, ActionMixin, declare) {
 // module:
 //		gform/controller/actions/Save
 
@@ -15,7 +16,15 @@ define([
         createButton: function () {
             var templateStore = this.ctrl.store;
             if (templateStore.instanceStore) {
-                return this.inherited(arguments);
+                var button = this.inherited(arguments);
+                var isDisabled=function() {
+                    return this.ctrl.editor.getPlainValue().partial || this.ctrl.state=="create";
+                }.bind(this);
+                aspect.after(this.ctrl.editor, "onChange", function () {
+                    button.set("disabled", isDisabled());
+                });
+                button.set("disabled", isDisabled());
+                return button;
             } else {
                 return null;
             }

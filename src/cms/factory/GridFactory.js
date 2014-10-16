@@ -23,6 +23,7 @@ define([
             props.structure = config.columns;
             var store = ctx.getStore(config.storeId);
             props.store = store;
+            props.style={width:"100%"};
             props.modules = [
                 Filter,
                 QuickFilter,

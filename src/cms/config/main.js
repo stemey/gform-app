@@ -1,4 +1,5 @@
 define([
+    '../factory/HandlebarsCreateFactory',
     'cms/preview/handlebars/Renderer',
     '../factory/ToggleSizeFactory',
     '../factory/FindPageFactory',
@@ -31,7 +32,7 @@ define([
                         "idType": "string",
                         "typeProperty": "template",
                         "target": "http://localhost:8080/entity/base/",
-                        "createEditorFactory":"cms/createBuilderEditorFactory"
+                        "createEditorFactory": "cms/createBuilderEditorFactory"
                     },
                     {
                         "factoryId": "cms/factory/StoreFactory",
@@ -42,8 +43,7 @@ define([
                         "target": "http://localhost:8080/schema/",
                         "template": "/template",
                         "instanceStore": "/page",
-                        "plainValueFactory":"cms/default/createTemplateValueFactory",
-                        "createEditorFactory":"cms/createBuilderEditorFactory"
+                        "createEditorFactory": "cms/createBuilderEditorFactory"
 
                     }
                 ]
@@ -66,7 +66,7 @@ define([
                     "children": [
                         {
                             "factoryId": "cms/factory/BrandFactory",
-                            "label": "mini cms"
+                            "label": "gform-cms"
                         },
                         {
                             "factoryId": "cms/factory/FindPageFactory",
@@ -79,7 +79,7 @@ define([
                             "label": "+"
                         },
                         {
-                            "factoryId": "cms/factory/CreateFactory",
+                            "factoryId": "cms/factory/HandlebarsCreateFactory",
                             "url": "/template",
                             "storeId": "/template",
                             "label": "add template"
@@ -93,6 +93,7 @@ define([
                 {
                     "region": "left",
                     "splitter": true,
+                    "width":"250px",
                     "factoryId": "cms/factory/TabFactory",
                     "children": [
                         {
@@ -120,8 +121,8 @@ define([
                     "region": "center",
                     "factoryId": "cms/factory/PreviewerFactory",
                     "splitter": true,
-                    "rendererClass":"cms/preview/handlebars/Renderer",
-                    "pageStore":"/page"
+                    "rendererClass": "cms/preview/handlebars/Renderer",
+                    "pageStore": "/page"
                 },
                 {
                     "width": "40%",

@@ -53,13 +53,6 @@ define([
         rendering:false,
         display: function (url) {
             // TODO improve error reporting
-            // TODO fix the threadsafety of previewer.
-            if (this.rendering) {
-                console.log("already rendering");
-                return;
-            }else{
-                this.rendering=true;
-            }
             var me = this;
             var scollToTop=this.url!==url;
             this.url = url;
@@ -88,7 +81,6 @@ define([
                         }
                     }
                 }).otherwise(function (e) {
-                    me.rendering=false;
                     alert("cannot render " + e.stack)
                 });
         },

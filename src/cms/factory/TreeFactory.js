@@ -27,7 +27,6 @@ define([
                 model.deleteEntity(evt.entity);
             }, realStore);
             topic.subscribeStore("/focus", function (evt) {
-                //me.onPageFocus(evt.entity);
             });
 
             var nodeClicked = function (node) {
@@ -37,7 +36,7 @@ define([
                         // TODO configure the tree elements real store. and use it as store param.
                         topic.publish("/focus", {id: node.id, store: realStore, source: this, template: template});
                     } catch (e) {
-                        console.log(e.stack);
+                        //console.log(e.stack);
                     }
                 }
             }

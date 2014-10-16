@@ -1,11 +1,11 @@
 define([
-    'dojo/promise/all',
-    'dojo/_base/Deferred',
     '../util/FindByUrlMixin',
-    'dojo/_base/lang',
     'cms/util/topic',
-    "dojo/_base/declare"
-], function (all, Deferred, FindByUrlMixin, lang, topic, declare) {
+    'dojo/_base/declare',
+    'dojo/_base/Deferred',
+    'dojo/_base/lang',
+    'dojo/promise/all'
+], function (FindByUrlMixin, topic, declare, Deferred, lang, all) {
 
     return declare([FindByUrlMixin ], {
         store: null,
@@ -27,13 +27,7 @@ define([
             if (!entity) {
                 return this.store.get(id);
             } else {
-                var d = new Deferred();
-                d.resolve(entity);
-                var x =all([d,this.store.get(id)]);
-                x.then(function(a,b) {
-                    //console.log(a==b);
-                });
-                return d;
+                return lang.clone(entity);
             }
         }
     });
