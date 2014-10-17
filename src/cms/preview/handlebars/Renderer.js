@@ -20,6 +20,9 @@ define([
             return options.fn(this);
         }
     });
+    Handlebars.registerHelper('style-tag', function (styles, options) {
+        return "<style>"+styles+"</style>"
+    });
     Handlebars.registerHelper('link', function (url, options) {
         return "javascript:preview('" + url + "');";
     }); 
