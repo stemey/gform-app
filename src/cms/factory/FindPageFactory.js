@@ -1,13 +1,17 @@
 define([
+    'dojo/_base/lang',
     '../controller/tools/FindPage',
     "dojo/_base/declare"
-], function (FindPage, declare) {
+], function (lang, FindPage, declare) {
 
 
     return declare([], {
         create: function (ctx, config) {
             var store = ctx.getStore(config.storeId);
-            return new FindPage({label: config.label,  store: store})
+            var props = {};
+            lang.mixin(props,config);
+            props.store=store;
+            return new FindPage(props)
         }
     });
 

@@ -1,13 +1,10 @@
 define([
     'dojo/_base/lang',
-    'dijit/form/DropDownButton',
-    'dijit/MenuItem',
-    'dijit/DropDownMenu',
     'dijit/form/Button',
     '../controller/tools/Create',
     'dojo/topic',
     "dojo/_base/declare"
-], function (lang, DropDownButton, MenuItem, DropDownMenu, Button, Create, topic, declare) {
+], function (lang, Button, Create, topic, declare) {
 
 
     return declare([], {
@@ -21,7 +18,10 @@ define([
                     }})
             } else {
                 var store = ctx.getStore(entityStore.templateStore);
-                return new Create({label: config.label, entityStore: entityStore, store: store})
+                var props = {store:store,entityStore:entityStore};
+                lang.mixin(props,config);
+
+                return new Create(props)
             }
         }
     });

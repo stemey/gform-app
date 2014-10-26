@@ -50,8 +50,9 @@
                 {
                     "code": "outer",
                     "type": "ref",
-                    "idProperty": "_id",
+                    "idProperty": "identifier",
                     "url": "/template",
+                    "schemaUrl": "/template",
                     "required": false,
                     "searchProperty": "name"
                 },
@@ -60,9 +61,8 @@
                     "type": "map",
                     "keyAttribute": {},
                     "valueAttribute": {
-                        "type": "multi-ref",
+                        "type":"ref",
                         "typeProperty": "template",
-                        "schemas": [],
                         "idProperty": "identifier",
                         "url": "/page",
                         "searchProperty": "url"
@@ -74,12 +74,12 @@
                     "type": "map",
                     "keyAttribute": {},
                     "valueAttribute": {
-                        "type": "multi-ref",
+                        "type": "ref",
                         "searchProperty": "name",
                         "idProperty":"code",
                         "converter":"refConverter",
                         "url": "/template",
-                        "schemas": []
+                        "schemaUrl": "/template"
 
                     }
                 }

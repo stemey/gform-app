@@ -1,14 +1,10 @@
 define([
     './SchemaStore',
     '../loadAll',
-    'dojo/_base/lang',
-    'dojo/when',
-    'cms/meta/SchemaGenerator',
     '../../meta/TemplateSchemaTransformer',
     '../load',
-    "dojo/_base/declare",
-    "dojo/text!cms/schema/template.json"
-], function (SchemaStore, loadAll, lang, when, SchemaGenerator, TemplateSchemaTransformer, load, declare, templateSchema) {
+    "dojo/_base/declare"
+], function (SchemaStore, loadAll, TemplateSchemaTransformer, load, declare) {
 
     /**
      * store to store our schemas.

@@ -19,10 +19,9 @@ define([
         label: "create",
         postCreate: function () {
             this.inherited(arguments);
-            //this.button.set("label", this.label);
-            this.select.set("labelAttr", "url");
-            this.select.set("placeHolder", "find page..")
-            this.select.set("searchAttr", "url");
+            this.select.set("labelAttr", this.labelProperty || this.searchProperty);
+            this.select.set("placeHolder", this.placeHolder || "find..")
+            this.select.set("searchAttr", this.searchProperty);
             this.select.set("store", new ObjectStore(this.store));
             topic.subscribeStore("/added", lang.hitch(this, "updatedStore"), this.store.name);
             topic.subscribeStore("/updated", lang.hitch(this, "updatedStore"), this.store.name);

@@ -1,4 +1,5 @@
 define([
+    'dojo/store/JsonRest',
     '../factory/HandlebarsCreateFactory',
     'cms/preview/handlebars/Renderer',
     '../factory/ToggleSizeFactory',
@@ -10,7 +11,7 @@ define([
     '../factory/TabFactory',
     '../factory/PreviewerFactory',
     '../factory/TreeFactory'
-], function () {
+], function (JsonRest) {
 
         return {
             "storeRegistry": {
@@ -43,6 +44,19 @@ define([
                         "target": "http://localhost:8080/schema/",
                         "template": "/template",
                         "instanceStore": "/page",
+                        "createEditorFactory": "cms/createBuilderEditorFactory",
+                        "plainValueFactory": "cms/default/createTemplateValueFactory"
+
+                    },
+                    {
+                        "factoryId": "cms/factory/StoreFactory",
+                        "name": "/user",
+                        "storeClass": "dojo/store/JsonRest",
+                        "idProperty": "_id",
+                        "idType": "string",
+                        "target": "http://localhost:3333/api/Users/",
+                        "template": "/Users",
+                        "instanceStore": "/page",
                         "createEditorFactory": "cms/createBuilderEditorFactory"
 
                     }
@@ -55,7 +69,7 @@ define([
                 "schemaGenerators": [
                     {
                         "factoryId": "cms/factory/schema/SchemaGenerator",
-                        "store": "/template"
+                        "store": "/template" // instances of the generated schema will be place into this store. id Proeprty and idType are taken from this store and added to the schema.
                     }
                 ]
             },
@@ -71,12 +85,17 @@ define([
                         {
                             "factoryId": "cms/factory/FindPageFactory",
                             "storeId": "/page",
-                            "label": "open"
+                            "label": "open",
+                            "searchProperty": "url",
+                            "labelProperty": "url",
+                            "placeHolder": "find page .."
                         },
                         {
                             "factoryId": "cms/factory/CreateFactory",
                             "storeId": "/page",
-                            "label": "+"
+                            "label": "+",
+                            "searchProperty": "name",
+                            "placeHolder": "find template .."
                         },
                         {
                             "factoryId": "cms/factory/HandlebarsCreateFactory",
@@ -93,7 +112,7 @@ define([
                 {
                     "region": "left",
                     "splitter": true,
-                    "width":"250px",
+                    "width": "250px",
                     "factoryId": "cms/factory/TabFactory",
                     "children": [
                         {

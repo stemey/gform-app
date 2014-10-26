@@ -26,9 +26,9 @@ define([
         },
         postCreate: function () {
             this.inherited(arguments);
-            this.select.set("labelAttr", "code");
-            this.select.set("placeHolder", "find template..")
-            this.select.set("searchAttr", "name");
+            this.select.set("labelAttr", this.labelProperty || this.searchProperty);
+            this.select.set("placeHolder", this.placeHolder)
+            this.select.set("searchAttr",  this.searchProperty);
             this.select.set("store", this.store);
             topic.subscribeStore("/added", lang.hitch(this, "updatedStore"), this.store.name);
             topic.subscribeStore("/updated", lang.hitch(this, "updatedStore"), this.store.name);

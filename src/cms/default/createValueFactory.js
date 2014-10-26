@@ -16,9 +16,9 @@ define([
         var attributes = [];
         if (partial !== true) {
             attributes.push({code: "url", "editor": "string", type: "string", required: true});
+            attributes.push({code: instanceStore.idProperty, "editor": "string", type: instanceStore.idType, required: false, disabled: true});
+            attributes.push(typeAttribute);
         }
-        attributes.push({code: instanceStore.idProperty, "editor": "string", type: instanceStore.idType, required: false, disabled: true});
-        attributes.push(typeAttribute);
 
         var group = {editor: "listpane", attributes: attributes};
         var template = {};
