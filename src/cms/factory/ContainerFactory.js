@@ -1,6 +1,7 @@
 define([
+    'dojo/when',
     "dojo/_base/declare"
-], function (declare) {
+], function (when, declare) {
 
 
     return declare([], {
@@ -12,12 +13,25 @@ define([
                 for (var idx = 0; idx < arguments.length; idx++) {
                     var childConfig = childrenConfigs[idx];
                     var factory = arguments[idx];
-                    var child = new factory().create(ctx, childConfig);
-                    child.title = childConfig.title;
-                    if (callback) {
-                        callback(child, childConfig);
-                    }
-                    container.addChild(child);
+                    var childP = new factory().create(ctx, childConfig);
+                    when(childP).then(function(child) {
+                        if (Array.isArray(child)) {
+                            child.forEach(function(element) {
+                                if (callback) {
+                                    callback(element, childConfig);
+                                }
+                                container.addChild(element);
+
+                            })  ;
+                        }else{
+                            if (callback) {
+                                callback(child, childConfig);
+                            }
+                            container.addChild(child);
+                        }
+
+
+                    });
                 };
             });
 

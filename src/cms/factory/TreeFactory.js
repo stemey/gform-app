@@ -30,7 +30,7 @@ define([
             });
 
             var nodeClicked = function (node) {
-                if (node.id) {  
+                if (node.id) {
                     try {
                         var template = node.template || null;
                         // TODO configure the tree elements real store. and use it as store param.
@@ -40,7 +40,7 @@ define([
                     }
                 }
             }
-            var tree = new Tree({label: "", labelAttr: config.labelAttribute, model: model, onClick: nodeClicked});
+            var tree = new Tree({storeId: store.name, title: config.title, label: "", labelAttr: config.labelAttribute, model: model, onClick: nodeClicked});
             return tree;
         }
     });

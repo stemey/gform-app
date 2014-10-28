@@ -19,11 +19,13 @@ define([
             // TODO add quick filter
             // TODO move title to tabContainer?
             var props = {title: "template"};
+            props.title = config.title;// if displayed in tab or titlepane
             props.cacheClass = Cache;
             props.structure = config.columns;
             var store = ctx.getStore(config.storeId);
             props.store = store;
-            props.style={width:"100%"};
+            props.storeId = store.name;
+            props.style = {width: "100%"};
             props.modules = [
                 Filter,
                 QuickFilter,
@@ -36,13 +38,13 @@ define([
             ];
             var templateGrid = new Grid(props);
             var selected = function (e) {
-                topic.publish("/focus", {store: store.name,id: e.id,  source: this})
+                topic.publish("/focus", {store: store.name, id: e.id, source: this})
             }
-            aspect.after(templateGrid, "startup", function() {
+            aspect.after(templateGrid, "startup", function () {
                 templateGrid.select.row.connect(templateGrid.select.row, "onSelected", selected);
-                templateGrid.connect(templateGrid, 'onRowClick', function(e){
-                    var id =templateGrid.select.row.getSelected();
-                    topic.publish("/focus", {store: store.name,id: id,  source: this})
+                templateGrid.connect(templateGrid, 'onRowClick', function (e) {
+                    var id = templateGrid.select.row.getSelected();
+                    topic.publish("/focus", {store: store.name, id: id, source: this})
                 });
             });
             return templateGrid;

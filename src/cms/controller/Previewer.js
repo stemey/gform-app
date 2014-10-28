@@ -18,16 +18,29 @@ define([
             this.inherited(arguments);
 
             topic.subscribe("/page/navigate", lang.hitch(this, "onPageNavigate"));
-            topic.subscribeStore("/focus", lang.hitch(this, "onPageFocus"), this.pageStore.store.name);
+            topic.subscribe("/focus", lang.hitch(this, "onPageFocus"));
             topic.subscribeStore("/updated", lang.hitch(this, "onPageUpdated"), this.pageStore.store.name);
             topic.subscribeStore("/deleted", lang.hitch(this, "onPageDeleted"), this.pageStore.store.name);
+            topic.subscribe("/store/focus", lang.hitch(this, "onStoreFocus"));
 
             // TODO this results in two callbacks??? that is why we need to check if rendering===true
             aspect.after(this.pageStore,"onUpdate",lang.hitch(this,"refresh"));
             //topic.subscribeStore("/modify/update", lang.hitch(this, "onPageRefresh"), this.pageStore.name);
         },
         onPageFocus: function (evt) {
+            if (evt.store==this.pageStore.store.name) {
+                topic.publish("/previewer/show",{});
             this.display(evt.store + "/" + evt.id);
+            }else{
+                topic.publish("/previewer/hide",{});
+            }
+        },
+        onStoreFocus: function (evt) {
+            if (evt.store!==this.pageStore.store.name) {
+                topic.publish("/previewer/hide",{});
+            }else{
+                topic.publish("/previewer/show",{});
+            }
         },
         onPageUpdated: function (evt) {
             this.display(evt.store + "/" + evt.entity[this.pageStore.store.idProperty]);
@@ -79,6 +92,8 @@ define([
                         if (scollToTop){
                             ifrm.scrollTo(0,0);
                         }
+                    } else{
+                        this.style.width="0px";
                     }
                 }).otherwise(function (e) {
                     alert("cannot render " + e.stack)

@@ -36,7 +36,8 @@ define([
 
             var button = new DropDownButton({
                 label: config.label,
-                dropDown: menu
+                dropDown: menu,
+                storeIds:config.storeIds || []
             })
             return button;
         }

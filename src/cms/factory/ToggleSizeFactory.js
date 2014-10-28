@@ -9,7 +9,7 @@ define([
     return declare([ContainerFactory], {
         create: function (ctx, config) {
             var me = this;
-            return new ToggleButton({label:config.label, onClick: function() {
+            return new ToggleButton({storeIds: config.storeIds, label: config.label, onClick: function () {
                 topic.publish("/previewer/toggle");
             }});
         }

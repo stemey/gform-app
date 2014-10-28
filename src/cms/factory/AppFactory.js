@@ -1,4 +1,5 @@
 define([
+    './loadAll',
     'gform/Context',
     'dojo/_base/Deferred',
     './schema/SchemaRegistryFactory',
@@ -7,7 +8,7 @@ define([
     'dojo/_base/lang',
     './FactoryContext',
     "dojo/_base/declare"
-], function (Context, Deferred, SchemaRegistryFactory, BorderContainerFactory, StoreRegistryFactory, lang, FactoryContext, declare) {
+], function (loadAll, Context, Deferred, SchemaRegistryFactory, BorderContainerFactory, StoreRegistryFactory, lang, FactoryContext, declare) {
 
 
     return declare([], {
@@ -27,12 +28,18 @@ define([
 
         },
         _onRegistry: function (ctx, registry) {
+            var me =this;
             this.schemaRegistry = registry;
             ctx.schemaRegistry = registry;
+            var p = loadAll(ctx, this.config.resourceFactories, function (resource) {
+            }, ctx);
+            p.then(function() {
+                me._onResources(ctx);
+            })
+        },
+        _onResources: function (ctx) {
             var borderContainer = new BorderContainerFactory().create(ctx, this.config.views);
             this.deferred.resolve(borderContainer);
-
-
         }
     });
 

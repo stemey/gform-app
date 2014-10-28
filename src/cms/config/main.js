@@ -1,4 +1,5 @@
 define([
+    '../factory/SingleStoreGridFactory',
     'dojo/store/JsonRest',
     '../factory/HandlebarsCreateFactory',
     'cms/preview/handlebars/Renderer',
@@ -10,8 +11,10 @@ define([
     '../factory/GridFactory',
     '../factory/TabFactory',
     '../factory/PreviewerFactory',
-    '../factory/TreeFactory'
-], function (JsonRest) {
+    '../factory/TreeFactory',
+    "../factory/StoreViewFactory",
+    "../factory/StoreCreateFactory"
+], function () {
 
         return {
             "storeRegistry": {
@@ -47,18 +50,6 @@ define([
                         "createEditorFactory": "cms/createBuilderEditorFactory",
                         "plainValueFactory": "cms/default/createTemplateValueFactory"
 
-                    },
-                    {
-                        "factoryId": "cms/factory/StoreFactory",
-                        "name": "/user",
-                        "storeClass": "dojo/store/JsonRest",
-                        "idProperty": "_id",
-                        "idType": "string",
-                        "target": "http://localhost:3333/api/Users/",
-                        "template": "/Users",
-                        "instanceStore": "/page",
-                        "createEditorFactory": "cms/createBuilderEditorFactory"
-
                     }
                 ]
             },
@@ -73,6 +64,13 @@ define([
                     }
                 ]
             },
+            "resourceFactories": [
+                {
+                    "factoryId": "cms/factory/ResourceFactory",
+                    "apiUrl": "http://localhost:3333/api/gform",
+                    "storeClass": "cms/util/BaucisStore"
+                }
+            ],
             "views": [
                 {
                     "region": "top",
@@ -88,24 +86,33 @@ define([
                             "label": "open",
                             "searchProperty": "url",
                             "labelProperty": "url",
-                            "placeHolder": "find page .."
+                            "placeHolder": "find page ..",
+                            "storeIds": ["/page", "/template"]
                         },
                         {
                             "factoryId": "cms/factory/CreateFactory",
                             "storeId": "/page",
                             "label": "+",
                             "searchProperty": "name",
-                            "placeHolder": "find template .."
+                            "placeHolder": "find template ..",
+                            "storeIds": ["/page", "/template"]
+                        },
+                        {
+                            "factoryId": "cms/factory/StoreCreateFactory",
+                            "label": "add",
+                            "excludedStoreIds": ["/page", "/template"]
                         },
                         {
                             "factoryId": "cms/factory/HandlebarsCreateFactory",
                             "url": "/template",
                             "storeId": "/template",
-                            "label": "add template"
+                            "label": "add template",
+                            "storeIds": ["/page", "/template"]
                         },
                         {
                             "factoryId": "cms/factory/ToggleSizeFactory",
-                            "label": "full size"
+                            "label": "full size",
+                            "storeIds": ["/page", "/template"]
                         }
                     ]
                 },
@@ -113,7 +120,7 @@ define([
                     "region": "left",
                     "splitter": true,
                     "width": "250px",
-                    "factoryId": "cms/factory/TabFactory",
+                    "factoryId": "cms/factory/StoreViewFactory",
                     "children": [
                         {
                             "factoryId": "cms/factory/TreeFactory",
@@ -133,6 +140,10 @@ define([
                                     "name": "name"
                                 }
                             ]
+                        },
+                        {
+                            "factoryId": "cms/factory/ResourceGridFactory",
+                            "storeIds": ["./Users/", "./BlogPosts/"]
                         }
                     ]
                 },
