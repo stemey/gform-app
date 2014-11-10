@@ -11,7 +11,8 @@ define([
             var props = {};
             lang.mixin(props,config);
             props.store=store;
-            return new FindPage(props)
+			props.ctx=ctx;
+			return new FindPage(props)
         }
     });
 

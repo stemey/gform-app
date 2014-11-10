@@ -11,6 +11,9 @@ define([
         },
         getStore: function (id) {
             return this.storeRegistry.get(id);
-        }
+        },
+		getCurrentStore: function () {
+			return this.storeRegistry.get(this.get("storeId"));
+		}
     });
 });

@@ -5,7 +5,7 @@ define([
 		'cms/preview/handlebars/Renderer',
 		'../factory/ToggleSizeFactory',
 		'../factory/FindPageFactory',
-		'../factory/CreateFactory',
+		'../factory/MultiSchemaCreateFactory',
 		'../factory/BrandFactory',
 		'../factory/ToolbarFactory',
 		'../factory/GridFactory',
@@ -13,7 +13,7 @@ define([
 		'../factory/PreviewerFactory',
 		'../factory/TreeFactory',
 		"../factory/StoreViewFactory",
-		"../factory/StoreCreateFactory"
+		"../factory/SingleSchemaCreateFactory"
 	], function () {
 
 		return {
@@ -129,39 +129,37 @@ define([
 							"searchProperty": "url",
 							"labelProperty": "url",
 							"placeHolder": "find page ..",
-							"storeIds": ["/page", "/template"]
+							"includedStoreIds": ["/page"]
 						},
 						{
-							"factoryId": "cms/factory/CreateFactory",
-							"storeId": "/page",
+							"factoryId": "cms/factory/MultiSchemaCreateFactory",
 							"label": "+",
 							"searchProperty": "name",
-							"placeHolder": "find template .."//,
-							//"storeIds": ["/page", "/template"]
+							"placeHolder": "find template .."
 						},
 						{
-							"factoryId": "cms/factory/StoreCreateFactory",
+							"factoryId": "cms/factory/SingleSchemaCreateFactory",
 							"label": "add",
-							"excludedStoreIds": ["/page", "/template"]
+							"excludedStoreIds":["/template"]
 						},
 						{
 							"factoryId": "cms/factory/HandlebarsCreateFactory",
 							"url": "/template",
 							"storeId": "/template",
 							"label": "add template",
-							"storeIds": ["/page", "/template"]
+							"includedStoreIds": ["/template"]
 						},
 						{
 							"factoryId": "cms/factory/ToggleSizeFactory",
 							"label": "full size",
-							"storeIds": ["/page", "/template"]
+							"includedStoreIds": ["/page"]
 						}
 					]
 				},
 				{
 					"region": "left",
 					"splitter": true,
-					"width": "250px",
+					"width": "400px",
 					"factoryId": "cms/factory/StoreViewFactory",
 					"controllers": [
 						{
@@ -236,7 +234,7 @@ define([
 					"pageStore": "/page"
 				},
 				{
-					"width": "40%",
+					"width": "35%",
 					"region": "right",
 					"factoryId": "cms/factory/TabOpenerFactory",
 					"splitter": true

@@ -40,7 +40,8 @@ define([
                     }
                 }
             }
-            var tree = new Tree({storeId: store.name, title: config.title, label: "", labelAttr: config.labelAttribute, model: model, onClick: nodeClicked});
+			var props = {storeId: store.name, title: config.title, label: "", labelAttr: config.labelAttribute, model: model, onClick: nodeClicked};
+			var tree = new Tree(props);
             return tree;
         }
     });
