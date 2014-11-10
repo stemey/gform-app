@@ -12,8 +12,19 @@ define([
                 excludedStoreIds: config.excludedStoreIds,
                 onClick: function () {
                     var storeId = ctx.get("storeId");
-                    var schemaUrl = ctx.getStore(storeId).template;
-                    topic.publish("/new", {store: storeId, schemaUrl: schemaUrl})
+					var store = ctx.getStore(storeId);
+					var schemaUrl;
+					if (store.template) {
+						schemaUrl = store.template;
+						topic.publish("/new", {store: storeId, schemaUrl: schemaUrl})
+					}else{
+						var templateStore = ctx.getStore(store.templateStore);
+						var p = templateStore.query({});
+						p.then(function(schemas) {
+							schemaUrl = schemas[0]._id;
+							topic.publish("/new", {store: storeId, schemaUrl: schemaUrl})
+						})
+					}
                 }})
         }
     });

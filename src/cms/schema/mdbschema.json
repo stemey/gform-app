@@ -1,0 +1,23 @@
+{
+	"description": "types",
+	"editor": "tab",
+	"groups": [
+		{
+			"code": "general",
+			"label": "General",
+			"attributes": [
+				{
+					"code": "name",
+					"type": "string",
+					"required": true
+				}
+			]
+		},
+		{
+			"code": "form",
+			"label": "Form",
+			"attributes": [
+			]
+		}
+	]
+}

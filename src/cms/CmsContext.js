@@ -5,7 +5,8 @@ define([
 ], function (Deferred, Context, declare) {
 
     return declare([Context], {
-        getSchemaUrl: function (store, id) {
+		// TODO remove this method and hence the class
+        getSchemaUrl_NOT_USED: function (store, id) {
             var deferred = new Deferred();
             var me = this;
             var store = this.getStore(store);

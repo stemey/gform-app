@@ -1,15 +1,15 @@
 define([
-    './FindByUrlMixin',
+	'dojo/_base/url',
+	'./FindByUrlMixin',
     'dojo/request/handlers',
-    'gform/util/restHelper',
-    './ToMongoQueryTransform',
+	'./ToMongoQueryTransform',
     'dojo/request/xhr',
     'dojo/store/util/QueryResults',
     'dojo/Deferred',
     "dojo/_base/lang",
     "dojo/_base/declare",
     "dojo/store/JsonRest"//
-], function (FindByUrlMixin, handlers, restHelper, ToMongoQueryTransform, xhr, QueryResults, Deferred, lang, declare, JsonRest) {
+], function (url, FindByUrlMixin, handlers, ToMongoQueryTransform, xhr, QueryResults, Deferred, lang, declare, JsonRest) {
 
     return declare([ JsonRest , FindByUrlMixin], {
         transform: null,
@@ -104,7 +104,8 @@ define([
             return newPromise;
         }, onAdded: function (promise, response) {
             var location = response.getHeader("Location");
-            var id = restHelper.decompose(location).id;
+			var targetUrl = new url(this.target);
+            var id = location.substring(targetUrl.path.length);
             promise.resolve(id);
         }
     });

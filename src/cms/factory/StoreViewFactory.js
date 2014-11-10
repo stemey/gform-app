@@ -38,6 +38,16 @@ define([
                     topic.publish("/store/focus",{source:this,store:storeId});
                 }
             });
+			if (config.controllers) {
+				config.controllers.forEach(function(controllerConfig) {
+					require([controllerConfig.controllerClass], function(ControllerClass) {
+						var controller = new ControllerClass();
+						controller.start(container, ctx, controllerConfig);
+					});
+
+				})
+			}
+
             return container;
         }
     });

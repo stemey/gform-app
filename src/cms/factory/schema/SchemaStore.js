@@ -33,7 +33,10 @@ define([
                 }
             }).otherwise(transformedSchema);
             return transformedSchema;
-        }
+        },
+		query: function(q) {
+			return this.store.query(q);
+		}
     });
 });
 

@@ -30,14 +30,9 @@ define([
             }
             var me = this;
             when(p).then(function () {
-                if (schema.schema == "template") {
-                    var form = schema.group;
-                    me._transformTemplate(form);
-                    form[me.idProperty] = schema[me.idProperty];
-                    d.resolve(form);
-                } else {
-                    d.resolve(schema);
-                }
+				// TODO remove dependency on schema property and group property
+                d.resolve(schema.group);
+
             }).otherwise(function (e) {
                     d.reject(e)
                 });

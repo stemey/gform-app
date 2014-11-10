@@ -1,0 +1,73 @@
+{
+	"id": "/mdbcollection",
+	"description": "meta model for mongodb collection",
+	"editor": "tab",
+	"groups": [
+		{
+			"code": "general",
+			"label": "General",
+			"attributes": [
+				{
+					"code": "name",
+					"type": "string",
+					"required": true
+				},
+				{
+					"code": "collection",
+					"type": "string",
+					"required": true
+				},
+				{
+					"code": "_id",
+					"type": "string",
+					"disabled": true
+				}
+			]
+		},
+		{
+			"code": "schema",
+			"label": "schema",
+			"attributes": [
+				{
+					"type": "object",
+					"code":"schema",
+					"typeProperty": "schemaType",
+					"required": true,
+					"groups": [
+						{
+							"code": "multi-schema",
+							"attributes": [
+								{
+									"code": "typeProperty",
+									"type": "string",
+									"required": true
+								},
+								{
+									"code": "schemas",
+									"type": "array",
+									"minItems": 1,
+									"element": {
+										"type": "ref",
+										"schemaUrl": "/mdbschema",
+										"url": "/mdbschema"
+									}
+								}
+							]
+						},
+						{
+							"code": "single-schema",
+							"attributes": [
+								{
+									"code": "schema",
+									"type": "ref",
+									"schemaUrl": "/mdbschema",
+									"url": "/mdbschema"
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

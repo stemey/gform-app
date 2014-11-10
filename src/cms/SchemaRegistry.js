@@ -26,20 +26,21 @@ define([
                 return cached;
             } else {
                 // TODO is this still necessaryy
-                if (!url.match(/^\/template\//)) {
-                    url="/template/"+url;
-                }
+                var matches = url.match(/^(\/[^\/]+)\/(.*)/);
+				if (matches.length==3) {
+					var p;
+					var id = matches[2];
+					var store = this.name2Store[matches[1]];
+					if (store) {
+						var p = store.get(id);
+						return p;
+					}else{
+						throw "cannot find schema "+url;
+					}
+				} else {
+					throw "cannot find schema "+url;
+				}
 
-                var p;
-                // TODO configure url to template store
-                var id = url.substr("/template/".length);
-                var store = this.name2Store["/template"];
-                if (store) {
-                    p = store.get(id);
-                }
-
-
-                return p;
             }
 
         },

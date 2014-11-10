@@ -66,8 +66,14 @@ define(['dojo/i18n!../nls/messages',
             }, this);
         },
         onNew: function (evt) {
-            var ef = this.ctx.getStore(evt.store).editorFactory;
-            this.createSingle({url: evt.store, editorFactory: ef, typeProperty: "template", schemaUrls: [evt.schemaUrl],value:evt.value});
+            var store = this.ctx.getStore(evt.store);
+            var ef = store.editorFactory;
+            if (store.typeProperty) {
+                var typeProperty = store.typeProperty;
+                this.createSingle({url: evt.store, editorFactory: ef, typeProperty: typeProperty, schemaUrls: [evt.schemaUrl],value:evt.value});
+            }else{
+                this.createSingle({url: evt.store, editorFactory: ef, schemaUrl: evt.schemaUrl,value:evt.value});
+            }
         },
         tabSelected: function (page) {
             // TODO getting store from crudController is lame - move to crudController.onShow??

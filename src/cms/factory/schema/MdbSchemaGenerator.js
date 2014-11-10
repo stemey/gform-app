@@ -4,8 +4,8 @@ define([
     'dojo/when',
     'cms/meta/SchemaGenerator',
     "dojo/_base/declare",
-    "dojo/text!cms/schema/template.json"
-], function (Deferred, lang, when, SchemaGenerator, declare, templateSchema) {
+    "dojo/text!cms/schema/mdbschema.json"
+], function (Deferred, lang, when, SchemaGenerator, declare, mdbschema) {
 
     /**
      * store to store our schemas.
@@ -20,21 +20,21 @@ define([
             //var templateToSchemaTransformer = new TemplateSchemaTransformer(store);
             //registry.pageTransformer = templateToSchemaTransformer
             //registry.templateTransformer = templateToSchemaTransformer;
-            this.loadTemplateSchema(store);
+            this.loadTemplateSchema(store, config);
             this.deferred = new Deferred();
             return this.deferred;
 
         },
-        loadTemplateSchema: function (store) {
+        loadTemplateSchema: function (store, config) {
             var generator = new SchemaGenerator();
             var promise = generator.loadTemplateSchema();
-            when(promise).then(lang.hitch(this, "onTemplateSchemaLoaded", store));
+            when(promise).then(lang.hitch(this, "onTemplateSchemaLoaded", store, config));
         },
-        onTemplateSchemaLoaded: function (store,  meta) {
-            meta.store = "/schema";
+        onTemplateSchemaLoaded: function (store,  config, meta) {
+            //meta.store = "/schema";
             // get attributes of root.listpane
             //var attributes = meta.attributes[0].groups[0].attributes[2];
-            var baseSchema = JSON.parse(templateSchema)
+            var baseSchema = JSON.parse(mdbschema)
             var idAttribute = {};
 
             // adding the schema store's id attribute
@@ -42,10 +42,11 @@ define([
             idAttribute["code"] = store.idProperty;
             idAttribute["disabled"] = true;
             baseSchema.groups[0].attributes.push(idAttribute);
+			baseSchema.id = config.schemaId || store.name;
 
             var group = meta.attributes[0];
-            group.requiredAttributes = true;
-            baseSchema.groups[3].attributes.push(group);
+            //group.requiredAttributes = true;
+            baseSchema.groups[1].attributes.push(group);
             this.deferred.resolve(baseSchema);
         }
     });

@@ -25,20 +25,33 @@ define([
             this.inherited(arguments);
         },
         postCreate: function () {
+			var me = this;
             this.inherited(arguments);
             this.select.set("labelAttr", this.labelProperty || this.searchProperty);
             this.select.set("placeHolder", this.placeHolder)
             this.select.set("searchAttr",  this.searchProperty);
-            this.select.set("store", this.store);
-            topic.subscribeStore("/added", lang.hitch(this, "updatedStore"), this.store.name);
-            topic.subscribeStore("/updated", lang.hitch(this, "updatedStore"), this.store.name);
-            topic.subscribeStore("/deleted", lang.hitch(this, "updatedStore"), this.store.name);
+            //this.select.set("store", this.store);
+            //topic.subscribeStore("/added", lang.hitch(this, "updatedStore"), this.store.name);
+			//topic.subscribeStore("/updated", lang.hitch(this, "updatedStore"), this.store.name);
+			//topic.subscribeStore("/deleted", lang.hitch(this, "updatedStore"), this.store.name);
+			this.ctx.watch("storeId", function() {
+				var storeId = me.ctx.get("storeId");
+				var store = me.ctx.getStore(storeId);
+				if (store.template) {
+					me.domNode.style.display="none";
+				}else{
+					var templateStore = me.ctx.getStore(store.templateStore);
+					me.domNode.style.display="initial";
+					me.select.set("store", templateStore);
+				}
+			})
         },
         updatedStore: function () {
             this.select.set("store",this.store);
         },
         click: function () {
-            topic.publish("/new", {source: this, store: this.entityStore.name, schemaUrl: this.select.get("value")})
+			var templateStore = this.select.get("store");
+			topic.publish("/new", {source: this, store: templateStore.instanceStore, schemaUrl: this.select.get("value")})
         }
     })
 });
