@@ -14,15 +14,17 @@ define([
     'gform/primitive/nullablePrimitiveConverter',
     './meta/TemplateRefAttributeFactory',
     'cms/RequiredAttributes',
+	'cms/TemplateAttributes',
     'gform/createFullEditorFactory'
-], function (Preview, stringTemplateConverter, CreateInstance, Save, Close, Discard, Delete, ActionFactory, FormValidator, AttributeRefFactory, FormAttributeFactory, refConverter, converter, TemplateRefAttributeFactory, RequiredAttributes, createFullEditorFactory) {
+], function (Preview, stringTemplateConverter, CreateInstance, Save, Close, Discard, Delete, ActionFactory, FormValidator, AttributeRefFactory, FormAttributeFactory, refConverter, converter, TemplateRefAttributeFactory, RequiredAttributes, TemplateAttributes, createFullEditorFactory) {
 
 
     return function () {
         var ef = createFullEditorFactory();
         var attributeFactoryFinder = ef.get("attributeFactoryFinder");
         attributeFactoryFinder.addAttributeFactory(new TemplateRefAttributeFactory({editorFactory: ef}));
-        ef.addValidator("requiredAttributes", RequiredAttributes);
+        ef.addCtrValidator("requiredAttributes", RequiredAttributes);
+		ef.addValidator("templateAttributes", TemplateAttributes);
         //ef.addConverterForid(urlConverter,"urlConverter");
         // TODO file server url needs to be configurable
         ef.getAttributeFactory({type:"binary"}).fileServerUrl="http://localhost:4444/upload";

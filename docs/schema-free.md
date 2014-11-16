@@ -138,10 +138,23 @@ to lookup the schema.
 
 ## dynamic stores
 
-So far the setup for the two static stores and their schemas explained. The dynamical stores are managed by a `DynamicResourceFactory`.
+So far the setup for the two static stores and their schemas were explained. The dynamic stores are managed by a `DynamicResourceFactory`.
+It will update the storeRegistry and schemaRegistry.
 
 
+````
+	"resourceFactories": [
+		{
+			"factoryId": "cms/factory/DynamicResourceFactory",
+			"storeClass": "cms/util/MongoRest",
+			"baseUrl": "http://localhost:3000/collection/",
+			"storeId": "/mdbcollection",
+			"schemaStore":"/mdbschema",
+			"idProperty":"_id"
+		}
+	]
 
+This resourceFactory adds MongoDb stores with the url "http://localhost:3000/collection/{storeId}". 
 
 
 ## view setup

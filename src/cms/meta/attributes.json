@@ -73,6 +73,9 @@
 	},
 	{
 		"$ref": "../../gform/schema/attributes/ref.json"
+	},
+	{
+		"$ref": "../../gform/schema/attributes/any.json"
 	}
 
 ]

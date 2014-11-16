@@ -25,7 +25,7 @@ define([
             opener.controllerConfig = {
                 plainValueFactory: createPlainValue
             }
-            opener.ctx = ctx;
+			opener.ctx = ctx;
             ctx.opener = opener;
             opener.init();
             return opener;

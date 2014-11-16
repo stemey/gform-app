@@ -110,7 +110,8 @@ define([
 					"baseUrl": "http://localhost:3000/collection/",
 					"storeId": "/mdbcollection",
 					"schemaStore":"/mdbschema",
-					"idProperty":"_id"
+					"idProperty":"_id",
+					"createEditorFactory": "cms/createBuilderEditorFactory"
 				}
 			],
 			"views": [

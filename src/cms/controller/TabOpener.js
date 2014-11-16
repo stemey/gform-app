@@ -1,10 +1,11 @@
-define(['dojo/i18n!../nls/messages',
+define(['./TabCrudController',
+	'dojo/i18n!../nls/messages',
     'dijit/MenuItem',
     'dijit/registry',
     'dojo/_base/declare',
     'dojo/_base/lang',
     'gform/opener/SingleEditorTabOpener',
-    'dojo/topic'], function (messages, MenuItem, registry, declare, lang, SingleEditorTabOpener, topic) {
+    'dojo/topic'], function (TabCrudController, messages, MenuItem, registry, declare, lang, SingleEditorTabOpener, topic) {
 
 
     return declare([SingleEditorTabOpener], {
@@ -31,6 +32,11 @@ define(['dojo/i18n!../nls/messages',
                 })
             );
         },
+		createController: function(props) {
+			var controller = new TabCrudController(props);
+			lang.mixin(controller, this.controllerConfig);
+			return controller;
+		},
         openSingle: function (param) {
             if (!this.opening) {
                 topic.publish("/focus", {store: param.url, id: param.id});

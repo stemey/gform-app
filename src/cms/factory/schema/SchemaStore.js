@@ -31,7 +31,9 @@ define([
                 } else {
                     transformedSchema.resolve(schema);
                 }
-            }).otherwise(transformedSchema);
+            }).otherwise(function(e) {
+				transformedSchema.reject(e);
+			});
             return transformedSchema;
         },
 		query: function(q) {

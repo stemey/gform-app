@@ -11,10 +11,10 @@ define([
 	return declare([], {
 		create: function (ctx, config) {
 			var deferred = new Deferred();
-			require([config.storeClass], function (Store) {
+			require([config.storeClass, config.createEditorFactory], function (Store, createEditorFactory) {
 				// contains the information about store and its schemas
 				var metaStore = ctx.getStore(config.storeId);
-				// constins the schemas
+				// contains the schemas
 				var schemaStore = ctx.getStore(config.schemaStore);
 
 				metaStore.query({}).then(function (metas) {
@@ -23,7 +23,8 @@ define([
 						var store = new Store({
 							idProperty: config.idProperty,
 							name: meta.name,
-							target: config.baseUrl + meta.collection + "/"
+							target: config.baseUrl + meta.collection + "/",
+							editorFactory: createEditorFactory()
 						});
 
 						if (meta.schema.schema) {
@@ -66,7 +67,6 @@ define([
 							transformedSchemaStore.idProperty = store.idProperty;
 							transformedSchemaStore.getIdentity=store.getIdentity;
 							transformedSchemaStore.instanceStore = store.name;
-							//registry.registerStore(storeId, transformedSchemaStore);
 
 							ctx.schemaRegistry.registerStore(transformedSchemaStore.name, transformedSchemaStore)
 							ctx.storeRegistry.register(transformedSchemaStore.name, transformedSchemaStore);

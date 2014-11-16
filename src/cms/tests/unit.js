@@ -1,7 +1,8 @@
 define([
-    './UrlTreeModel',
-    './Renderer',
-    './TreeStore'
-], function () {
-    }
+		'./UrlTreeModel',
+		'./Renderer',
+		'./TreeStore',
+		'./RequiredAttributes'
+	], function () {
+	}
 );

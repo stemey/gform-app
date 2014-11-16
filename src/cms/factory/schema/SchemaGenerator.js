@@ -44,7 +44,7 @@ define([
             baseSchema.groups[0].attributes.push(idAttribute);
 
             var group = meta.attributes[0];
-            group.requiredAttributes = true;
+            group.requiredAttributes = [{code:'url'}];
             baseSchema.groups[3].attributes.push(group);
             this.deferred.resolve(baseSchema);
         }

@@ -1,10 +1,10 @@
 define([
-    './when',
+	'cms/preview/handlebars/Renderer',
+	'./when',
     './MemoryStore',
     'intern!bdd',
-    'intern/chai!assert',
-    '../preview/mustache/Renderer'
-], function (when, MemoryStore, bdd, assert, Renderer) {
+    'intern/chai!assert'
+], function (Renderer, when, MemoryStore, bdd, assert) {
     bdd.describe('Renderer', function () {
         var renderer;
 

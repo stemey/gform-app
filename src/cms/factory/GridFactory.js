@@ -44,7 +44,7 @@ define([
                 templateGrid.select.row.connect(templateGrid.select.row, "onSelected", selected);
                 templateGrid.connect(templateGrid, 'onRowClick', function (e) {
                     var id = templateGrid.select.row.getSelected();
-                    topic.publish("/focus", {store: store.name, id: id, source: this})
+                    topic.publish("/focus", {store: store.name, id: id[0], source: this})
                 });
             });
             return templateGrid;

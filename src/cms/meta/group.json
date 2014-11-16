@@ -1,45 +1,65 @@
 {
-    "code": "group",
-    "type": "object",
-    "typeProperty": "editor",
-    "editor": "form",
-    "required": true,
-    "form": true,
-    "group": {
-        "editor": "tab",
-        "groups": [
-            {
-                "label": "attributes",
-                "attributes": [
-                    {
-                        "code": "attributes",
-                        "type": "array",
-                        "required": true,
-                        "uniqueProperties": ["code"],
-                        "typeProperty": "editor",
-                        "groups": {
-                            "$ref": "../../gform/schema/attributes.json"
-                        }
-                    }
-                ]
-            },
-            {
-                "label": "layout",
-                "attributes": [
-                    {
-                        "code": "group",
-                        "label": "layout",
-                        "type": "object",
-                        "required": true,
-                        "typeProperty": "editor",
-                        "groups": {
-                            "$ref": "../../gform/schema/groups.json?transforms=nocode&transforms=nolabel"
-                        }
-
-                    }
-                ]
-            }
-        ]
-    }
+	"code": "group",
+	"type": "object",
+	"typeProperty": "editor",
+	"editor": "form",
+	"required": true,
+	"form": true,
+	"group": {
+		"editor": "tab",
+		"groups": [
+			{
+				"label": "attributes",
+				"attributes": [
+					{
+						"code": "attributes",
+						"type": "array",
+						"required": true,
+						"uniqueProperties": ["code"],
+						"typeProperty": "editor",
+						"groups": {
+							"$ref": "../../gform/schema/attributes.json"
+						}
+					}
+				]
+			},
+			{
+				"label": "layout",
+				"attributes": [
+					{
+						"code": "group",
+						"label": "layout",
+						"type": "object",
+						"required": true,
+						"typeProperty": "editor",
+						"groups": {
+							"$ref": "../../gform/schema/groups.json?transforms=nocode&transforms=nolabel"
+						}
+					}
+				]
+			},
+			{
+				"label": "extra",
+				"attributes": [
+					{
+						"code": "additionalProperties",
+						"label": "additional properties",
+						"type": "object",
+						"required": false,
+						"group": {
+							"attributes": [
+								{
+									"code": "code",
+									"type": "string",
+									"editor": "additionalPropertiesCode",
+									"required": true
+								}
+							]
+						}
+					}
+				]
+			}
+		]
+	}
 }
 
