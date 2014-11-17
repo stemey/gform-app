@@ -51,8 +51,9 @@
 								{
 									"code": "code",
 									"type": "string",
-									"editor": "additionalPropertiesCode",
-									"required": true
+									"required": true,
+									"editor": "attribute-ref"
+
 								}
 							]
 						}
