@@ -7,6 +7,11 @@ An entity is usually a json document which is accessed through a store. A store 
 Stores are an extension of `dojo/store`. They provide access to the entities types. All entities have a type. The type is usually a gform schema. It may
 be a different schema or type but it must be converted to gform schema to be useful.
 
+store.getDefault()
+store.template or store.templateSTore and store.typeProperty
+store.idProperty
+store.editorFactory?
+
 ## schema
 
 A schema defines the attributes (properties) a json document may have. These schemas are usually gform schema documents that are perfect to create

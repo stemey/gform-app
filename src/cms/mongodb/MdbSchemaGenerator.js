@@ -2,7 +2,7 @@ define([
     'dojo/_base/Deferred',
     'dojo/_base/lang',
     'dojo/when',
-    'cms/meta/SchemaGenerator',
+    './SchemaGenerator',
     "dojo/_base/declare",
     "dojo/text!cms/schema/mdbschema.json"
 ], function (Deferred, lang, when, SchemaGenerator, declare, mdbschema) {

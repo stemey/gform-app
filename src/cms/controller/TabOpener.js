@@ -49,11 +49,12 @@ define(['./TabCrudController',
                 me.opening = true;
                 try {
                     var store = this.ctx.getStore(evt.store)
+					var ef = store.editorFactory;
                     var typeProperty = store.typeProperty;
                     if (!typeProperty) {
-                        me.openSingle({url: evt.store, id: evt.id, schemaUrl: store.template});
+                        me.openSingle({url: evt.store, editorFactory: ef, id: evt.id, schemaUrl: store.template});
                     } else {
-                        me.openSingle({url: evt.store, id: evt.id, schemaUrls: [], typeProperty: typeProperty});
+                        me.openSingle({url: evt.store,  editorFactory: ef,id: evt.id, schemaUrls: [], typeProperty: typeProperty});
                     }
                 } finally {
                     me.opening = false;

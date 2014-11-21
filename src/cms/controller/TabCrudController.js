@@ -12,16 +12,20 @@ define(['dojo/_base/declare',
 			return this.inherited(arguments, [schemaUrl]);
 		},
 		getFallbackSchema: function () {
+			// TODO move to store?
 			return {
 				additionalProperties: {
 					code: "add"
 				},
-				attributes: [
+				editor:"single",
+				attribute:
 					{
 						code: "add",
+						description:"This is the fallback editor. <br>Either the schema was not found or it did not include the required id and/or type properties.<br> In the former case you should adjust the type property's value.<br>In the latter case you need to fix the schema.",
+						label:"entity as json",
 						type: "any"
 					}
-				]
+
 			}
 		}
 	});

@@ -2,16 +2,15 @@ define([
 	'./schema/SchemaStore',
 	'dojo/Deferred',
 	"dojo/_base/declare",
-	'cms/meta/TemplateSchemaTransformer',
-	'dojo/Deferred'
-
-], function (SchemaStore, Deferred, declare,TemplateSchemaTransformer, Deferred) {
+	'cms/meta/TemplateSchemaTransformer'
+], function (SchemaStore, Deferred, declare,TemplateSchemaTransformer) {
 
 
 	return declare([], {
 		create: function (ctx, config) {
 			var deferred = new Deferred();
-			require([config.storeClass, config.createEditorFactory], function (Store, createEditorFactory) {
+			require(['dojo/promise/all',
+				config.storeClass, config.createEditorFactory], function (all, Store, createEditorFactory) {
 				// contains the information about store and its schemas
 				var metaStore = ctx.getStore(config.storeId);
 				// contains the schemas
@@ -24,7 +23,7 @@ define([
 							idProperty: config.idProperty,
 							name: meta.name,
 							target: config.baseUrl + meta.collection + "/",
-							editorFactory: createEditorFactory()
+							editorFactory: createEditorFactory(config.efConfig)
 						});
 
 						if (meta.schema.schema) {
@@ -45,11 +44,12 @@ define([
 									return schemaStore.get(id);
 								},
 								query: function (q) {
+									var metaPromise = metaStore.get(meta[metaStore.idProperty]);
 									var p = schemaStore.query(q);
 									var d = new Deferred();
-									p.then(function (result) {
-										var filtered = result.filter(function (e) {
-											return meta.schema.schemas.indexOf(e._id)>=0;
+									all([p,metaPromise]).then(function (results) {
+										var filtered = results[0].filter(function (e) {
+											return results[1].schema.schemas.indexOf(e._id)>=0;
 										});
 										d.resolve(filtered);
 									});
@@ -58,6 +58,7 @@ define([
 							})();
 							filterStore.name = templateStoreName;
 							var transformer = new TemplateSchemaTransformer(filterStore);
+							transformer.baseUrl=schemaStore.target;
 							var transformedSchemaStore = new SchemaStore({
 								store: filterStore,
 								transformer: transformer

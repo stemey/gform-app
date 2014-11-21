@@ -40,12 +40,6 @@ define([
         },
         _transformTemplate: function (schema) {
             var attributes = this._findAttributes(schema);
-            //var idAttribute = {};
-            //idAttribute.code = this.idProperty;
-            //idAttribute.type = this.idType;
-            //idAttribute.editor = this.idType;
-            //idAttribute.disabled = true;
-            //attributes.push(idAttribute);
             // TODO make this configurable
             attributes.push({code: "template", type: "string", "editor": "string", visible: false});
             return schema;

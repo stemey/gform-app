@@ -59,8 +59,7 @@ define([
 						"idType": "string",
 						"target": "http://localhost:3000/collection/mdbcollection/",
 						"template": "/mdbcollection",
-						//"instanceStore": "/page",
-						"createEditorFactory": "cms/createBuilderEditorFactory"//,
+						"createEditorFactory": "cms/mongodb/createSchemaEditorFactory"//,
 						//"plainValueFactory": "cms/default/createTemplateValueFactory"
 
 					},
@@ -72,9 +71,12 @@ define([
 						"idType": "string",
 						"target": "http://localhost:3000/collection/mdbschema/",
 						"template": "/mdbschema",
-						//"instanceStore": "/page",
-						"createEditorFactory": "cms/createBuilderEditorFactory"//,
-						//"plainValueFactory": "cms/default/createTemplateValueFactory"
+						"createEditorFactory": "cms/mongodb/createSchemaEditorFactory",
+						"efConfig": {
+							"fileserver-upload": "http://localhost:4444/upload",
+							"fileserver-download": "http://localhost:4444/"
+						},
+						"plainValueFactory": "cms/mongodb/defaultSchemaFactory"
 
 					}
 				]
@@ -82,14 +84,14 @@ define([
 			"schemaRegistry": {
 				"factoryId": "cms/factory/schema/SchemaRegistryFactory",
 				"registryClass": "cms/SchemaRegistry",
-				"stores": ["/template","/mdbschema"],
+				"stores": ["/template", "/mdbschema"],
 				"schemaGenerators": [
 					{
 						"factoryId": "cms/factory/schema/SchemaGenerator",
 						"store": "/template" // instances of the generated schema will be place into this store. id Proeprty and idType are taken from this store and added to the schema.
 					},
 					{
-						"factoryId": "cms/factory/schema/MdbSchemaGenerator",
+						"factoryId": "cms/mongodb/MdbSchemaGenerator",
 						"store": "/mdbschema" // instances of the generated schema will be place into this store. id Proeprty and idType are taken from this store and added to the schema.
 					},
 					{
@@ -109,9 +111,13 @@ define([
 					"storeClass": "cms/util/MongoRest",
 					"baseUrl": "http://localhost:3000/collection/",
 					"storeId": "/mdbcollection",
-					"schemaStore":"/mdbschema",
-					"idProperty":"_id",
-					"createEditorFactory": "cms/createBuilderEditorFactory"
+					"schemaStore": "/mdbschema",
+					"idProperty": "_id",
+					"createEditorFactory": "cms/mongodb/createEditorFactory",
+					"efConfig": {
+						"fileserver-upload": "http://localhost:4444/upload",
+						"fileserver-download": "http://localhost:4444/"
+					}
 				}
 			],
 			"views": [
@@ -141,7 +147,7 @@ define([
 						{
 							"factoryId": "cms/factory/SingleSchemaCreateFactory",
 							"label": "add",
-							"excludedStoreIds":["/template"]
+							"excludedStoreIds": ["/template"]
 						},
 						{
 							"factoryId": "cms/factory/HandlebarsCreateFactory",
@@ -166,7 +172,7 @@ define([
 						{
 							"controllerClass": "cms/factory/StoreViewController",
 							"storeId": "/mdbcollection",
-							"schemaStoreId":"/mdbschema"
+							"schemaStoreId": "/mdbschema"
 						}
 					],
 					"children": [

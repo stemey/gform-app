@@ -1,10 +1,10 @@
 {
-	"description": "types",
-	"editor": "tab",
+	"editor": "listgroup",
 	"groups": [
 		{
+
 			"code": "general",
-			"label": "General",
+			"editor": "columnsgroup",
 			"attributes": [
 				{
 					"code": "name",
@@ -14,9 +14,12 @@
 			]
 		},
 		{
-			"code": "form",
-			"label": "Form",
 			"attributes": [
+				{
+					"code":"description",
+					"type":"string",
+					"editor":"textarea"
+				}
 			]
 		}
 	]

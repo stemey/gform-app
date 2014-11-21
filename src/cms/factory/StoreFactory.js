@@ -26,7 +26,7 @@ define([
                 }
                 if (config.createEditorFactory) {
                     modules.push({id: config.createEditorFactory, fn: function (createEditorFactory) {
-                        store.editorFactory = createEditorFactory();
+                        store.editorFactory = createEditorFactory(config.efConfig || {});
                     }
                     });
                 }
