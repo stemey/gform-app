@@ -34,7 +34,7 @@ define([
                     storeId=store.name;
                 }
                 if (storeId) {
-                    ctx.set("storeId",storeId);
+                    //ctx.set("storeId",storeId);
                     topic.publish("/store/focus",{source:this,store:storeId});
                 }
             });

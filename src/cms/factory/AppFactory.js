@@ -1,5 +1,6 @@
 define([
-    './loadAll',
+	'../util/Router',
+	'./loadAll',
     'gform/Context',
     'dojo/_base/Deferred',
     './schema/SchemaRegistryFactory',
@@ -8,7 +9,7 @@ define([
     'dojo/_base/lang',
     './FactoryContext',
     "dojo/_base/declare"
-], function (loadAll, Context, Deferred, SchemaRegistryFactory, BorderContainerFactory, StoreRegistryFactory, lang, FactoryContext, declare) {
+], function (Router, loadAll, Context, Deferred, SchemaRegistryFactory, BorderContainerFactory, StoreRegistryFactory, lang, FactoryContext, declare) {
 
 
     return declare([], {
@@ -23,6 +24,7 @@ define([
         },
         _onConfigured: function (storeRegistry) {
             var ctx = new FactoryContext({storeRegistry: storeRegistry});
+			this.router = new Router({ctx:ctx});
             var p = new SchemaRegistryFactory().create(ctx, this.config.schemaRegistry);
             p.then(lang.hitch(this, "_onRegistry", ctx));
 
