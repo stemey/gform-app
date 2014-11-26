@@ -1,5 +1,6 @@
 define([
-    '../factory/AppFactory',
+	'dojo/query',
+	'../factory/AppFactory',
     'dojo/topic',
     "dojo/_base/declare",
     "dijit/_WidgetBase",
@@ -11,7 +12,7 @@ define([
     'dojox/mvc/_atBindingExtension'
 
 
-], function (AppFactory, topic, declare, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, template, main) {
+], function (query, AppFactory, topic, declare, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, template, main) {
 
 
     return declare([ _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
@@ -20,12 +21,15 @@ define([
         postCreate: function () {
             this.inherited(arguments);
 
-
+			var loadingScreen = query('.loadingScreen')[0];
             var me = this;
-            var promise = new AppFactory(main).create();
+			var appFactory = new AppFactory(main);
+            var promise = appFactory.create();
             promise.then(function (container) {
                 container.placeAt(me.domNode);
-                container.startup();
+				container.startup();
+				loadingScreen.style.display='none';
+				appFactory.afterAttached();
             })
             window.appController = this;
 

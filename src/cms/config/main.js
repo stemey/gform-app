@@ -1,4 +1,16 @@
 define([
+		'cms/preview/handlebars/Renderer',
+		'cms/factory/BrandFactory',
+		'cms/factory/FindPageFactory',
+		'cms/factory/ToggleSizeFactory',
+		'cms/factory/HandlebarsCreateFactory',
+		'cms/factory/SingleSchemaCreateFactory',
+		'cms/factory/MultiSchemaCreateFactory',
+		'cms/factory/ToolbarFactory',
+		'cms/factory/GridFactory',
+		'cms/factory/ResourceGridFactory',
+		'cms/factory/PreviewerFactory',
+		'cms/factory/TabOpenerFactory',
 		'../factory/SingleStoreGridFactory',
 		'dojo/store/JsonRest',
 		'../factory/HandlebarsCreateFactory',
@@ -14,7 +26,7 @@ define([
 		'../factory/TreeFactory',
 		"../factory/StoreViewFactory",
 		"../factory/SingleSchemaCreateFactory"
-	], function () {
+	], function (Renderer, BrandFactory, FindPageFactory, ToggleSizeFactory, HandlebarsCreateFactory, SingleSchemaCreateFactory, MultiSchemaCreateFactory, ToolbarFactory, GridFactory, ResourceGridFactory, PreviewerFactory, TabOpenerFactory) {
 
 		return {
 			"storeRegistry": {

@@ -4,6 +4,7 @@ define([
     "dojo/_base/declare"
 ], function (lang, EmbeddedAttributeFactory, declare) {
 
+	// TOD this attribute is not properly handled by meta.isComplexType etc.
 	return declare("cms.meta.TemplateRefAttributeFactory",[EmbeddedAttributeFactory], {
 
 		id: "template-ref",

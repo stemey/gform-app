@@ -85,9 +85,12 @@ define(['./TabCrudController',
         tabSelected: function (page) {
             // TODO getting store from crudController is lame - move to crudController.onShow??
             var store = page.store;
+            var entity = page.editor.getPlainValue();
+            if (entity) {
             var id = store.getIdentity(page.editor.getPlainValue());
-            if (id) {
-                topic.publish("/focus", {id: id, store: store.name, source: this})
+            	if (id) {
+               		topic.publish("/focus", {id: id, store: store.name, source: this})
+            	}
             }
         }
     });

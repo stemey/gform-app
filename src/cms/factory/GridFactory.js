@@ -16,8 +16,7 @@ define([
 
     return declare([], {
         create: function (ctx, config) {
-            // TODO add quick filter
-            // TODO move title to tabContainer?
+            // TODO make filter configurable: currently quickFilter and clientside
             var props = {title: "template"};
             props.title = config.title;// if displayed in tab or titlepane
             props.cacheClass = Cache;

@@ -29,7 +29,10 @@ define([
 						if (meta.schema.schema) {
 							schemaStore.get(meta.schema.schema).then(function(schema) {
 								// TODO getting the group prop should be done by TemplateSchemaTransformer
-								ctx.schemaRegistry.register(meta.name, schema.group);
+								var transformer = new TemplateSchemaTransformer(schemaStore);
+								var p = transformer.transform(schema);
+
+								ctx.schemaRegistry.register(meta.name, p);
 								deferred.resolve("done");
 							})
 							store.template=meta.name;
@@ -56,6 +59,7 @@ define([
 									return d;
 								}
 							})();
+							// TODO clean up store wrappings and schema transformation
 							filterStore.name = templateStoreName;
 							var transformer = new TemplateSchemaTransformer(filterStore);
 							transformer.baseUrl=schemaStore.target;

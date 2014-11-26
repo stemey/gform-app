@@ -1,17 +1,20 @@
 define([
+	'dojo/_base/Deferred',
+	'dojo/promise/all',
 	'gform/schema/meta',
 	'dojo/_base/lang',
 	'./SingleStoreGridFactory',
 	'dojo/topic',
 	"dojo/_base/declare"
-], function (meta, lang, SingleStoreGridFactory, topic, declare) {
+], function (Deferred, all, meta, lang, SingleStoreGridFactory, topic, declare) {
 
 
 	return declare([], {
 		currentStores: null,
 		ctx: null,
 		factory: null,
-		start: function (container, ctx, config) {
+		start: function (container, ctx, config, promise) {
+			this.promise=promise;
 			this.factory = new SingleStoreGridFactory();
 			this.ctx = ctx;
 			this.container = container;
@@ -32,16 +35,26 @@ define([
 			var grid = this.factory.create(this.ctx, {schema: schema, title: meta.name, storeId: meta.name});
 			return grid;
 		},
-		mergeSchemas: function (schemas) {
+		mergeSchemas: function (schemas, typeFormatter, typeParser, typeProperty) {
 			var attributeSets = schemas.map(function (schema) {
-				// TODO taht schema is in group property is really information from TemplateSchemaTransformer
-				return meta.collectAttributes(schema.group);
+				// TODO that schema is in the group property, is really information from TemplateSchemaTransformer
+				return meta.collectAttributesWithoutAdditional(schema.group);
 			});
 			var combinedAttributes = [];
 			var addedAttributes = {};
 			attributeSets.forEach(function (attributes) {
 				attributes.forEach(function (attribute) {
 					if (!addedAttributes[attribute.code]) {
+						var a = lang.clone(attribute);
+						attribute=a;
+						if (attribute.code===typeProperty) {
+							attribute.type="enum";
+							attribute.enumOptions=["test","test_add","test2"]
+						}
+						if (attribute.code===typeProperty) {
+							attribute.formatter = typeFormatter;
+							attribute.parser = typeParser;
+						}
 						combinedAttributes.push(attribute);
 						addedAttributes[attribute.code] = attribute;
 					}
@@ -51,6 +64,7 @@ define([
 		},
 		onUpdate: function (stores) {
 			// TODO don't reload everything and do diffing. Implement create, update, remove on specific topic message instead. what about ordering of stores
+			var promises = [];
 			stores.forEach(function (meta) {
 				if (this.currentStores.indexOf(meta.name) < 0) {
 					// TODO respect the order of the stores
@@ -58,25 +72,50 @@ define([
 						//var template = this.metaStore.template;
 						//var metaSchema = this.ctx.schemaRegistry.get(template);
 						var me = this;
+						var deferred = new Deferred();
+						promises.push(deferred);
 						this.schemaStore.get(meta.schema.schema).then(function (schema) {
 							var child = me.createView(meta, schema);
 							me.container.addChild(child);
 							me.currentStores.push(meta.name);
+							deferred.resolve();
 						})
 					} else {
 						var me = this;
-						var templateStoreId = this.ctx.getStore(meta.name).templateStore;
+						var store = this.ctx.getStore(meta.name);
+						var templateStoreId = store.templateStore;
 						var templateStore = this.ctx.getStore(templateStoreId);
+						var deferred = new Deferred();
+						promises.push(deferred);
 						templateStore.query({}).then(function (schemas) {
-							var attributes = me.mergeSchemas(schemas);
+							var labelMap = {};
+							var rLabelMap = {};
+							schemas.forEach(function(schema) {
+								labelMap[schema[templateStore.idProperty]]=schema.name;
+								rLabelMap[schema.name]=schema[templateStore.idProperty];
+							});
+							// type may only be filtered by equal/not equal
+							var typeFormatter =  function(itemData, rowIndex, rowId){
+								return labelMap[itemData[store.typeProperty]];
+							}
+							var typeParser =  function(value){
+								return rLabelMap[value];
+							}
+							var attributes = me.mergeSchemas(schemas, typeFormatter, typeParser,store.typeProperty );
+							// TODO create schema id to schema name mapping here. add a function to grid.
 							var child = me.createView(meta, {attributes: attributes});
 							me.container.addChild(child);
 							me.currentStores.push(meta.name);
+							deferred.resolve();
 						})
 					}
 
 				}
 			}, this);
+			var me =this;
+			all(promises).then(function() {
+				me.promise.resolve();
+			})
 		}
 	});
 });

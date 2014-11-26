@@ -8,20 +8,23 @@ define(['dojo/_base/lang',
 	var entityRoute = "/entity/:store/:id";
 
 	/**
-	 * /:store/:entity
+	 * /entity/:store/:entity
 	 */
 	return declare([], {
 		ctx: null,
 		constructor: function (props) {
 			this.ctx = props.ctx;
-			//topic.subscribe("/store/focus",lang.hitch(this, "onStoreFocus"));
+			topic.subscribe("/store/focus",lang.hitch(this, "onStoreFocus"));
 			topic.subscribe("/focus", lang.hitch(this, "onEntityFocus"));
 			router.register(entityRoute, lang.hitch(this, "onGoToEntity"));
+			//router.startup();
+		},
+		start: function() {
 			router.startup();
 		},
 		onStoreFocus: function (evt) {
 			this.ctx.set("storeId", evt.store);
-			router.go(storeRoute, evt);
+			//router.go(storeRoute, evt);
 		},
 		onEntityFocus: function (evt) {
 			this.ctx.set("storeId", evt.store);
@@ -30,6 +33,7 @@ define(['dojo/_base/lang',
 		onGoToEntity: function (hash) {
 			var store = decodeURIComponent(hash.params.store);
 			var id = decodeURIComponent(hash.params.id);
+			// prevent endless recursion.
 			if (store != this.ctx.storeId || id != this.ctx.id) {
 				this.ctx.set("storeId", store);
 				this.ctx.set("id", id);

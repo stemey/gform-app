@@ -3,7 +3,9 @@ define(['dojo/_base/declare',
 
 	return declare([TabCrudController], {
 		postCreate: function () {
-			this.editorFactory = this.store.editorFactory;
+			if (this.store.editorFactory) {
+				this.editorFactory = this.store.editorFactory;
+			}
 			this.inherited(arguments);
 		},
 		getSchema: function (url) {

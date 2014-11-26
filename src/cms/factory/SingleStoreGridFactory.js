@@ -1,7 +1,7 @@
 define([
+	'./GformSchema2TableConverter',
 	'dojo/aspect',
 	'gridx/core/model/cache/Sync',
-	'./gform2tableStructure',
 	'dojo/_base/Deferred',
 	'dojo/topic',
 	"dojo/_base/declare",
@@ -12,12 +12,10 @@ define([
 	"gridx/modules/SingleSort",
 	"gridx/modules/Filter",
 	'gridx/modules/filter/FilterBar',
-	'gridx/core/model/extensions/Query',
-	'gridx/modules/Focus',
 	'gridx/modules/RowHeader',
 	'gridx/modules/select/Row'
 
-], function (aspect, Sync, gform2tableStructure, Deferred, topic, declare, Grid, Async, VirtualVScroller, ColumnResizer, SingleSort, Filter, FilterBar, Query, Focus, RowHeader, RowSelect) {
+], function (GformSchema2TableConverter, aspect, Sync, Deferred, topic, declare, Grid, Async, VirtualVScroller, ColumnResizer, SingleSort, Filter, FilterBar, RowHeader, RowSelect) {
 
 
 	var allFilterConditions = {
@@ -30,6 +28,9 @@ define([
 	}
 
 	return declare([], {
+		constructor: function() {
+			this.tableConverter = new GformSchema2TableConverter();
+		},
 		convertSchemaToTableStructure: function (ctx, config, storeId) {
 			var store = ctx.getStore(storeId);
 			var deferred = new Deferred();
@@ -39,14 +40,23 @@ define([
 			} else {
 				schema = ctx.schemaRegistry.get(store.template);
 			}
-			var tableStructure = gform2tableStructure(schema);
+			var tableStructure = this.tableConverter.convert(schema);
 			return tableStructure;
 		},
 		create: function (ctx, config) {
 
+
+
 			var store = ctx.getStore(config.storeId);
 
 			var tableStructure = this.convertSchemaToTableStructure(ctx, config, store.name);
+
+			var id2Converter ={};
+			tableStructure.forEach(function(column) {
+				if (column.parser) {
+					id2Converter[column.id]=column.parser;
+				}
+			});
 
 			var props = {width: "100%", height: "100%"};
 			props.title = store.name;
@@ -64,11 +74,24 @@ define([
 			}
 
 			props.store = store;
+			props.filterServerMode=true;
 			props.modules = [
 				VirtualVScroller,
 				{
 					moduleClass: Filter,
-					serverMode: true
+					serverMode: true,
+					setupQuery: function(query) {
+						if (query && query.data) {
+						query.data = query.data.map(function(criterion) {
+							var parser = id2Converter[criterion.data[0].data];
+							if (parser) {
+								criterion.data[1].data=parser(criterion.data[1].data);
+							}
+							return criterion;
+						});
+						}
+						return query;
+					}
 				},
 				filterModule,
 				{
@@ -78,7 +101,6 @@ define([
 
 
 				},
-				Filter,
 				RowHeader,
 				SingleSort,
 				ColumnResizer

@@ -1,15 +1,16 @@
 define([
+	'dojo/when',
 	'../util/Router',
 	'./loadAll',
-    'gform/Context',
-    'dojo/_base/Deferred',
+	'dojo/_base/Deferred',
     './schema/SchemaRegistryFactory',
     './BorderContainerFactory',
     './StoreRegistryFactory',
     'dojo/_base/lang',
     './FactoryContext',
-    "dojo/_base/declare"
-], function (Router, loadAll, Context, Deferred, SchemaRegistryFactory, BorderContainerFactory, StoreRegistryFactory, lang, FactoryContext, declare) {
+    "dojo/_base/declare",
+	'dojox/mvc/at'
+], function (when, Router, loadAll, Deferred, SchemaRegistryFactory, BorderContainerFactory, StoreRegistryFactory, lang, FactoryContext, declare) {
 
 
     return declare([], {
@@ -17,6 +18,12 @@ define([
         constructor: function (config) {
             this.config = config;
         },
+		afterAttached: function() {
+			var me =this;
+			setTimeout(function() {
+				me.router.start();
+			},0);
+		},
         create: function (config) {
             new StoreRegistryFactory().create(this.config.storeRegistry).then(lang.hitch(this, "_onConfigured"));
             this.deferred = new Deferred();
@@ -40,8 +47,11 @@ define([
             })
         },
         _onResources: function (ctx) {
-            var borderContainer = new BorderContainerFactory().create(ctx, this.config.views);
-            this.deferred.resolve(borderContainer);
+			var me =this;
+            var promise = new BorderContainerFactory().create(ctx, this.config.views);
+			when(promise).then(function(borderContainer) {
+				me.deferred.resolve(borderContainer);
+			})
         }
     });
 
