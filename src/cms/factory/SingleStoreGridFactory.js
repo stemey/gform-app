@@ -44,9 +44,6 @@ define([
 			return tableStructure;
 		},
 		create: function (ctx, config) {
-
-
-
 			var store = ctx.getStore(config.storeId);
 
 			var tableStructure = this.convertSchemaToTableStructure(ctx, config, store.name);
