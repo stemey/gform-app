@@ -29,7 +29,10 @@ define([
 
 	return declare([], {
 		constructor: function() {
-			this.tableConverter = new GformSchema2TableConverter();
+			this.tableConverter = this.createTableConverter();
+		},
+		createTableConverter: function() {
+			return new GformSchema2TableConverter();
 		},
 		convertSchemaToTableStructure: function (ctx, config, storeId) {
 			var store = ctx.getStore(storeId);
@@ -43,6 +46,12 @@ define([
 			var tableStructure = this.tableConverter.convert(schema);
 			return tableStructure;
 		},
+		/**
+		 *
+		 * @param ctx
+		 * @param config storeId,conditions?,sync?,serverFilter?,schema?
+		 * @returns {Grid}
+		 */
 		create: function (ctx, config) {
 			var store = ctx.getStore(config.storeId);
 
@@ -71,7 +80,7 @@ define([
 			}
 
 			props.store = store;
-			props.filterServerMode=true;
+			props.filterServerMode=config.serverFilter!==false;
 			props.modules = [
 				VirtualVScroller,
 				{

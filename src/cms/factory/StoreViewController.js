@@ -13,9 +13,12 @@ define([
 		currentStores: null,
 		ctx: null,
 		factory: null,
+		createGridFactory: function(config) {
+			return new SingleStoreGridFactory();
+		},
 		start: function (container, ctx, config, promise) {
 			this.promise=promise;
-			this.factory = new SingleStoreGridFactory();
+			this.factory = this.createGridFactory(config);
 			this.ctx = ctx;
 			this.container = container;
 			this.currentStores = [];

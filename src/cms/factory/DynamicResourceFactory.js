@@ -28,10 +28,8 @@ define([
 
 						if (meta.schema.schema) {
 							schemaStore.get(meta.schema.schema).then(function(schema) {
-								// TODO getting the group prop should be done by TemplateSchemaTransformer
 								var transformer = new TemplateSchemaTransformer(schemaStore);
 								var p = transformer.transform(schema);
-
 								ctx.schemaRegistry.register(meta.name, p);
 								deferred.resolve("done");
 							})
