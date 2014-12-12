@@ -14,6 +14,9 @@
 	{
 		"$ref": "schema-ref.json"
 	},
+	{
+		"$ref": "multi-entity-ref.json"
+	},
     {
         "$ref": "../../gform/schema/attributes/boolean.json"
     },

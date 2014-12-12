@@ -1,15 +1,16 @@
 define([
+	'../mongodb/SchemaTransformer',
 	'./schema/SchemaStore',
 	'dojo/Deferred',
-	"dojo/_base/declare",
-	'cms/meta/TemplateSchemaTransformer'
-], function (SchemaStore, Deferred, declare,TemplateSchemaTransformer) {
+	"dojo/_base/declare"
+], function (SchemaTransformer, SchemaStore, Deferred, declare) {
 
 
 	return declare([], {
 		create: function (ctx, config) {
 			var deferred = new Deferred();
-			require(['dojo/promise/all',
+			require([
+				'dojo/promise/all',
 				config.storeClass, config.createEditorFactory], function (all, Store, createEditorFactory) {
 				// contains the information about store and its schemas
 				var metaStore = ctx.getStore(config.storeId);
@@ -26,9 +27,12 @@ define([
 							editorFactory: createEditorFactory(config.efConfig)
 						});
 
-						if (meta.schema.schema) {
+						if (meta.schema===null) {
+							store.template = config.fallbackSchema;
+							ctx.storeRegistry.register(meta.name, store);
+						}else if (meta.schema.schema) {
 							schemaStore.get(meta.schema.schema).then(function(schema) {
-								var transformer = new TemplateSchemaTransformer(schemaStore);
+								var transformer = new SchemaTransformer(ctx);
 								var p = transformer.transform(schema);
 								ctx.schemaRegistry.register(meta.name, p);
 								deferred.resolve("done");
@@ -59,7 +63,7 @@ define([
 							})();
 							// TODO clean up store wrappings and schema transformation
 							filterStore.name = templateStoreName;
-							var transformer = new TemplateSchemaTransformer(filterStore);
+							var transformer = new SchemaTransformer(ctx);
 							transformer.baseUrl=schemaStore.target;
 							var transformedSchemaStore = new SchemaStore({
 								store: filterStore,

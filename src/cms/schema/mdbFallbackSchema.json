@@ -1,0 +1,18 @@
+{
+	"id": "/mdbFallbackSchema",
+	"additionalProperties":{
+		"code":"entity"
+	},
+	"attributes": [
+		{
+			"code": "_id",
+			"type": "string",
+			"disabled": true
+		},
+		{
+			"code": "entity",
+			"type": "any",
+			"editor":"anyAce"
+		}
+	]
+}

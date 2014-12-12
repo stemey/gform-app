@@ -32,7 +32,6 @@
 					"type": "object",
 					"code":"schema",
 					"typeProperty": "schemaType",
-					"required": true,
 					"groups": [
 						{
 							"code": "multi-schema",

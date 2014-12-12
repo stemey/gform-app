@@ -1,0 +1,59 @@
+{
+		"attributes": [
+			{
+				"code": "_id",
+				"label": "id",
+				"description": "the primary key",
+				"required": false,
+				"disabled": true,
+				"mock": false,
+				"converter": null,
+				"pattern": null,
+				"maxLength": null,
+				"intermediateChanges": false,
+				"minLength": null,
+				"type": "string",
+				"placeHolder": null,
+				"invalidMessage": null,
+				"missingMessage": null,
+				"editor": "string"
+			},
+			{
+				"code": "type",
+				"label": null,
+				"description": "Holds a reference to the entity's schema./n Necessary for collections with multiple schemas.",
+				"required": false,
+				"disabled": true,
+				"mock": false,
+				"converter": null,
+				"type": "ref",
+				"idProperty": null,
+				"searchProperty": null,
+				"schemaUrl": "/mdbschema",
+				"url": "/mdbschema",
+				"placeHolder": null,
+				"invalidMessage": null,
+				"missingMessage": null,
+				"editor": "ref"
+			},
+			{
+				"code": "test",
+				"label": null,
+				"description": null,
+				"required": false,
+				"disabled": false,
+				"mock": false,
+				"converter": null,
+				"type": "multi-ref",
+				"editor": "multi-entity-ref",
+				"searchProperty": "text",
+				"collection": "545cfc2ae8267c0000467884",
+				"schemas": ["546af152905011f31ee55f2d"],
+				"placeHolder": null,
+				"invalidMessage": null,
+				"missingMessage": null
+			}
+		],
+		"editor": "listpane"
+	}
+}

@@ -1,4 +1,5 @@
 define([
+	'dojo/when',
 	'dojo/_base/Deferred',
 	'dojo/promise/all',
 	'gform/schema/meta',
@@ -6,7 +7,7 @@ define([
 	'./SingleStoreGridFactory',
 	'dojo/topic',
 	"dojo/_base/declare"
-], function (Deferred, all, meta, lang, SingleStoreGridFactory, topic, declare) {
+], function (when, Deferred, all, meta, lang, SingleStoreGridFactory, topic, declare) {
 
 
 	return declare([], {
@@ -67,18 +68,19 @@ define([
 			stores.forEach(function (meta) {
 				if (this.currentStores.indexOf(meta.name) < 0) {
 					// TODO respect the order of the stores
-					if (meta.schema.schema) {
+					if (meta.schema == null || meta.schema.schema) {
 						//var template = this.metaStore.template;
 						//var metaSchema = this.ctx.schemaRegistry.get(template);
 						var me = this;
 						var deferred = new Deferred();
 						promises.push(deferred);
-						this.schemaStore.get(meta.schema.schema).then(function (schema) {
+						var store = this.ctx.getStore(meta.name);
+						when(this.ctx.schemaRegistry.get(store.template)).then(function (schema) {
 							var child = me.createView(meta, schema);
 							me.container.addChild(child);
 							me.currentStores.push(meta.name);
 							deferred.resolve();
-						})
+						});
 					} else {
 						var me = this;
 						var store = this.ctx.getStore(meta.name);

@@ -1,4 +1,6 @@
 define([
+	'../util/urlConverter',
+	'./SchemaAttributeFactory',
 	'../util/stringTemplateConverter',
 	'../controller/actions/Save',
     'gform/controller/actions/Close',
@@ -13,13 +15,14 @@ define([
     '../meta/TemplateRefAttributeFactory',
     'cms/RequiredAttributes',
 	'gform/createFullEditorFactory'
-], function (stringTemplateConverter, Save, Close, Discard, Delete, ActionFactory, FormValidator, AttributeRefFactory, FormAttributeFactory, refConverter, converter, TemplateRefAttributeFactory, RequiredAttributes, createFullEditorFactory) {
+], function (urlConverter, SchemaAttributeFactory, stringTemplateConverter, Save, Close, Discard, Delete, ActionFactory, FormValidator, AttributeRefFactory, FormAttributeFactory, refConverter, converter, TemplateRefAttributeFactory, RequiredAttributes, createFullEditorFactory) {
 
 
     return function (config) {
         var ef = createFullEditorFactory();
         var attributeFactoryFinder = ef.get("attributeFactoryFinder");
         attributeFactoryFinder.addAttributeFactory(new TemplateRefAttributeFactory({editorFactory: ef}));
+		attributeFactoryFinder.addAttributeFactory(new SchemaAttributeFactory({editorFactory: ef}));
         ef.addCtrValidator("requiredAttributes", RequiredAttributes);
 
         ef.getAttributeFactory({type:"binary"}).fileServerUrl=config["fileserver-upload"];//http://localhost:4444/upload";
@@ -29,8 +32,10 @@ define([
         ef.addConverterForType(converter, "multi-ref");
         ef.addConverterForid(refConverter, "refConverter");
         ef.addConverterForid(stringTemplateConverter, "templateConverter");
+		ef.addConverterForid(urlConverter,"urlConverter");
 
-        ef.addAttributeFactory(new FormAttributeFactory({editorFactory: ef}));
+
+		ef.addAttributeFactory(new FormAttributeFactory({editorFactory: ef}));
         ef.addAttributeFactory(new AttributeRefFactory({editorFactory: ef}));
         ef.addCtrValidator("form",FormValidator);
 

@@ -20,8 +20,8 @@ define([
             //var templateToSchemaTransformer = new TemplateSchemaTransformer(store);
             //registry.pageTransformer = templateToSchemaTransformer
             //registry.templateTransformer = templateToSchemaTransformer;
+			this.deferred = new Deferred();
             this.loadTemplateSchema(store, config);
-            this.deferred = new Deferred();
             return this.deferred;
 
         },

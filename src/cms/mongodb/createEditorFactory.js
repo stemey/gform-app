@@ -1,4 +1,5 @@
 define([
+	'./MultiEntityRefAttributeFactory',
 	'./SchemaRefAttributeFactory',
 	'../controller/actions/Preview',
     '../util/stringTemplateConverter',
@@ -16,14 +17,15 @@ define([
     '../meta/TemplateRefAttributeFactory',
     'cms/RequiredAttributes',
 	'gform/createFullEditorFactory'
-], function (SchemaRefAttributeFactory, Preview, stringTemplateConverter, CreateInstance, Save, Close, Discard, Delete, ActionFactory, FormValidator, AttributeRefFactory, FormAttributeFactory, refConverter, converter, TemplateRefAttributeFactory, RequiredAttributes, createFullEditorFactory) {
+], function (MultiEntityRefAttributeFactory, SchemaRefAttributeFactory, Preview, stringTemplateConverter, CreateInstance, Save, Close, Discard, Delete, ActionFactory, FormValidator, AttributeRefFactory, FormAttributeFactory, refConverter, converter, TemplateRefAttributeFactory, RequiredAttributes, createFullEditorFactory) {
 
 
     return function (config) {
         var ef = createFullEditorFactory();
         var attributeFactoryFinder = ef.get("attributeFactoryFinder");
         attributeFactoryFinder.addAttributeFactory(new TemplateRefAttributeFactory({editorFactory: ef}));
-        ef.addCtrValidator("requiredAttributes", RequiredAttributes);
+		attributeFactoryFinder.addAttributeFactory(new MultiEntityRefAttributeFactory({editorFactory: ef}));
+		ef.addCtrValidator("requiredAttributes", RequiredAttributes);
 
         ef.getAttributeFactory({type:"binary"}).fileServerUrl=config["fileserver-upload"];//http://localhost:4444/upload";
         ef.getAttributeFactory({type:"binary"}).baseUrl=config["fileserver-download"];//="http://localhost:4444/";

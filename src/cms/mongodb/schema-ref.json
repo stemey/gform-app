@@ -1,35 +1,34 @@
 {
-    "code": "schema-ref",
-    "editor": "tab",
-    "description": "",
-    "groups": [
-        {
-            "$ref": "../../gform/schema/attributes/header.json"
-        },
-        {
-            "label": "template",
-            "attributes": [
-                {
-                        "code": "template",
-                        "type": "ref",
-                        "searchProperty": "name",
-                        "idProperty":"_id",
-                        "converter":"refConverter",
-                        "url": "/mdbschema",
-                        "schemaUrl": "/mdbschema"
-                },
-                {
-                    "code": "type",
-                    "values": ["ref"],
-                    "required":true,
-                    "visible":false,
-                    "type":"string"
-                }
-            ]
-        },
-        {
-            "$ref": "../../gform/schema/attributes/messages.json"
-        }
-    ]
-
+	"code": "schema-ref",
+	"editor": "tab",
+	"description": "",
+	"groups": [
+		{
+			"$ref": "../../gform/schema/attributes/header.json"
+		},
+		{
+			"label": "template",
+			"attributes": [
+				{
+					"code": "schema_id",
+					"label":"schema",
+					"type": "ref",
+					"searchProperty": "name",
+					"idProperty": "_id",
+					"url": "/mdbschema",
+					"schemaUrl": "/mdbschema"
+				},
+				{
+					"code": "schema_store",
+					"values": ["/mdbschema"],
+					"required": true,
+					"visible": false,
+					"type": "string"
+				}
+			]
+		},
+		{
+			"$ref": "../../gform/schema/attributes/messages.json"
+		}
+	]
 }

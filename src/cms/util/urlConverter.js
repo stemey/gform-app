@@ -6,7 +6,7 @@ define([
 //		gform/converter/urlToIdConverter
 
 
-	return  declare([], {
+	return declare([], {
 		// attribute: object
 		//		the attribute meta data. url property is used to create ref value.
 		attribute: null,
@@ -22,26 +22,16 @@ define([
 			if (value == null) {
 				return "";
 			} else {
-                var baseUrl;
-            }
-                if (this.ctx != null) {
-                    baseUrl = this.ctx.getUrl(this.attribute.url);
-                } else {
-                    baseUrl = this.attribute.url;
-                }
-				return value.substring(baseUrl.length+1);
+				var baseUrl = this.attribute.converterBaseUrl;
+				return value['#ref'].substring(baseUrl.length + 1);
 			}
 		},
 		parse: function (value) {
 			if (value == "" || value == null) {
 				return null;
 			} else {
-				if (this.ctx != null) {
-					var url = this.ctx.getUrl(this.attribute.url);
-					return restHelper.compose(url, value);
-				} else {
-					return restHelper.compose(this.attribute.url, value);
-				}
+				return {'#ref':restHelper.compose(this.attribute.converterBaseUrl, value)};
+
 			}
 		}
 	});

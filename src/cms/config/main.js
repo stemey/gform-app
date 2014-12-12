@@ -69,7 +69,7 @@ define([
 						"storeClass": "cms/util/MongoRest",
 						"idProperty": "_id",
 						"idType": "string",
-						"target": "http://localhost:3000/collection/mdbcollection/",
+						"target": "http://localhost:3001/meta/",
 						"template": "/mdbcollection",
 						"createEditorFactory": "cms/mongodb/createSchemaEditorFactory"//,
 						//"plainValueFactory": "cms/default/createTemplateValueFactory"
@@ -81,7 +81,7 @@ define([
 						"storeClass": "cms/util/MongoRest",
 						"idProperty": "_id",
 						"idType": "string",
-						"target": "http://localhost:3000/collection/mdbschema/",
+						"target": "http://localhost:3001/collections/mdbschema/",
 						"template": "/mdbschema",
 						"createEditorFactory": "cms/mongodb/createSchemaEditorFactory",
 						"efConfig": {
@@ -109,6 +109,10 @@ define([
 					{
 						"factoryId": "cms/factory/schema/StaticSchemaGenerator",
 						"module": "cms/schema/mdbcollection.json" // instances of the generated schema will be place into this store. id Proeprty and idType are taken from this store and added to the schema.
+					},
+					{
+						"factoryId": "cms/factory/schema/StaticSchemaGenerator",
+						"module": "cms/schema/mdbFallbackSchema.json" // instances of the generated schema will be place into this store. id Proeprty and idType are taken from this store and added to the schema.
 					}
 				]
 			},
@@ -121,10 +125,11 @@ define([
 				{
 					"factoryId": "cms/factory/DynamicResourceFactory",
 					"storeClass": "cms/util/MongoRest",
-					"baseUrl": "http://localhost:3000/collection/",
+					"baseUrl": "http://localhost:3001/collections/",
 					"storeId": "/mdbcollection",
 					"schemaStore": "/mdbschema",
 					"idProperty": "_id",
+					"fallbackSchema":"/mdbFallbackSchema",
 					"createEditorFactory": "cms/mongodb/createEditorFactory",
 					"efConfig": {
 						"fileserver-upload": "http://localhost:4444/upload",
@@ -241,7 +246,7 @@ define([
 						},
 						{
 							"factoryId": "cms/factory/ResourceGridFactory",
-							"storeIds": ["./Users/", "./BlogPosts/"]// TODO this should not be configured
+							"storeIds": ["./Users/", "./BlogPosts/", "./Products/"]// TODO this should not be configured
 						}
 					]
 				},
