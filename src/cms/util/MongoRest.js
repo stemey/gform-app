@@ -103,9 +103,8 @@ define([
             promise.then(lang.hitch(this, "onAdded", newPromise), newPromise.reject);
             return newPromise;
         }, onAdded: function (promise, response) {
-            var location = response.getHeader("Location");
-			var targetUrl = new url(this.target);
-            var id = location.substring(targetUrl.path.length);
+			var entity = JSON.parse(response.text);
+			var id = entity[this.idProperty];
             promise.resolve(id);
         }
     });

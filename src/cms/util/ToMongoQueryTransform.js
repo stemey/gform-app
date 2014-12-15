@@ -43,13 +43,14 @@ define([
                 return value;
             }
         },
-        convertRegexToQuery: function (regexValue) {
+        convertRegexToQuery: function (regex) {
             // assuming a regex that works like startsWith : "start*". This is the way it is used by dijit.form._AutoCompleterMixin
-            var str = regexValue.toString();
+			var regexValue = regex.toString();
+            var str = regexValue.substring(0,regexValue.length - 1);
             if (str.length == 0) {
-                return "";
+                return {$regex:".*"};
             } else {
-                str = "."+str;
+                str = str;
                 return {$regex: this.selectIsStartsWith ? "^" + str : str};
             }
         },
