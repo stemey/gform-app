@@ -1,4 +1,7 @@
 define([
+	'dijit/MenuItem',
+	'dijit/Menu',
+	'gridx/modules/Menu',
 	'./GformSchema2TableConverter',
 	'dojo/aspect',
 	'gridx/core/model/cache/Sync',
@@ -15,7 +18,7 @@ define([
 	'gridx/modules/RowHeader',
 	'gridx/modules/select/Row'
 
-], function (GformSchema2TableConverter, aspect, Sync, Deferred, topic, declare, Grid, Async, VirtualVScroller, ColumnResizer, SingleSort, Filter, FilterBar, RowHeader, RowSelect) {
+], function (MenuItem, DijitMenu, Menu, GformSchema2TableConverter, aspect, Sync, Deferred, topic, declare, Grid, Async, VirtualVScroller, ColumnResizer, SingleSort, Filter, FilterBar, RowHeader, RowSelect) {
 
 
 	var allFilterConditions = {
@@ -28,10 +31,10 @@ define([
 	}
 
 	return declare([], {
-		constructor: function() {
+		constructor: function () {
 			this.tableConverter = this.createTableConverter();
 		},
-		createTableConverter: function() {
+		createTableConverter: function () {
 			return new GformSchema2TableConverter();
 		},
 		convertSchemaToTableStructure: function (ctx, config, storeId) {
@@ -57,10 +60,10 @@ define([
 
 			var tableStructure = this.convertSchemaToTableStructure(ctx, config, store.name);
 
-			var id2Converter ={};
-			tableStructure.forEach(function(column) {
+			var id2Converter = {};
+			tableStructure.forEach(function (column) {
 				if (column.parser) {
-					id2Converter[column.id]=column.parser;
+					id2Converter[column.id] = column.parser;
 				}
 			});
 
@@ -80,21 +83,22 @@ define([
 			}
 
 			props.store = store;
-			props.filterServerMode=config.serverFilter!==false;
+			props.filterServerMode = config.serverFilter !== false;
 			props.modules = [
+				Menu,
 				VirtualVScroller,
 				{
 					moduleClass: Filter,
 					serverMode: true,
-					setupQuery: function(query) {
+					setupQuery: function (query) {
 						if (query && query.data) {
-						query.data = query.data.map(function(criterion) {
-							var parser = id2Converter[criterion.data[0].data];
-							if (parser) {
-								criterion.data[1].data=parser(criterion.data[1].data);
-							}
-							return criterion;
-						});
+							query.data = query.data.map(function (criterion) {
+								var parser = id2Converter[criterion.data[0].data];
+								if (parser) {
+									criterion.data[1].data = parser(criterion.data[1].data);
+								}
+								return criterion;
+							});
 						}
 						return query;
 					}
@@ -115,16 +119,19 @@ define([
 
 			props.structure = tableStructure;
 			var grid = new Grid(props);
-			var selected = function (e) {
-				topic.publish("/focus", {store: store.name, id: e.id, source: this})
-			}
 			aspect.after(grid, "startup", function () {
-				grid.select.row.connect(grid.select.row, "onSelected", selected);
 				grid.connect(grid, 'onRowClick', function (e) {
 					var id = grid.select.row.getSelected();
 					topic.publish("/focus", {store: store.name, id: id, source: this})
 				});
 			});
+			var openAsJson = function () {
+				var id = grid.select.row.getSelected()[0];
+				topic.publish("/focus", {template: "/fallbackSchema", store: store.name, id: id, source: this})
+			}
+			var menu = new DijitMenu();
+			menu.addChild(new MenuItem({label: "open as json", onClick: openAsJson}));
+			grid.menu.bind(menu, {hookPoint: "row"});
 			return grid;
 
 		}

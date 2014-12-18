@@ -71,8 +71,7 @@ define([
 						"idType": "string",
 						"target": "http://localhost:3001/meta/",
 						"template": "/mdbcollection",
-						"createEditorFactory": "cms/mongodb/createSchemaEditorFactory"//,
-						//"plainValueFactory": "cms/default/createTemplateValueFactory"
+						"createEditorFactory": "cms/mongodb/createSchemaEditorFactory"
 
 					},
 					{
@@ -113,6 +112,10 @@ define([
 					{
 						"factoryId": "cms/factory/schema/StaticSchemaGenerator",
 						"module": "cms/schema/mdbFallbackSchema.json" // instances of the generated schema will be place into this store. id Proeprty and idType are taken from this store and added to the schema.
+					},
+					{
+						"factoryId": "cms/factory/schema/StaticSchemaGenerator",
+						"module": "cms/schema/fallbackSchema.json" // instances of the generated schema will be place into this store. id Proeprty and idType are taken from this store and added to the schema.
 					}
 				]
 			},

@@ -5,7 +5,7 @@ define(['dojo/_base/lang',
 ], function (lang, declare, router, topic) {
 
 
-	var entityRoute = "/entity/:store/:id";
+	var entityRoute = "/entity/:store/:id/:template?";
 
 	/**
 	 * /entity/:store/:entity
@@ -28,16 +28,28 @@ define(['dojo/_base/lang',
 		},
 		onEntityFocus: function (evt) {
 			this.ctx.set("storeId", evt.store);
-			router.go("/entity/" + encodeURIComponent(evt.store) + "/" + encodeURIComponent(evt.id));
+			var uri = "/entity/" + encodeURIComponent(evt.store) + "/" + encodeURIComponent(evt.id)
+			if (evt.template) {
+				uri+="/"+encodeURIComponent(evt.template);
+			}
+			router.go(uri);
 		},
 		onGoToEntity: function (hash) {
 			var store = decodeURIComponent(hash.params.store);
 			var id = decodeURIComponent(hash.params.id);
+			var template=null;
+			if (hash.params.template) {
+				template = decodeURIComponent(hash.params.template);
+			}
 			// prevent endless recursion.
 			if (store != this.ctx.storeId || id != this.ctx.id) {
 				this.ctx.set("storeId", store);
 				this.ctx.set("id", id);
-				topic.publish("/focus", {source: this, store: store, id: id})
+				var event = {source: this, store: store, id: id};
+				if (template) {
+					event.template=template;
+				}
+				topic.publish("/focus", event);
 				document.title=store+"/"+id;
 			}
 			return true;
