@@ -34,7 +34,7 @@ define([
                     try {
                         var template = node.template || null;
 						// TODO configure the tree elements real store. and use it as store param.
-                        topic.publish("/focus", {id: node.id, store: realStore, source: this, template: template});
+                        topic.publish("/focus", {id: node.id, store: realStore, source: this});
                     } catch (e) {
                         //console.log(e.stack);
                     }
