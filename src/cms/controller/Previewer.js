@@ -59,7 +59,7 @@ define([
                 var id = me.pageStore.store.getIdentity(pageResults[0]);
                 var template = pageResults[0].template;
                 if (template) {
-                    topic.publish("/focus", {id: id, store: me.pageStore.store.name, template: template, source: this});
+                    topic.publish("/focus", {id: id, store: me.pageStore.store.name, source: this});
                 }
             });
         },

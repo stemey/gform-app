@@ -5,7 +5,8 @@ define(['dojo/_base/lang',
 ], function (lang, declare, router, topic) {
 
 
-	var entityRoute = "/entity/:store/:id/:template?";
+	var entityRoute = "/entity/:store/:id";
+	var entityTemplateRoute = "/entity/:store/:id/:template";
 
 	/**
 	 * /entity/:store/:entity
@@ -17,6 +18,7 @@ define(['dojo/_base/lang',
 			topic.subscribe("/store/focus",lang.hitch(this, "onStoreFocus"));
 			topic.subscribe("/focus", lang.hitch(this, "onEntityFocus"));
 			router.register(entityRoute, lang.hitch(this, "onGoToEntity"));
+			router.register(entityTemplateRoute, lang.hitch(this, "onGoToEntity"));
 			//router.startup();
 		},
 		start: function() {
