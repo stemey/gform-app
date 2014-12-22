@@ -1,9 +1,7 @@
-define([
-    './createValueFactory'
-], function (createValueFactory) {
+define([], function () {
 
     return function (schema, ctx) {
-        var store = ctx.getStore(this.store);
+        var store = ctx.getStore(this.instanceStore);
 
         var typeAttribute={};
         typeAttribute.code=store.typeProperty;

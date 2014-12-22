@@ -1,5 +1,4 @@
 define([
-	'dojo/_base/url',
 	'./FindByUrlMixin',
     'dojo/request/handlers',
 	'./ToMongoQueryTransform',
@@ -9,7 +8,7 @@ define([
     "dojo/_base/lang",
     "dojo/_base/declare",
     "dojo/store/JsonRest"//
-], function (url, FindByUrlMixin, handlers, ToMongoQueryTransform, xhr, QueryResults, Deferred, lang, declare, JsonRest) {
+], function (FindByUrlMixin, handlers, ToMongoQueryTransform, xhr, QueryResults, Deferred, lang, declare, JsonRest) {
 
     return declare([ JsonRest , FindByUrlMixin], {
         transform: null,

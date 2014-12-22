@@ -1,11 +1,13 @@
 {
 	"id": "/mdbcollection",
 	"description": "meta model for mongodb collection",
-	"editor": "tab",
+	"editor": "verticalgroup",
 	"groups": [
 		{
 			"code": "general",
 			"label": "General",
+			"editor":"columnsgroup",
+			"region":"top",
 			"attributes": [
 				{
 					"code": "name",
@@ -26,15 +28,18 @@
 		},
 		{
 			"code": "schema",
+			"region":"center",
 			"label": "schema",
 			"attributes": [
 				{
 					"type": "object",
 					"code":"schema",
 					"typeProperty": "schemaType",
+					"nullLabel":"no schema",
 					"groups": [
 						{
 							"code": "multi-schema",
+							"label":"multiple schemas",
 							"attributes": [
 								{
 									"code": "typeProperty",
@@ -55,6 +60,7 @@
 						},
 						{
 							"code": "single-schema",
+							"label":"single schema",
 							"attributes": [
 								{
 									"code": "schema",

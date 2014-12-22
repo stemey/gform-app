@@ -26,7 +26,10 @@ define([
 			props.storeId = store.name;
 			props.style = {width: "100%"};
 			props.modules = [
-				Filter,
+				{
+					moduleClass: Filter,
+					serverMode: true
+				},
 				Menu,
 				QuickFilter,
 				{
