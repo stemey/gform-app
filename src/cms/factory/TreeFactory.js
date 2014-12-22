@@ -3,7 +3,7 @@ define([
     'cms/util/TreeStore',
     'dijit/Tree',
     "dojo/_base/declare",
-    "dijit/layout/TabContainer",
+	"dijit/layout/TabContainer",
     "dijit/layout/ContentPane"
 ], function (topic, TreeStore, Tree, declare) {
 
@@ -33,8 +33,8 @@ define([
                 if (node.id) {
                     try {
                         var template = node.template || null;
-						// TODO configure the tree elements real store. and use it as store param.
-                        topic.publish("/focus", {id: node.id, store: realStore, source: this});
+						// TODO we should use the folders own template "base" from the server. Does not work right now.
+                        topic.publish("/focus", {id: node.id, store: realStore, source: this, template:"jcr.folder" });
                     } catch (e) {
                         //console.log(e.stack);
                     }

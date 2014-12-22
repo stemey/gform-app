@@ -1,0 +1,19 @@
+{
+	"id": "jcr.folder",
+	"attributes": [
+		{
+			"code": "identifier",
+			"type": "string",
+			"disabled": true
+		},
+		{
+			"code": "url",
+			"type": "string"
+		},
+		{
+			"code": "template",
+			"type": "string",
+			"disabled": true
+		}
+	]
+}

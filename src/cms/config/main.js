@@ -116,6 +116,10 @@ define([
 					{
 						"factoryId": "cms/factory/schema/StaticSchemaGenerator",
 						"module": "cms/schema/fallbackSchema.json" // instances of the generated schema will be place into this store. id Proeprty and idType are taken from this store and added to the schema.
+					},
+					{
+						"factoryId": "cms/factory/schema/StaticSchemaGenerator",
+						"module": "cms/jcr/folderSchema.json" // instances of the generated schema will be place into this store. id Proeprty and idType are taken from this store and added to the schema.
 					}
 				]
 			},

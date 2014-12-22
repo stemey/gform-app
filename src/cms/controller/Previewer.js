@@ -93,7 +93,7 @@ define([
                             ifrm.scrollTo(0,0);
                         }
                     } else{
-                        this.style.width="0px";
+                        me.style.width="0px";
                     }
                 }).otherwise(function (e) {
                     alert("cannot render " + e.stack)
