@@ -1,4 +1,5 @@
 define([
+	'./mdbUtils',
 	'../util/urlConverter',
 	'./SchemaAttributeFactory',
 	'../util/stringTemplateConverter',
@@ -15,7 +16,7 @@ define([
     '../meta/TemplateRefAttributeFactory',
     'cms/RequiredAttributes',
 	'gform/createFullEditorFactory'
-], function (urlConverter, SchemaAttributeFactory, stringTemplateConverter, Save, Close, Discard, Delete, ActionFactory, FormValidator, AttributeRefFactory, FormAttributeFactory, refConverter, converter, TemplateRefAttributeFactory, RequiredAttributes, createFullEditorFactory) {
+], function (mdbUtils, urlConverter, SchemaAttributeFactory, stringTemplateConverter, Save, Close, Discard, Delete, ActionFactory, FormValidator, AttributeRefFactory, FormAttributeFactory, refConverter, converter, TemplateRefAttributeFactory, RequiredAttributes, createFullEditorFactory) {
 
 
     return function (config) {
@@ -38,6 +39,9 @@ define([
 		ef.addAttributeFactory(new FormAttributeFactory({editorFactory: ef}));
         ef.addAttributeFactory(new AttributeRefFactory({editorFactory: ef}));
         ef.addCtrValidator("form",FormValidator);
+
+		ef.putFunction("/mdbcollection/multi-schema/create", mdbUtils.createMultiSchema);
+		ef.putFunction("/mdbcollection/single-schema/create", mdbUtils.createSingleSchema);
 
         var af = new ActionFactory();
         af.add({type:Save})

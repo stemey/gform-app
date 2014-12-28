@@ -27,6 +27,9 @@ define([
             } else {
                 // TODO is this still necessaryy
                 var matches = url.match(/^(\/[^\/]+)\/(.*)/);
+                if (matches==null) {
+                	throw "no schema "+url;
+                }
 				if (matches.length==3) {
 					var p;
 					var id = matches[2];

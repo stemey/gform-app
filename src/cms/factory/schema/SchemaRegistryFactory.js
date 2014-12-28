@@ -24,7 +24,7 @@ define([
                     registry.registerStore(storeId, schemaStore);
                 });
                 return loadAll(registry, config.schemaGenerators, function (schema) {
-                    registry.register(schema.id, schema);
+					registry.register(schema.id, schema);
                 }, ctx);
 
 

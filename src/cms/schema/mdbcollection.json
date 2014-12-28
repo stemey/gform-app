@@ -1,7 +1,7 @@
 {
 	"id": "/mdbcollection",
-	"description": "meta model for mongodb collection",
-	"editor": "verticalgroup",
+	"description": "meta data for mongodb collection",
+	"editor": "listgroup",
 	"groups": [
 		{
 			"code": "general",
@@ -12,17 +12,20 @@
 				{
 					"code": "name",
 					"type": "string",
-					"required": true
+					"required": true,
+					"description":"the name of the collection."
 				},
 				{
 					"code": "collection",
 					"type": "string",
-					"required": true
+					"required": true,
+					"description":"the actual name of the mongodb collection."
 				},
 				{
 					"code": "_id",
 					"type": "string",
-					"disabled": true
+					"disabled": true,
+					"description":"the id of this collection meta data."
 				}
 			]
 		},
@@ -32,10 +35,16 @@
 			"label": "schema",
 			"attributes": [
 				{
+					"code":"description",
+					"type":"string",
+					"editor":"textarea"
+				},
+				{
 					"type": "object",
 					"code":"schema",
 					"typeProperty": "schemaType",
 					"nullLabel":"no schema",
+					"description":{"#ref":"schemaType.html"},
 					"groups": [
 						{
 							"code": "multi-schema",
@@ -44,12 +53,16 @@
 								{
 									"code": "typeProperty",
 									"type": "string",
-									"required": true
+									"required": true,
+									"defaultValue":"_type",
+									"description":"this property's value refers to its schema"
 								},
 								{
 									"code": "schemas",
 									"type": "array",
+									"description":{"#ref":"schemas.html"},
 									"minItems": 1,
+									"initialValueFactory":"/mdbcollection/multi-schema/create",
 									"element": {
 										"type": "ref",
 										"schemaUrl": "/mdbschema",
@@ -63,6 +76,7 @@
 							"label":"single schema",
 							"attributes": [
 								{
+									"initialValueFactory":"/mdbcollection/single-schema/create",
 									"code": "schema",
 									"type": "ref",
 									"schemaUrl": "/mdbschema",

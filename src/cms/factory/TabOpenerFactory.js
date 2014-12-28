@@ -19,7 +19,8 @@ define([
                 if (this.store.getDefault) {
                     return this.store.getDefault(schema, ctx);
                 } else {
-                    return {};
+					// use defaultValue in schema
+                    return null;
                 }
             }
             opener.controllerConfig = {

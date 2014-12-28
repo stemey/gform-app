@@ -13,7 +13,7 @@
 		{
 			"code": "template",
 			"type": "string",
-			"disabled": true
+			"disabled":true
 		}
 	]
 }

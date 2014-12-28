@@ -75,11 +75,8 @@ define([
 						var deferred = new Deferred();
 						promises.push(deferred);
 						var store = this.ctx.getStore(meta.name);
-						//console.log("lookup "+store.template);
+						console.log("lookup template "+store.template+ " in store "+store.name);
 						when(this.ctx.schemaRegistry.get(store.template)).then(function (schema) {
-							if (!schema) {
-								console.log("error "+store.template);
-							}
 							var child = me.createView(meta, schema);
 							me.container.addChild(child);
 							me.currentStores.push(meta.name);

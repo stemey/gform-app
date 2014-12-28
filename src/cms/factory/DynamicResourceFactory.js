@@ -1,14 +1,15 @@
 define([
+	'dojo/promise/all',
 	'../mongodb/SchemaTransformer',
 	'./schema/SchemaStore',
 	'dojo/Deferred',
 	"dojo/_base/declare"
-], function (SchemaTransformer, SchemaStore, Deferred, declare) {
+], function (all, SchemaTransformer, SchemaStore, Deferred, declare) {
 
 
 	return declare([], {
 		create: function (ctx, config) {
-			var deferred = new Deferred();
+			var mainDeferred = new Deferred();
 			require([
 				'dojo/promise/all',
 				config.storeClass, config.createEditorFactory], function (all, Store, createEditorFactory) {
@@ -18,8 +19,10 @@ define([
 				var schemaStore = ctx.getStore(config.schemaStore);
 
 				metaStore.query({}).then(function (metas) {
+					var deferreds = [];
 					metas.forEach(function (meta) {
-
+						var deferred = new Deferred();
+						deferreds.push(deferred);
 						var store = new Store({
 							idProperty: config.idProperty,
 							name: meta.name,
@@ -81,14 +84,17 @@ define([
 							ctx.storeRegistry.register(meta.name, store);
 							deferred.resolve("done");
 						}
+						all(deferreds).then(function() {
+							mainDeferred.resolve("done");
+						});
 					})
 
 				}).otherwise(function (e) {
 					console.error("cannot load meta data ",e);
-					deferred.reject(e);
+					mainDeferred.reject(e);
 				});
 			});
-			return deferred;
+			return mainDeferred;
 		}
 	});
 });
