@@ -86,8 +86,7 @@ define([
 						"efConfig": {
 							"fileserver-upload": "http://localhost:4444/upload",
 							"fileserver-download": "http://localhost:4444/"
-						},
-						"plainValueFactory": "cms/mongodb/defaultSchemaFactory"
+						}
 
 					}
 				]

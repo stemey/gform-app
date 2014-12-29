@@ -32,9 +32,9 @@ define([
             var nodeClicked = function (node) {
                 if (node.id) {
                     try {
-                        var template = node.template || null;
+                        var template = node.folder ? "jcr.folder" : undefined;
 						// TODO we should use the folders own template "base" from the server. Does not work right now.
-                        topic.publish("/focus", {id: node.id, store: realStore, source: this, template:"jcr.folder" });
+                        topic.publish("/focus", {id: node.id, store: realStore, source: this, template: template });
                     } catch (e) {
                         //console.log(e.stack);
                     }

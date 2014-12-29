@@ -46,6 +46,7 @@ define([
             this.display(evt.store + "/" + evt.entity[this.pageStore.store.idProperty]);
         },
         onPageDeleted: function (evt) {
+			// TODO display nothing?
             // this.display("/page/"+evt.id);
         },
         onPageRefresh: function(evt) {
