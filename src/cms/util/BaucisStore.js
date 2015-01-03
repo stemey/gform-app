@@ -1,22 +1,18 @@
 define([
-    './ToMongoQueryTransform',
-    'dojo/request/xhr',
+	'dojo/request/xhr',
     'dojo/store/util/QueryResults',
     'dojo/Deferred',
     "dojo/_base/lang",
     "dojo/_base/declare",
     "dojo/store/JsonRest"//
-], function (ToMongoQueryTransform, xhr, QueryResults, Deferred, lang, declare, JsonRest) {
+], function (xhr, QueryResults, Deferred, lang, declare, JsonRest) {
 
     return declare([ JsonRest ], {
         transform: null,
-        constructor: function () {
-            this.transform = new ToMongoQueryTransform();
-        },
         query: function (query, options) {
             var params = {};
 
-            var queryParams = this.transform.transform(query);
+            var queryParams = query;//this.transform.transform(query);
             if (queryParams) {
                 params.conditions = JSON.stringify(queryParams);
             } else {

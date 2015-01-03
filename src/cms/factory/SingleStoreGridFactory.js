@@ -1,4 +1,5 @@
 define([
+	'../controller/ExtendedGrid',
 	'dijit/MenuItem',
 	'dijit/Menu',
 	'gridx/modules/Menu',
@@ -18,7 +19,7 @@ define([
 	'gridx/modules/RowHeader',
 	'gridx/modules/select/Row'
 
-], function (MenuItem, DijitMenu, Menu, GformSchema2TableConverter, aspect, Sync, Deferred, topic, declare, Grid, Async, VirtualVScroller, ColumnResizer, SingleSort, Filter, FilterBar, RowHeader, RowSelect) {
+], function (ExtendedGrid, MenuItem, DijitMenu, Menu, GformSchema2TableConverter, aspect, Sync, Deferred, topic, declare, Grid, Async, VirtualVScroller, ColumnResizer, SingleSort, Filter, FilterBar, RowHeader, RowSelect) {
 
 
 	var allFilterConditions = {
@@ -57,6 +58,7 @@ define([
 		 */
 		create: function (ctx, config) {
 			var store = ctx.getStore(config.storeId);
+			var gridxQueryTransform = config.gridxQueryTransform
 
 			var tableStructure = this.convertSchemaToTableStructure(ctx, config, store.name);
 
@@ -78,8 +80,8 @@ define([
 				type: "all"
 			}
 
-			if (config.conditions) {
-				filterModule.conditions = conditions;
+			if (gridxQueryTransform && gridxQueryTransform.conditions) {
+				filterModule.conditions = gridxQueryTransform.conditions;
 			}
 
 			props.store = store;
@@ -91,16 +93,18 @@ define([
 					moduleClass: Filter,
 					serverMode: true,
 					setupQuery: function (query) {
+						// TODO move into queryTransform, to enable typeProperty!='theType'
 						if (query && query.data) {
 							query.data = query.data.map(function (criterion) {
 								var parser = id2Converter[criterion.data[0].data];
-								if (parser) {
+								if (parser && criterion.data.length > 1) {
 									criterion.data[1].data = parser(criterion.data[1].data);
 								}
 								return criterion;
 							});
 						}
-						return query;
+						mquery = gridxQueryTransform.transform(query);
+						return mquery;
 					}
 				},
 				filterModule,
@@ -132,7 +136,13 @@ define([
 			var menu = new DijitMenu();
 			menu.addChild(new MenuItem({label: "open as json", onClick: openAsJson}));
 			grid.menu.bind(menu, {hookPoint: "row"});
-			return grid;
+			// TODO use simple grid if no query language defined
+			return new ExtendedGrid({
+				storeId: grid.storeId,
+				title: store.name,
+				grid: grid,
+				queryLanguage: "ace/mode/json"
+			});
 
 		}
 	});

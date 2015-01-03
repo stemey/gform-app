@@ -53,7 +53,7 @@ define([
         query: function (query, options) {
             var params = {};
 
-            var queryParams = this.transform.transform(query);
+            var queryParams = query;//this.transform.transform(query);
             if (queryParams) {
                 params.query = JSON.stringify(queryParams);
             } else {

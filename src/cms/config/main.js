@@ -1,4 +1,5 @@
 define([
+		'../util/ToMongoQueryTransform',
 		'cms/preview/handlebars/Renderer',
 		'cms/factory/BrandFactory',
 		'cms/factory/FindPageFactory',
@@ -26,7 +27,7 @@ define([
 		'../factory/TreeFactory',
 		"../factory/StoreViewFactory",
 		"../factory/SingleSchemaCreateFactory"
-	], function (Renderer, BrandFactory, FindPageFactory, ToggleSizeFactory, HandlebarsCreateFactory, SingleSchemaCreateFactory, MultiSchemaCreateFactory, ToolbarFactory, GridFactory, ResourceGridFactory, PreviewerFactory, TabOpenerFactory) {
+	], function (ToMongoQueryTransform, Renderer, BrandFactory, FindPageFactory, ToggleSizeFactory, HandlebarsCreateFactory, SingleSchemaCreateFactory, MultiSchemaCreateFactory, ToolbarFactory, GridFactory, ResourceGridFactory, PreviewerFactory, TabOpenerFactory) {
 
 		return {
 			"storeRegistry": {
@@ -195,7 +196,10 @@ define([
 						{
 							"controllerClass": "cms/factory/StoreViewController",
 							"storeId": "/mdbcollection",
-							"schemaStoreId": "/mdbschema"
+							"schemaStoreId": "/mdbschema",
+							"gridConfig":{
+								"gridxQueryTransform":new ToMongoQueryTransform()
+							}
 						}
 					],
 					"children": [
@@ -252,7 +256,10 @@ define([
 						},
 						{
 							"factoryId": "cms/factory/ResourceGridFactory",
-							"storeIds": ["./Users/", "./BlogPosts/", "./Products/"]// TODO this should not be configured
+							"storeIds": ["./Users/", "./BlogPosts/", "./Products/"],// TODO this should not be configured
+							"config":{
+								"gridxQueryTransform":new ToMongoQueryTransform()
+							}
 						}
 					]
 				},

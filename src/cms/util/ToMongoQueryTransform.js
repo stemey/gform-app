@@ -5,12 +5,22 @@ define([
 
     return declare([  ], {
         selectIsStartsWith: true,
+		conditions:{
+			"string": ["contain", "equal", "startWith", "endWith", "notEqual", "isEmpty"],
+			"number": ["equal", "greater", "less", "greaterEqual", "lessEqual", "notEqual", "isEmpty"],
+			"date": ["equal", "before", "after", "range", "isEmpty"],
+			//"time": ["equal", "before", "after", "range", "isEmpty"],
+			"enum": ["equal", "notEqual", "isEmpty"],
+			"boolean": ["equal", "isEmpty"]
+		},
         transform: function (gquery) {
-            if (gquery.op === "or") {
-                var conditions = this.conditions(gquery.data);
+			if (!gquery) {
+				return {};
+			}else if (gquery.op === "or") {
+                var conditions = this.conditionList(gquery.data);
                 return {$or: conditions}
             } else if (gquery.op === "and") {
-                var conditions = this.conditions(gquery.data);
+                var conditions = this.conditionList(gquery.data);
                 var and = {};
                 conditions.forEach(function (condition) {
 
@@ -54,7 +64,7 @@ define([
                 return {$regex: this.selectIsStartsWith ? "^" + str : str};
             }
         },
-        conditions: function (data) {
+        conditionList: function (data) {
             return data.map(function (d) {
                 return this.condition(d);
             }, this);
@@ -73,23 +83,57 @@ define([
             mcondition[operands[0].data] = not ? {$ne: value} : value;
             return mcondition;
         },
-        transformContain: function (operands) {
+		transformIsEmpty: function (operands) {
+			var prop = operands[0].data;
+			var c1={};
+			c1[prop]= null;
+			var c2={};
+			c2[prop]= "";
+			return {$or:[c1,c2]};
+		},
+		transformAnd: function (operands) {
+			var c1 = this.condition(operands[0]);
+			var c2 = this.condition(operands[1]);
+			var mcondition = {"$and":[c1,c2]};
+			return mcondition;
+		},
+        transformContain: function (operands, not) {
             var mcondition = {};
             mcondition[operands[0].data] = {$regex: operands[1].data};
             return mcondition;
         },
-        transformStartsWith: function (operands) {
+        transformStartWith: function (operands, not) {
             var mcondition = {};
             mcondition[operands[0].data] = {$regex: "^" + operands[1].data};
             return mcondition;
         },
-        transformEndsWith: function (operands) {
+        transformEndWith: function (operands, not) {
             var mcondition = {};
             mcondition[operands[0].data] = {$regex: operands[1].data + "$"};
             return mcondition;
         },
         transformNot: function (operands) {
             return this.condition(operands[0], true);
-        }
+        },
+		transformGreater: function (operands) {
+			var mcondition = {};
+			mcondition[operands[0].data] = this.not({$gt: operands[1].data },not);
+			return mcondition;
+		},
+		transformGreaterEqual: function (operands) {
+			var mcondition = {};
+			mcondition[operands[0].data] = {$gte: operands[1].data };
+			return mcondition;
+		},
+		transformLess: function (operands) {
+			var mcondition = {};
+			mcondition[operands[0].data] = {$lt: operands[1].data };
+			return mcondition;
+		},
+		transformLessEqual: function (operands) {
+			var mcondition = {};
+			mcondition[operands[0].data] = {$lte: operands[1].data };
+			return mcondition;
+		}
     });
 });

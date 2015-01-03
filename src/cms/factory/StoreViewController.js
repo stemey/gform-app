@@ -19,7 +19,8 @@ define([
 		},
 		start: function (container, ctx, config, promise) {
 			this.promise=promise;
-			this.factory = this.createGridFactory(config);
+			this.factory = this.createGridFactory();
+			this.config = config;
 			this.ctx = ctx;
 			this.container = container;
 			this.currentStores = [];
@@ -36,7 +37,11 @@ define([
 			this.metaStore.query({}).then(lang.hitch(this, "onUpdate"));
 		},
 		createView: function (meta, schema) {
-			var grid = this.factory.create(this.ctx, {schema: schema, title: meta.name, storeId: meta.name});
+			var config = {schema: schema, title: meta.name, storeId: meta.name}
+			if (this.config.gridConfig) {
+				lang.mixin(config,this.config.gridConfig );
+			}
+			var grid = this.factory.create(this.ctx, config);
 			return grid;
 		},
 		mergeSchemas: function (schemas, typeOptions, typeProperty) {
