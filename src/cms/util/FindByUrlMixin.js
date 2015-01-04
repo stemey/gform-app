@@ -9,7 +9,7 @@ define([
             if (url.indexOf("/")==-1) {
                 return this.get(url);
             }else{
-                // TODO should always start with / or never
+                // TODO should always start with /
                 var path = url.match(/^\/?[^\/]+\/(.*)/);
                 if (path!=null && path.length>=2) {
                     var id = path[1];

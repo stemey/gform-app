@@ -184,7 +184,7 @@ define([
                 } else {
                     this.resolver = new Resolver();
                     this.resolver.baseUrl = this.templateStore.target;
-                    var resolved = this.resolver.resolve(template, "http://localhost:8080/schema/" + page[this.pageStore.store.typeProperty]);
+                    var resolved = this.resolver.resolve(template, "http://localhost:8080/schema/" + page[this.pageStore.typeProperty]);
                     this.tmpls[template._id] = resolved;
                 }
                 templatePromise = new Deferred();
@@ -243,7 +243,7 @@ define([
             }
 
             when(me.findByUrl(pageUrl)).then(function (page) {
-                if (page[me.pageStore.store.typeProperty]) {
+                if (page[me.pageStore.typeProperty]) {
                     // TODO replace findByUrl by getById
                     when(me.templateStore.findByUrl("/template/" + page.template)).then(function (template) {
                         ////console.log("renderInternally p=" + page.url + "  t=" + template.name);
@@ -274,7 +274,7 @@ define([
                                     });
 
                                 } else if (ctx.outer) {
-                                    outerTemplate = ctx.outer[me.pageStore.store.typeProperty];
+                                    outerTemplate = ctx.outer[me.pageStore.typeProperty];
 
                                 }
                                 if (partials) {

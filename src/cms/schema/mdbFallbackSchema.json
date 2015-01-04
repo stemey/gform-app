@@ -1,18 +1,28 @@
 {
 	"id": "/mdbFallbackSchema",
-	"additionalProperties":{
-		"code":"entity"
+	"additionalProperties": {
+		"code": "entity"
 	},
-	"attributes": [
+	"editor": "verticalgroup",
+	"groups": [
 		{
-			"code": "_id",
-			"type": "string",
-			"disabled": true
+			"region": "top",
+			"attributes": [
+				{
+					"code": "_id",
+					"type": "string",
+					"disabled": true
+				}
+			]
 		},
 		{
-			"code": "entity",
-			"type": "any",
-			"editor":"anyAce"
+			"region": "center",
+			"editor": "single",
+			"attribute": {
+				"code": "entity",
+				"type": "any",
+				"editor": "anyAce"
+			}
 		}
 	]
 }

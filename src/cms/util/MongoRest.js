@@ -1,19 +1,19 @@
 define([
+	'./DijitToMongoQueryTransform',
 	'./FindByUrlMixin',
     'dojo/request/handlers',
-	'./ToMongoQueryTransform',
-    'dojo/request/xhr',
+	'dojo/request/xhr',
     'dojo/store/util/QueryResults',
     'dojo/Deferred',
     "dojo/_base/lang",
     "dojo/_base/declare",
     "dojo/store/JsonRest"//
-], function (FindByUrlMixin, handlers, ToMongoQueryTransform, xhr, QueryResults, Deferred, lang, declare, JsonRest) {
+], function (DijitToMongoQueryTransform, FindByUrlMixin, handlers, xhr, QueryResults, Deferred, lang, declare, JsonRest) {
 
     return declare([ JsonRest , FindByUrlMixin], {
         transform: null,
         constructor: function () {
-            this.transform = new ToMongoQueryTransform();
+            this.transform = new DijitToMongoQueryTransform();
         },
         getChildren: function (parent, onComplete, onError) {
             var parentUrl = parent ? parent.url : "";
@@ -53,7 +53,7 @@ define([
         query: function (query, options) {
             var params = {};
 
-            var queryParams = query;//this.transform.transform(query);
+            var queryParams = this.transform.transform(query);
             if (queryParams) {
                 params.query = JSON.stringify(queryParams);
             } else {

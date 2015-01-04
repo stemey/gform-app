@@ -17,5 +17,9 @@
 	text-decoration: none;
 }
 
+.gformSchemaPreviewer > div {
+	border: 1px #b5bcc7 solid
+}
+
 
 

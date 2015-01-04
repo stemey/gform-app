@@ -1,18 +1,20 @@
 define([
+	'./DijitToMongoQueryTransform',
 	'dojo/request/xhr',
     'dojo/store/util/QueryResults',
     'dojo/Deferred',
     "dojo/_base/lang",
     "dojo/_base/declare",
     "dojo/store/JsonRest"//
-], function (xhr, QueryResults, Deferred, lang, declare, JsonRest) {
+], function (DijitToMongoQueryTransform, xhr, QueryResults, Deferred, lang, declare, JsonRest) {
 
     return declare([ JsonRest ], {
         transform: null,
+		transform: new DijitToMongoQueryTransform(),
         query: function (query, options) {
             var params = {};
-
-            var queryParams = query;//this.transform.transform(query);
+	
+            var queryParams = this.transform.transform(query);
             if (queryParams) {
                 params.conditions = JSON.stringify(queryParams);
             } else {

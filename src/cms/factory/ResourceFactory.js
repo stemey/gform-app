@@ -10,7 +10,7 @@ define([
     return declare([], {
         create: function (ctx, config) {
             var main = new Deferred;
-            require([config.storeClass], function (Store) {
+            require([config.storeClass, config.createEditorFactory], function (Store, createEditorFactory) {
                 xhr.get(config.apiUrl, {
                     handleAs: "json"
                 }).then(function (result) {
@@ -18,7 +18,7 @@ define([
                         result.resources.forEach(function (resource) {
                             var deferred = new Deferred();
                             deferreds.push(deferred);
-                            var store = new Store({name: resource.resourceUrl, template: resource.schemaUrl, idProperty: '_id', target: new url(config.apiUrl, resource.resourceUrl).uri});
+                            var store = new Store({name: resource.resourceUrl, template: resource.schemaUrl, idProperty: '_id', target: new url(config.apiUrl, resource.resourceUrl).uri, editorFactory:createEditorFactory()});
                             ctx.storeRegistry.register(resource.resourceUrl, store);
                             xhr.get(new url(config.apiUrl, resource.schemaUrl).uri, {
                                 handleAs: "json"

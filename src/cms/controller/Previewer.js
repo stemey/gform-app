@@ -1,66 +1,40 @@
 define([
-    'dojo/aspect',
-    'dojo/_base/lang',
-    '../util/topic',
+	'../util/topic',
     "dojo/_base/declare",
     "dojo/when",
     "dijit/_WidgetBase",
     "dijit/_TemplatedMixin",
     "dojo/text!./Previewer.html"
-], function (aspect, lang, topic, declare, when, _WidgetBase, _TemplatedMixin, template) {
+], function (topic, declare, when, _WidgetBase, _TemplatedMixin, template) {
 
 
     return declare("cms.Previewer", [ _WidgetBase, _TemplatedMixin], {
         templateString: template,
         pageStore: null,
         iframe: null,
-        postCreate: function () {
-            this.inherited(arguments);
-
-            topic.subscribe("/page/navigate", lang.hitch(this, "onPageNavigate"));
-            topic.subscribe("/focus", lang.hitch(this, "onPageFocus"));
-            topic.subscribeStore("/updated", lang.hitch(this, "onPageUpdated"), this.pageStore.store.name);
-            topic.subscribeStore("/deleted", lang.hitch(this, "onPageDeleted"), this.pageStore.store.name);
-            topic.subscribe("/store/focus", lang.hitch(this, "onStoreFocus"));
-
-            // TODO this results in two callbacks??? that is why we need to check if rendering===true
-            aspect.after(this.pageStore,"onUpdate",lang.hitch(this,"refresh"));
-            //topic.subscribeStore("/modify/update", lang.hitch(this, "onPageRefresh"), this.pageStore.name);
-        },
-        onPageFocus: function (evt) {
-            if (evt.store==this.pageStore.store.name) {
-                topic.publish("/previewer/show",{});
+		url:null,
+        onEntityFocus: function (evt) {
             this.display(evt.store + "/" + evt.id);
-            }else{
-                topic.publish("/previewer/hide",{});
-            }
         },
-        onStoreFocus: function (evt) {
-            if (evt.store!==this.pageStore.store.name) {
-                topic.publish("/previewer/hide",{});
-            }else{
-                topic.publish("/previewer/show",{});
-            }
+        onEntityUpdated: function (evt) {
+            this.display(evt.store + "/" + me.pageStore.getIdentity(evt.entity));
         },
-        onPageUpdated: function (evt) {
-            this.display(evt.store + "/" + evt.entity[this.pageStore.store.idProperty]);
-        },
-        onPageDeleted: function (evt) {
+        onEntityDeleted: function (evt) {
 			// TODO display nothing?
             // this.display("/page/"+evt.id);
         },
-        onPageRefresh: function(evt) {
+        onEntityRefresh: function(evt) {
               this.refresh();
         },
-        onPageNavigate: function (evt) {
+        onEntityNavigate: function (evt) {
             //TODO move to general component or AppController
             var me = this;
-            var page = this.pageStore.store.query({url: evt.url});
+            var page = this.pageStore.query({url: evt.url});
             when(page).then(function (pageResults) {
-                var id = me.pageStore.store.getIdentity(pageResults[0]);
+                var id = me.pageStore.getIdentity(pageResults[0]);
                 var template = pageResults[0].template;
                 if (template) {
-                    topic.publish("/focus", {id: id, store: me.pageStore.store.name, source: this});
+                    topic.publish("/focus", {id: id, store: me.pageStore.name, source: this});
                 }
             });
         },

@@ -1,4 +1,5 @@
 define([
+	'../controller/actions/PreviewButton',
 	'./mdbUtils',
 	'../util/urlConverter',
 	'./SchemaAttributeFactory',
@@ -16,7 +17,7 @@ define([
     '../meta/TemplateRefAttributeFactory',
     'cms/RequiredAttributes',
 	'gform/createFullEditorFactory'
-], function (mdbUtils, urlConverter, SchemaAttributeFactory, stringTemplateConverter, Save, Close, Discard, Delete, ActionFactory, FormValidator, AttributeRefFactory, FormAttributeFactory, refConverter, converter, TemplateRefAttributeFactory, RequiredAttributes, createFullEditorFactory) {
+], function (PreviewButton, mdbUtils, urlConverter, SchemaAttributeFactory, stringTemplateConverter, Save, Close, Discard, Delete, ActionFactory, FormValidator, AttributeRefFactory, FormAttributeFactory, refConverter, converter, TemplateRefAttributeFactory, RequiredAttributes, createFullEditorFactory) {
 
 
     return function (config) {
@@ -48,6 +49,7 @@ define([
         af.add({type:Discard})
         af.add({type:Delete})
         af.add({type:Close});
+		af.add({type:PreviewButton});
 
         ef.actionFactory=af;
 

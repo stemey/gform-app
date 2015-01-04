@@ -43,6 +43,7 @@ define([
 					{
 						"factoryId": "cms/factory/StoreFactory",
 						"name": "/page",
+						"previewerId": "handlebars",
 						"storeClass": "cms/util/JsonRest",
 						"templateStore": "/template",
 						"idProperty": "identifier",
@@ -84,6 +85,7 @@ define([
 						"target": "http://localhost:3001/collections/mdbschema/",
 						"template": "/mdbschema",
 						"createEditorFactory": "cms/mongodb/createSchemaEditorFactory",
+						"previewerId": "gform",
 						"efConfig": {
 							"fileserver-upload": "http://localhost:4444/upload",
 							"fileserver-download": "http://localhost:4444/"
@@ -127,7 +129,8 @@ define([
 				{
 					"factoryId": "cms/factory/ResourceFactory",
 					"apiUrl": "http://localhost:3333/api/gform",
-					"storeClass": "cms/util/BaucisStore"
+					"storeClass": "cms/util/BaucisStore",
+					"createEditorFactory": "cms/baucis/createEditorFactory"
 				},
 				{
 					"factoryId": "cms/factory/DynamicResourceFactory",
@@ -136,7 +139,7 @@ define([
 					"storeId": "/mdbcollection",
 					"schemaStore": "/mdbschema",
 					"idProperty": "_id",
-					"fallbackSchema":"/mdbFallbackSchema",
+					"fallbackSchema": "/mdbFallbackSchema",
 					"createEditorFactory": "cms/mongodb/createEditorFactory",
 					"efConfig": {
 						"fileserver-upload": "http://localhost:4444/upload",
@@ -197,8 +200,8 @@ define([
 							"controllerClass": "cms/factory/StoreViewController",
 							"storeId": "/mdbcollection",
 							"schemaStoreId": "/mdbschema",
-							"gridConfig":{
-								"gridxQueryTransform":new ToMongoQueryTransform()
+							"gridConfig": {
+								"gridxQueryTransform": new ToMongoQueryTransform()
 							}
 						}
 					],
@@ -257,18 +260,33 @@ define([
 						{
 							"factoryId": "cms/factory/ResourceGridFactory",
 							"storeIds": ["./Users/", "./BlogPosts/", "./Products/"],// TODO this should not be configured
-							"config":{
-								"gridxQueryTransform":new ToMongoQueryTransform()
+							"config": {
+								"gridxQueryTransform": new ToMongoQueryTransform()
 							}
 						}
 					]
 				},
 				{
 					"region": "center",
-					"factoryId": "cms/factory/PreviewerFactory",
+					"factoryId": "cms/factory/PreviewDispatcherFactory",
 					"splitter": true,
-					"rendererClass": "cms/preview/handlebars/Renderer",
-					"pageStore": "/page"
+					"children": [
+						{
+							"previewerId": "handlebars",
+							"region": "center",
+							"factoryId": "cms/factory/PreviewerFactory",
+							"splitter": true,
+							"rendererClass": "cms/preview/handlebars/Renderer",
+							"pageStore": "/page"
+
+						},
+						{
+							"previewerId": "gform",
+							"region": "center",
+							"factoryId": "cms/factory/SchemaPreviewerFactory",
+							"splitter": true
+						}
+					]
 				},
 				{
 					"width": "35%",

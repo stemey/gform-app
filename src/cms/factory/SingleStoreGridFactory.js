@@ -94,16 +94,7 @@ define([
 					serverMode: true,
 					setupQuery: function (query) {
 						// TODO move into queryTransform, to enable typeProperty!='theType'
-						if (query && query.data) {
-							query.data = query.data.map(function (criterion) {
-								var parser = id2Converter[criterion.data[0].data];
-								if (parser && criterion.data.length > 1) {
-									criterion.data[1].data = parser(criterion.data[1].data);
-								}
-								return criterion;
-							});
-						}
-						mquery = gridxQueryTransform.transform(query);
+						mquery = gridxQueryTransform.transform(query, id2Converter);
 						return mquery;
 					}
 				},
