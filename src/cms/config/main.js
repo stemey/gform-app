@@ -217,6 +217,7 @@ define([
 							"factoryId": "cms/factory/GridFactory",
 							"title": "template",
 							"storeId": "/template",
+							"gridxQueryTransform":new ToMongoQueryTransform(),
 							"columns": [
 								{
 									"id": "name",
@@ -229,6 +230,7 @@ define([
 							"factoryId": "cms/factory/GridFactory",
 							"title": "mdb collection",
 							"storeId": "/mdbcollection",
+							"gridxQueryTransform":new ToMongoQueryTransform(),
 							"columns": [
 								{
 									"id": "name",
@@ -245,6 +247,7 @@ define([
 							"factoryId": "cms/factory/GridFactory",
 							"title": "mdb schema",
 							"storeId": "/mdbschema",
+							"gridxQueryTransform":new ToMongoQueryTransform(),
 							"columns": [
 								{
 									"id": "name",

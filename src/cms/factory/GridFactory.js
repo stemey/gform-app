@@ -17,6 +17,7 @@ define([
 	return declare([], {
 		create: function (ctx, config) {
 			// TODO make filter configurable: currently quickFilter and clientside
+			var gridxQueryTransform = config.gridxQueryTransform;
 			var props = {title: "template"};
 			props.title = config.title;// if displayed in tab or titlepane
 			props.cacheClass = Cache;
@@ -28,7 +29,12 @@ define([
 			props.modules = [
 				{
 					moduleClass: Filter,
-					serverMode: true
+					serverMode: true,
+					setupQuery: function (query) {
+						// TODO move into queryTransform, to enable typeProperty!='theType'
+						mquery = gridxQueryTransform ? gridxQueryTransform.transform(query, {}) : query;
+						return mquery;
+					}
 				},
 				Menu,
 				QuickFilter,
