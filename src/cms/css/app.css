@@ -21,5 +21,12 @@
 	border: 1px #b5bcc7 solid
 }
 
+#mainContainer {
+	padding:5px;
+	width:100%;
+	height:100%;
+}
+
+
 
 

@@ -1,6 +1,6 @@
 define([
 	'../controller/tools/StoreSensitiveMixin',
-	'dijit/form/ToggleButton',
+	'dijit/form/Button',
 	'dojo/topic',
 	'./ContainerFactory',
 	"dojo/_base/declare"
