@@ -1,21 +1,21 @@
 {
-    "code": "multi-entity-ref",
-    "editor": "tab",
-    "description": "",
-    "groups": [
-        {
-            "$ref": "../../gform/schema/attributes/header.json"
-        },
-        {
-            "label": "reference",
-            "attributes": [
-                {
-                    "code": "type",
-                    "type": "string",
-                    "visible": false,
-                    "required": true,
-                    "values": ["multi-ref"]
-                },
+	"code": "multi-entity-ref",
+	"editor": "tab",
+	"description": "",
+	"groups": [
+		{
+			"$ref": "../../gform/schema/attributes/header.json"
+		},
+		{
+			"label": "reference",
+			"attributes": [
+				{
+					"code": "type",
+					"type": "string",
+					"visible": false,
+					"required": true,
+					"values": ["multi-ref"]
+				},
 				{
 					"code": "editor",
 					"type": "string",
@@ -23,42 +23,42 @@
 					"required": true,
 					"values": ["multi-entity-ref"]
 				},
-                {
-                    "code": "searchProperty",
-                    "description": "The property displayed and matched against the user input.",
-                    "type": "string",
-                    "required": true
-                },
-                {
-                    "code": "entity_id",
+				{
+					"code": "searchProperty",
+					"description": "The property displayed and matched against the user input.",
+					"type": "string",
+					"required": true
+				},
+				{
+					"code": "entity_id",
+					"label": "collection",
 					"required": true,
-                    "description": "the url of the resources referenced by this property.",
-                    "type": "ref",
-                    "required": true,
-					"url":"/mdbcollection",
-					"searchProperty":"name"
-                },
+					"description": "the mongodb collection.",
+					"type": "ref",
+					"required": true,
+					"url": "/mdbcollection",
+					"searchProperty": "name"
+				},
 				{
 					"code": "store_id",
 					"required": true,
-					"visible":false,
-					"values":["/mdbcollection"]
+					"visible": false,
+					"values": ["/mdbcollection"]
 				},
 				{
 					"code": "schemas",
 					"required": true,
-					"type":"array",
-					"element":{
+					"type": "array",
+					"element": {
 						"type": "string",
-						"editor":"schema-collection",
-						"mapped_attribute":"..entity_id"
+						"editor": "schema-collection",
+						"mapped_attribute": "..entity_id"
 					}
 				}
-            ]
-        },
-        {
-            "$ref": "../../gform/schema/attributes/messages.json"
-        }
-    ]
-
+			]
+		},
+		{
+			"$ref": "../../gform/schema/attributes/messages.json"
+		}
+	]
 }
