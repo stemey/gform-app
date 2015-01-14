@@ -1,6 +1,7 @@
 {
 	"code": "multi-entity-ref",
 	"editor": "tab",
+	"groupLabel":"references",
 	"description": "",
 	"groups": [
 		{

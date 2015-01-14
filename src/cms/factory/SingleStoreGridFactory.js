@@ -77,7 +77,8 @@ define([
 
 			var filterModule = {
 				moduleClass: FilterBar,
-				type: "all"
+				type: "all",
+				"closeButton":false
 			}
 
 			if (gridxQueryTransform && gridxQueryTransform.conditions) {

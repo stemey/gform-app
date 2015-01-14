@@ -1,6 +1,7 @@
 {
 	"code": "schema-ref",
 	"editor": "tab",
+	"groupLabel":"references",
 	"description": "",
 	"groups": [
 		{

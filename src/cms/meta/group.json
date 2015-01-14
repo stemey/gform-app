@@ -17,6 +17,7 @@
 						"required": true,
 						"uniqueProperties": ["code"],
 						"typeProperty": "editor",
+						"reorderable":false,
 						"groups": {
 							"$ref": "../../gform/schema/attributes.json"
 						}

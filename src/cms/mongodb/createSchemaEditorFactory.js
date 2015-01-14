@@ -1,4 +1,5 @@
 define([
+	'../controller/actions/DiscardAndPreview',
 	'../controller/actions/PreviewButton',
 	'./mdbUtils',
 	'../util/urlConverter',
@@ -6,8 +7,7 @@ define([
 	'../util/stringTemplateConverter',
 	'../controller/actions/Save',
     'gform/controller/actions/Close',
-    'gform/controller/actions/Discard',
-    'gform/controller/actions/Delete',
+	'gform/controller/actions/Delete',
     'gform/controller/actions/ActionFactory',
     'gform/special/formbuilder/FormValidator',
     'gform/special/formbuilder/AttributeRefFactory',
@@ -17,7 +17,7 @@ define([
     '../meta/TemplateRefAttributeFactory',
     'cms/RequiredAttributes',
 	'gform/createFullEditorFactory'
-], function (PreviewButton, mdbUtils, urlConverter, SchemaAttributeFactory, stringTemplateConverter, Save, Close, Discard, Delete, ActionFactory, FormValidator, AttributeRefFactory, FormAttributeFactory, refConverter, converter, TemplateRefAttributeFactory, RequiredAttributes, createFullEditorFactory) {
+], function (DiscardAndPreview, PreviewButton, mdbUtils, urlConverter, SchemaAttributeFactory, stringTemplateConverter, Save, Close, Delete, ActionFactory, FormValidator, AttributeRefFactory, FormAttributeFactory, refConverter, converter, TemplateRefAttributeFactory, RequiredAttributes, createFullEditorFactory) {
 
 
     return function (config) {
@@ -46,7 +46,7 @@ define([
 
         var af = new ActionFactory();
         af.add({type:Save})
-        af.add({type:Discard})
+        af.add({type:DiscardAndPreview})
         af.add({type:Delete})
         af.add({type:Close});
 		af.add({type:PreviewButton});

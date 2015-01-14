@@ -3,24 +3,22 @@ define([
 	'dijit/layout/BorderContainer',
 	'dojo/_base/lang',
 	'dojo/topic',
-	'dojo/dom-geometry',
 	"dojo/_base/declare"
-], function (ToggleSplitter, BorderContainer, lang, topic, domGeometry, declare) {
+], function (ToggleSplitter, BorderContainer, lang, topic, declare) {
 
 
 	return declare([BorderContainer], {
 		horizontalChildren: ["left", "right", "center"],
-		originalSizes: null,
-		sizesWithCenter: null,
-		center: null,
+		previewVisible: true,
+		storeWidth:null,
 		constructor: function () {
 			this._splitterClass = ToggleSplitter;
 		},
 		postCreate: function () {
 			this.inherited(arguments);
 			topic.subscribe("/previewer/toggle", lang.hitch(this, "toggleFullSize"));
-			topic.subscribe("/previewer/hide", lang.hitch(this, "hideCenter"));
-			topic.subscribe("/previewer/show", lang.hitch(this, "showCenter"));
+			topic.subscribe("/previewer/hide", lang.hitch(this, "hidePreview"));
+			topic.subscribe("/previewer/show", lang.hitch(this, "showPreview"));
 		},
 		getChildByRegion: function (region) {
 			return this.getChildren().filter(function (child) {
@@ -36,22 +34,6 @@ define([
 			})
 			return fullSize;
 		},
-		restoreOriginalSizes: function (sizes) {
-			Object.keys(sizes).forEach(function (key) {
-				var id = this.getChildByRegion(key).id;
-				this._layoutChildren(id, sizes[key]);
-			}, this)
-		},
-		saveOriginalSizes: function () {
-			var originalSizes = {};
-			this.getChildren().forEach(function (child) {
-				if (this.horizontalChildren.indexOf(child.get("region")) >= 0) {
-					var size = domGeometry.getContentBox(child.domNode);
-					originalSizes[child.region] = size.w;
-				}
-			}, this);
-			return originalSizes;
-		},
 		toggleFullSize: function () {
 			var state = this.isFullSize() ? "full" : "closed";
 			this.getChildren().forEach(function (child) {
@@ -61,25 +43,53 @@ define([
 				}
 			});
 		},
-		hideCenter: function (sizes) {
-			if (this.center == null || this.center.getParent()) {
-				this.sizesWithCenter = this.saveOriginalSizes();
-				this.center = this.getChildByRegion("center");
-				var left = this.getChildByRegion("left");
-				this.removeChild(this.center);
-				left.set("region", "center");
-				this.getChildByRegion("right").domNode.style.width = "50%";
+		restSplitter: function (state) {
+			this.getChildren().forEach(function (child) {
+				var splitter = child._splitterWidget;
+				if (splitter && splitter.get("state")!=state) {
+					splitter.set("state", state);
+				}
+			});
+		},
+		switchSplitter: function(from,to) {
+			var splitter = from._splitterWidget;
+			splitter.child=to;
+			from._splitterWidget=null;
+			to._splitterWidget=splitter;
+			return splitter;
+		},
+		switchRegion: function(from,to) {
+			var fromRegion=from.get("region");
+			var toRegion=to.get("region");
+			from.set("region",toRegion);
+			to.set("region",fromRegion);
+		},
+		hidePreview: function () {
+			if (this.previewVisible) {
+				this.restSplitter("full");
+				var preview = this.getChildByRegion("center");
+				var store = this.getChildByRegion("left");
+				this.storeWidth=store.domNode.style.width;
+				var splitter =this.switchSplitter(store,preview);
+				splitter.domNode.style.display="none";
+				this.switchRegion(preview,store);
+				preview.domNode.style.display="none"
 				this.layout();
+				this.previewVisible=false;
 			}
 		},
-		showCenter: function () {
-			if (this.center && !this.center.getParent()) {
-				var left = this.getChildByRegion("center");
-				var index = this.getChildren().indexOf(left);
-				left.set("region", "left");
-				this.addChild(this.center, index + 1);
-				this.restoreOriginalSizes(this.sizesWithCenter);
+		showPreview: function () {
+			if (!this.previewVisible) {
+				var store = this.getChildByRegion("center");
+				var preview = this.getChildByRegion("left");
+				var splitter = this.switchSplitter(preview,store);
+				this.switchRegion(store,preview);
+				splitter.domNode.style.display="block";
+				preview.domNode.style.display="block";
+				store.domNode.style.width=this.storeWidth;
+				this.restSplitter("full");
 				this.layout();
+				this.previewVisible=true;
 			}
 		}
 	});

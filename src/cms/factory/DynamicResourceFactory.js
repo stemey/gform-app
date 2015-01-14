@@ -33,6 +33,7 @@ define([
 						if (meta.schema===null) {
 							store.template = config.fallbackSchema;
 							ctx.storeRegistry.register(meta.name, store);
+							deferred.resolve("done");
 						}else if (meta.schema.schema) {
 							schemaStore.get(meta.schema.schema).then(function(schema) {
 								var transformer = new SchemaTransformer(ctx);
