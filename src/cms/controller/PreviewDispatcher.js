@@ -39,6 +39,10 @@ define([
 						selectedChild = child;
 					}
 				});
+				if (selectedChild) {
+					this.selectChild(selectedChild);
+					return true;
+				}
 			}
 			return false;
 		}
