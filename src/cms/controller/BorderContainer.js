@@ -10,26 +10,53 @@ define([
 	return declare([BorderContainer], {
 		horizontalChildren: ["left", "right", "center"],
 		previewVisible: true,
-		storeWidth:null,
+		storeWidth: null,
+		entityWidth: null,
+		ctx:null,
+		layouts:null,
+		layoutId: null,
 		constructor: function () {
 			this._splitterClass = ToggleSplitter;
 		},
 		postCreate: function () {
 			this.inherited(arguments);
 			topic.subscribe("/previewer/toggle", lang.hitch(this, "toggleFullSize"));
-			topic.subscribe("/previewer/hide", lang.hitch(this, "hidePreview"));
-			topic.subscribe("/previewer/show", lang.hitch(this, "showPreview"));
+			topic.subscribe("/focus", lang.hitch(this, "onChange"));
+			topic.subscribe("/store/focus", lang.hitch(this, "onChange"));
+		},
+		onChange: function(evt) {
+			var store = this.ctx.getStore(evt.store);
+			var layoutId = store.layout || store.name;
+			if(!(layoutId in this.layouts)) {
+				layoutId="standard";
+			}
+			if (layoutId!==this.layoutId) {
+				this.switchLayout(layoutId);
+			}
+		},
+		getSplitters: function () {
+			if (!this.splitters) {
+				this.splitters = {};
+
+				this.getChildren().forEach(function (child) {
+					var splitter = child._splitterWidget;
+					if (splitter) {
+						this.splitters[splitter.region] = splitter;
+					}
+				}, this);
+			}
+			return this.splitters;
 		},
 		getChildByRegion: function (region) {
 			return this.getChildren().filter(function (child) {
 				return child.region == region;
 			}) [0];
 		},
-		isFullSize: function() {
-			var fullSize= true;
+		isFullSize: function () {
+			var fullSize = true;
 			this.getChildren().forEach(function (child) {
-				if (child._splitterWidget && child._splitterWidget.get("state")!=="closed") {
-					fullSize=false;
+				if (child._splitterWidget && child._splitterWidget.get("state") !== "closed") {
+					fullSize = false;
 				}
 			})
 			return fullSize;
@@ -38,7 +65,7 @@ define([
 			var state = this.isFullSize() ? "full" : "closed";
 			this.getChildren().forEach(function (child) {
 				var splitter = child._splitterWidget;
-				if (splitter && splitter.get("state")!=state) {
+				if (splitter && splitter.get("state") != state) {
 					splitter.set("state", state);
 				}
 			});
@@ -46,51 +73,88 @@ define([
 		restSplitter: function (state) {
 			this.getChildren().forEach(function (child) {
 				var splitter = child._splitterWidget;
-				if (splitter && splitter.get("state")!=state) {
+				if (splitter && splitter.get("state") != state) {
 					splitter.set("state", state);
 				}
 			});
 		},
-		switchSplitter: function(from,to) {
-			var splitter = from._splitterWidget;
-			splitter.child=to;
-			from._splitterWidget=null;
-			to._splitterWidget=splitter;
-			return splitter;
+		transferSplitter: function (splitter, target) {
+			splitter.child = target;
+			target._splitterWidget = splitter;
 		},
-		switchRegion: function(from,to) {
-			var fromRegion=from.get("region");
-			var toRegion=to.get("region");
-			from.set("region",toRegion);
-			to.set("region",fromRegion);
+		switchRegion: function (from, to) {
+			var fromRegion = from.get("region");
+			var toRegion = to.get("region");
+			from.set("region", toRegion);
+			to.set("region", fromRegion);
 		},
-		hidePreview: function () {
-			if (this.previewVisible) {
-				this.restSplitter("full");
-				var preview = this.getChildByRegion("center");
-				var store = this.getChildByRegion("left");
-				this.storeWidth=store.domNode.style.width;
-				var splitter =this.switchSplitter(store,preview);
-				splitter.domNode.style.display="none";
-				this.switchRegion(preview,store);
-				preview.domNode.style.display="none"
-				this.layout();
-				this.previewVisible=false;
+		updateCurrentLayout: function () {
+			var layout = this.layouts[this.layoutId];
+			this.getChildren().forEach(function (child) {
+				var appType = child.get("appType");
+				var app = layout[appType];
+				if (app && app.region !== "center") {
+					var width = child.domNode.style.width;
+					app.width = width;
+					app.state = child._splitterWidget.state;
+				}
+			}, this);
+		},
+		switchLayout: function (layoutId) {
+			var currentLayout = {};
+			if (this.layoutId) {
+				this.updateCurrentLayout();
+				//this.layouts[this.layoutId] = currentLayout;
+			}
+			this.layoutId = layoutId;
+			this._switchLayout(currentLayout, this.layouts[layoutId]);
+
+		},
+		getByAppType: function (appType) {
+			var children = this.getChildren().filter(function (child) {
+				return child.appType === appType;
+			});
+			if (children.length == 1) {
+				return children[0];
+			} else {
+				return null;
 			}
 		},
-		showPreview: function () {
-			if (!this.previewVisible) {
-				var store = this.getChildByRegion("center");
-				var preview = this.getChildByRegion("left");
-				var splitter = this.switchSplitter(preview,store);
-				this.switchRegion(store,preview);
-				splitter.domNode.style.display="block";
-				preview.domNode.style.display="block";
-				store.domNode.style.width=this.storeWidth;
-				this.restSplitter("full");
-				this.layout();
-				this.previewVisible=true;
-			}
+		_switchLayout: function (old, nu) {
+			Object.keys(nu).forEach(function (appType) {
+				var child = this.getByAppType(appType);
+				var region = nu[appType].region;
+				child.set("region", region);
+				var splitter = this.getSplitters()[region];
+				if (splitter) {
+					splitter.set("state","full");
+					this.transferSplitter(splitter, child);
+				} else {
+					child._splitterWidget=null;
+				}
+				var nuApp = nu[appType];
+				if (nuApp.hidden) {
+					child.domNode.style.display = "none";
+					if (child._splitterWidget) {
+						child._splitterWidget.domNode.style.display = "none";
+					}
+				} else {
+					child.domNode.style.display = "block";
+					if (child._splitterWidget) {
+						child._splitterWidget.domNode.style.display = "block";
+					}
+					if (nuApp.state) {
+						child._splitterWidget.set("state", nuApp.state);
+					} else if (child._splitterWidget) {
+						child._splitterWidget.set("state", "full");
+					}
+					if (nuApp.width) {
+						child.domNode.style.width = nuApp.width;
+					}
+				}
+
+			}, this);
+			this.layout();
 		}
 	});
 });

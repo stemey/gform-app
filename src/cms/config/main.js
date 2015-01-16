@@ -147,157 +147,179 @@ define([
 					}
 				}
 			],
-			"views": [
-				{
-					"region": "top",
-					"factoryId": "cms/factory/ToolbarFactory",
-					"children": [
-						{
-							"factoryId": "cms/factory/BrandFactory",
-							"label": "gform-cms"
-						},
-						{
-							"factoryId": "cms/factory/FindPageFactory",
-							"storeId": "/page",
-							"label": "open",
-							"searchProperty": "url",
-							"labelProperty": "url",
-							"placeHolder": "find page ..",
-							"includedStoreIds": ["/page"]
-						},
-						{
-							"factoryId": "cms/factory/MultiSchemaCreateFactory",
-							"label": "+",
-							"searchProperty": "name",
-							"placeHolder": "find template .."
-						},
-						{
-							"factoryId": "cms/factory/SingleSchemaCreateFactory",
-							"label": "add",
-							"excludedStoreIds": ["/template"]
-						},
-						{
-							"factoryId": "cms/factory/HandlebarsCreateFactory",
-							"url": "/template",
-							"storeId": "/template",
-							"label": "add template",
-							"includedStoreIds": ["/template"]
-						},
-						{
-							"factoryId": "cms/factory/ToggleSizeFactory",
-							"label": "full size",
-							"includedStoreIds": ["/page"]
-						}
-					]
+			"view": {
+				"layouts": {
+					"standard": {
+						"preview": {"region": "right", "hidden": true},
+						"store": {"region": "left", "width": "50%"},
+						"entity": {"region": "center"}
+					},
+					"/page": {
+						preview: {region: "center"},
+						store: {region: "left", "width": "200px"},
+						entity: {region: "right", "width": "35%"}
+					},
+					"/mdbschema": {
+						preview: {region: "center"},
+						store: {region: "left", "width": "200px"},
+						entity: {region: "right", "width": "50%"}
+					}
 				},
-				{
-					"region": "left",
-					"splitter": true,
-					"width": "400px",
-					"factoryId": "cms/factory/StoreViewFactory",
-					"controllers": [
-						{
-							"controllerClass": "cms/factory/StoreViewController",
-							"storeId": "/mdbcollection",
-							"schemaStoreId": "/mdbschema",
-							"gridConfig": {
-								"gridxQueryTransform": new ToMongoQueryTransform()
+				"views": [
+					{
+						"region": "top",
+						"factoryId": "cms/factory/ToolbarFactory",
+						"children": [
+							{
+								"factoryId": "cms/factory/BrandFactory",
+								"label": "gform-cms"
+							},
+							{
+								"factoryId": "cms/factory/FindPageFactory",
+								"storeId": "/page",
+								"label": "open",
+								"searchProperty": "url",
+								"labelProperty": "url",
+								"placeHolder": "find page ..",
+								"includedStoreIds": ["/page"]
+							},
+							{
+								"factoryId": "cms/factory/MultiSchemaCreateFactory",
+								"label": "+",
+								"searchProperty": "name",
+								"placeHolder": "find template .."
+							},
+							{
+								"factoryId": "cms/factory/SingleSchemaCreateFactory",
+								"label": "add",
+								"excludedStoreIds": ["/template"]
+							},
+							{
+								"factoryId": "cms/factory/HandlebarsCreateFactory",
+								"url": "/template",
+								"storeId": "/template",
+								"label": "add template",
+								"includedStoreIds": ["/template"]
+							},
+							{
+								"factoryId": "cms/factory/ToggleSizeFactory",
+								"label": "full size",
+								"includedStoreIds": ["/page"]
 							}
-						}
-					],
-					"children": [
-						{
-							"factoryId": "cms/factory/TreeFactory",
-							"title": "tree",
-							"storeId": "/pagetree",
-							"labelAttribute": "name"
-
-						},
-						{
-							"factoryId": "cms/factory/GridFactory",
-							"title": "template",
-							"storeId": "/template",
-							"gridxQueryTransform":new ToMongoQueryTransform(),
-							"columns": [
-								{
-									"id": "name",
-									"field": "name",
-									"name": "name"
+						]
+					},
+					{
+						"region": "left",
+						"splitter": true,
+						"appType": "store",
+						"width": "400px",
+						"factoryId": "cms/factory/StoreViewFactory",
+						"controllers": [
+							{
+								"controllerClass": "cms/factory/StoreViewController",
+								"storeId": "/mdbcollection",
+								"schemaStoreId": "/mdbschema",
+								"gridConfig": {
+									"gridxQueryTransform": new ToMongoQueryTransform()
 								}
-							]
-						},
-						{
-							"factoryId": "cms/factory/GridFactory",
-							"title": "mdb collection",
-							"storeId": "/mdbcollection",
-							"gridxQueryTransform":new ToMongoQueryTransform(),
-							"columns": [
-								{
-									"id": "name",
-									"field": "name",
-									"name": "name"
-								}, {
-									"id": "id",
-									"field": "_id",
-									"name": "id"
-								}
-							]
-						},
-						{
-							"factoryId": "cms/factory/GridFactory",
-							"title": "mdb schema",
-							"storeId": "/mdbschema",
-							"gridxQueryTransform":new ToMongoQueryTransform(),
-							"columns": [
-								{
-									"id": "name",
-									"field": "name",
-									"name": "name"
-								}, {
-									"id": "id",
-									"field": "_id",
-									"name": "id"
-								}
-							]
-						},
-						{
-							"factoryId": "cms/factory/ResourceGridFactory",
-							"storeIds": ["./Users/", "./BlogPosts/", "./Products/"],// TODO this should not be configured
-							"config": {
-								"gridxQueryTransform": new ToMongoQueryTransform()
 							}
-						}
-					]
-				},
-				{
-					"region": "center",
-					"factoryId": "cms/factory/PreviewDispatcherFactory",
-					"splitter": true,
-					"children": [
-						{
-							"previewerId": "handlebars",
-							"region": "center",
-							"factoryId": "cms/factory/PreviewerFactory",
-							"splitter": true,
-							"rendererClass": "cms/preview/handlebars/Renderer",
-							"pageStore": "/page"
+						],
+						"children": [
+							{
+								"factoryId": "cms/factory/TreeFactory",
+								"title": "tree",
+								"storeId": "/pagetree",
+								"labelAttribute": "name"
 
-						},
-						{
-							"previewerId": "gform",
-							"region": "center",
-							"factoryId": "cms/factory/SchemaPreviewerFactory",
-							"splitter": true
-						}
-					]
-				},
-				{
-					"width": "35%",
-					"region": "right",
-					"factoryId": "cms/factory/TabOpenerFactory",
-					"splitter": true
-				}
-			]
+							},
+							{
+								"factoryId": "cms/factory/GridFactory",
+								"title": "template",
+								"storeId": "/template",
+								"gridxQueryTransform": new ToMongoQueryTransform(),
+								"columns": [
+									{
+										"id": "name",
+										"field": "name",
+										"name": "name"
+									}
+								]
+							},
+							{
+								"factoryId": "cms/factory/GridFactory",
+								"title": "mdb collection",
+								"storeId": "/mdbcollection",
+								"gridxQueryTransform": new ToMongoQueryTransform(),
+								"columns": [
+									{
+										"id": "name",
+										"field": "name",
+										"name": "name"
+									}, {
+										"id": "id",
+										"field": "_id",
+										"name": "id"
+									}
+								]
+							},
+							{
+								"factoryId": "cms/factory/GridFactory",
+								"title": "mdb schema",
+								"storeId": "/mdbschema",
+								"gridxQueryTransform": new ToMongoQueryTransform(),
+								"columns": [
+									{
+										"id": "name",
+										"field": "name",
+										"name": "name"
+									}, {
+										"id": "id",
+										"field": "_id",
+										"name": "id"
+									}
+								]
+							},
+							{
+								"factoryId": "cms/factory/ResourceGridFactory",
+								"storeIds": ["./Users/", "./BlogPosts/", "./Products/"],// TODO this should not be configured
+								"config": {
+									"gridxQueryTransform": new ToMongoQueryTransform()
+								}
+							}
+						]
+					},
+					{
+						"region": "center",
+						"appType": "preview",
+						"factoryId": "cms/factory/PreviewDispatcherFactory",
+						"splitter": true,
+						"children": [
+							{
+								"previewerId": "handlebars",
+								"region": "center",
+								"factoryId": "cms/factory/PreviewerFactory",
+								"splitter": true,
+								"rendererClass": "cms/preview/handlebars/Renderer",
+								"pageStore": "/page"
+
+							},
+							{
+								"previewerId": "gform",
+								"region": "center",
+								"factoryId": "cms/factory/SchemaPreviewerFactory",
+								"splitter": true
+							}
+						]
+					},
+					{
+						"width": "45%",
+						"region": "right",
+						"appType": "entity",
+						"factoryId": "cms/factory/TabOpenerFactory",
+						"splitter": true
+					}
+				]
+			}
 
 		}
 	}

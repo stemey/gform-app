@@ -58,6 +58,7 @@ define([
 									var d = new Deferred();
 									all([p,metaPromise]).then(function (results) {
 										var filtered = results[0].filter(function (e) {
+											// TODO don't use _id here. use IdProperty
 											return results[1].schema.schemas.indexOf(e._id)>=0;
 										});
 										d.resolve(filtered);

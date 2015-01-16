@@ -47,7 +47,7 @@ define([
 		},
 		_onResources: function (ctx) {
 			var me = this;
-			var promise = new BorderContainerFactory().create(ctx, this.config.views);
+			var promise = new BorderContainerFactory().create(ctx, this.config.view);
 			when(promise).then(function (borderContainer) {
 				me.deferred.resolve(borderContainer);
 			}).otherwise(console.log);

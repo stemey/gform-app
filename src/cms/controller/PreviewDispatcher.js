@@ -39,15 +39,6 @@ define([
 						selectedChild = child;
 					}
 				});
-				if (selectedChild) {
-					this.selectChild(selectedChild);
-					topic.publish("/previewer/show", {});
-					return true;
-				} else {
-					topic.publish("/previewer/hide", {});
-				}
-			} else {
-				topic.publish("/previewer/hide", {});
 			}
 			return false;
 		}
