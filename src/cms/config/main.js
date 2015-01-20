@@ -69,6 +69,7 @@ define([
 						"factoryId": "cms/factory/StoreFactory",
 						"name": "/mdbcollection",
 						"storeClass": "cms/util/MongoRest",
+						"assignableId":true,
 						"idProperty": "_id",
 						"idType": "string",
 						"target": "http://localhost:3001/meta/",
@@ -79,6 +80,7 @@ define([
 					{
 						"factoryId": "cms/factory/StoreFactory",
 						"name": "/mdbschema",
+						"assignableId":true,
 						"storeClass": "cms/util/MongoRest",
 						"idProperty": "_id",
 						"idType": "string",
@@ -173,6 +175,10 @@ define([
 							{
 								"factoryId": "cms/factory/BrandFactory",
 								"label": "gform-cms"
+							},
+							{
+								"factoryId": "cms/factory/SelectViewFactory",
+								"label": "views"
 							},
 							{
 								"factoryId": "cms/factory/FindPageFactory",

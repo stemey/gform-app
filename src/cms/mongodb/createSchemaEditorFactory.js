@@ -46,7 +46,7 @@ define([
 
         var af = new ActionFactory();
         af.add({type:Save})
-        af.add({type:DiscardAndPreview})
+		af.add({type:DiscardAndPreview})
         af.add({type:Delete})
         af.add({type:Close});
 		af.add({type:PreviewButton});

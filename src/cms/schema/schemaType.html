@@ -5,17 +5,4 @@
 		<li>single schema - each document in the collection has the same schema.</li>
 		<li>multiple schemas - each document has a type property identifying its schema.</li>
 	</ul>
-	<p>
-	<h4>Please consider</h4>
-	<ul>
-		<li>
-			Once a multiple-schema collection has been populated changes to the typeProperty will need to be accompanied
-			by migration of the existing documents. That is currently not handled by this tool.
-		</li>
-		<li>
-			If a document was altered outside of this tool and does not conform to its schema, then it might not be
-			loaded by the editor. You need to either modify the schema or open the document with the fallback editor (use context menu in the table view).
-		</li>
-	</ul>
-	</p>
 </div>

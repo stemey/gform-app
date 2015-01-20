@@ -40,7 +40,6 @@ define([
             // adding the schema store's id attribute
             idAttribute["type"] = store.idType || "string";
             idAttribute["code"] = store.idProperty;
-            idAttribute["disabled"] = true;
             baseSchema.groups[0].attributes.push(idAttribute);
 			baseSchema.id = config.schemaId || store.name;
 

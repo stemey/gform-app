@@ -6,63 +6,64 @@
 		{
 			"code": "general",
 			"label": "General",
-			"editor":"columnsgroup",
-			"region":"top",
+			"editor": "columnsgroup",
+			"region": "top",
 			"attributes": [
 				{
 					"code": "name",
 					"type": "string",
 					"required": true,
-					"description":"the name of the collection."
+					"description": "the name of the collection."
 				},
 				{
 					"code": "collection",
 					"type": "string",
 					"required": true,
-					"description":"the actual name of the mongodb collection."
+					"description": "the actual name of the mongodb collection."
 				},
 				{
 					"code": "_id",
 					"type": "string",
 					"disabled": true,
-					"description":"the id of this collection meta data."
+					"description": "the id of this collection meta data."
 				}
 			]
 		},
 		{
 			"code": "schema",
-			"region":"center",
+			"region": "center",
 			"label": "schema",
 			"attributes": [
 				{
-					"code":"description",
-					"type":"string",
-					"editor":"textarea"
+					"code": "description",
+					"type": "string",
+					"editor": "textarea"
 				},
 				{
 					"type": "object",
-					"code":"schema",
+					"code": "schema",
 					"typeProperty": "schemaType",
-					"nullLabel":"no schema",
-					"description":{"#ref":"schemaType.html"},
+					"nullLabel": "no schema",
+					"description": {"#ref": "schemaType.html"},
 					"groups": [
 						{
 							"code": "multi-schema",
-							"label":"multiple schemas",
+							"label": "multiple schemas",
+							"editorDescription": {"#ref": "multiSchemaDescription.html"},
 							"attributes": [
 								{
 									"code": "typeProperty",
 									"type": "string",
 									"required": true,
-									"defaultValue":"_type",
-									"description":"this property's value refers to its schema"
+									"defaultValue": "_type",
+									"description": "this property's value refers to its schema"
 								},
 								{
 									"code": "schemas",
 									"type": "array",
-									"description":{"#ref":"schemas.html"},
+									"description": {"#ref": "schemas.html"},
 									"minItems": 1,
-									"initialValueFactory":"/mdbcollection/multi-schema/create",
+									"initialValueFactory": "/mdbcollection/multi-schema/create",
 									"element": {
 										"type": "ref",
 										"schemaUrl": "/mdbschema",
@@ -73,12 +74,14 @@
 						},
 						{
 							"code": "single-schema",
-							"label":"single schema",
+							"label": "single schema",
+							"editorDescription": {"#ref": "singleSchemaDescription.html"},
 							"attributes": [
 								{
-									"initialValueFactory":"/mdbcollection/single-schema/create",
+									"initialValueFactory": "/mdbcollection/single-schema/create",
 									"code": "schema",
 									"type": "ref",
+									"required": true,
 									"schemaUrl": "/mdbschema",
 									"url": "/mdbschema"
 								}
