@@ -1,4 +1,7 @@
 define([
+		'../mongodb/MdbSchemaStore',
+		'../jcr/TemplateStore',
+		'../meta/TemplateSchemaTransformer',
 		'../util/ToMongoQueryTransform',
 		'cms/preview/handlebars/Renderer',
 		'cms/factory/BrandFactory',
@@ -27,7 +30,7 @@ define([
 		'../factory/TreeFactory',
 		"../factory/StoreViewFactory",
 		"../factory/SingleSchemaCreateFactory"
-	], function (ToMongoQueryTransform, Renderer, BrandFactory, FindPageFactory, ToggleSizeFactory, HandlebarsCreateFactory, SingleSchemaCreateFactory, MultiSchemaCreateFactory, ToolbarFactory, GridFactory, ResourceGridFactory, PreviewerFactory, TabOpenerFactory) {
+	], function (MdbSchemaStore, TemplateStore, TemplateSchemaTransformer, ToMongoQueryTransform, Renderer, BrandFactory, FindPageFactory, ToggleSizeFactory, HandlebarsCreateFactory, SingleSchemaCreateFactory, MultiSchemaCreateFactory, ToolbarFactory, GridFactory, ResourceGridFactory, PreviewerFactory, TabOpenerFactory) {
 
 		return {
 			"storeRegistry": {
@@ -69,7 +72,7 @@ define([
 						"factoryId": "cms/factory/StoreFactory",
 						"name": "/mdbcollection",
 						"storeClass": "cms/util/MongoRest",
-						"assignableId":true,
+						"assignableId": true,
 						"idProperty": "_id",
 						"idType": "string",
 						"target": "http://localhost:3001/meta/",
@@ -80,7 +83,7 @@ define([
 					{
 						"factoryId": "cms/factory/StoreFactory",
 						"name": "/mdbschema",
-						"assignableId":true,
+						"assignableId": true,
 						"storeClass": "cms/util/MongoRest",
 						"idProperty": "_id",
 						"idType": "string",
@@ -99,7 +102,10 @@ define([
 			"schemaRegistry": {
 				"factoryId": "cms/factory/schema/SchemaRegistryFactory",
 				"registryClass": "cms/SchemaRegistry",
-				"stores": ["/template", "/mdbschema"],
+				"stores": [
+					{id: "/template", storeClass: TemplateStore},
+					{id: "/mdbschema", storeClass: MdbSchemaStore}
+				],
 				"schemaGenerators": [
 					{
 						"factoryId": "cms/factory/schema/SchemaGenerator",

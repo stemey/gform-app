@@ -62,8 +62,6 @@ define([
 				} else {
 					return value.toString();
 				}
-			} else if (value.length > 0 && value.substring(value.length - 1) == "*") {
-				return this.convertRegexToQuery(value);
 			} else {
 				return value;
 			}

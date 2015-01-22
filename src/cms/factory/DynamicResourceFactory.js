@@ -1,10 +1,9 @@
 define([
-	'dojo/promise/all',
 	'./dynamic/DynamicResourceManager',
 	'dojo/Deferred',
 	"dojo/_base/declare",
-	'dojo/promise/all'
-], function (all, DynamicResourceManager,Deferred, declare, all) {
+	'../mongodb/SchemaTransformer'
+], function (DynamicResourceManager, Deferred, declare, SchemaTransformer) {
 
 
 	return declare([], {
@@ -15,27 +14,19 @@ define([
 				config.storeClass, config.createEditorFactory], function ( Store, createEditorFactory) {
 				// contains the information about store and its schemas
 				var metaStore = ctx.getStore(config.storeId);
+				var schemaTransformer = new SchemaTransformer({ctx:ctx});
 				var rm = new DynamicResourceManager({
 					ctx: ctx,
 					config: config,
 					createEditorFactory: createEditorFactory,
-					StoreClass: Store
-				})
-
-				metaStore.query({}).then(function (metas) {
-					var deferreds = [];
-					metas.forEach(function (meta) {
-						var deferred = rm.addMeta(meta);
-						deferreds.push(deferred);
-						all(deferreds).then(function () {
-							mainDeferred.resolve("done");
-						});
-					})
-
-				}).otherwise(function (e) {
-					console.error("cannot load meta data ", e);
-					mainDeferred.reject(e);
+					StoreClass: Store,
+					schemaTransformer: schemaTransformer
 				});
+				var promise = rm.load();
+				promise.then(function(){
+					mainDeferred.resolve("done");
+				}).otherwise(mainDeferred.reject);
+
 			});
 			return mainDeferred;
 		}

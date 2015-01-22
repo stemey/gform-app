@@ -38,7 +38,16 @@ define([
             // store: dojo/store/Store
             //		a store instance
             this.id2store[id] = store;
-        }
+        },
+		unregister: function (id) {
+			// summary:
+			//		register a store with the id
+			// id: String
+			//		the id
+			// store: dojo/store/Store
+			//		a store instance
+			delete this.id2store[id];
+		}
     });
 
 

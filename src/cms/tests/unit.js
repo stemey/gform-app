@@ -4,7 +4,8 @@ define([
 		'./TreeStore',
 		'./RequiredAttributes',
 		'./SchemaResolver',
-		'./ToMongoQueryTransform'
+		'./ToMongoQueryTransform',
+		'./DynamicResourceManager'
 	], function () {
 	}
 );

@@ -12,6 +12,10 @@
 	margin-left: 5px;
 }
 
+.dijitToolbar .gformButtonSelect .dijitButtonContents {
+	padding-top:0px;
+}
+
 .gformLink a {
 	color: #000000;
 	text-decoration: none;
