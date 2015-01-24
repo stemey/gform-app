@@ -10,11 +10,10 @@ define([
 		ctx: null,
 		postCreate: function () {
 			this.inherited(arguments);
-			this.createDropDown();
-			topic.subscribe("/view/new", this.newView.bind(this));
-		},
-		newView: function (view) {
-			this.createMenuItem(view);
+			this.populate();
+			topic.subscribe("/view/new", this.refresh.bind(this));
+			topic.subscribe("/view/deleted", this.refresh.bind(this));
+			topic.subscribe("/view/updated", this.refresh.bind(this));
 		},
 		createMenuItem: function (view) {
 			var menuItem = new MenuItem({
@@ -27,7 +26,14 @@ define([
 			});
 			this.addChild(menuItem);
 		},
-		createDropDown: function () {
+		refresh: function() {
+			this.getChildren().forEach(function(child) {
+				this.removeChild(child);
+			}, this);
+			this.populate();
+		},
+		populate: function () {
+			this.remove
 			this.ctx.getViews().forEach(function (view) {
 				this.createMenuItem(view);
 			}, this);

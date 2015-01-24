@@ -42,6 +42,9 @@ define([
 		},
 		addSchemaStore: function (id, store) {
 			this.schemaRegistry.registerStore(id, store);
+		},
+		removeSchemaStore: function (id, store) {
+			this.schemaRegistry.unregisterStore(id, store);
 		}
 	});
 });

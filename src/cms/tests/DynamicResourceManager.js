@@ -16,6 +16,7 @@ define([
 				this.kwArgs = kwArgs;
 				this.idProperty = kwArgs.idProperty;
 				this.map = {};
+				this.name = kwArgs.name;
 			},
 			promise: function (data) {
 				return {
@@ -45,8 +46,8 @@ define([
 		})
 
 		bdd.before(function () {
-			var schemaStore = new StoreClass({idProperty: "id"});
-			var metaStore = new StoreClass({idProperty: "id"});
+			var schemaStore = new StoreClass({idProperty: "id", name: "schema"});
+			var metaStore = new StoreClass({idProperty: "id", name: "meta"});
 
 			ctx = {
 				stores: {},
@@ -70,6 +71,12 @@ define([
 				},
 				addSchemaStore: function (id, store) {
 					this.schemaStores[id] = store;
+				},
+				removeSchemaStore: function (id) {
+					delete this.schemaStores[id];
+				},
+				isClean: function () {
+					return Object.keys(this.stores).length == 0 && Object.keys(this.schemas).length == 0 && Object.keys(this.schemaStores).length == 0;
 				}
 			};
 		});
@@ -98,6 +105,7 @@ define([
 
 			rm.removeMeta("2");
 			assert.equal(ctx.stores["test"], null);
+			assert.equal(ctx.isClean(),true);
 		});
 
 		bdd.it('add and remove singleSchema', function () {
@@ -121,12 +129,12 @@ define([
 			rm.addMeta({name: "test", collection: "testc", id: "2", schema: {schema: "1111"}});
 			assert.equal(ctx.stores["test"].kwArgs.target, "/base/testc/");
 			assert.equal(ctx.stores["test"].kwArgs.idProperty, "id");
-			assert.equal(ctx.schemas["1111"], schema);
-			assert.equal(ctx.stores["test"].template, "1111");
+			assert.equal(ctx.stores["test"].template, "schema/1111");
 
 
 			rm.removeMeta("2");
 			assert.equal(ctx.stores["test"], null);
+			assert.equal(ctx.isClean(),true);
 		});
 
 		bdd.it('add and remove multiSchema', function () {
@@ -153,7 +161,6 @@ define([
 			assert.equal(ctx.stores["test"].kwArgs.target, "/base/testc/");
 			assert.equal(ctx.stores["test"].kwArgs.idProperty, "id");
 			assert.equal(ctx.stores["test"].typeProperty, "type");
-			assert.equal(ctx.schemas["1111"].id, schema.id);
 			assert.equal(ctx.stores["test"].templateStore, "/schema-test");
 			assert.equal(ctx.schemaStores["/schema-test"].name, "/schema-test");
 			ctx.schemaStores["/schema-test"].query({}).then(function (results) {
@@ -164,6 +171,7 @@ define([
 
 			rm.removeMeta("2");
 			assert.equal(ctx.stores["test"], null);
+			assert.equal(ctx.isClean(),true);
 		});
 
 

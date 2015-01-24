@@ -18,31 +18,38 @@ define([
 		metaStore: null,
 		schemaStore: null,
 		stores: null,
+		destructions:null,
 		schemaTransformer: null,
 		constructor: function (kwArgs) {
 			lang.mixin(this, kwArgs);
 			this.metaStore = this.ctx.getStore(this.config.storeId);
 			this.schemaStore = this.ctx.getStore(this.config.schemaStore);
 			this.stores = {};
+			this.destructions={};
 			var me = this;
 			aspect.after(this.metaStore, "add", function (result, args) {
-				var store = args[0].name;
-				result.then(function () {
+				var store = args[0];
+				var a = args;
+				result.then(function (id) {
+					// TODO stores should return persisted object. assume that return value is the id for now.
+					store[me.metaStore.idProperty]=id;
 					me.addMeta(store);
-					topic.publish("/store/new", {store: store.name});
+					topic.publish("/store/new",{store:store.name});
 				});
 
 			})
 			aspect.after(this.metaStore, "remove", function (result, args) {
 				// we don't know the entity. only the id.
 				result.then(function () {
-					me.removeMeta(args[0]);
+					var store = me.removeMeta(args[0]);
+					topic.publish("/store/deleted",{store:store.name});
 				});
 			})
 			aspect.after(this.metaStore, "put", function (result, args) {
 				// we don't know the entity. only the id.
 				result.then(function () {
-					me.updateMeta(args[0]);
+					var store = me.updateMeta(args[0]);
+					topic.publish("/store/updated",{store:store.name});
 				});
 			})
 
@@ -60,14 +67,22 @@ define([
 			return deferred;
 		},
 		updateMeta: function (meta) {
-			this.removeMeta(this.metaStore.getIdentity(meta));
+			var store = this.removeMeta(this.metaStore.getIdentity(meta));
 			this.addMeta(meta);
+			return store;
 		},
 		removeMeta: function (id) {
 			var store = this.stores[id];
 			if (store) {
+				delete this.stores[id];
 				this.ctx.removeStore(store.name);
+				var destruction=this.destructions[store.name];
+				if (destruction) {
+					destruction();
+					delete this.destructions[store.name];
+				}
 			}
+			return store;
 		},
 		createStore: function (meta) {
 			return new this.StoreClass({
@@ -118,6 +133,10 @@ define([
 
 			this.ctx.addSchemaStore(transformedSchemaStore.name, transformedSchemaStore)
 			this.ctx.addStore(transformedSchemaStore.name, transformedSchemaStore);
+			this.destructions[store.name]=function() {
+				this.ctx.removeSchemaStore(transformedSchemaStore.name)
+				this.ctx.removeStore(transformedSchemaStore.name);
+			}.bind(this);
 		}
 	});
 });

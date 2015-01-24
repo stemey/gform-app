@@ -56,7 +56,16 @@ define([
             //		the schema instance
             this.url2schema[url] = schema;
         },
-        registerStore: function (name, store) {
+		unregister: function (url) {
+			// summary:
+			//		register a store with the id
+			// url: String
+			//		the url
+			// schema: Object
+			//		the schema instance
+			delete this.url2schema[url];
+		},
+		registerStore: function (name, store) {
             // summary:
             //		register a store with the id
             // url: String
@@ -64,7 +73,10 @@ define([
             // schema: Object
             //		the schema instance
             this.name2Store[name] = store;
-        }
+        },
+		unregisterStore: function (name) {
+			delete this.name2Store[name];
+		}
     });
 
 

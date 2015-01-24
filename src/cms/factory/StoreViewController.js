@@ -23,7 +23,7 @@ define([
 			this.config = config;
 			this.ctx = ctx;
 			this.container = container;
-			this.currentStores = [];
+			this.currentStores = {};
 			this.metaStore = ctx.getStore(config.storeId);
 			this.schemaStore = ctx.getStore(config.schemaStoreId);
 
@@ -71,13 +71,13 @@ define([
 			this.addStore(meta);
 		},
 		onDeleted: function (evt) {
-			this.removeStore();
+			this.removeStore(evt.store);
 		},
 		onUpdate: function (stores) {
 			// TODO don't reload everything and do diffing. Implement create, update, remove on specific topic message instead. what about ordering of stores
 			var promises = [];
 			stores.forEach(function (meta) {
-				if (this.currentStores.indexOf(meta.name) < 0) {
+				if (!this.currentStores[meta.name]) {
 					var p = this.addStore(meta);
 					promises.push(p);
 				}
@@ -87,17 +87,12 @@ define([
 				me.promise.resolve();
 			})
 		},
-		removeStore: function () {
-			this.metaStore.query().then(function (metas) {
-				var metaNames = metas.map(function () {
-					return meta.name;
-				});
-				this.currentStores.filter(function (existing) {
-					if (metaNames.indexOf(existing) < 0) {
-						topic.publish("/view/deleted", {id: existing});
-					}
-				})
-			})
+		removeStore: function (store) {
+			var child = this.currentStores[store];
+			if (child) {
+				this.removeChild(child);
+			}
+			topic.publish("/view/deleted", {id: store});
 		},
 		addStore: function (meta) {
 			// TODO respect the order of the stores
@@ -109,8 +104,8 @@ define([
 				var store = this.ctx.getStore(meta.name);
 				when(this.ctx.schemaRegistry.get(store.template)).then(function (schema) {
 					var child = me.createView(meta, schema);
+
 					me.container.addChild(child);
-					me.currentStores.push(meta.name);
 					deferred.resolve();
 				});
 			} else {
@@ -128,8 +123,8 @@ define([
 					var attributes = me.mergeSchemas(schemas, labelMap, store.typeProperty);
 					// TODO create schema id to schema name mapping here. add a function to grid.
 					var child = me.createView(meta, {attributes: attributes});
+					me.currentStores[meta.name]=child
 					me.container.addChild(child);
-					me.currentStores.push(meta.name);
 					deferred.resolve();
 				})
 
