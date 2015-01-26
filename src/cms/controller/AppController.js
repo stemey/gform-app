@@ -26,9 +26,10 @@ define([
 			var appFactory = new AppFactory(main);
             var promise = appFactory.create();
             promise.then(function (container) {
+				loadingScreen.style.display='none';
+				me.domNode.style.display="block";
                 container.placeAt(me.domNode);
 				container.startup();
-				loadingScreen.style.display='none';
 				appFactory.afterAttached();
             })
             window.appController = this;
