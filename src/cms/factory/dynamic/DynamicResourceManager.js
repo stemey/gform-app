@@ -90,7 +90,9 @@ define([
 				name: meta.name,
 				assignableId: meta.assignableId,
 				target: this.config.baseUrl + meta.collection + "/",
-				editorFactory: this.createEditorFactory(this.config.efConfig)
+				editorFactory: this.createEditorFactory(this.config.efConfig),
+				metaStore:this.metaStore.name,
+				metaId:this.metaStore.getIdentity(meta)
 			});
 		},
 		addMeta: function (meta) {

@@ -218,6 +218,11 @@ define([
 								"factoryId": "cms/factory/ToggleSizeFactory",
 								"label": "full size",
 								"includedStoreIds": ["/page"]
+							},
+							{
+								"factoryId": "cms/factory/StoreLinkFactory",
+								"label": "meta",
+								"iconClass":"fa fa-arrow-left"
 							}
 						]
 					},
