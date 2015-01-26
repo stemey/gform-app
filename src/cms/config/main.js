@@ -135,6 +135,7 @@ define([
 			},
 			"resourceFactories": [
 				{
+					"storeId":"/baucis",
 					"factoryId": "cms/factory/ResourceFactory",
 					"apiUrl": "http://localhost:3333/api/gform",
 					"storeClass": "cms/util/BaucisStore",
@@ -240,6 +241,13 @@ define([
 								"gridConfig": {
 									"gridxQueryTransform": new ToMongoQueryTransform()
 								}
+							},
+							{
+								"controllerClass": "cms/factory/StaticStoreViewController",
+								"storeId": "/baucis",
+								"gridConfig": {
+									"gridxQueryTransform": new ToMongoQueryTransform()
+								}
 							}
 						],
 						"children": [
@@ -274,9 +282,9 @@ define([
 										"field": "name",
 										"name": "name"
 									}, {
-										"id": "id",
-										"field": "_id",
-										"name": "id"
+										"id": "collection",
+										"field": "collection",
+										"name": "collection"
 									}
 								]
 							},
