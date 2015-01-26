@@ -35,8 +35,8 @@ define([
 				}, "region": "bottom"
 			});
 			toolbar.addChild(new Button({iconClass:'dijitIcon dijitIconClear',label: "clear", onClick: lang.hitch(this, "clear")}));
-			toolbar.addChild(new Button({label: "format", onClick: lang.hitch(this, "format")}));
-			toolbar.addChild(new Link({label: "help", url:"https://github.com/ajaxorg/ace/wiki/Default-Keyboard-Shortcuts", target:"_blank"}));
+			toolbar.addChild(new Button({iconClass:"fa fa-code",label: "format", onClick: lang.hitch(this, "format")}));
+			toolbar.addChild(new Link({iconClass:"fa fa-question-circle",label: "help", url:"https://github.com/ajaxorg/ace/wiki/Default-Keyboard-Shortcuts", target:"_blank"}));
 			toolbar.addChild(new Button({iconClass:'dijitIcon dijitIconFilter',style: {float: "right"}, label: "run", onClick: lang.hitch(this, "query")}));
 			queryPanel.addChild(toolbar);
 			this.grid.set("region", "center");

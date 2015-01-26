@@ -104,7 +104,6 @@ define([
 			var currentLayout = {};
 			if (this.layoutId) {
 				this.updateCurrentLayout();
-				//this.layouts[this.layoutId] = currentLayout;
 			}
 			this.layoutId = layoutId;
 			this._switchLayout(currentLayout, this.layouts[layoutId]);

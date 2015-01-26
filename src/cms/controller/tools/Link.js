@@ -12,6 +12,8 @@ define([
 		templateString: template,
 		label:"help",
 		url:"",
-		target:"_blank"
+		target:"_blank",
+		iconClass: "dijitNoIcon",
+		_setIconClassAttr: { node: "iconNode", type: "class" }
 	})
 });

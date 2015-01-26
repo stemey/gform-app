@@ -1,10 +1,9 @@
 define([
 	'../controller/tools/StoreSensitiveMixin',
-	'dojo/_base/lang',
 	'dijit/form/Button',
 	'dojo/topic',
 	"dojo/_base/declare"
-], function (StoreSensitiveMixin, lang, Button, topic, declare) {
+], function (StoreSensitiveMixin, Button, topic, declare) {
 
 
 	return declare([], {
@@ -21,6 +20,7 @@ define([
 			});
 			return new CreateButton({
 				label: config.label,
+				iconClass:config.iconClass,
 				excludedStoreIds: config.excludedStoreIds,
 				includedStoreIds: config.includedStoreIds,
 				ctx:ctx,

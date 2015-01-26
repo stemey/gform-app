@@ -35,6 +35,13 @@
 			"label": "schema",
 			"attributes": [
 				{
+					"decorator":"inline",
+					"code": "assignableId",
+					"label":"allow user assigned id ?",
+					"type": "boolean",
+					"description": "Let the user assign an id."
+				},
+				{
 					"code": "description",
 					"type": "string",
 					"editor": "textarea"

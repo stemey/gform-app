@@ -1,29 +1,52 @@
 define([
-	'dojo/aspect',
-	'dijit/layout/TabContainer',
+	'./OnDemandViewCreator',
+	'dijit/layout/StackContainer',
 	'dojo/when',
 	'dojo/Deferred',
 	'dojo/promise/all',
 	'dojo/topic',
 	'./ContainerFactory',
 	"dojo/_base/declare"
-], function (aspect, TabContainer, when, Deferred, all, topic, ContainerFactory, declare) {
+], function (OnDemandViewCreator, TabContainer, when, Deferred, all, topic, ContainerFactory, declare) {
 
 
 	return declare([ContainerFactory], {
 		create: function (ctx, config) {
 			var container = new TabContainer();
+			var onDemandViewCreator = new OnDemandViewCreator({container: container});
 			container.set("style", {width: config.width || "200px", height: "100%"});
-			container.own(aspect.before(container, "addChild", function (child) {
-				var store = ctx.getStore(child.storeId);
-				var name = store.mainStore || store.name;
-				ctx.addView({label: child.title || name, id: name});
-			}));
-			this.addChildren(ctx, container, config.children);
+			config.children.forEach(function (config) {
+				// TODO move to child
+				if (config.storeId) {
+
+					var store = ctx.getStore(config.storeId);
+					var storeId = store.mainStore ? store.mainStore:store.name;
+					ctx.addView({label: config.title || storeId, id: storeId});
+				}
+			})
+
+			config.children.forEach(function (config) {
+				require([config.factoryId], function (Factory) {
+					var store = ctx.getStore(config.storeId);
+					var storeId = store.mainStore ? store.mainStore:store.name;
+					var creator = {
+						isStore: function (store) {
+							return store == storeId;
+						},
+						create: function () {
+							var view = new Factory().create(ctx, config);
+							return view;
+						}
+					}
+					onDemandViewCreator.create(creator);
+				});
+			});
+
+
 			var promise;
 			var me = this;
 			var focus = function (evt) {
-				if (evt.source != this) {
+				if (false && evt.source != this) {
 					when(me.started).then(function () {
 						var storeChild = container.getChildren().filter(function (child) {
 							var store = ctx.getStore(child.storeId);

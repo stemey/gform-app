@@ -30,6 +30,7 @@ define(['dojo/_base/lang',
 		},
 		onEntityFocus: function (evt) {
 			this.ctx.set("storeId", evt.store);
+			this.ctx.set("id", evt.id);
 			var uri = "/entity/" + encodeURIComponent(evt.store) + "/" + encodeURIComponent(evt.id)
 			if (evt.template) {
 				uri+="/"+encodeURIComponent(evt.template);

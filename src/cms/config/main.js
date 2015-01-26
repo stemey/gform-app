@@ -204,6 +204,7 @@ define([
 							{
 								"factoryId": "cms/factory/SingleSchemaCreateFactory",
 								"label": "add",
+								"iconClass":"fa fa-plus",
 								"excludedStoreIds": ["/template"]
 							},
 							{
@@ -290,14 +291,15 @@ define([
 										"name": "id"
 									}
 								]
-							},
+							}
+/*							,
 							{
 								"factoryId": "cms/factory/ResourceGridFactory",
 								"storeIds": ["./Users/", "./BlogPosts/", "./Products/"],// TODO this should not be configured
 								"config": {
 									"gridxQueryTransform": new ToMongoQueryTransform()
 								}
-							}
+							}*/
 						]
 					},
 					{

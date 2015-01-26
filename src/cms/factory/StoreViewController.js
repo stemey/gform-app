@@ -1,4 +1,5 @@
 define([
+	'./OnDemandViewCreator',
 	'dojo/when',
 	'dojo/_base/Deferred',
 	'dojo/promise/all',
@@ -7,7 +8,7 @@ define([
 	'./SingleStoreGridFactory',
 	'dojo/topic',
 	"dojo/_base/declare"
-], function (when, Deferred, all, meta, lang, SingleStoreGridFactory, topic, declare) {
+], function (OnDemandViewCreator, when, Deferred, all, meta, lang, SingleStoreGridFactory, topic, declare) {
 
 
 	return declare([], {
@@ -18,6 +19,7 @@ define([
 			return new SingleStoreGridFactory();
 		},
 		start: function (container, ctx, config, promise) {
+			this.creator = new OnDemandViewCreator({container: container});
 			this.promise = promise;
 			this.factory = this.createGridFactory();
 			this.config = config;
@@ -88,11 +90,24 @@ define([
 			})
 		},
 		removeStore: function (store) {
-			var child = this.currentStores[store];
-			if (child) {
-				this.removeChild(child);
+			var handler = this.currentStores[store];
+			if (handler) {
+				handler.remove();
 			}
 			topic.publish("/view/deleted", {id: store});
+		},
+		createOnDemandView: function(meta, schema) {
+			var me =this;
+			this.ctx.addView({label: meta.name, id:meta.name});
+			var creator =  {
+				isStore: function(store) {
+					return meta.name==store;
+				},
+				create: function() {
+					return me.createView(meta, schema);
+				}
+			}
+			this.currentStores[meta.name] = this.creator.create(creator);
 		},
 		addStore: function (meta) {
 			// TODO respect the order of the stores
@@ -103,10 +118,8 @@ define([
 				deferred = new Deferred();
 				var store = this.ctx.getStore(meta.name);
 				when(this.ctx.schemaRegistry.get(store.template)).then(function (schema) {
-					var child = me.createView(meta, schema);
-
-					me.container.addChild(child);
-					deferred.resolve();
+					me.createOnDemandView(meta,schema);
+					deferred.resolve("done");
 				});
 			} else {
 				// multiple schemas
@@ -122,10 +135,8 @@ define([
 					});
 					var attributes = me.mergeSchemas(schemas, labelMap, store.typeProperty);
 					// TODO create schema id to schema name mapping here. add a function to grid.
-					var child = me.createView(meta, {attributes: attributes});
-					me.currentStores[meta.name]=child
-					me.container.addChild(child);
-					deferred.resolve();
+					me.createOnDemandView(meta, {attributes: attributes});
+					deferred.resolve("done");
 				})
 
 			}

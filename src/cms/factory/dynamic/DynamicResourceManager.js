@@ -18,23 +18,23 @@ define([
 		metaStore: null,
 		schemaStore: null,
 		stores: null,
-		destructions:null,
+		destructions: null,
 		schemaTransformer: null,
 		constructor: function (kwArgs) {
 			lang.mixin(this, kwArgs);
 			this.metaStore = this.ctx.getStore(this.config.storeId);
 			this.schemaStore = this.ctx.getStore(this.config.schemaStore);
 			this.stores = {};
-			this.destructions={};
+			this.destructions = {};
 			var me = this;
 			aspect.after(this.metaStore, "add", function (result, args) {
 				var store = args[0];
 				var a = args;
 				result.then(function (id) {
 					// TODO stores should return persisted object. assume that return value is the id for now.
-					store[me.metaStore.idProperty]=id;
+					store[me.metaStore.idProperty] = id;
 					me.addMeta(store);
-					topic.publish("/store/new",{store:store.name});
+					topic.publish("/store/new", {store: store.name});
 				});
 
 			})
@@ -42,14 +42,14 @@ define([
 				// we don't know the entity. only the id.
 				result.then(function () {
 					var store = me.removeMeta(args[0]);
-					topic.publish("/store/deleted",{store:store.name});
+					topic.publish("/store/deleted", {store: store.name});
 				});
 			})
 			aspect.after(this.metaStore, "put", function (result, args) {
 				// we don't know the entity. only the id.
 				result.then(function () {
 					var store = me.updateMeta(args[0]);
-					topic.publish("/store/updated",{store:store.name});
+					topic.publish("/store/updated", {store: store.name});
 				});
 			})
 
@@ -76,7 +76,7 @@ define([
 			if (store) {
 				delete this.stores[id];
 				this.ctx.removeStore(store.name);
-				var destruction=this.destructions[store.name];
+				var destruction = this.destructions[store.name];
 				if (destruction) {
 					destruction();
 					delete this.destructions[store.name];
@@ -88,6 +88,7 @@ define([
 			return new this.StoreClass({
 				idProperty: this.config.idProperty,
 				name: meta.name,
+				assignableId: meta.assignableId,
 				target: this.config.baseUrl + meta.collection + "/",
 				editorFactory: this.createEditorFactory(this.config.efConfig)
 			});
@@ -133,7 +134,7 @@ define([
 
 			this.ctx.addSchemaStore(transformedSchemaStore.name, transformedSchemaStore)
 			this.ctx.addStore(transformedSchemaStore.name, transformedSchemaStore);
-			this.destructions[store.name]=function() {
+			this.destructions[store.name] = function () {
 				this.ctx.removeSchemaStore(transformedSchemaStore.name)
 				this.ctx.removeStore(transformedSchemaStore.name);
 			}.bind(this);
