@@ -15,6 +15,7 @@ define([
             var opener = new TabOpener();
             opener.tabContainer = tabContainer;
             opener.confirmDialog = registry.byId("confirmDialog");
+			opener.factoryContext=ectx;
             createPlainValue = function (schema) {
                 if (this.store.getDefault) {
                     return this.store.getDefault(schema, ctx);

@@ -40,5 +40,8 @@
 	font-size:14px;
 }
 
+.dijitTooltipDialog:focus {
+	outline:none;
+}
 
 

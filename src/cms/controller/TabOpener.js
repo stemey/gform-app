@@ -1,19 +1,38 @@
-define(['./TabCrudController',
+define(['dojo/aspect',
+	'./TabCrudController',
 	'dojo/i18n!../nls/messages',
 	'dijit/MenuItem',
 	'dijit/registry',
 	'dojo/_base/declare',
 	'dojo/_base/lang',
 	'gform/opener/SingleEditorTabOpener',
-	'dojo/topic'], function (TabCrudController, messages, MenuItem, registry, declare, lang, SingleEditorTabOpener, topic) {
+	'dojo/topic'], function (aspect, TabCrudController, messages, MenuItem, registry, declare, lang, SingleEditorTabOpener, topic) {
 
 
 	return declare([SingleEditorTabOpener], {
 		opening: false,
+		closing: false,
+		factoryContext:null,
 		init: function () {
 			topic.subscribe("/focus", lang.hitch(this, "onPageFocus"));
-			topic.subscribe(this.tabContainer.id + "-selectChild", lang.hitch(this, "tabSelected"));
 			topic.subscribe("/new", lang.hitch(this, "onNew"));
+
+			aspect.before(this.tabContainer, "closeChild", function (child) {
+				this.closing = true;
+				// TODO around is better but somehow does not work
+				setTimeout(function () {
+					//this.closing = false;
+				}.bind(this), 0);
+			}.bind(this));
+			aspect.after(this.tabContainer, "closeChild", function (value, args) {
+				this.closing = false;
+				this.onClose(args[0]);
+			}.bind(this));
+			aspect.after(this.tabContainer, "selectChild", function (promise, args) {
+				if (!this.closing) {
+					this.tabSelected(args[0]);
+				}
+			}.bind(this));
 
 
 			var menu = registry.byId(this.tabContainer.id + "_tablist_Menu");
@@ -31,6 +50,11 @@ define(['./TabCrudController',
 					}
 				})
 			);
+		},
+		onClose: function (page) {
+			if (page.store) {
+				topic.publish("/store/focus", {source: this, store: this.factoryContext.get("storeId")})
+			}
 		},
 		createController: function (props, options) {
 			var controller = new TabCrudController(props);
@@ -103,7 +127,7 @@ define(['./TabCrudController',
 			// TODO getting store from crudController is lame - move to crudController.onShow??
 			var store = page.store;
 			var entity = page.editor.getPlainValue();
-			if (entity) {
+			if (!this.opening && entity) {
 				var id = store.getIdentity(page.editor.getPlainValue());
 				if (id) {
 					topic.publish("/focus", {id: id, store: store.name, source: this})

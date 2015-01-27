@@ -77,7 +77,7 @@ define([
 						"idType": "string",
 						"target": "http://localhost:3001/meta/",
 						"template": "/mdbcollection",
-						"createEditorFactory": "cms/mongodb/createSchemaEditorFactory"
+						"createEditorFactory": "cms/mongodb/createCollectionEditorFactory"
 
 					},
 					{
@@ -139,6 +139,14 @@ define([
 					"factoryId": "cms/factory/ResourceFactory",
 					"apiUrl": "http://localhost:3333/api/gform",
 					"storeClass": "cms/util/BaucisStore",
+					"idProperty":"_id",
+					"createEditorFactory": "cms/baucis/createEditorFactory"
+				},
+				{
+					"storeId":"/jpa",
+					"factoryId": "cms/factory/ResourceFactory",
+					"apiUrl": "http://localhost:8081/meta",
+					"storeClass": "cms/atem/AtemStore",
 					"createEditorFactory": "cms/baucis/createEditorFactory"
 				},
 				{
@@ -222,8 +230,13 @@ define([
 							},
 							{
 								"factoryId": "cms/factory/StoreLinkFactory",
-								"label": "meta",
-								"iconClass":"fa fa-arrow-left"
+								"label": "settings",
+								"iconClass":"fa fa-cogs"
+							},
+							{
+								"factoryId": "cms/factory/tools/HelpFactory",
+								"label": "help",
+								"iconClass":"fa fa-question-circle"
 							}
 						]
 					},
@@ -248,8 +261,15 @@ define([
 								"gridConfig": {
 									"gridxQueryTransform": new ToMongoQueryTransform()
 								}
+							}/*,
+							{
+								"controllerClass": "cms/factory/StaticStoreViewController",
+								"storeId": "/jpa"//,
+								//"gridConfig": {
+								//	"gridxQueryTransform": new ToMongoQueryTransform()
+								//}
 							}
-						],
+*/						],
 						"children": [
 							{
 								"factoryId": "cms/factory/TreeFactory",

@@ -1,7 +1,7 @@
 {
 	"id": "/mdbcollection",
 	"description": "meta data for mongodb collection",
-	"editor": "listgroup",
+	"editor": "verticalgroup",
 	"groups": [
 		{
 			"code": "general",
@@ -32,69 +32,89 @@
 		{
 			"code": "schema",
 			"region": "center",
-			"label": "schema",
-			"attributes": [
+			"editor": "tab",
+			"groups": [
 				{
-					"decorator":"inline",
-					"code": "assignableId",
-					"label":"allow user assigned id ?",
-					"type": "boolean",
-					"description": "Let the user assign an id."
-				},
-				{
-					"code": "description",
-					"type": "string",
-					"editor": "textarea"
-				},
-				{
-					"type": "object",
-					"code": "schema",
-					"typeProperty": "schemaType",
-					"nullLabel": "no schema",
-					"description": {"#ref": "schemaType.html"},
-					"groups": [
+					"label": "schema",
+					"attributes": [
 						{
-							"code": "multi-schema",
-							"label": "multiple schemas",
-							"editorDescription": {"#ref": "multiSchemaDescription.html"},
-							"attributes": [
-								{
-									"code": "typeProperty",
-									"type": "string",
-									"required": true,
-									"defaultValue": "_type",
-									"description": "this property's value refers to its schema"
-								},
-								{
-									"code": "schemas",
-									"type": "array",
-									"description": {"#ref": "schemas.html"},
-									"minItems": 1,
-									"initialValueFactory": "/mdbcollection/multi-schema/create",
-									"element": {
-										"type": "ref",
-										"schemaUrl": "/mdbschema",
-										"url": "/mdbschema"
-									}
-								}
-							]
+							"decorator": "inline",
+							"code": "assignableId",
+							"label": "allow user assigned id ?",
+							"type": "boolean",
+							"description": "Let the user assign an id."
 						},
 						{
-							"code": "single-schema",
-							"label": "single schema",
-							"editorDescription": {"#ref": "singleSchemaDescription.html"},
-							"attributes": [
+							"type": "object",
+							"code": "schema",
+							"typeProperty": "schemaType",
+							"nullLabel": "no schema",
+							"description": {"#ref": "schemaType.html"},
+							"groups": [
 								{
-									"initialValueFactory": "/mdbcollection/single-schema/create",
-									"code": "schema",
-									"type": "ref",
-									"required": true,
-									"schemaUrl": "/mdbschema",
-									"url": "/mdbschema"
+									"code": "multi-schema",
+									"label": "multiple schemas",
+									"editorDescription": {"#ref": "multiSchemaDescription.html"},
+									"attributes": [
+										{
+											"code": "typeProperty",
+											"type": "string",
+											"required": true,
+											"defaultValue": "_type",
+											"description": "this property's value refers to its schema"
+										},
+										{
+											"code": "schemas",
+											"type": "array",
+											"description": {"#ref": "schemas.html"},
+											"minItems": 1,
+											"initialValueFactory": "/mdbcollection/multi-schema/create",
+											"element": {
+												"type": "ref",
+												"schemaUrl": "/mdbschema",
+												"url": "/mdbschema"
+											}
+										}
+									]
+								},
+								{
+									"code": "single-schema",
+									"label": "single schema",
+									"editorDescription": {"#ref": "singleSchemaDescription.html"},
+									"attributes": [
+										{
+											"initialValueFactory": "/mdbcollection/single-schema/create",
+											"code": "schema",
+											"type": "ref",
+											"required": true,
+											"schemaUrl": "/mdbschema",
+											"url": "/mdbschema"
+										}
+									]
 								}
 							]
 						}
 					]
+				},
+				{
+					"label": "description",
+					"editor": "single",
+					"attribute": {
+						"code": "description",
+						"type": "string",
+						"editor": "richtext",
+						"extraPlugins": [
+							{
+								"name": "fontName"
+							},
+							{
+								"name": "foreColor"
+							},
+							{
+								"name": "fontSize"
+							}
+						]
+					}
 				}
 			]
 		}

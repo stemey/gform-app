@@ -70,20 +70,7 @@ define([
 			topic.subscribe("/store/focus", focus);
 
 			container.selectChild(container.getChildren()[0]);
-			topic.subscribe(container.id + "-selectChild", function (view) {
-				var store = ctx.getStore(view.storeId);
-				var storeId;
-				if (store.mainStore) {
-					storeId = store.mainStore;
-				} else {
-					storeId = store.name;
-				}
-				if (storeId) {
-					//ctx.set("storeId",storeId);
-					topic.publish("/store/focus", {source: this, store: storeId});
-					container.layout();
-				}
-			});
+
 			if (config.controllers) {
 				var promises = [];
 				config.controllers.forEach(function (controllerConfig) {

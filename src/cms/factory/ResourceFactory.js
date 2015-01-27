@@ -25,7 +25,7 @@ define([
 						var store = new Store({
 							name: resource.resourceUrl,
 							template: resource.schemaUrl,
-							idProperty: '_id',
+							idProperty: resource.idProperty || config.idProperty,
 							target: new url(config.apiUrl, resource.resourceUrl).uri,
 							editorFactory: createEditorFactory()
 						});

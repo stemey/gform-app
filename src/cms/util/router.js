@@ -5,6 +5,7 @@ define(['dojo/_base/lang',
 ], function (lang, declare, router, topic) {
 
 
+	var storeRoute = "/store/:store";
 	var entityRoute = "/entity/:store/:id";
 	var entityTemplateRoute = "/entity/:store/:id/:template";
 
@@ -17,6 +18,7 @@ define(['dojo/_base/lang',
 			this.ctx = props.ctx;
 			topic.subscribe("/store/focus",lang.hitch(this, "onStoreFocus"));
 			topic.subscribe("/focus", lang.hitch(this, "onEntityFocus"));
+			router.register(storeRoute, lang.hitch(this, "onGoToStore"));
 			router.register(entityRoute, lang.hitch(this, "onGoToEntity"));
 			router.register(entityTemplateRoute, lang.hitch(this, "onGoToEntity"));
 			//router.startup();
@@ -26,7 +28,9 @@ define(['dojo/_base/lang',
 		},
 		onStoreFocus: function (evt) {
 			this.ctx.set("storeId", evt.store);
-			//router.go(storeRoute, evt);
+			this.ctx.set("id",null);
+			var uri = "/store/" + encodeURIComponent(evt.store);
+			router.go(uri);
 		},
 		onEntityFocus: function (evt) {
 			this.ctx.set("storeId", evt.store);
@@ -54,6 +58,18 @@ define(['dojo/_base/lang',
 				}
 				topic.publish("/focus", event);
 				document.title=store+"/"+id;
+			}
+			return true;
+		},
+		onGoToStore: function (hash) {
+			var store = decodeURIComponent(hash.params.store);
+			// prevent endless recursion.
+			if (store != this.ctx.storeId || this.ctx.id!=null) {
+				this.ctx.set("storeId", store);
+				this.ctx.set("id", null);
+				var event = {source: this, store: store};
+				topic.publish("/store/focus", event);
+				document.title=store;
 			}
 			return true;
 		}
