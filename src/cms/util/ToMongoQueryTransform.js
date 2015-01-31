@@ -101,17 +101,17 @@ define([
 		},
 		transformContain: function (operands, not) {
 			var mcondition = {};
-			mcondition[operands[0].data] = {$regex: operands[1].data};
+			mcondition[operands[0].data] = {$regex: this.value(operands)};
 			return mcondition;
 		},
 		transformStartWith: function (operands, not) {
 			var mcondition = {};
-			mcondition[operands[0].data] = {$regex: "^" + operands[1].data};
+			mcondition[operands[0].data] = {$regex: "^" + this.value(operands)};
 			return mcondition;
 		},
 		transformEndWith: function (operands, not) {
 			var mcondition = {};
-			mcondition[operands[0].data] = {$regex: operands[1].data + "$"};
+			mcondition[operands[0].data] = {$regex: this.value(operands) + "$"};
 			return mcondition;
 		},
 		transformNot: function (operands) {
@@ -119,23 +119,28 @@ define([
 		},
 		transformGreater: function (operands) {
 			var mcondition = {};
-			mcondition[operands[0].data] = this.not({$gt: operands[1].data}, not);
+			mcondition[operands[0].data] = this.not({$gt: this.value(operands)}, not);
 			return mcondition;
 		},
 		transformGreaterEqual: function (operands) {
 			var mcondition = {};
-			mcondition[operands[0].data] = {$gte: operands[1].data};
+			mcondition[operands[0].data] = {$gte: this.value(operands)};
 			return mcondition;
 		},
 		transformLess: function (operands) {
 			var mcondition = {};
-			mcondition[operands[0].data] = {$lt: operands[1].data};
+			mcondition[operands[0].data] = {$lt: this.value(operands)};
 			return mcondition;
 		},
 		transformLessEqual: function (operands) {
 			var mcondition = {};
-			mcondition[operands[0].data] = {$lte: operands[1].data};
+			mcondition[operands[0].data] = {$lte: this.value(operands)};
 			return mcondition;
+		},
+		value: function(operands) {
+			var key = operands[0].data;this.converter
+			return this.convertValue(key,operands[1].data);
 		}
+
 	});
 });

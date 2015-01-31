@@ -7,7 +7,8 @@ define([
 	return declare([Stateful], {
 		storeRegistry: null,
 		storeId: null,
-		views: [],
+		// TODO make default view configurable
+		views: [{id: "documentation", label: "documentation"}],
 		constructor: function (config) {
 			this.storeRegistry = config.storeRegistry;
 		},
@@ -16,6 +17,16 @@ define([
 		},
 		getCurrentStore: function () {
 			return this.storeRegistry.get(this.get("storeId"));
+		},
+		getCurrentView: function () {
+			var subViews = this.views.filter(function (view) {
+				return view.id == this.storeId;
+			}, this);
+			if (subViews.length == 0) {
+				return {};
+			} else {
+				return subViews[0];
+			}
 		},
 		getViews: function () {
 			return this.views;

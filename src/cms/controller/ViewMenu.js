@@ -22,7 +22,7 @@ define([
 					topic.publish("/store/focus", {
 						store: view.id
 					})
-				}
+				}.bind(this)
 			});
 			this.addChild(menuItem);
 		},

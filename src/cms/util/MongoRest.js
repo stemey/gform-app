@@ -63,7 +63,7 @@ define([
 			if (options && options.sort) {
 				var sort = [];
 				options.sort.forEach(function (col) {
-					sort.push(col.attribute + (col.descending ? "-" : ""));
+					sort.push(col.attribute + (col.descending ? "-" : "+"));
 				});
 				params.sort = sort.join("  ");
 

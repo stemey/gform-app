@@ -1,4 +1,4 @@
-define([
+3define([
     './when',
     './MongoRest',
     'intern!bdd',

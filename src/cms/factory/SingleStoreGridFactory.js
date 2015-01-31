@@ -32,11 +32,8 @@ define([
 	}
 
 	return declare([], {
-		constructor: function () {
-			this.tableConverter = this.createTableConverter();
-		},
-		createTableConverter: function () {
-			return new GformSchema2TableConverter();
+		createTableConverter: function (ef) {
+			return new GformSchema2TableConverter({editorFactory:ef});
 		},
 		convertSchemaToTableStructure: function (ctx, config, storeId) {
 			var store = ctx.getStore(storeId);
@@ -47,7 +44,7 @@ define([
 			} else {
 				schema = ctx.schemaRegistry.get(store.template);
 			}
-			var tableStructure = this.tableConverter.convert(schema);
+			var tableStructure = this.createTableConverter(store.editorFactory).convert(schema);
 			return tableStructure;
 		},
 		/**

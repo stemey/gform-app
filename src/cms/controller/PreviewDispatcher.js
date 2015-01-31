@@ -33,14 +33,18 @@ define([
 		_selectChildByStore: function (store) {
 			var previewerId = store.previewerId;
 			if (previewerId) {
-				var selectedChild = null;
-				this.getChildren().some(function (child) {
-					if (child.previewerId == previewerId) {
-						selectedChild = child;
+				if (this.selectedChildWidget.previewerId !== previewerId) {
+					var selectedChild = null;
+					this.getChildren().some(function (child) {
+						if (child.previewerId == previewerId) {
+							selectedChild = child;
+						}
+					});
+					if (selectedChild) {
+						this.selectChild(selectedChild);
+						return true;
 					}
-				});
-				if (selectedChild) {
-					this.selectChild(selectedChild);
+				} else {
 					return true;
 				}
 			}

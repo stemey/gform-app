@@ -1,11 +1,17 @@
 define([
+	'dojo/date/locale',
+	'dojo/_base/lang',
 	'dojo/date/stamp',
 	'dojo/_base/declare',
 	'gform/schema/meta',
 	"dojo/_base/array"
-], function (dateStamp, declare, metaHelper, array) {
+], function (locale, lang, dateStamp, declare, metaHelper, array) {
 
 	return declare([], {
+		editorFactory:null,
+		constructor: function(kwArgs) {
+			lang.mixin(this,kwArgs);
+		},
 		mapping:{
 			'string':'string',
 			'number':'number',
@@ -45,16 +51,23 @@ define([
 			return column;
 		},
 		_convert_date: function(attribute) {
+			var converter = this.editorFactory.getConverter(attribute,null);
 			var column = this._create(attribute);
 			column.dataType="date";
 			column.parser = function(value) {
-				var isoDateString = value;
-				if (typeof value !== "string") {
-					isoDateString = dateStamp.toISOString(new Date(value), {
+				var value=converter.parse(new Date(value));
+				return value;
+			}
+			column.formatter = function(value) {
+				value =value[attribute.code];
+				if(!value) {
+					return null;
+				}else {
+					var date = converter.format(value);
+					return locale.format(date, {
 						selector: "date"
 					});
 				}
-				return isoDateString;
 			}
 			return column;
 

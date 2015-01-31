@@ -26,12 +26,12 @@ define([
 		onStoreChange: function () {
 			var storeId = this.ctx.get("storeId");
 			var store = this.ctx.getStore(storeId);
-			if (store.template) {
-				this.domNode.style.display = "none";
-			} else if (store.templateStore) {
+			if (store.templateStore) {
 				var templateStore = this.ctx.getStore(store.templateStore);
 				this.domNode.style.display = "initial";
 				this.select.set("store", templateStore);
+			} else {
+				this.domNode.style.display = "none";
 			}
 		},
 		postCreate: function () {

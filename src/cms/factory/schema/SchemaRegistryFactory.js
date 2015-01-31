@@ -1,11 +1,9 @@
 define([
 	'dojo/_base/lang',
-	'./SchemaStore',
 	'../loadAll',
-	'../../meta/TemplateSchemaTransformer',
 	'../load',
 	"dojo/_base/declare"
-], function (lang, SchemaStore, loadAll, TemplateSchemaTransformer, load, declare) {
+], function (lang, loadAll, load, declare) {
 
 	/**
 	 * store to store our schemas.

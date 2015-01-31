@@ -2,10 +2,14 @@ define([],
 	function () {
 		var x = {
 			parse: function (value) {
-				return value;//"/template/" + value;
+				if (!value) {
+					return null;
+				} else {
+					return {$date: value.getTime()};
+				}
 			},
 			format: function (value) {
-				return value;//value.substring(10);
+				return new Date(value.$date);
 			}
 		}
 		return x;

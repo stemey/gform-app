@@ -38,6 +38,12 @@ define([
 					{
 						"factoryId": "cms/factory/StoreFactory",
 						"storeClass": "cms/util/JsonRest",
+						"name": "documentation",
+						"previewerId": "documentation",
+						"target": "http://localhost/src/cms4apps/src/cms/documentation"
+					}, {
+						"factoryId": "cms/factory/StoreFactory",
+						"storeClass": "cms/util/JsonRest",
 						"name": "/pagetree",
 						"target": "http://localhost:8080/tree/",
 						"idProperty": "id",
@@ -135,20 +141,20 @@ define([
 			},
 			"resourceFactories": [
 				{
-					"storeId":"/baucis",
+					"storeId": "/baucis",
 					"factoryId": "cms/factory/ResourceFactory",
 					"apiUrl": "http://localhost:3333/api/gform",
 					"storeClass": "cms/util/BaucisStore",
-					"idProperty":"_id",
+					"idProperty": "_id",
 					"createEditorFactory": "cms/baucis/createEditorFactory"
 				},
-				{
-					"storeId":"/jpa",
+/*				{
+					"storeId": "/jpa",
 					"factoryId": "cms/factory/ResourceFactory",
 					"apiUrl": "http://localhost:8081/meta",
 					"storeClass": "cms/atem/AtemStore",
 					"createEditorFactory": "cms/baucis/createEditorFactory"
-				},
+				},*/
 				{
 					"factoryId": "cms/factory/DynamicResourceFactory",
 					"storeClass": "cms/util/MongoRest",
@@ -180,6 +186,11 @@ define([
 						preview: {region: "center"},
 						store: {region: "left", "width": "200px"},
 						entity: {region: "right", "width": "50%"}
+					},
+					"documentation": {
+						preview: {region: "center"},
+						store: {region: "left", hidden: true},
+						entity: {region: "right", hidden: true}
 					}
 				},
 				"views": [
@@ -189,11 +200,11 @@ define([
 						"children": [
 							{
 								"factoryId": "cms/factory/BrandFactory",
-								"label": "gform-cms"
+								"label": "gform-mongodb"
 							},
 							{
 								"factoryId": "cms/factory/SelectViewFactory",
-								"label": "views"
+								"label": "view"
 							},
 							{
 								"factoryId": "cms/factory/FindPageFactory",
@@ -208,12 +219,12 @@ define([
 								"factoryId": "cms/factory/MultiSchemaCreateFactory",
 								"label": "+",
 								"searchProperty": "name",
-								"placeHolder": "find template .."
+								"placeHolder": "add entity.."
 							},
 							{
 								"factoryId": "cms/factory/SingleSchemaCreateFactory",
 								"label": "add",
-								"iconClass":"fa fa-plus",
+								"iconClass": "fa fa-plus",
 								"excludedStoreIds": ["/template"]
 							},
 							{
@@ -231,12 +242,12 @@ define([
 							{
 								"factoryId": "cms/factory/StoreLinkFactory",
 								"label": "settings",
-								"iconClass":"fa fa-cogs"
+								"iconClass": "fa fa-cogs"
 							},
 							{
 								"factoryId": "cms/factory/tools/HelpFactory",
 								"label": "help",
-								"iconClass":"fa fa-question-circle"
+								"iconClass": "fa fa-question-circle"
 							}
 						]
 					},
@@ -262,14 +273,14 @@ define([
 									"gridxQueryTransform": new ToMongoQueryTransform()
 								}
 							}/*,
-							{
-								"controllerClass": "cms/factory/StaticStoreViewController",
-								"storeId": "/jpa"//,
-								//"gridConfig": {
-								//	"gridxQueryTransform": new ToMongoQueryTransform()
-								//}
-							}
-*/						],
+							 {
+							 "controllerClass": "cms/factory/StaticStoreViewController",
+							 "storeId": "/jpa"//,
+							 //"gridConfig": {
+							 //	"gridxQueryTransform": new ToMongoQueryTransform()
+							 //}
+							 }
+							 */],
 						"children": [
 							{
 								"factoryId": "cms/factory/TreeFactory",
@@ -325,14 +336,14 @@ define([
 									}
 								]
 							}
-/*							,
-							{
-								"factoryId": "cms/factory/ResourceGridFactory",
-								"storeIds": ["./Users/", "./BlogPosts/", "./Products/"],// TODO this should not be configured
-								"config": {
-									"gridxQueryTransform": new ToMongoQueryTransform()
-								}
-							}*/
+							/*							,
+							 {
+							 "factoryId": "cms/factory/ResourceGridFactory",
+							 "storeIds": ["./Users/", "./BlogPosts/", "./Products/"],// TODO this should not be configured
+							 "config": {
+							 "gridxQueryTransform": new ToMongoQueryTransform()
+							 }
+							 }*/
 						]
 					},
 					{
@@ -348,12 +359,17 @@ define([
 								"splitter": true,
 								"rendererClass": "cms/preview/handlebars/Renderer",
 								"pageStore": "/page"
-
 							},
 							{
 								"previewerId": "gform",
 								"region": "center",
 								"factoryId": "cms/factory/SchemaPreviewerFactory",
+								"splitter": true
+							},
+							{
+								"previewerId": "documentation",
+								"region": "center",
+								"factoryId": "cms/factory/DocumentationPreviewerFactory",
 								"splitter": true
 							}
 						]

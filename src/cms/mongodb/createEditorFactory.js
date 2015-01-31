@@ -1,9 +1,9 @@
 define([
+	'./ejsonDateConverter',
 	'./MultiEntityRefAttributeFactory',
 	'./SchemaRefAttributeFactory',
 	'../controller/actions/Preview',
-    '../util/stringTemplateConverter',
-    '../controller/actions/CreateInstance',
+	'../controller/actions/CreateInstance',
     '../controller/actions/Save',
     'gform/controller/actions/Close',
     'gform/controller/actions/Discard',
@@ -12,12 +12,11 @@ define([
     'gform/special/formbuilder/FormValidator',
     'gform/special/formbuilder/AttributeRefFactory',
     'gform/special/formbuilder/FormAttributeFactory',
-    './refConverter',
-    'gform/primitive/nullablePrimitiveConverter',
+	'gform/primitive/nullablePrimitiveConverter',
     '../meta/TemplateRefAttributeFactory',
     'cms/RequiredAttributes',
 	'gform/createFullEditorFactory'
-], function (MultiEntityRefAttributeFactory, SchemaRefAttributeFactory, Preview, stringTemplateConverter, CreateInstance, Save, Close, Discard, Delete, ActionFactory, FormValidator, AttributeRefFactory, FormAttributeFactory, refConverter, converter, TemplateRefAttributeFactory, RequiredAttributes, createFullEditorFactory) {
+], function (ejsonDateConverter, MultiEntityRefAttributeFactory, SchemaRefAttributeFactory, Preview, CreateInstance, Save, Close, Discard, Delete, ActionFactory, FormValidator, AttributeRefFactory, FormAttributeFactory, converter, TemplateRefAttributeFactory, RequiredAttributes, createFullEditorFactory) {
 
 
     return function (config) {
@@ -33,6 +32,7 @@ define([
 		attributeFactoryFinder.addAttributeFactory(new SchemaRefAttributeFactory({editorFactory: ef}));
 		ef.addConverterForType(converter, "ref");
         ef.addConverterForType(converter, "multi-ref");
+		ef.addConverterForType(ejsonDateConverter, "date");
         //ef.addConverterForid(stringTemplateConverter, "templateConverter");
 
         ef.addAttributeFactory(new FormAttributeFactory({editorFactory: ef}));
