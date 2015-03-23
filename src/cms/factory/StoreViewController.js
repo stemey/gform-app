@@ -19,6 +19,7 @@ define([
 			return new SingleStoreGridFactory();
 		},
 		start: function (container, ctx, config, promise) {
+			this.groupProperty = config.groupProperty;
 			this.creator = new OnDemandViewCreator({container: container});
 			this.promise = promise;
 			this.factory = this.createGridFactory();
@@ -98,7 +99,7 @@ define([
 		},
 		createOnDemandView: function(meta, schema) {
 			var me =this;
-			this.ctx.addView({label: meta.name, id:meta.name});
+			this.ctx.addView({label: meta.name, id:meta.name, group:meta[this.groupProperty]});
 			var creator =  {
 				isStore: function(store) {
 					return meta.name==store;

@@ -1,0 +1,25 @@
+{
+	"id":"/mdbserver",
+	"attributes": [
+		{
+			"code": "name",
+			"type": "string",
+			"disabled":true
+		},
+		{
+			"code": "sizeOnDisk",
+			"type": "number",
+			"disabled":true
+		},
+		{
+			"code": "empty",
+			"type": "boolean",
+			"disabled":true
+		},
+		{
+			"code": "host",
+			"type": "string",
+			"disabled":true
+		}
+	]
+}

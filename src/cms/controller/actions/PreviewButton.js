@@ -12,10 +12,10 @@ define([
 			return messages;
 		},
 		execute: function () {
-			var errorCount = this.ctrl.editor.validate(true);
-			if (errorCount == 0) {
-				topic.publish("/modify/update", this._getEvent({value: this.ctrl.editor.getPlainValue()}));
-			}
+			//var errorCount = this.ctrl.editor.validate(true);
+			//if (errorCount == 0) {
+			topic.publish("/modify/update", this._getEvent({value: this.ctrl.editor.getPlainValue()}));
+			//}
 		},
 		_getEvent: function (evt) {
 			if (!evt) {

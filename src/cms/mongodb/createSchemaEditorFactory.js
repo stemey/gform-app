@@ -12,12 +12,13 @@ define([
     'gform/special/formbuilder/FormValidator',
     'gform/special/formbuilder/AttributeRefFactory',
     'gform/special/formbuilder/FormAttributeFactory',
+	'gform/special/formbuilder/RepeatedFormAttributeFactory',
     './refConverter',
     'gform/primitive/nullablePrimitiveConverter',
     '../meta/TemplateRefAttributeFactory',
     'cms/RequiredAttributes',
 	'gform/createFullEditorFactory'
-], function (DiscardAndPreview, PreviewButton, mdbUtils, urlConverter, SchemaAttributeFactory, stringTemplateConverter, Save, Close, Delete, ActionFactory, FormValidator, AttributeRefFactory, FormAttributeFactory, refConverter, converter, TemplateRefAttributeFactory, RequiredAttributes, createFullEditorFactory) {
+], function (DiscardAndPreview, PreviewButton, mdbUtils, urlConverter, SchemaAttributeFactory, stringTemplateConverter, Save, Close, Delete, ActionFactory, FormValidator, AttributeRefFactory, FormAttributeFactory, RepeatedFormAttributeFactory,refConverter, converter, TemplateRefAttributeFactory, RequiredAttributes, createFullEditorFactory) {
 
 
     return function (config) {
@@ -38,6 +39,7 @@ define([
 
 
 		ef.addAttributeFactory(new FormAttributeFactory({editorFactory: ef}));
+		ef.addAttributeFactory(new RepeatedFormAttributeFactory({editorFactory: ef}));
         ef.addAttributeFactory(new AttributeRefFactory({editorFactory: ef}));
         ef.addCtrValidator("form",FormValidator);
 

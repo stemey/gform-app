@@ -20,11 +20,13 @@ define([
 		},
 		onEntityDeleted: function (evt) {
 		},
+		onEntityUpdated: function (evt) {
+		},
 		onEntityRefresh: function (evt) {
 		},
 		display: function (store, entity) {
 			// TODO get transformer from store?
-
+			return;
 			var transformer = new SchemaTransformer(this.ctx);
 			var me = this;
 			transformer.transform(entity).then(function (schema) {

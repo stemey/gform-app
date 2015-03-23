@@ -1,0 +1,87 @@
+{
+	"code": "groups",
+	"type": "array",
+	"typeProperty": "editor",
+	"editor": "form-array",
+	"required": true,
+	"group": {
+		"editor": "tab",
+		"form": true,
+		"groups": [
+			{
+				"label": "general",
+				"attributes": [
+					{
+						"code": "code",
+						"type": "string",
+						"required": true
+					},
+					{
+						"code": "label",
+						"type": "string"
+					},
+					{
+						"code": "editorDescription",
+						"label":"description",
+						"type": "string"
+					}
+				]
+			},
+			{
+				"label": "attributes",
+				"attributes": [
+					{
+						"code": "attributes",
+						"type": "array",
+						"required": true,
+						"uniqueProperties": ["code"],
+						"typeProperty": "editor",
+						"reorderable":false,
+						"layout":true,
+						"groups": {
+							"$ref": "../../gform/schema/attributes.json"
+						}
+					}
+				]
+			},
+			{
+				"label": "layout",
+				"attributes": [
+					{
+						"code": "group",
+						"label": "layout",
+						"type": "object",
+						"required": true,
+						"typeProperty": "editor",
+						"groups": {
+							"$ref": "../../gform/schema/groups.json?transforms=nocode&transforms=nolabel"
+						}
+					}
+				]
+			},
+			{
+				"label": "extra",
+				"attributes": [
+					{
+						"code": "additionalProperties",
+						"label": "additional properties",
+						"type": "object",
+						"required": false,
+						"group": {
+							"attributes": [
+								{
+									"code": "code",
+									"type": "string",
+									"required": true,
+									"editor": "attribute-ref"
+
+								}
+							]
+						}
+					}
+				]
+			}
+		]
+	}
+}
+

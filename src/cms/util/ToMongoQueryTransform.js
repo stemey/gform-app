@@ -119,7 +119,7 @@ define([
 		},
 		transformGreater: function (operands) {
 			var mcondition = {};
-			mcondition[operands[0].data] = this.not({$gt: this.value(operands)}, not);
+			mcondition[operands[0].data] = {$gt: this.value(operands)};
 			return mcondition;
 		},
 		transformGreaterEqual: function (operands) {

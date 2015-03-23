@@ -71,12 +71,21 @@ define([
 
 			if (options) {
 				params.skip = options.start;
+				// TODO use a > than query:
 				params.limit = options.count;
 			}
+			// TODO Baucis
 			var results = xhr.get(this.target, {query: params, handleAs: "json"});
-			var countParams = {count: true};
-			results.total = xhr.get(this.target, {query: countParams, handleAs: "json"});
-			return new QueryResults(results);
+			//var countParams = {count: true};
+			//r.total = xhr.get(this.target, {query: countParams, handleAs: "json"});
+			var r = new Deferred();
+			var total = new Deferred();
+			r.total = total;
+			results.then(function(data){
+				total.resolve(data.total);
+				r.resolve(data.data);
+			});
+			return r;
 		}, add: function (object, options) {
 			if (object[this.idProperty] === "" || object[this.idProperty] === null) {
 				delete object[this.idProperty];

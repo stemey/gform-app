@@ -85,15 +85,17 @@ define([
 			return store;
 		},
 		createStore: function (meta) {
+			var target = lang.replace(this.config.url,meta);
 			return new this.StoreClass({
 				idProperty: this.config.idProperty,
 				name: meta.name,
 				assignableId: meta.assignableId,
-				target: this.config.baseUrl + meta.collection + "/",
+				target: target,//this.config.baseUrl + meta.collection + "/",
 				editorFactory: this.createEditorFactory(this.config.efConfig),
 				metaStore:this.metaStore.name,
 				metaId:this.metaStore.getIdentity(meta),
-				description: meta.description
+				description: meta.description,
+				fallbackSchema:this.config.fallbackSchema
 			});
 		},
 		addMeta: function (meta) {

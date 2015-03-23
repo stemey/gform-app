@@ -1,4 +1,5 @@
 define([
+		'../controller/tools/SynchronizeCollectionButton',
 		'../mongodb/MdbSchemaStore',
 		'../jcr/TemplateStore',
 		'../meta/TemplateSchemaTransformer',
@@ -30,7 +31,7 @@ define([
 		'../factory/TreeFactory',
 		"../factory/StoreViewFactory",
 		"../factory/SingleSchemaCreateFactory"
-	], function (MdbSchemaStore, TemplateStore, TemplateSchemaTransformer, ToMongoQueryTransform, Renderer, BrandFactory, FindPageFactory, ToggleSizeFactory, HandlebarsCreateFactory, SingleSchemaCreateFactory, MultiSchemaCreateFactory, ToolbarFactory, GridFactory, ResourceGridFactory, PreviewerFactory, TabOpenerFactory) {
+	], function (SynchronizeCollectionButton, MdbSchemaStore, TemplateStore, TemplateSchemaTransformer, ToMongoQueryTransform, Renderer, BrandFactory, FindPageFactory, ToggleSizeFactory, HandlebarsCreateFactory, SingleSchemaCreateFactory, MultiSchemaCreateFactory, ToolbarFactory, GridFactory, ResourceGridFactory, PreviewerFactory, TabOpenerFactory) {
 
 		return {
 			"storeRegistry": {
@@ -76,6 +77,18 @@ define([
 					},
 					{
 						"factoryId": "cms/factory/StoreFactory",
+						"name": "/mdbserver",
+						"storeClass": "cms/util/MongoRest",
+						"assignableId": true,
+						"idProperty": "name",
+						"idType": "string",
+						"target": "http://localhost:3001/db/",
+						"template": "/mdbserver",
+						"createEditorFactory": "cms/mongodb/createMdbServerEditorFactory"
+
+					},
+					{
+						"factoryId": "cms/factory/StoreFactory",
 						"name": "/mdbcollection",
 						"storeClass": "cms/util/MongoRest",
 						"assignableId": true,
@@ -93,7 +106,7 @@ define([
 						"storeClass": "cms/util/MongoRest",
 						"idProperty": "_id",
 						"idType": "string",
-						"target": "http://localhost:3001/collections/mdbschema/",
+						"target": "http://localhost:3001/schema/",
 						"template": "/mdbschema",
 						"createEditorFactory": "cms/mongodb/createSchemaEditorFactory",
 						"previewerId": "gform",
@@ -127,6 +140,10 @@ define([
 					},
 					{
 						"factoryId": "cms/factory/schema/StaticSchemaGenerator",
+						"module": "cms/schema/mdbserver.json" // instances of the generated schema will be place into this store. id Proeprty and idType are taken from this store and added to the schema.
+					},
+					{
+						"factoryId": "cms/factory/schema/StaticSchemaGenerator",
 						"module": "cms/schema/mdbFallbackSchema.json" // instances of the generated schema will be place into this store. id Proeprty and idType are taken from this store and added to the schema.
 					},
 					{
@@ -140,14 +157,14 @@ define([
 				]
 			},
 			"resourceFactories": [
-				{
+				/*{
 					"storeId": "/baucis",
 					"factoryId": "cms/factory/ResourceFactory",
 					"apiUrl": "http://localhost:3333/api/gform",
 					"storeClass": "cms/util/BaucisStore",
 					"idProperty": "_id",
 					"createEditorFactory": "cms/baucis/createEditorFactory"
-				},
+				},*/
 /*				{
 					"storeId": "/jpa",
 					"factoryId": "cms/factory/ResourceFactory",
@@ -158,7 +175,7 @@ define([
 				{
 					"factoryId": "cms/factory/DynamicResourceFactory",
 					"storeClass": "cms/util/MongoRest",
-					"baseUrl": "http://localhost:3001/collections/",
+					"url": "http://localhost:3001/data/{db}/{collection}/",
 					"storeId": "/mdbcollection",
 					"schemaStore": "/mdbschema",
 					"idProperty": "_id",
@@ -248,6 +265,13 @@ define([
 								"factoryId": "cms/factory/tools/HelpFactory",
 								"label": "help",
 								"iconClass": "fa fa-question-circle"
+							},
+							{
+								"factoryId": "cms/factory/WidgetFactory",
+								"widgetClass":SynchronizeCollectionButton,
+								"label": "synchronize",
+								"url":"http://localhost:3001/task/synchronize",
+								"iconClass": "fa fa-refresh"
 							}
 						]
 					},
@@ -262,17 +286,18 @@ define([
 								"controllerClass": "cms/factory/StoreViewController",
 								"storeId": "/mdbcollection",
 								"schemaStoreId": "/mdbschema",
+								"groupProperty":"db",
 								"gridConfig": {
 									"gridxQueryTransform": new ToMongoQueryTransform()
 								}
 							},
-							{
+							/*{
 								"controllerClass": "cms/factory/StaticStoreViewController",
 								"storeId": "/baucis",
 								"gridConfig": {
 									"gridxQueryTransform": new ToMongoQueryTransform()
 								}
-							}/*,
+							},*//*
 							 {
 							 "controllerClass": "cms/factory/StaticStoreViewController",
 							 "storeId": "/jpa"//,
@@ -309,15 +334,26 @@ define([
 								"gridxQueryTransform": new ToMongoQueryTransform(),
 								"columns": [
 									{
-										"id": "name",
-										"field": "name",
-										"name": "name"
+										"id": "db",
+										"field": "db",
+										"name": "db"
 									}, {
 										"id": "collection",
 										"field": "collection",
 										"name": "collection"
+									}, {
+										"id": "name",
+										"field": "name",
+										"name": "name"
 									}
 								]
+							},
+							{
+								"factoryId": "cms/factory/GridFactory",
+								"title": "db server",
+								"storeId": "/mdbserver",
+								"gridxQueryTransform": new ToMongoQueryTransform()
+
 							},
 							{
 								"factoryId": "cms/factory/GridFactory",

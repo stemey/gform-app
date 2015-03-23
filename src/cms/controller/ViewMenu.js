@@ -1,21 +1,25 @@
 define([
+	'dijit/PopupMenuItem',
 	'dojo/topic',
 	'dijit/MenuItem',
 	'dijit/Menu',
+	'dijit/DropDownMenu',
 	"dojo/_base/declare"
-], function (topic, MenuItem, Menu, declare) {
+], function (PopupMenuItem, topic, MenuItem, Menu, DropDownMenu, declare) {
 
 
 	return declare([Menu], {
 		ctx: null,
+		groupItems:null,
 		postCreate: function () {
+			this.groupItems={};
 			this.inherited(arguments);
 			this.populate();
 			topic.subscribe("/view/new", this.refresh.bind(this));
 			topic.subscribe("/view/deleted", this.refresh.bind(this));
 			topic.subscribe("/view/updated", this.refresh.bind(this));
 		},
-		createMenuItem: function (view) {
+		createMenuItem: function (view, parentItem) {
 			var menuItem = new MenuItem({
 				label: view.label,
 				onClick: function () {
@@ -24,18 +28,38 @@ define([
 					})
 				}.bind(this)
 			});
-			this.addChild(menuItem);
+			if (parentItem) {
+				parentItem.popup.addChild(menuItem);
+			} else {
+				this.addChild(menuItem);
+			}
 		},
 		refresh: function() {
+			this.groupItems={};
 			this.getChildren().forEach(function(child) {
 				this.removeChild(child);
 			}, this);
 			this.populate();
 		},
+		getOrCreateGroupItem: function(group) {
+			var groupItem = this.groupItems[group];
+			if (!groupItem) {
+				var subMenu = new DropDownMenu({});
+				groupItem = new PopupMenuItem({label: group, popup: subMenu});
+				this.addChild(groupItem);
+				this.groupItems[group] = groupItem;
+			}
+
+			return groupItem;
+
+		},
 		populate: function () {
-			this.remove
 			this.ctx.getViews().forEach(function (view) {
-				this.createMenuItem(view);
+				var parentItem =null;
+				if (view.group) {
+					parentItem = this.getOrCreateGroupItem(view.group);
+				}
+				this.createMenuItem(view, parentItem);
 			}, this);
 		}
 

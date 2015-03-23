@@ -1,4 +1,5 @@
 define([
+	'./GformSchema2TableConverter',
 	'dijit/MenuItem',
 	'dijit/Menu',
 	'gridx/modules/Menu',
@@ -11,7 +12,7 @@ define([
 	'gridx/core/model/cache/Async',
 	'gridx/modules/RowHeader',
 	'gridx/modules/select/Row'
-], function (MenuItem, DijitMenu, Menu, Filter, QuickFilter, aspect, topic, declare, Grid, Cache, RowHeader, RowSelect) {
+], function (GformSchema2TableConverter, MenuItem, DijitMenu, Menu, Filter, QuickFilter, aspect, topic, declare, Grid, Cache, RowHeader, RowSelect) {
 
 
 	return declare([], {
@@ -21,9 +22,9 @@ define([
 			var props = {title: "template"};
 			props.title = config.title;// if displayed in tab or titlepane
 			props.cacheClass = Cache;
-			props.structure = config.columns;
 			var store = ctx.getStore(config.storeId);
 			props.store = store;
+			props.structure = config.columns || this.generateColumns(ctx, store);
 			props.storeId = store.name;
 			props.style = {width: "100%"};
 			props.modules = [
@@ -61,6 +62,11 @@ define([
 			templateGrid.menu.bind(menu, {hookPoint: "row"});
 
 			return templateGrid;
+		},
+		generateColumns: function (ctx, store) {
+			var schema = ctx.schemaRegistry.get(store.template);
+			var generator = new GformSchema2TableConverter();
+			return generator.convert(schema);
 		}
 	});
 

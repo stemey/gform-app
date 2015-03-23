@@ -22,6 +22,12 @@
 					"description": "the actual name of the mongodb collection."
 				},
 				{
+					"code": "db",
+					"type": "string",
+					"required": true,
+					"description": "the name of the mongodb server."
+				},
+				{
 					"code": "_id",
 					"type": "string",
 					"disabled": true,

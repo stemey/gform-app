@@ -1,4 +1,5 @@
 define([
+	'../controller/actions/GenerateSchema',
 	'../controller/actions/GoToData',
 	'../controller/actions/DiscardAndPreview',
 	'./mdbUtils',
@@ -17,7 +18,7 @@ define([
     '../meta/TemplateRefAttributeFactory',
     'cms/RequiredAttributes',
 	'gform/createFullEditorFactory'
-], function (GoToData, DiscardAndPreview, mdbUtils, urlConverter, SchemaAttributeFactory, stringTemplateConverter, Save, Close, Delete, ActionFactory, FormValidator, AttributeRefFactory, FormAttributeFactory, refConverter, converter, TemplateRefAttributeFactory, RequiredAttributes, createFullEditorFactory) {
+], function (GenerateSchema, GoToData, DiscardAndPreview, mdbUtils, urlConverter, SchemaAttributeFactory, stringTemplateConverter, Save, Close, Delete, ActionFactory, FormValidator, AttributeRefFactory, FormAttributeFactory, refConverter, converter, TemplateRefAttributeFactory, RequiredAttributes, createFullEditorFactory) {
 
 
     return function (config) {
@@ -47,9 +48,10 @@ define([
         var af = new ActionFactory();
         af.add({type:Save})
 		af.add({type:DiscardAndPreview})
-        af.add({type:Delete})
-        af.add({type:Close});
+		af.add({type:GenerateSchema});
 		af.add({type:GoToData});
+		af.add({type:Delete})
+		af.add({type:Close});
 
         ef.actionFactory=af;
 

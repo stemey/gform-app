@@ -16,7 +16,8 @@ define([
             t.replace("gform/schema/group/properties/attribute.json","cms/meta/group-attribute.json");
             t.replace("gform/schema/group/properties/attributes.json","cms/meta/group-attributes.json");
             t.replace("gform/schema/attributes/properties/group.json","cms/meta/group.json");
-            var base = JSON.parse(group)
+			t.replace("gform/schema/attributes/properties/groups.json","cms/meta/groups.json");
+			var base = JSON.parse(group)
             return this.load({attributes:[base]}, "gform/schema/", t);
         }
 

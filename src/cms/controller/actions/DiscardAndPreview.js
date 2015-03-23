@@ -17,7 +17,7 @@ define([
 		execute: function () {
 			this.ctrl.editor.syncPendingChanges();
 			this.ctrl.reset();
-			this.inherited(arguments);
+			//this.inherited(arguments);
 		}
 	});
 });
