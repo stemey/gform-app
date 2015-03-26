@@ -21,6 +21,9 @@ define([
             var transformedSchema = new Deferred();
             var me = this;
             when(p).then(function (schema) {
+				if (schema==null) {
+					transformedSchema.reject("schema not found");
+				}
                 if (me.transformer) {
                     var t = me.transformer.transform(schema);
                     when(t).then(function (transformed) {

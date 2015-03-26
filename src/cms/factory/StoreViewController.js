@@ -121,6 +121,8 @@ define([
 				when(this.ctx.schemaRegistry.get(store.template)).then(function (schema) {
 					me.createOnDemandView(meta,schema);
 					deferred.resolve("done");
+				}, function(e) {
+					deferred.resolve("failed");
 				});
 			} else {
 				// multiple schemas

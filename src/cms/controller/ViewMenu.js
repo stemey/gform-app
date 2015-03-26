@@ -45,7 +45,8 @@ define([
 			var groupItem = this.groupItems[group];
 			if (!groupItem) {
 				var subMenu = new DropDownMenu({});
-				groupItem = new PopupMenuItem({label: group, popup: subMenu});
+				groupItem = new PopupMenuItem({label:
+						group, popup: subMenu});
 				this.addChild(groupItem);
 				this.groupItems[group] = groupItem;
 			}
