@@ -24,7 +24,7 @@ define([
 				label: view.label,
 				onClick: function () {
 					topic.publish("/store/focus", {
-						store: view.id
+						store: view.store
 					})
 				}.bind(this)
 			});

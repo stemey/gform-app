@@ -242,7 +242,7 @@ define([
 								"factoryId": "cms/factory/SingleSchemaCreateFactory",
 								"label": "add",
 								"iconClass": "fa fa-plus",
-								"excludedStoreIds": ["/template"]
+								"excludedStoreIds": ["/template","/mdbserver"]
 							},
 							{
 								"factoryId": "cms/factory/HandlebarsCreateFactory",
@@ -265,13 +265,6 @@ define([
 								"factoryId": "cms/factory/tools/HelpFactory",
 								"label": "help",
 								"iconClass": "fa fa-question-circle"
-							},
-							{
-								"factoryId": "cms/factory/WidgetFactory",
-								"widgetClass":SynchronizeCollectionButton,
-								"label": "synchronize",
-								"url":"http://localhost:3001/task/synchronize",
-								"iconClass": "fa fa-refresh"
 							}
 						]
 					},

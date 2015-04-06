@@ -1,4 +1,5 @@
 define([
+	'dijit/popup',
 	'./GenerateDialog',
 	'dijit/form/Button',
 	'gform/createLayoutEditorFactory',
@@ -10,7 +11,7 @@ define([
 	"dojo/_base/declare",
 	"gform/controller/actions/_ActionMixin"
 
-], function (GenerateDialog, Button, createLayoutEditorFactory, Editor, DropDownButton, TooltipDialog, xhr, messages, declare, _ActionMixin) {
+], function (popup, GenerateDialog, Button, createLayoutEditorFactory, Editor, DropDownButton, TooltipDialog, xhr, messages, declare, _ActionMixin) {
 
 	return declare([_ActionMixin], {
 		buttonType: DropDownButton,
@@ -32,14 +33,18 @@ define([
 						type: "string",
 						label: "type property",
 						code: "typeProperty"
-					}, {
-						type: "boolean",
-						label: "update existing?",
-						code: "overwrite",
-						defaultValue:true
 					}]
 			};
-			var form = new GenerateDialog({ctrl: this.ctrl, schema: gform, editorFactory: createLayoutEditorFactory()});
+
+			function close() {
+				popup.close(dialog);
+			};
+			var form = new GenerateDialog({
+				closeFn: close,
+				ctrl: this.ctrl,
+				schema: gform,
+				editorFactory: createLayoutEditorFactory()
+			});
 
 
 			dialog.addChild(form);

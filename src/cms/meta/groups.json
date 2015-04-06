@@ -65,12 +65,15 @@
 					{
 						"code": "additionalProperties",
 						"label": "additional properties",
+						"description":"Allows the user to dynamically add properties.\n\n additional properties are added via another attribute that contains json. \nThis json is merged into the entity.",
 						"type": "object",
 						"required": false,
 						"group": {
 							"attributes": [
 								{
 									"code": "code",
+									"label":"attribute",
+									"description":"select the attribute to contain the extra json.",
 									"type": "string",
 									"required": true,
 									"editor": "attribute-ref"

@@ -1,25 +1,49 @@
 {
-	"id":"/mdbserver",
-	"attributes": [
+	"id": "/mdbserver",
+	"editor": "listgroup",
+	"groups": [
 		{
-			"code": "name",
-			"type": "string",
-			"disabled":true
+			"editor": "columnsgroup",
+			"attributes": [
+				{
+					"code": "name",
+					"type": "string",
+					"disabled": true
+				},
+				{
+					"code": "sizeOnDisk",
+					"type": "number",
+					"disabled": true
+				},
+				{
+					"code": "empty",
+					"type": "boolean",
+					"disabled": true
+				},
+				{
+					"code": "host",
+					"type": "string",
+					"disabled": true
+				}
+			]
 		},
 		{
-			"code": "sizeOnDisk",
-			"type": "number",
-			"disabled":true
-		},
-		{
-			"code": "empty",
-			"type": "boolean",
-			"disabled":true
-		},
-		{
-			"code": "host",
-			"type": "string",
-			"disabled":true
+			"attributes": [
+				{
+					"code": "collections",
+					"type": "array",
+					"disabled": true,
+					"element": {
+						"disabled": true,
+						"converter": "identity",
+						"type": "ref",
+						"url": "/mdbcollection",
+						"schemaUrl": "/mdbcollection",
+						"idProperty": "_id",
+						"searchProperty": "name"
+					}
+				}
+			]
 		}
 	]
 }

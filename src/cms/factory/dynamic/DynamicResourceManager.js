@@ -4,7 +4,7 @@ define([
 	'../schema/SchemaStore',
 	'dojo/Deferred',
 	"dojo/_base/declare",
-	'dojo/topic',
+	'../../util/topic',
 	'dojo/aspect'
 ], function (SubStore, lang, SchemaStore, Deferred, declare, topic, aspect) {
 
@@ -52,7 +52,26 @@ define([
 					topic.publish("/store/updated", {store: store.name});
 				});
 			})
+			topic.subscribeStore("/updated", function (e) {
+				me.metaStore.get(e.id).then(function (result) {
+					var store = me.updateMeta(result);
+					topic.publish("/store/updated", {store: store.name});
+				})
+			}, ["/mdbcollection"]);
 
+
+		},
+		reload: function () {
+			var deferred = new Deferred();
+			var me = this;
+			this.stores = {};
+			this.metaStore.query({}).then(function (metas) {
+				metas.forEach(function (meta) {
+					me.updateMeta(meta);
+				})
+				deferred.resolve("done");
+			}).otherwise(deferred.reject);
+			return deferred;
 		},
 		load: function () {
 			var deferred = new Deferred();
@@ -67,9 +86,8 @@ define([
 			return deferred;
 		},
 		updateMeta: function (meta) {
-			var store = this.removeMeta(this.metaStore.getIdentity(meta));
-			this.addMeta(meta);
-			return store;
+			this.removeMeta(this.metaStore.getIdentity(meta));
+			return this.addMeta(meta);
 		},
 		removeMeta: function (id) {
 			var store = this.stores[id];
@@ -85,17 +103,17 @@ define([
 			return store;
 		},
 		createStore: function (meta) {
-			var target = lang.replace(this.config.url,meta);
+			var target = lang.replace(this.config.url, meta);
 			return new this.StoreClass({
 				idProperty: this.config.idProperty,
 				name: meta.name,
 				assignableId: meta.assignableId,
 				target: target,//this.config.baseUrl + meta.collection + "/",
 				editorFactory: this.createEditorFactory(this.config.efConfig),
-				metaStore:this.metaStore.name,
-				metaId:this.metaStore.getIdentity(meta),
+				metaStore: this.metaStore.name,
+				metaId: this.metaStore.getIdentity(meta),
 				description: meta.description,
-				fallbackSchema:this.config.fallbackSchema
+				fallbackSchema: this.config.fallbackSchema
 			});
 		},
 		addMeta: function (meta) {
@@ -111,6 +129,7 @@ define([
 				this.addMultiStore(meta, store);
 			}
 			this.ctx.addStore(meta.name, store);
+			return store;
 		},
 		addSingleStore: function (meta, store) {
 			// TODO changing the schema entity will not affect the registered schema.

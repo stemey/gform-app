@@ -120,7 +120,7 @@ define(['dojo/aspect',
 					value: evt.value
 				});
 			} else {
-				this.createSingle({url: evt.store, editorFactory: ef, schemaUrl: evt.schemaUrl, value: evt.value});
+				this.createSingle({url: evt.store, editorFactory: ef, schemaUrl: evt.schemaUrl || store.template, value: evt.value});
 			}
 		},
 		tabSelected: function (page) {

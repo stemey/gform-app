@@ -18,6 +18,7 @@ define([
 		editorFactory: null,
 		ctrl: null,
 		url: "http://localhost:3001/task/generate/",
+		closeFn:null,
 		postCreate: function () {
 			this.inherited(arguments);
 			this.editor.set("editorFactory", this.editorFactory);
@@ -25,14 +26,28 @@ define([
 			this.editor.modelHandle.initDefault(false);
 			this.button.onClick = this.onClick.bind(this);
 		},
-		onSuccess: function () {
-			this.close();
+		onSuccess: function (result) {
+			this.closeFn();
 			var id = this.ctrl.getId();
 			this.ctrl.reload();
-			topic.publish("/updated", {store: this.ctrl.store, id: id});
+			topic.publish("/updated", {store: this.ctrl.store.name, id: id});
+/*			var newMeta = result.entity;
+			if (result.meta.schema) {
+				var schemas =[];
+				if (result.schema.schema) {
+					schemas.push(result.schema.schema);
+				}else{
+					schemas=result.schema.schemas;
+				}
+				schemas.forEach(function(schema) {
+					this.ctrl.ctx.schemaRegistry.
+					topic.publish("/updated", {store: "/mdbschema", id: result.schema.schema});
+				})
+			}*/
+
 		},
 		onError: function (e) {
-			this.close();
+			this.closeFn();
 			console.log("cannot generate schema " + e);
 			alert("error during schema generation");
 		},

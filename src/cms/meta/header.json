@@ -17,6 +17,11 @@
             "code": "disabled",
             "type": "boolean"
         },
+		{
+			"code": "visible",
+			"type": "boolean",
+			"defaultValue":true
+		},
         {
             "code": "mock",
             "type": "boolean",

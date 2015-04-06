@@ -23,9 +23,14 @@
 				},
 				{
 					"code": "db",
-					"type": "string",
+					"type": "ref",
 					"required": true,
-					"description": "the name of the mongodb server."
+					"modifiable": false,
+					"description": "the name of the mongodb server.",
+					"idProperty": "name",
+					"searchProperty": "name",
+					"url": "/mdbserver",
+					"schemaUrl": "/mdbserver"
 				},
 				{
 					"code": "_id",

@@ -1,8 +1,10 @@
 define([
+	'../controller/actions/CreateCollection',
+	'../util/identityConverter',
 	'gform/controller/actions/ActionFactory',
 	'../controller/actions/SynchronizeCollections',
 	'gform/createFullEditorFactory'
-], function (ActionFactory, SynchronizeCollections, createFullEditorFactory) {
+], function (CreateCollection, identityConverter, ActionFactory, SynchronizeCollections, createFullEditorFactory) {
 
 
 	return function (config) {
@@ -11,8 +13,11 @@ define([
 
 		var af = new ActionFactory();
 		af.add({type: SynchronizeCollections});
+		af.add({type: CreateCollection});
 
 		ef.actionFactory = af;
+
+		ef.addConverterForid(identityConverter,"identity")
 
 
 		return ef;

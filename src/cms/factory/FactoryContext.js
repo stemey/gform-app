@@ -48,7 +48,7 @@ define([
 			var idx = this.views.indexOf(view);
 			if (idx >= 0) {
 				this.views.remove(idx);
-				topic.publish("/view/remove", view);
+				topic.publish("/view/deleted", view);
 			}
 		},
 		addSchemaStore: function (id, store) {

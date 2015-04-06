@@ -32,6 +32,7 @@ define([
 
 			var me = this;
 			topic.subscribe("/store/new", this.onNew.bind(this));
+			topic.subscribe("/store/updated", this.refresh.bind(this));
 			topic.subscribe("/store/deleted", this.onDeleted.bind(this));
 			this.refresh();
 		},
@@ -95,16 +96,18 @@ define([
 			if (handler) {
 				handler.remove();
 			}
-			topic.publish("/view/deleted", {id: store});
+			this.ctx.removeView(store);
 		},
-		createOnDemandView: function(meta, schema) {
-			var me =this;
-			this.ctx.addView({label: meta.name, id:meta.name, group:meta[this.groupProperty]});
-			var creator =  {
-				isStore: function(store) {
-					return meta.name==store;
+		createOnDemandView: function (meta, schema) {
+			var me = this;
+			var id = meta.name;
+			var group = meta[this.groupProperty];
+			this.ctx.addView({label: meta.name, id: id, group: group, store: id});
+			var creator = {
+				isStore: function (store) {
+					return meta.name == store;
 				},
-				create: function() {
+				create: function () {
 					return me.createView(meta, schema);
 				}
 			}
@@ -119,9 +122,9 @@ define([
 				deferred = new Deferred();
 				var store = this.ctx.getStore(meta.name);
 				when(this.ctx.schemaRegistry.get(store.template)).then(function (schema) {
-					me.createOnDemandView(meta,schema);
+					me.createOnDemandView(meta, schema);
 					deferred.resolve("done");
-				}, function(e) {
+				}, function (e) {
 					deferred.resolve("failed");
 				});
 			} else {
