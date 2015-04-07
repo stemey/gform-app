@@ -3,17 +3,19 @@ define([
 	'./FindByUrlMixin',
 	'dojo/request/handlers',
 	'dojo/request/xhr',
-	'dojo/store/util/QueryResults',
 	'dojo/Deferred',
 	"dojo/_base/lang",
 	"dojo/_base/declare",
 	"dojo/store/JsonRest"//
-], function (DijitToMongoQueryTransform, FindByUrlMixin, handlers, xhr, QueryResults, Deferred, lang, declare, JsonRest) {
+], function (DijitToMongoQueryTransform, FindByUrlMixin, handlers, xhr, Deferred, lang, declare, JsonRest) {
 
 	return declare([JsonRest, FindByUrlMixin], {
 		transform: null,
 		constructor: function () {
 			this.transform = new DijitToMongoQueryTransform();
+		},
+		get: function(id, options) {
+			return this.inherited(arguments,[encodeURIComponent(id),options]);
 		},
 		getChildren: function (parent, onComplete, onError) {
 			var parentUrl = parent ? parent.url : "";
