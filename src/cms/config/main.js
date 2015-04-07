@@ -321,7 +321,7 @@ define([
 								]
 							},
 							{
-								"factoryId": "cms/factory/GridFactory",
+								"factoryId": "cms/factory/SingleStoreGridFactory",
 								"title": "mdb collection",
 								"storeId": "/mdbcollection",
 								"gridxQueryTransform": new ToMongoQueryTransform(),
@@ -342,14 +342,14 @@ define([
 								]
 							},
 							{
-								"factoryId": "cms/factory/GridFactory",
+								"factoryId": "cms/factory/SingleStoreGridFactory",
 								"title": "db server",
 								"storeId": "/mdbserver",
 								"gridxQueryTransform": new ToMongoQueryTransform()
 
 							},
 							{
-								"factoryId": "cms/factory/GridFactory",
+								"factoryId": "cms/factory/SingleStoreGridFactory",
 								"title": "mdb schema",
 								"storeId": "/mdbschema",
 								"gridxQueryTransform": new ToMongoQueryTransform(),

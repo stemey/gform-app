@@ -36,6 +36,9 @@ define([
 			return new GformSchema2TableConverter({editorFactory:ef});
 		},
 		convertSchemaToTableStructure: function (ctx, config, storeId) {
+			if (config.columns) {
+				return config.columns;
+			}
 			var store = ctx.getStore(storeId);
 			var deferred = new Deferred();
 			var schema;

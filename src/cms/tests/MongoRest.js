@@ -1,9 +1,7 @@
 3define([
-    './when',
-    './MongoRest',
-    'intern!bdd',
+	'intern!bdd',
     'intern/chai!assert'
-], function (when, MongoRest, bdd, assert) {
+], function (bdd, assert) {
     bdd.describe('mongo rest', function () {
         var renderer;
 

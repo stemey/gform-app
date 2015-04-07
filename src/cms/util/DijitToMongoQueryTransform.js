@@ -30,12 +30,8 @@ define([
 			// assuming a regex that works like startsWith : "start*". This is the way it is used by dijit.form._AutoCompleterMixin
 			var regexValue = regex.toString();
 			var str = regexValue.substring(0, regexValue.length - 1);
-			if (str.length == 0) {
-				return {$regex: ".*"};
-			} else {
-				str = str;
-				return {$regex: this.selectIsStartsWith ? "^" + str : str};
-			}
+			str = str.replace("*", ".*");
+			return {$regex: this.selectIsStartsWith ? "^" + str : str};
 		}
 	});
 });
