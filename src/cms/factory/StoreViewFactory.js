@@ -21,7 +21,7 @@ define([
 
 					var store = ctx.getStore(config.storeId);
 					var storeId = store.mainStore ? store.mainStore:store.name;
-					ctx.addView({label: config.title || storeId, id: storeId});
+					ctx.addView({label: config.title || storeId, id: storeId, store:storeId});
 				}
 			})
 

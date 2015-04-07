@@ -44,7 +44,7 @@ define([
 		},
 		createOnDemandView: function (meta, schema) {
 			var me = this;
-			this.ctx.addView({label: meta.name, id: meta.name});
+			this.ctx.addView({label: meta.name, id: meta.name, store: meta.name});
 			var creator = {
 				isStore: function (store) {
 					return meta.name == store;
@@ -57,7 +57,7 @@ define([
 		},
 		addStore: function (meta) {
 			// TODO respect the order of the stores
-			var me =this;
+			var me = this;
 			var store = this.ctx.getStore(meta.name);
 			when(this.ctx.schemaRegistry.get(store.template)).then(function (schema) {
 				me.createOnDemandView(meta, schema);
