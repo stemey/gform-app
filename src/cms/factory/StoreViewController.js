@@ -40,7 +40,7 @@ define([
 			this.metaStore.query({}).then(lang.hitch(this, "onUpdate"));
 		},
 		createView: function (meta, schema) {
-			var config = {schema: schema, title: meta.name, storeId: meta.name}
+			var config = {schema: schema, title: meta.name, storeId: this.metaStore.getIdentity(meta)}
 			if (this.config.gridConfig) {
 				lang.mixin(config, this.config.gridConfig);
 			}
@@ -100,27 +100,27 @@ define([
 		},
 		createOnDemandView: function (meta, schema) {
 			var me = this;
-			var id = meta.name;
+			var id = meta._id;
 			var group = meta[this.groupProperty];
 			this.ctx.addView({label: meta.name, id: id, group: group, store: id});
 			var creator = {
 				isStore: function (store) {
-					return meta.name == store;
+					return meta._id == store;
 				},
 				create: function () {
 					return me.createView(meta, schema);
 				}
 			}
-			this.currentStores[meta.name] = this.creator.create(creator);
+			this.currentStores[meta._id] = this.creator.create(creator);
 		},
 		addStore: function (meta) {
 			// TODO respect the order of the stores
 			var deferred;
-			if (meta.schema == null || meta.schema.schema) {
+			if (!meta.schema || meta.schema.schema) {
 				// single or no schema
 				var me = this;
 				deferred = new Deferred();
-				var store = this.ctx.getStore(meta.name);
+				var store = this.ctx.getStore(meta._id);
 				when(this.ctx.schemaRegistry.get(store.template)).then(function (schema) {
 					me.createOnDemandView(meta, schema);
 					deferred.resolve("done");
@@ -130,7 +130,7 @@ define([
 			} else {
 				// multiple schemas
 				var me = this;
-				var store = this.ctx.getStore(meta.name);
+				var store = this.ctx.getStore(meta._id);
 				var templateStoreId = store.templateStore;
 				var templateStore = this.ctx.getStore(templateStoreId);
 				deferred = new Deferred();

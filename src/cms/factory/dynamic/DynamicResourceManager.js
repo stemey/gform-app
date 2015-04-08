@@ -106,7 +106,7 @@ define([
 			var target = lang.replace(this.config.url, meta);
 			return new this.StoreClass({
 				idProperty: this.config.idProperty,
-				name: meta.name,
+				name:  this.metaStore.getIdentity(meta),
 				assignableId: meta.assignableId,
 				target: target,//this.config.baseUrl + meta.collection + "/",
 				editorFactory: this.createEditorFactory(this.config.efConfig),
@@ -128,7 +128,7 @@ define([
 			} else {
 				this.addMultiStore(meta, store);
 			}
-			this.ctx.addStore(meta.name, store);
+			this.ctx.addStore(this.metaStore.getIdentity(meta), store);
 			return store;
 		},
 		addSingleStore: function (meta, store) {
