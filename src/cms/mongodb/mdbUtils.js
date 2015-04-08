@@ -15,6 +15,7 @@ define([], function () {
 			}
 			var schema = {
 				"group": {
+					"editor":"listpane",
 					"attributes": [
 						{
 							"code": "_id",
@@ -39,6 +40,7 @@ define([], function () {
 		createSingleSchema: function (model, ctx) {
 			var schema = {
 				"group": {
+					"editor":"listpane",
 					"attributes": [
 						{
 							"code": "_id",
