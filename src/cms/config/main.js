@@ -158,20 +158,20 @@ define([
 			},
 			"resourceFactories": [
 				/*{
-					"storeId": "/baucis",
-					"factoryId": "cms/factory/ResourceFactory",
-					"apiUrl": "http://localhost:3333/api/gform",
-					"storeClass": "cms/util/BaucisStore",
-					"idProperty": "_id",
-					"createEditorFactory": "cms/baucis/createEditorFactory"
-				},*/
-/*				{
-					"storeId": "/jpa",
-					"factoryId": "cms/factory/ResourceFactory",
-					"apiUrl": "http://localhost:8081/meta",
-					"storeClass": "cms/atem/AtemStore",
-					"createEditorFactory": "cms/baucis/createEditorFactory"
-				},*/
+				 "storeId": "/baucis",
+				 "factoryId": "cms/factory/ResourceFactory",
+				 "apiUrl": "http://localhost:3333/api/gform",
+				 "storeClass": "cms/util/BaucisStore",
+				 "idProperty": "_id",
+				 "createEditorFactory": "cms/baucis/createEditorFactory"
+				 },*/
+				/*				{
+				 "storeId": "/jpa",
+				 "factoryId": "cms/factory/ResourceFactory",
+				 "apiUrl": "http://localhost:8081/meta",
+				 "storeClass": "cms/atem/AtemStore",
+				 "createEditorFactory": "cms/baucis/createEditorFactory"
+				 },*/
 				{
 					"factoryId": "cms/factory/DynamicResourceFactory",
 					"storeClass": "cms/util/MongoRest",
@@ -242,7 +242,7 @@ define([
 								"factoryId": "cms/factory/SingleSchemaCreateFactory",
 								"label": "add",
 								"iconClass": "fa fa-plus",
-								"excludedStoreIds": ["/template","/mdbserver"]
+								"excludedStoreIds": ["/template", "/mdbserver"]
 							},
 							{
 								"factoryId": "cms/factory/HandlebarsCreateFactory",
@@ -279,18 +279,18 @@ define([
 								"controllerClass": "cms/factory/StoreViewController",
 								"storeId": "/mdbcollection",
 								"schemaStoreId": "/mdbschema",
-								"groupProperty":"db",
+								"groupProperty": "db",
 								"gridConfig": {
 									"gridxQueryTransform": new ToMongoQueryTransform()
 								}
 							},
 							/*{
-								"controllerClass": "cms/factory/StaticStoreViewController",
-								"storeId": "/baucis",
-								"gridConfig": {
-									"gridxQueryTransform": new ToMongoQueryTransform()
-								}
-							},*//*
+							 "controllerClass": "cms/factory/StaticStoreViewController",
+							 "storeId": "/baucis",
+							 "gridConfig": {
+							 "gridxQueryTransform": new ToMongoQueryTransform()
+							 }
+							 },*//*
 							 {
 							 "controllerClass": "cms/factory/StaticStoreViewController",
 							 "storeId": "/jpa"//,
@@ -338,6 +338,12 @@ define([
 										"id": "name",
 										"field": "name",
 										"name": "name"
+									}, {
+										"id": "type",
+										"formatter": function (entity) {
+											return entity.schema ? entity.schema.schemaType : "";
+										},
+										"name": "type"
 									}
 								]
 							},

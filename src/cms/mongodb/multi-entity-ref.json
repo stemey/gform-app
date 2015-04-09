@@ -38,7 +38,8 @@
 					"type": "ref",
 					"required": true,
 					"url": "/mdbcollection",
-					"searchProperty": "name"
+					"searchProperty": "name",
+					"idProperty":"_id"
 				},
 				{
 					"code": "store_id",

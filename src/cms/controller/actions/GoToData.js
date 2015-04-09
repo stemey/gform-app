@@ -13,7 +13,7 @@ define([
 		},
 		execute: function () {
 			var entity = this.ctrl.editor.getPlainValue();
-			topic.publish("/store/focus", {source: this, store: entity.name});
+			topic.publish("/store/focus", {source: this, store: this.ctrl.store.getIdentity(entity)});
 		}
 	});
 });

@@ -9,7 +9,7 @@ define([
 				//var url = baseUrl + ".." + obj.collectionUrl + "/" + obj.collection;
 				var cb = function (value) {
 					obj.typeProperty = value.schema.typeProperty;
-					obj.url = value.collection;
+					obj.url = value._id;
 					obj.type = "multi-ref";
 					delete obj.editor;
 				}
