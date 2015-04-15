@@ -24,12 +24,9 @@ define([], function () {
 						},
 						{
 							"code": typeProperty,
-							"editor": "ref",
-							"type": "ref",
-							"url": schemaStore.name,
-							"schemaUrl": schemaStore.template,
-							"idProperty": schemaStore.idProperty,
-							"searchProperty": "name"
+							"editor":"string",
+							"type": "string",
+							"visible":false
 						}
 					]
 				}

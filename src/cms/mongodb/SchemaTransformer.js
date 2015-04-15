@@ -26,7 +26,7 @@ define([
 			var me = this;
 			when(p).then(function () {
 				// TODO remove dependency on schema property and group property
-				d.resolve(schema.group);
+				d.resolve(schema);
 
 			}).otherwise(function (e) {
 				d.reject(e)

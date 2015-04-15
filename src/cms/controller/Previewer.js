@@ -40,7 +40,6 @@ define([
 		},
 		rendering: false,
 		display: function (url) {
-			return;
 			// TODO improve error reporting
 			var me = this;
 			var scollToTop = this.url !== url;

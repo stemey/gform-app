@@ -355,7 +355,7 @@ define([
 
 							},
 							{
-								"factoryId": "cms/factory/SingleStoreGridFactory",
+								"factoryId": "cms/factory/GridFactory",
 								"title": "mdb schema",
 								"storeId": "/mdbschema",
 								"gridxQueryTransform": new ToMongoQueryTransform(),
@@ -364,10 +364,6 @@ define([
 										"id": "name",
 										"field": "name",
 										"name": "name"
-									}, {
-										"id": "id",
-										"field": "_id",
-										"name": "id"
 									}
 								]
 							}

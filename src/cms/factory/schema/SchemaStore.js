@@ -27,6 +27,7 @@ define([
                 if (me.transformer) {
                     var t = me.transformer.transform(schema);
                     when(t).then(function (transformed) {
+						//transformed[this.store.idProperty]=schema[]
                         transformedSchema.resolve(transformed);
                     }).otherwise(function (e) {
                             transformedSchema.reject(e);

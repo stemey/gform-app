@@ -12,7 +12,7 @@ define(['dojo/aspect',
 	return declare([SingleEditorTabOpener], {
 		opening: false,
 		closing: false,
-		factoryContext:null,
+		factoryContext: null,
 		init: function () {
 			topic.subscribe("/focus", lang.hitch(this, "onPageFocus"));
 			topic.subscribe("/new", lang.hitch(this, "onNew"));
@@ -87,7 +87,7 @@ define(['dojo/aspect',
 							url: evt.store,
 							editorFactory: ef,
 							id: evt.id,
-							schemaUrls: [],
+							schemaUrls: {store: store.templateStore, searchProperty: "name"},
 							typeProperty: typeProperty
 						});
 					}
@@ -120,7 +120,12 @@ define(['dojo/aspect',
 					value: evt.value
 				});
 			} else {
-				this.createSingle({url: evt.store, editorFactory: ef, schemaUrl: evt.schemaUrl || store.template, value: evt.value});
+				this.createSingle({
+					url: evt.store,
+					editorFactory: ef,
+					schemaUrl: evt.schemaUrl || store.template,
+					value: evt.value
+				});
 			}
 		},
 		tabSelected: function (page) {

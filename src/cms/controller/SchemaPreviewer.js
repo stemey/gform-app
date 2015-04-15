@@ -26,10 +26,9 @@ define([
 		},
 		display: function (store, entity) {
 			// TODO get transformer from store?
-			return;
 			var transformer = new SchemaTransformer(this.ctx);
 			var me = this;
-			transformer.transform(entity).then(function (schema) {
+			transformer.transform(entity.group).then(function (schema) {
 				me.setMetaAndDefault(schema);
 			});
 		},
