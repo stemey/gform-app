@@ -26,8 +26,11 @@ define([
 		attributeFactoryFinder.addAttributeFactory(new MultiEntityRefAttributeFactory({editorFactory: ef}));
 		ef.addCtrValidator("requiredAttributes", RequiredAttributes);
 
-        ef.getAttributeFactory({type:"binary"}).fileServerUrl=config["fileserver-upload"];//http://localhost:4444/upload";
-        ef.getAttributeFactory({type:"binary"}).baseUrl=config["fileserver-download"];//="http://localhost:4444/";
+        binaryAf = ef.getAttributeFactory({type:"binary"});
+		if (binaryAf && config) {
+			binaryAf.fileServerUrl = config["fileserver-upload"];//http://localhost:4444/upload";
+			binaryAf.baseUrl = config["fileserver-download"];//="http://localhost:4444/";
+		}
 
 		attributeFactoryFinder.addAttributeFactory(new SchemaRefAttributeFactory({editorFactory: ef}));
 		ef.addConverterForType(converter, "ref");

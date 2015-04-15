@@ -110,10 +110,10 @@ define([
 						"template": "/mdbschema",
 						"createEditorFactory": "cms/mongodb/createSchemaEditorFactory",
 						"previewerId": "gform",
-						"efConfig": {
+/*						"efConfig": {
 							"fileserver-upload": "http://localhost:4444/upload",
 							"fileserver-download": "http://localhost:4444/"
-						}
+						}*/
 
 					}
 				]
@@ -181,10 +181,10 @@ define([
 					"idProperty": "_id",
 					"fallbackSchema": "/mdbFallbackSchema",
 					"createEditorFactory": "cms/mongodb/createEditorFactory",
-					"efConfig": {
+		/*			"efConfig": {
 						"fileserver-upload": "http://localhost:4444/upload",
 						"fileserver-download": "http://localhost:4444/"
-					}
+					}*/
 				}
 			],
 			"view": {

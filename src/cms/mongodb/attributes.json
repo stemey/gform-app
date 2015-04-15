@@ -9,9 +9,6 @@
         "$ref": "../../gform/schema/attributes/string.json"
     },
     {
-        "$ref": "../../gform/schema/attributes/binary.json"
-    },
-	{
 		"$ref": "schema-ref.json"
 	},
 	{
@@ -70,6 +67,9 @@
 	},
 	{
 		"$ref": "../../gform/schema/attributes/multi-table.json"
+	},
+	{
+		"$ref": "../../gform/schema/attributes/ref.json"
 	},
 	{
 		"$ref": "../../gform/schema/attributes/any.json"
