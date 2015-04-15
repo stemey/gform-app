@@ -3,6 +3,7 @@ define(['dojo/_base/declare',
 
 	return declare([TabCrudController], {
 		schemaUrlPrefix: null,
+		_setTitleAttr: null,
 		postCreate: function () {
 			if (this.store.editorFactory) {
 				this.editorFactory = this.store.editorFactory;
