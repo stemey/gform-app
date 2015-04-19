@@ -1,4 +1,6 @@
 define([
+	'gridx/modules/IndirectSelect',
+	'./ContainerFactory',
 	'../controller/ExtendedGrid',
 	'dijit/MenuItem',
 	'dijit/Menu',
@@ -19,7 +21,7 @@ define([
 	'gridx/modules/RowHeader',
 	'gridx/modules/select/Row'
 
-], function (ExtendedGrid, MenuItem, DijitMenu, Menu, GformSchema2TableConverter, aspect, Sync, Deferred, topic, declare, Grid, Async, VirtualVScroller, ColumnResizer, SingleSort, Filter, FilterBar, RowHeader, RowSelect) {
+], function (IndirectSelect, ContainerFactory, ExtendedGrid, MenuItem, DijitMenu, Menu, GformSchema2TableConverter, aspect, Sync, Deferred, topic, declare, Grid, Async, VirtualVScroller, ColumnResizer, SingleSort, Filter, FilterBar, RowHeader, RowSelect) {
 
 
 	var allFilterConditions = {
@@ -31,9 +33,9 @@ define([
 		"boolean": ["equal", "isEmpty"]
 	}
 
-	return declare([], {
+	return declare([ContainerFactory], {
 		createTableConverter: function (ef) {
-			return new GformSchema2TableConverter({editorFactory:ef});
+			return new GformSchema2TableConverter({editorFactory: ef});
 		},
 		convertSchemaToTableStructure: function (ctx, config, storeId) {
 			if (config.columns) {
@@ -78,7 +80,7 @@ define([
 			var filterModule = {
 				moduleClass: FilterBar,
 				type: "all",
-				"closeButton":false
+				"closeButton": false
 			}
 
 			if (gridxQueryTransform && gridxQueryTransform.conditions) {
@@ -102,10 +104,8 @@ define([
 				filterModule,
 				{
 					moduleClass: RowSelect,
-					multiple: false,
+					multiple: true,
 					triggerOnCell: true
-
-
 				},
 				RowHeader,
 				SingleSort,
@@ -121,13 +121,27 @@ define([
 					topic.publish("/focus", {store: store.name, id: id, source: this})
 				});
 			});
-			var openAsJson = function () {
-				var id = grid.select.row.getSelected()[0];
-				topic.publish("/focus", {template: "/fallbackSchema", store: store.name, id: id, source: this})
+
+
+			if (config.menuItems) {
+				var menu = new DijitMenu();
+				grid.menu.bind(menu, {hookPoint: "row"});
+				config.menuItems.forEach(function (ItemType) {
+					var item = new ItemType();
+					var click;
+					if (item.type == "single") {
+						click = function () {
+							item.action({store: store, id: grid.select.row.getSelected()[0]})
+						}
+					} else {
+						click = function () {
+							item.action({store: store, ids: grid.select.row.getSelected()})
+						}
+					}
+					menu.addChild(new MenuItem({label: item.label, onClick: click}));
+				});
 			}
-			var menu = new DijitMenu();
-			menu.addChild(new MenuItem({label: "open as json", onClick: openAsJson}));
-			grid.menu.bind(menu, {hookPoint: "row"});
+
 			// TODO use simple grid if no query language defined
 			return new ExtendedGrid({
 				storeId: grid.storeId,

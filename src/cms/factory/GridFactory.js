@@ -53,13 +53,17 @@ define([
 					topic.publish("/focus", {store: store.name, id: id[0], source: this})
 				});
 			});
-			var openAsJson = function () {
-				var id = templateGrid.select.row.getSelected()[0];
-				topic.publish("/focus", {template: "/fallbackSchema", store: store.name, id: id, source: this})
+			if (config.menuItems) {
+				var menu = new DijitMenu();
+				templateGrid.menu.bind(menu, {hookPoint: "row"});
+				config.menuItems.forEach(function (ItemType) {
+					var item = new ItemType();
+					var click = function () {
+						item.action({store: store, id: templateGrid.select.row.getSelected()[0]})
+					}
+					menu.addChild(new MenuItem({label: item.label, onClick: click}));
+				});
 			}
-			var menu = new DijitMenu();
-			menu.addChild(new MenuItem({label: "open as json", onClick: openAsJson}));
-			templateGrid.menu.bind(menu, {hookPoint: "row"});
 
 			return templateGrid;
 		},

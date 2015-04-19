@@ -1,4 +1,6 @@
 define([
+		'../controller/gridactions/Delete',
+		'../controller/gridactions/OpenAsJson',
 		'../controller/tools/SynchronizeCollectionButton',
 		'../mongodb/MdbSchemaStore',
 		'../jcr/TemplateStore',
@@ -31,7 +33,7 @@ define([
 		'../factory/TreeFactory',
 		"../factory/StoreViewFactory",
 		"../factory/SingleSchemaCreateFactory"
-	], function (SynchronizeCollectionButton, MdbSchemaStore, TemplateStore, TemplateSchemaTransformer, ToMongoQueryTransform, Renderer, BrandFactory, FindPageFactory, ToggleSizeFactory, HandlebarsCreateFactory, SingleSchemaCreateFactory, MultiSchemaCreateFactory, ToolbarFactory, GridFactory, ResourceGridFactory, PreviewerFactory, TabOpenerFactory) {
+	], function (Delete, OpenAsJson, SynchronizeCollectionButton, MdbSchemaStore, TemplateStore, TemplateSchemaTransformer, ToMongoQueryTransform, Renderer, BrandFactory, FindPageFactory, ToggleSizeFactory, HandlebarsCreateFactory, SingleSchemaCreateFactory, MultiSchemaCreateFactory, ToolbarFactory, GridFactory, ResourceGridFactory, PreviewerFactory, TabOpenerFactory) {
 
 		return {
 			"storeRegistry": {
@@ -96,7 +98,8 @@ define([
 						"idType": "string",
 						"target": "http://localhost:3001/meta/",
 						"template": "/mdbcollection",
-						"createEditorFactory": "cms/mongodb/createCollectionEditorFactory"
+						"createEditorFactory": "cms/mongodb/createCollectionEditorFactory",
+						"description": "Hallo"
 
 					},
 					{
@@ -110,10 +113,10 @@ define([
 						"template": "/mdbschema",
 						"createEditorFactory": "cms/mongodb/createSchemaEditorFactory",
 						"previewerId": "gform",
-/*						"efConfig": {
-							"fileserver-upload": "http://localhost:4444/upload",
-							"fileserver-download": "http://localhost:4444/"
-						}*/
+						/*						"efConfig": {
+						 "fileserver-upload": "http://localhost:4444/upload",
+						 "fileserver-download": "http://localhost:4444/"
+						 }*/
 
 					}
 				]
@@ -181,10 +184,10 @@ define([
 					"idProperty": "_id",
 					"fallbackSchema": "/mdbFallbackSchema",
 					"createEditorFactory": "cms/mongodb/createEditorFactory",
-		/*			"efConfig": {
-						"fileserver-upload": "http://localhost:4444/upload",
-						"fileserver-download": "http://localhost:4444/"
-					}*/
+					/*			"efConfig": {
+					 "fileserver-upload": "http://localhost:4444/upload",
+					 "fileserver-download": "http://localhost:4444/"
+					 }*/
 				}
 			],
 			"view": {
@@ -281,7 +284,10 @@ define([
 								"schemaStoreId": "/mdbschema",
 								"groupProperty": "db",
 								"gridConfig": {
-									"gridxQueryTransform": new ToMongoQueryTransform()
+									"gridxQueryTransform": new ToMongoQueryTransform(),
+									"menuItems": [
+										OpenAsJson, Delete
+									]
 								}
 							},
 							/*{
@@ -300,29 +306,29 @@ define([
 							 }
 							 */],
 						"children": [
-							{
-								"factoryId": "cms/factory/TreeFactory",
-								"title": "tree",
-								"storeId": "/pagetree",
-								"labelAttribute": "name"
+							/*{
+							 "factoryId": "cms/factory/TreeFactory",
+							 "title": "tree",
+							 "storeId": "/pagetree",
+							 "labelAttribute": "name"
 
-							},
-							{
-								"factoryId": "cms/factory/GridFactory",
-								"title": "template",
-								"storeId": "/template",
-								"gridxQueryTransform": new ToMongoQueryTransform(),
-								"columns": [
-									{
-										"id": "name",
-										"field": "name",
-										"name": "name"
-									}
-								]
-							},
+							 },
+							 {
+							 "factoryId": "cms/factory/GridFactory",
+							 "title": "template",
+							 "storeId": "/template",
+							 "gridxQueryTransform": new ToMongoQueryTransform(),
+							 "columns": [
+							 {
+							 "id": "name",
+							 "field": "name",
+							 "name": "name"
+							 }
+							 ]
+							 },*/
 							{
 								"factoryId": "cms/factory/SingleStoreGridFactory",
-								"title": "mdb collection",
+								"title": "collection",
 								"storeId": "/mdbcollection",
 								"gridxQueryTransform": new ToMongoQueryTransform(),
 								"columns": [
@@ -345,18 +351,24 @@ define([
 										},
 										"name": "type"
 									}
+								],
+								"menuItems": [
+									OpenAsJson, Delete
 								]
 							},
 							{
 								"factoryId": "cms/factory/SingleStoreGridFactory",
-								"title": "db server",
+								"title": "db",
 								"storeId": "/mdbserver",
-								"gridxQueryTransform": new ToMongoQueryTransform()
+								"gridxQueryTransform": new ToMongoQueryTransform(),
+								"menuItems": [
+									OpenAsJson
+								]
 
 							},
 							{
 								"factoryId": "cms/factory/GridFactory",
-								"title": "mdb schema",
+								"title": "schema",
 								"storeId": "/mdbschema",
 								"gridxQueryTransform": new ToMongoQueryTransform(),
 								"columns": [
@@ -365,6 +377,9 @@ define([
 										"field": "name",
 										"name": "name"
 									}
+								],
+								"menuItems": [
+									OpenAsJson, Delete
 								]
 							}
 							/*							,
