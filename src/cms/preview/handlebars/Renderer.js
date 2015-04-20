@@ -1,7 +1,7 @@
 define([
     '../BaseRenderer',
     "dojo/_base/declare",
-    "handlebars/handlebars"
+    "handlebars/handlebars.amd"
 ], function (BaseRenderer, declare) {
 
     // TODO extract helpers to customer and standard configuration folders
@@ -25,7 +25,7 @@ define([
     });
     Handlebars.registerHelper('link', function (url, options) {
         return "javascript:preview('" + url + "');";
-    }); 
+    });
 
     Handlebars.registerHelper('formatCurrency', function (value, options) {
         return value/100;

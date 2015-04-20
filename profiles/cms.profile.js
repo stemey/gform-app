@@ -50,8 +50,10 @@ var profile = {
 			customBase: true
 		},
 
+
 		'cms/main': {
-			include: []
+			include: [],
+			exclude:['ace/ace','handlebars/handlebars']
 		}
 	},
 

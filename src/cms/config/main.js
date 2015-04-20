@@ -1,27 +1,28 @@
 define([
+		'../factory/tools/HelpFactory',
+		'../factory/SelectViewFactory',
+		'../factory/BrandFactory',
+		'../mongodb/createEditorFactory',
+		'../factory/DynamicResourceFactory',
+		'../factory/schema/SchemaGenerator',
+		'../mongodb/MdbSchemaGenerator',
+		'../factory/schema/StaticSchemaGenerator',
+		'../factory/schema/SchemaRegistryFactory',
+		'../mongodb/createSchemaEditorFactory',
+		'../mongodb/createCollectionEditorFactory',
+		'../mongodb/createMdbServerEditorFactory',
+		'../util/MongoRest',
+		'../util/JcrTemplateRest',
+		'../factory/StoreFactory',
+		'../util/JsonRest',
 		'../controller/gridactions/Delete',
 		'../controller/gridactions/OpenAsJson',
-		'../controller/tools/SynchronizeCollectionButton',
 		'../mongodb/MdbSchemaStore',
 		'../jcr/TemplateStore',
-		'../meta/TemplateSchemaTransformer',
 		'../util/ToMongoQueryTransform',
-		'cms/preview/handlebars/Renderer',
-		'cms/factory/BrandFactory',
-		'cms/factory/FindPageFactory',
-		'cms/factory/ToggleSizeFactory',
-		'cms/factory/HandlebarsCreateFactory',
-		'cms/factory/SingleSchemaCreateFactory',
-		'cms/factory/MultiSchemaCreateFactory',
-		'cms/factory/ToolbarFactory',
-		'cms/factory/GridFactory',
-		'cms/factory/ResourceGridFactory',
-		'cms/factory/PreviewerFactory',
-		'cms/factory/TabOpenerFactory',
 		'../factory/SingleStoreGridFactory',
 		'dojo/store/JsonRest',
 		'../factory/HandlebarsCreateFactory',
-		'cms/preview/handlebars/Renderer',
 		'../factory/ToggleSizeFactory',
 		'../factory/FindPageFactory',
 		'../factory/MultiSchemaCreateFactory',
@@ -32,8 +33,19 @@ define([
 		'../factory/PreviewerFactory',
 		'../factory/TreeFactory',
 		"../factory/StoreViewFactory",
-		"../factory/SingleSchemaCreateFactory"
-	], function (Delete, OpenAsJson, SynchronizeCollectionButton, MdbSchemaStore, TemplateStore, TemplateSchemaTransformer, ToMongoQueryTransform, Renderer, BrandFactory, FindPageFactory, ToggleSizeFactory, HandlebarsCreateFactory, SingleSchemaCreateFactory, MultiSchemaCreateFactory, ToolbarFactory, GridFactory, ResourceGridFactory, PreviewerFactory, TabOpenerFactory) {
+		"../factory/SingleSchemaCreateFactory",
+		"dijit/_editor/plugins/FullScreen",
+		"dijit/_editor/plugins/AlwaysShowToolbar",
+		"dojox/editor/plugins/ShowBlockNodes",
+		"dojox/editor/plugins/FindReplace",
+		"dojox/editor/plugins/LocalImage",
+		"dijit/_editor/plugins/LinkDialog",
+		"dijit/_editor/plugins/ToggleDir",
+		"dijit/_editor/plugins/FontChoice",
+		"dijit/_editor/plugins/TextColor",
+		"dijit/_editor/plugins/ViewSource",
+		"dijit/_editor/plugins/Print"
+	], function (HelpFactory, SelectViewFactory, BrandFactory, createEditorFactory, DynamicResourceFactory, SchemaGenerator, MdbSchemaGenerator, StaticSchemaGenerator, SchemaRegistryFactory, createSchemaEditorFactory, createCollectionEditorFactory, createMdbServerEditorFactory, MongoRest, JcrTemplateRest, StoreFactory, JsonRest, Delete, OpenAsJson, MdbSchemaStore, TemplateStore, ToMongoQueryTransform) {
 
 		return {
 			"storeRegistry": {
@@ -112,7 +124,7 @@ define([
 						"target": "http://localhost:3001/schema/",
 						"template": "/mdbschema",
 						"createEditorFactory": "cms/mongodb/createSchemaEditorFactory",
-						"previewerId": "gform",
+						"previewerId": "gform"
 						/*						"efConfig": {
 						 "fileserver-upload": "http://localhost:4444/upload",
 						 "fileserver-download": "http://localhost:4444/"
@@ -183,7 +195,7 @@ define([
 					"schemaStore": "/mdbschema",
 					"idProperty": "_id",
 					"fallbackSchema": "/mdbFallbackSchema",
-					"createEditorFactory": "cms/mongodb/createEditorFactory",
+					"createEditorFactory": "cms/mongodb/createEditorFactory"
 					/*			"efConfig": {
 					 "fileserver-upload": "http://localhost:4444/upload",
 					 "fileserver-download": "http://localhost:4444/"
@@ -289,7 +301,7 @@ define([
 										OpenAsJson, Delete
 									]
 								}
-							},
+							}//,
 							/*{
 							 "controllerClass": "cms/factory/StaticStoreViewController",
 							 "storeId": "/baucis",
@@ -398,14 +410,14 @@ define([
 						"factoryId": "cms/factory/PreviewDispatcherFactory",
 						"splitter": true,
 						"children": [
-							{
+/*							{
 								"previewerId": "handlebars",
 								"region": "center",
 								"factoryId": "cms/factory/PreviewerFactory",
 								"splitter": true,
 								"rendererClass": "cms/preview/handlebars/Renderer",
 								"pageStore": "/page"
-							},
+							},*/
 							{
 								"previewerId": "gform",
 								"region": "center",

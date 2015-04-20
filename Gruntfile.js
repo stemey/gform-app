@@ -24,7 +24,10 @@ module.exports = function (grunt) {
 			config: {
 				options: {
 					processContent: function (content) {
-						return content.replace(/isDebug:\s+(true|1),?\s+/, '');
+						content =  content.replace(/isDebug:\s+(true|1),?\s+/, '');
+						// somehow mapping a package to a different path does not work with the build as expected
+						content= content.replace('ace-builds/src-noconflict','ace')
+						return content;
 					}
 				},
 				files: [{
