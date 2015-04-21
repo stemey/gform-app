@@ -19,15 +19,14 @@ define([
 			topic.subscribe("/modify/cancel", lang.hitch(this, "invokeIfExist", "onModifyCancel"));
 		},
 		onPageFocus: function (evt) {
+			this.delegate("onEntityFocus",evt);
+
+		},
+		delegate: function(fn, evt) {
 			var store = this.ctx.getStore(evt.store);
 			var selected = this._selectChildByStore(store);
-			if (selected) {
-				this.selectedChildWidget.onEntityFocus(evt);
-			}
-		},
-		invokeIfExist: function (method, evt) {
-			if (this.selectedChildWidget[method]) {
-				this.selectedChildWidget[method](evt);
+			if (selected && typeof this.selectedChildWidget[fn]=="function") {
+				selectd[fn](evt);
 			}
 		},
 		_selectChildByStore: function (store) {
@@ -57,6 +56,7 @@ define([
 		}
 		,
 		onPageUpdated: function (evt) {
+			this.delegate("onEntityUpdated",evt);
 			var store = this.ctx.getStore(evt.store);
 			this._selectChildByStore(store);
 			this.selectedChildWidget.onEntityUpdated(evt);
@@ -68,15 +68,15 @@ define([
 		}
 		,
 		onPageRefresh: function (evt) {
-			this.refresh();
+			this.delegate("refresh",evt);
 		}
 		,
 		onPageNavigate: function (evt) {
-			this.selectedChildWidget.onEntityNavigate(evt);
+			this.delegate("onEntityNavigate",evt);
 		}
 		,
 		refresh: function () {
-			this.selectedChildWidget.onEntityRefresh();
+			this.delegate("onEntityRefresh",evt);
 		}
 	});
 });

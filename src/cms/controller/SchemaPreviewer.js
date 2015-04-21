@@ -28,9 +28,13 @@ define([
 			// TODO get transformer from store?
 			var transformer = new SchemaTransformer(this.ctx);
 			var me = this;
-			transformer.transform(entity.group).then(function (schema) {
-				me.setMetaAndDefault(schema);
-			});
+			try {
+				transformer.transform(entity.group).then(function (schema) {
+					me.setMetaAndDefault(schema);
+				});
+			} catch (e) {
+				console.log("error during rendering schema preview ", e);
+			}
 		},
 		refresh: function () {
 		}
