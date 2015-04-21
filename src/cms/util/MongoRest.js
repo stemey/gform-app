@@ -116,7 +116,7 @@ define([
 			return newPromise;
 		}, onAdded: function (promise, response) {
 			var entity = JSON.parse(response.text);
-			var id = entity[0][this.idProperty];
+			var id = entity[this.idProperty];
 			promise.resolve(id);
 		}
 	});
