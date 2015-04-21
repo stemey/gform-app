@@ -56,7 +56,7 @@ define([
 						"name": "documentation",
 						"previewerId": "documentation",
 						"target": "http://localhost/src/cms4apps/src/cms/documentation"
-					}, {
+					},/* {
 						"factoryId": "cms/factory/StoreFactory",
 						"storeClass": "cms/util/JsonRest",
 						"name": "/pagetree",
@@ -88,7 +88,7 @@ define([
 						"createEditorFactory": "cms/createBuilderEditorFactory",
 						"plainValueFactory": "cms/default/createTemplateValueFactory"
 
-					},
+					},*/
 					{
 						"factoryId": "cms/factory/StoreFactory",
 						"name": "/mdbserver",
@@ -137,14 +137,14 @@ define([
 				"factoryId": "cms/factory/schema/SchemaRegistryFactory",
 				"registryClass": "cms/SchemaRegistry",
 				"stores": [
-					{id: "/template", storeClass: TemplateStore},
+					/*{id: "/template", storeClass: TemplateStore},*/
 					{id: "/mdbschema", storeClass: MdbSchemaStore}
 				],
 				"schemaGenerators": [
-					{
+					/*{
 						"factoryId": "cms/factory/schema/SchemaGenerator",
 						"store": "/template" // instances of the generated schema will be place into this store. id Proeprty and idType are taken from this store and added to the schema.
-					},
+					},*/
 					{
 						"factoryId": "cms/mongodb/MdbSchemaGenerator",
 						"store": "/mdbschema" // instances of the generated schema will be place into this store. id Proeprty and idType are taken from this store and added to the schema.
@@ -164,11 +164,11 @@ define([
 					{
 						"factoryId": "cms/factory/schema/StaticSchemaGenerator",
 						"module": "cms/schema/fallbackSchema.json" // instances of the generated schema will be place into this store. id Proeprty and idType are taken from this store and added to the schema.
-					},
+					}/*,
 					{
 						"factoryId": "cms/factory/schema/StaticSchemaGenerator",
 						"module": "cms/jcr/folderSchema.json" // instances of the generated schema will be place into this store. id Proeprty and idType are taken from this store and added to the schema.
-					}
+					}*/
 				]
 			},
 			"resourceFactories": [
@@ -238,7 +238,7 @@ define([
 								"factoryId": "cms/factory/SelectViewFactory",
 								"label": "view"
 							},
-							{
+						/*	{
 								"factoryId": "cms/factory/FindPageFactory",
 								"storeId": "/page",
 								"label": "open",
@@ -246,7 +246,7 @@ define([
 								"labelProperty": "url",
 								"placeHolder": "find page ..",
 								"includedStoreIds": ["/page"]
-							},
+							},*/
 							{
 								"factoryId": "cms/factory/MultiSchemaCreateFactory",
 								"label": "+",
