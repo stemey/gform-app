@@ -1,3 +1,43 @@
-<h1>MongoDb admin</h1>
 
-<div style="width:100%;height:100%;background: url(databear.svg);"></div>
+<style>
+
+	img {
+		margin:10px;
+	}
+	.image {
+		float:right;
+	}
+	.caption {
+	text-align:center;
+	}
+</style>
+<h1>gform-mongodb</h1>
+
+<h2>Views</h2>
+<p class="image"><img src="assets/ViewMenu.png"/><br/><span class="caption">The view menu</span></p>
+<p>
+
+	Each collection has its own view. Views can differ greatly but a usual collection's view consist of a master view
+	(e.g. a grid) to browse
+	the collection's documents and a detail view (editor) displaying the details of a selected document. Views are accessed by a
+	dropdown in the toolbar. There four general views for documentation, collection, databases and schemas. All collection
+	views are grouped in submenus corresponding to their database.
+
+
+</p>
+<p style="clear:both"></p>
+
+<h2>Grid</h2>
+<p>
+	Most Grids provide sorting by clicking on the column header. Querying is supported by either a simple textfield or
+	a query editor. The query editor supports two modes. You may enter a query as json in a structured text editor.
+	Alternatively you can click the query button and use the visual query editor.
+</p>
+
+<h2>Navigation</h2>
+<p>
+	store and document view are bookmarkable. A document may be selected from the master view or by following a link from
+	another document. Select the document will automatically open the corresponding master view on the left. Documents
+	are displayed in a tab container. his makes it easy to display linked document and switch between documents quickly.
+</p>
+
