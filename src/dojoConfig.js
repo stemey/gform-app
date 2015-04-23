@@ -17,6 +17,6 @@ var dojoConfig = {
     deps: [ 'cms'
     ],
     callback: function (cms) {
-        cms();
+        //cms();
     }
 };

@@ -32,6 +32,7 @@
 	Most Grids provide sorting by clicking on the column header. Querying is supported by either a simple textfield or
 	a query editor. The query editor supports two modes. You may enter a query as json in a structured text editor.
 	Alternatively you can click the query button and use the visual query editor.
+	context menu.
 </p>
 
 <h2>Navigation</h2>
@@ -39,5 +40,59 @@
 	store and document view are bookmarkable. A document may be selected from the master view or by following a link from
 	another document. Select the document will automatically open the corresponding master view on the left. Documents
 	are displayed in a tab container. his makes it easy to display linked document and switch between documents quickly.
+</p>
+
+<h2>Collection View</h2>
+<p>
+	<p>The Collection view displays the metadata for the mongodb collections. The list of metadata includes:</p>
+
+	<ul>
+	<li>name</li>
+	<li>description</li>
+	<li>whether or not the primary key maybe assigned by the user</li>
+	<li>the schema or detail editor ui</li>
+	</ul>
+
+	<p>
+	A collection can have one or more schemas associated with it. The purpose of the schema is to guide the user in editing
+	documents by providing a sophisticated detail editor.
+	Either there is a single schema for all documents in the
+	collection or each document contains a property that serves as type discriminator - often called type property.
+	Schemas are stored separately and it is possible to compose schemas by reference, so that even a recursive schema
+	structure representing a tree model is possible.
+	</p>
+
+	The following operations are available:
+	<ul>
+		<li>create a new collection (toolbar)</li>
+		<li>delete collection and its metadata</li>
+		<li>jump to the data view of the selected collection</li>
+		<li>generate schema information by sampling exiting data</li>
+	</ul>
+
+	<p>
+	Generating the schema is a very useful feature if there is an existing collection containing documents. The
+	generation dialog ask the suer to specify the number of documents to sample and a optionally the name of the
+	typeProperty. Restricting the number of samples will yield a faster generation process but may produce a less
+	exact result. The typeProperty maybe specified if one exists. A typeProperty is a property whose value is interpreted
+	as a type discriminator. There will be a distinct schemas for each value of the property. If the documents in the collection
+	were created by a Mapping library in a statically typed OO-language (e.g. Morphia or spring data for Java) then the name of the class
+	will most likely be stored in the typeProperty.
+		</p>
+
+</p>
+
+<h2>Schema View</h2>
+<p>
+	Schemas are stored separate from the collections.
+</p>
+
+<h2>DB View</h2>
+<p>
+	The list of dbs provides information about their size on disk. The details include the list of collections.
+	The operations available on a single db include the creation of a new collection and the synchronization between
+	the actual db's collections and the collections stored in the metadata store. When starting the app these two will be synchronized
+	automatically. If a new collection is created in the db while this app is running then this new collection will not be
+	displayed until a synchronization is performed.
 </p>
 

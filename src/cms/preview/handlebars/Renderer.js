@@ -1,7 +1,7 @@
 define([
     '../BaseRenderer',
     "dojo/_base/declare",
-    "handlebars/handlebars.amd"
+    "handlebars/handlebars"
 ], function (BaseRenderer, declare) {
 
     // TODO extract helpers to customer and standard configuration folders

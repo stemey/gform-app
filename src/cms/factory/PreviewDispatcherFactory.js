@@ -9,8 +9,8 @@ define([
 		create: function (ctx, config) {
 			var container = new PreviewDispatcher({ctx:ctx});
 			//container.set("style", {width: config.width || "200px", height: "100%"});
-			this.addChildren(ctx, container, config.children);
-			return container;
+			return this.addChildren(ctx, container, config.children);
+			//return container;
 		}
 	});
 

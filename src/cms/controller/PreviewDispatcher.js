@@ -15,8 +15,8 @@ define([
 			topic.subscribe("/updated", lang.hitch(this, "onPageUpdated"));
 			topic.subscribe("/deleted", lang.hitch(this, "onPageDeleted"));
 			topic.subscribe("/store/focus", lang.hitch(this, "onStoreFocus"));
-			topic.subscribe("/modify/update", lang.hitch(this, "invokeIfExist", "onModifyUpdate"));
-			topic.subscribe("/modify/cancel", lang.hitch(this, "invokeIfExist", "onModifyCancel"));
+			topic.subscribe("/modify/update", lang.hitch(this, "onModifyUpdate"));
+			topic.subscribe("/modify/cancel", lang.hitch(this, "onModifyCancel"));
 		},
 		onPageFocus: function (evt) {
 			this.delegate("onEntityFocus",evt);
@@ -26,13 +26,13 @@ define([
 			var store = this.ctx.getStore(evt.store);
 			var selected = this._selectChildByStore(store);
 			if (selected && typeof this.selectedChildWidget[fn]=="function") {
-				selectd[fn](evt);
+				this.selectedChildWidget[fn](evt);
 			}
 		},
 		_selectChildByStore: function (store) {
 			var previewerId = store.previewerId;
 			if (previewerId) {
-				if (this.selectedChildWidget.previewerId !== previewerId) {
+				if (!this.selectedChildWidget || this.selectedChildWidget.previewerId !== previewerId) {
 					var selectedChild = null;
 					this.getChildren().some(function (child) {
 						if (child.previewerId == previewerId) {
@@ -53,8 +53,7 @@ define([
 		onStoreFocus: function (evt) {
 			var store = this.ctx.getStore(evt.store);
 			this._selectChildByStore(store);
-		}
-		,
+		},
 		onPageUpdated: function (evt) {
 			this.delegate("onEntityUpdated",evt);
 			var store = this.ctx.getStore(evt.store);
@@ -72,7 +71,17 @@ define([
 		}
 		,
 		onPageNavigate: function (evt) {
-			this.delegate("onEntityNavigate",evt);
+			if (this.selectedChildWidget && this.selectedChildWidget["onEntityNavigate"]) {
+				this.selectedChildWidget["onEntityNavigate"]( evt);
+			}
+		}
+		,
+		onModifyCancel: function (evt) {
+			this.delegate("onModifyCancel",evt);
+		}
+		,
+		onModifyUpdate: function (evt) {
+			this.delegate("onModifyUpdate",evt);
 		}
 		,
 		refresh: function () {

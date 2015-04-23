@@ -10,8 +10,8 @@ define([
         create: function (ctx, config) {
 
             var toolbar = new Toolbar();
-            this.addChildren(ctx, toolbar, config.children);
-            return toolbar;
+            return this.addChildren(ctx, toolbar, config.children);
+            //return toolbar;
 
         }
     });

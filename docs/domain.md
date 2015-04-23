@@ -3,14 +3,14 @@ domain
 
 The domain model consists of entities, types and stores. Sometimes types are also called templates or schemas.
 
-An entity is usually a json document which is accessed through a store. A store provides access to entities via http or it serves them from a browser storage.
+An entity is usually a json document which is accessed via a store. A store provides access to entities via http or it serves them from a browser storage.
 Stores are an extension of `dojo/store`. They provide access to the entities types. All entities have a type. The type is usually a gform schema. It may
 be a different schema or type but it must be converted to gform schema to be useful.
 
 store.getDefault()
-store.template or store.templateSTore and store.typeProperty
+store.template or store.templateStore and store.typeProperty
 store.idProperty
-store.editorFactory?
+store.editorFactory
 
 ## schema
 
