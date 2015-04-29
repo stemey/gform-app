@@ -11,6 +11,7 @@ src/gridx
 src/gform
 src/handlebars
 src/ace-builds
+src/components-font-awesome
 .settings
 *~
 .idea
