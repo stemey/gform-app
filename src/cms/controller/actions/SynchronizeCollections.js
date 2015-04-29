@@ -8,7 +8,7 @@ define([
 ], function (topic, xhr, messages, declare, _ActionMixin) {
 
 	return declare([_ActionMixin], {
-		url: "http://localhost:3001/db/synchronize/",
+		url: "http://localhost:3001/db-synchronize/",
 		messageModule: "actions.synchronizeCollections",
 		getMessages: function () {
 			return messages;

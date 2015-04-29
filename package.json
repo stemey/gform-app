@@ -1,6 +1,6 @@
 {
-  "name": "cms",
-  "version": "0.0.0",
+  "name": "gform-app",
+  "version": "0.1.0",
   "devDependencies": {
     "grunt": "~0.4.1",
     "grunt-dojo": "~0.2.4",

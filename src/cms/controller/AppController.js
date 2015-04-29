@@ -1,4 +1,7 @@
 define([
+	'cms/config',
+	'dojo/io-query',
+	'dojo/_base/lang',
 	'dojo/query',
 	'../factory/AppFactory',
 	'dojo/topic',
@@ -11,7 +14,7 @@ define([
 	'dojox/mvc/_atBindingExtension'
 
 
-], function (query, AppFactory, topic, declare, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, template) {
+], function (config, ioQuery, lang, query, AppFactory, topic, declare, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, template) {
 
 
 	return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
@@ -24,8 +27,12 @@ define([
 
 
 		},
-		start: function (gformAppConfig) {
-			var appFactory = new AppFactory(gformAppConfig);
+		start: function (gformAppConfig, factory) {
+			var hash = location.search.length>1 ? ioQuery.queryToObject(location.search.substring(1)) : {};
+			lang.mixin(gformAppConfig, hash);
+			config.init(gformAppConfig);
+			var appConfig = factory(config);
+			var appFactory = new AppFactory(appConfig);
 			var promise = appFactory.create();
 			var loadingScreen = query('.loadingScreen')[0];
 			var me = this;

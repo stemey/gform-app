@@ -10,6 +10,7 @@ var dojoConfig = {
         'dojox',
 		'gform',
 		'gridx',
+		'components-font-awesome',
         'cms',
 		"handlebars",
         {name: 'ace', location: 'ace-builds/src-noconflict'}

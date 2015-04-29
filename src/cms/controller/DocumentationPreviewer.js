@@ -15,8 +15,9 @@ define([
 		previewerId: "documentation",
 		iframe:null,
 		postCreate: function () {
+			// if containerNode is null then ContentPaneResizeMixin throws error
+			this.containerNode = this.domNode;
 			domAttr.set(this.iframe,"src","cms/documentation/index.html");
-			//this.iframe.set("href", "cms/documentation/index.html");
 		}
 	});
 });

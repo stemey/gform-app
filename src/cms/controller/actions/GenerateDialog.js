@@ -1,4 +1,5 @@
 define([
+	'cms/config',
 	'../../util/topic',
 	'dojo/request/xhr',
 	'dijit/_WidgetsInTemplateMixin',
@@ -8,7 +9,7 @@ define([
 	'dijit/_WidgetBase',
 	'dijit/form/Button',
 	'gform/Editor'
-], function (topic, xhr, WidgetsInTemplateMixin, declare, template, TemplatedMixin, WidgetBase) {
+], function (config, topic, xhr, WidgetsInTemplateMixin, declare, template, TemplatedMixin, WidgetBase) {
 
 	return declare([WidgetBase, TemplatedMixin, WidgetsInTemplateMixin], {
 		templateString: template,
@@ -17,8 +18,7 @@ define([
 		schema: null,
 		editorFactory: null,
 		ctrl: null,
-		url: "http://localhost:3001/task/generate/",
-		closeFn:null,
+		closeFn: null,
 		postCreate: function () {
 			this.inherited(arguments);
 			this.editor.set("editorFactory", this.editorFactory);
@@ -31,19 +31,19 @@ define([
 			var id = this.ctrl.getId();
 			this.ctrl.reload();
 			topic.publish("/updated", {store: this.ctrl.store.name, id: id});
-/*			var newMeta = result.entity;
-			if (result.meta.schema) {
-				var schemas =[];
-				if (result.schema.schema) {
-					schemas.push(result.schema.schema);
-				}else{
-					schemas=result.schema.schemas;
-				}
-				schemas.forEach(function(schema) {
-					this.ctrl.ctx.schemaRegistry.
-					topic.publish("/updated", {store: "/mdbschema", id: result.schema.schema});
-				})
-			}*/
+			/*			var newMeta = result.entity;
+			 if (result.meta.schema) {
+			 var schemas =[];
+			 if (result.schema.schema) {
+			 schemas.push(result.schema.schema);
+			 }else{
+			 schemas=result.schema.schemas;
+			 }
+			 schemas.forEach(function(schema) {
+			 this.ctrl.ctx.schemaRegistry.
+			 topic.publish("/updated", {store: "/mdbschema", id: result.schema.schema});
+			 })
+			 }*/
 
 		},
 		onError: function (e) {
@@ -56,7 +56,7 @@ define([
 			if (this.editor.modelHandle.errorCount === 0) {
 				var entity = this.ctrl.editor.getPlainValue();
 				var params = this.editor.getPlainValue();
-				xhr.put(this.url + entity._id, {data:params}).then(
+				xhr.put(config.baseUrl + "task/generate/" + entity._id, {data: params}).then(
 					this.onSuccess.bind(this),
 					this.onError.bind(this));
 			}

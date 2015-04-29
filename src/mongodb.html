@@ -11,7 +11,7 @@
 	<link rel="stylesheet" href="dojox/layout/resources/ToggleSplitter.css"/>
 	<link rel='stylesheet' href="gridx/resources/claro/Gridx.css"/>
 	<link rel="stylesheet" href="dojox/form/resources/CheckedMultiSelect.css"/>
-	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="components-font-awesome/css/font-awesome.min.css">
 
 	<style type="text/css">
 		#grid {
@@ -24,10 +24,12 @@
 	<script type="text/javascript" src="dojoConfig.js"></script>
 	<script type="text/javascript" src="dojo/dojo.js"></script>
 	<script>
-		require(['cms/config/mongodb', "dojo/parser", "dojo/ready", "cms/controller/AppController"], function (mongodb	, parser) {
+		require(['cms/config',
+			'dojo/_base/lang',
+			'dojo/io-query','cms/config/mongodb', "dojo/parser", "dojo/ready", "cms/controller/AppController"], function (config, lang, ioQuery, mongodb	, parser) {
 			parser.parse();
 			var appConfig = {baseUrl:"../"};
-			window.appController.start(mongodb(appConfig));
+			window.appController.start(appConfig,mongodb);
 		})
 	</script>
 

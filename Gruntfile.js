@@ -1,8 +1,8 @@
 /*jshint node:true*/
 module.exports = function (grunt) {
 
-    grunt.loadNpmTasks('intern')
-	require('load-grunt-tasks')(grunt, [ 'grunt-*' ]);
+	grunt.loadNpmTasks('intern')
+	require('load-grunt-tasks')(grunt, ['grunt-*']);
 	var path = require('path');
 
 	var stripComments = /<\!--.*?-->/g,
@@ -24,9 +24,9 @@ module.exports = function (grunt) {
 			config: {
 				options: {
 					processContent: function (content) {
-						content =  content.replace(/isDebug:\s+(true|1),?\s+/, '');
+						content = content.replace(/isDebug:\s+(true|1),?\s+/, '');
 						// somehow mapping a package to a different path does not work with the build as expected
-						content= content.replace('ace-builds/src-noconflict','ace')
+						content = content.replace('ace-builds/src-noconflict', 'ace')
 						return content;
 					}
 				},
@@ -40,13 +40,15 @@ module.exports = function (grunt) {
 					processContent: function (content) {
 						return content
 							.replace(stripComments, '')
-							.replace(collapseWhiteSpace, ' ')
-						;
+							.replace(collapseWhiteSpace, ' ');
 					}
 				},
 				files: [{
-					src: path.join('src', 'index.html'),
-					dest: path.join('dist', 'index.html')
+					src: path.join('src', 'mongodb.html'),
+					dest: path.join('dist', 'mongodb.html')
+				}, {
+					src: path.join('src', 'cms-jcr.html'),
+					dest: path.join('dist', 'cms-jcr.html')
 				}]
 			}
 		},
@@ -105,6 +107,6 @@ module.exports = function (grunt) {
 			'connect:test:keepalive'
 		]);
 	});
-	grunt.registerTask('build', [ 'clean', 'dojo:dist', 'copy' ]);
-    grunt.registerTask('test', [ 'intern:local']);
+	grunt.registerTask('build', ['clean', 'dojo:dist', 'copy']);
+	grunt.registerTask('test', ['intern:local']);
 };

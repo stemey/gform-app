@@ -3,8 +3,9 @@
     "version": "0.0.0",
     "private": true,
     "dependencies": {
-        "mustache": "janl/mustache.js",
-        "gform": "stemey/dojo-generate-form#>=0.22.2",
+        "handlebars": "components/handlebars.js",
+		"components-font-awesome":"font-awesome#4.3.0",
+        "gform": "stemey/dojo-generate-form#model-refactoring",
         "gridx": "git://github.com/oria/gridx.git#>=1.2.0",
         "dojo": "~1.9.1",
         "dijit": "~1.9.1",
