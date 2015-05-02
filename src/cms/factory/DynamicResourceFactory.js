@@ -14,7 +14,7 @@ define([
 				config.storeClass, config.createEditorFactory], function ( Store, createEditorFactory) {
 				// contains the information about store and its schemas
 				var metaStore = ctx.getStore(config.storeId);
-				var schemaTransformer = new SchemaTransformer({ctx:ctx});
+				var schemaTransformer = new SchemaTransformer(ctx);
 				var rm = new DynamicResourceManager({
 					ctx: ctx,
 					config: config,

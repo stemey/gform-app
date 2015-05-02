@@ -19,6 +19,7 @@ define([
 			"boolean": ["equal", "isEmpty"]
 		},
 		transform: function (gquery, converterMap) {
+
 			// TODO this is pretty hacky!
 			this.convertValue = this.createColumnValueConverter(converterMap);
 			if (!gquery) {

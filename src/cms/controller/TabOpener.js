@@ -116,7 +116,7 @@ define(['dojo/aspect',
 					url: evt.store,
 					editorFactory: ef,
 					typeProperty: typeProperty,
-					schemaUrls: {store: store.templateStore, searchProperty: "name"},
+					schemaUrls: {schemaUrl: evt.schemaUrl, store: store.templateStore, searchProperty: "name"},
 					value: evt.value
 				});
 			} else {
