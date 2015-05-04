@@ -7,7 +7,7 @@
 
 	<link rel="stylesheet" href="dijit/themes/claro/claro.css"/>
 	<link rel="stylesheet" href="gform/resources/gform.css"/>
-	<link rel="stylesheet" href="cms/css/app.css"/>
+	<link rel="stylesheet" href="gform-app/css/app.css"/>
 	<link rel="stylesheet" href="dojox/layout/resources/ToggleSplitter.css"/>
 	<link rel='stylesheet' href="gridx/resources/claro/Gridx.css"/>
 	<link rel="stylesheet" href="dojox/form/resources/CheckedMultiSelect.css"/>
@@ -24,19 +24,17 @@
 	<script type="text/javascript" src="dojoConfig.js"></script>
 	<script type="text/javascript" src="dojo/dojo.js"></script>
 	<script>
-		require(['cms/config',
-			'dojo/_base/lang',
-			'dojo/io-query','cms/config/mongodb', "dojo/parser", "dojo/ready", "cms/controller/AppController"], function (config, lang, ioQuery, mongodb	, parser) {
+		require(['gform-app/config/mongodb', "dojo/parser", "dojo/ready", "gform-app/controller/AppController"], function (mongodb, parser) {
 			parser.parse();
-			var appConfig = {baseUrl:"../"};
-			window.appController.start(appConfig,mongodb);
+			var appConfig = {baseUrl: "../"};
+			window.appController.start(appConfig, mongodb);
 		})
 	</script>
 
 
 </head>
 <body class="claro" style="width:100%;height:100%">
-<div data-dojo-type="cms/controller/AppController" style="display:none">
+<div data-dojo-type="gform-app/controller/AppController" style="display:none">
 
 </div>
 <div class="loadingScreen" style="width:100%;height:100%">

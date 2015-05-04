@@ -14,10 +14,5 @@ var dojoConfig = {
         'cms',
 		"handlebars",
         {name: 'ace', location: 'ace-builds/src-noconflict'}
-    ],
-    deps: [ 'cms'
-    ],
-    callback: function (cms) {
-        //cms();
-    }
+    ]
 };
