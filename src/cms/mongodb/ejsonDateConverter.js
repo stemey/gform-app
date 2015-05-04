@@ -9,7 +9,11 @@ define([],
 				}
 			},
 			format: function (value) {
-				return new Date(value.$date);
+				if (value) {
+					return new Date(value.$date);
+				} else {
+					return null;
+				}
 			}
 		}
 		return x;

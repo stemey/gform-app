@@ -235,7 +235,7 @@ define([
 							"children": [
 								{
 									"factoryId": "cms/factory/BrandFactory",
-									"label": "gform-mongodb"
+									"label": "MONGSTER"
 								},
 								{
 									"factoryId": "cms/factory/SelectViewFactory",

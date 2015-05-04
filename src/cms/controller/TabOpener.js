@@ -68,8 +68,9 @@ define(['dojo/aspect',
 		openSingle: function (param) {
 			if (!this.opening) {
 				topic.publish("/focus", {store: param.url, id: param.id});
+			}else{
+				this.inherited(arguments);
 			}
-			this.inherited(arguments);
 		},
 		onPageFocus: function (evt) {
 			var me = this;
