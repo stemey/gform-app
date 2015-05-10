@@ -11,7 +11,7 @@ var dojoConfig = {
 		'gform',
 		'gridx',
 		'components-font-awesome',
-        'cms',
+        'gform-app',
 		"handlebars",
         {name: 'ace', location: 'ace-builds/src-noconflict'}
     ]

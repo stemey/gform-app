@@ -3,14 +3,14 @@ define([
 	'dojo/when',
 	'gform/schema/meta',
 	'dojo/_base/lang',
-	'./SingleStoreGridFactory',
+	'./ExtendedGridFactory',
 	"dojo/_base/declare"
-], function (OnDemandViewCreator, when, meta, lang, SingleStoreGridFactory, declare) {
+], function (OnDemandViewCreator, when, meta, lang, ExtendedGridFactory, declare) {
 
 
 	return declare([], {
 		createGridFactory: function (config) {
-			return new SingleStoreGridFactory();
+			return new ExtendedGridFactory();
 		},
 		start: function (container, ctx, config, promise) {
 			this.creator = new OnDemandViewCreator({container: container});

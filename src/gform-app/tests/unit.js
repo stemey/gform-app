@@ -1,10 +1,10 @@
 define([
-		'./UrlTreeModel',
+
 		'./Renderer',
+ 		'./UrlTreeModel',
 		'./TreeStore',
 		'./RequiredAttributes',
 		'./SchemaResolver',
-		'./ToMongoQueryTransform',
 		'./DynamicResourceManager'
 	], function () {
 	}

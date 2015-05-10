@@ -10,8 +10,7 @@ define([
 
 		create: function (ctx, config) {
 			var mainDeferred = new Deferred();
-			require([
-				config.storeClass, config.createEditorFactory], function ( Store, createEditorFactory) {
+			require([config.createEditorFactory], function (  createEditorFactory) {
 				// contains the information about store and its schemas
 				var metaStore = ctx.getStore(config.storeId);
 				var schemaTransformer = new SchemaTransformer(ctx);
@@ -19,7 +18,6 @@ define([
 					ctx: ctx,
 					config: config,
 					createEditorFactory: createEditorFactory,
-					StoreClass: Store,
 					schemaTransformer: schemaTransformer
 				});
 				var promise = rm.load();

@@ -1,5 +1,5 @@
 define([
-	'../../meta/SchemaGenerator',
+	'../../meta/CmsSchemaGenerator',
 	'dojo/_base/Deferred',
     'dojo/_base/lang',
     'dojo/when',
@@ -26,7 +26,7 @@ define([
 
         },
         loadTemplateSchema: function (store) {
-            var generator = new SchemaGenerator();
+            var generator = new CmsSchemaGenerator();
             var promise = generator.loadTemplateSchema();
             when(promise).then(lang.hitch(this, "onTemplateSchemaLoaded", store));
         },

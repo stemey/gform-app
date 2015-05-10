@@ -1,10 +1,10 @@
 define([
     '../BaseRenderer',
     "dojo/_base/declare",
-    "handlebars/handlebars"
-], function (BaseRenderer, declare) {
+    "handlebars/handlebars.runtime"
+], function (BaseRenderer, declare, Handlebars) {
 
-    // TODO extract helpers to customer and standard configuration folders
+    // TODO extract helpers to custom and standard configuration folders
     Handlebars.registerHelper('equals', function (a, b, options) {
         if (a == b) {
             return options.fn(this);

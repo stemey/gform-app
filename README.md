@@ -1,24 +1,53 @@
 gform-app
 ========
 
- A toolkit to rapidly create admin ui. Main advantages over similar libraries is support for schemas, 
- that can be created via the admin ui itself or provided from other sources.
+ A framework to rapidly create admin uis. 
  
- examples:
+examples
+--------
  
-**gform-mongodb:
+**mongster:**
 
-An admin ui for mongodb. Supports schema generation and customization of detail editor.
+An admin ui for mongodb: (More)[github.com/stemey/mongster]. 
  
  
-Customization options for detail editor:
-- validation: required, regex, minItems, custom model validation
-- layouting: tab, accordion, responsive columns
-
-[read more](github.io)
+VIDEO
 
 
-**Documentation
+**tinycms**
+
+A cms using handlebars as templates. Content and data is stored in mongodb or jcr-repository. 
+Create schemas and associated templates. Manage instances in a tree structure.
+
+VIDEO
+
+
+installation
+------------
+
+* git clone github.com/stemey/gform-app
+* cd gform-app
+* npm install
+* grunt build
+
+Start the example apps mongodb.html or cms-jcr.html in the folder src or dist. Prerequisite is a running server 
+that provides the data and schema.
+
+
+architecture
+-------------
+
+The app is a single page app. The html page provides the configuration (examples located in src/gform-app/config). The configuration includes:
+
+
+- stores to access data in server side or in-browser stores. 
+- schemas to generate uis. These can be stored in stores or provided as static json files
+- views which are generated from schemas and additional configuration.
+
+
+
+
+
 
 
 

@@ -3,7 +3,7 @@
     "version": "0.1.0",
     "private": true,
     "dependencies": {
-        "handlebars": "components/handlebars.js",
+        "handlebars": "components/handlebars.js#3.0.3",
 		"components-font-awesome":"font-awesome#4.3.0",
         "gform": "stemey/dojo-generate-form#model-refactoring",
         "gridx": "git://github.com/oria/gridx.git#~1.3.8",

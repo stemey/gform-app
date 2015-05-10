@@ -5,7 +5,7 @@ define([
 		'../mongodb/createEditorFactory',
 		'../factory/DynamicResourceFactory',
 		'../factory/schema/SchemaGenerator',
-		'../mongodb/MdbSchemaGenerator',
+		'../mongodb/MetaSchemaGenerator',
 		'../factory/schema/StaticSchemaGenerator',
 		'../factory/schema/SchemaRegistryFactory',
 		'../mongodb/createSchemaEditorFactory',
@@ -20,7 +20,7 @@ define([
 		'../mongodb/MdbSchemaStore',
 		'../jcr/TemplateStore',
 		'../util/ToMongoQueryTransform',
-		'../factory/SingleStoreGridFactory',
+		'../factory/ExtendedGridFactory',
 		'dojo/store/JsonRest',
 		'../factory/HandlebarsCreateFactory',
 		'../factory/ToggleSizeFactory',
@@ -45,7 +45,7 @@ define([
 		"dijit/_editor/plugins/TextColor",
 		"dijit/_editor/plugins/ViewSource",
 		"dijit/_editor/plugins/Print"
-	], function (HelpFactory, SelectViewFactory, BrandFactory, createEditorFactory, DynamicResourceFactory, SchemaGenerator, MdbSchemaGenerator, StaticSchemaGenerator, SchemaRegistryFactory, createSchemaEditorFactory, createCollectionEditorFactory, createMdbServerEditorFactory, MongoRest, JcrTemplateRest, StoreFactory, JsonRest, Delete, OpenAsJson, MdbSchemaStore, TemplateStore, ToMongoQueryTransform) {
+	], function (HelpFactory, SelectViewFactory, BrandFactory, createEditorFactory, DynamicResourceFactory, SchemaGenerator, MetaSchemaGenerator, StaticSchemaGenerator, SchemaRegistryFactory, createSchemaEditorFactory, createCollectionEditorFactory, createMdbServerEditorFactory, MongoRest, JcrTemplateRest, StoreFactory, JsonRest, Delete, OpenAsJson, MdbSchemaStore, TemplateStore, ToMongoQueryTransform) {
 
 
 		return function (config) {
@@ -113,7 +113,7 @@ define([
 					],
 					"schemaGenerators": [
 						{
-							"factoryId": "gform-app/mongodb/MdbSchemaGenerator",
+							"factoryId": "gform-app/mongodb/MetaSchemaGenerator",
 							"store": "/mdbschema" // instances of the generated schema will be place into this store. id Proeprty and idType are taken from this store and added to the schema.
 						},
 						{
@@ -137,7 +137,7 @@ define([
 				"resourceFactories": [
 					{
 						"factoryId": "gform-app/factory/DynamicResourceFactory",
-						"storeClass": "gform-app/util/MongoRest",
+						"storeClass": MongoRest,
 						"url": baseUrl + "data/{db}/{collection}/",
 						"storeId": "/mdbcollection",
 						"schemaStore": "/mdbschema",
@@ -176,7 +176,7 @@ define([
 							"children": [
 								{
 									"factoryId": "gform-app/factory/BrandFactory",
-									"label": "MONGSTER"
+									"label": "mongomat"
 								},
 								{
 									"factoryId": "gform-app/factory/SelectViewFactory",
@@ -232,7 +232,7 @@ define([
 								}],
 							"children": [
 								{
-									"factoryId": "gform-app/factory/SingleStoreGridFactory",
+									"factoryId": "gform-app/factory/ExtendedGridFactory",
 									"title": "collection",
 									"storeId": "/mdbcollection",
 									"gridxQueryTransform": new ToMongoQueryTransform(),
@@ -262,7 +262,7 @@ define([
 									]
 								},
 								{
-									"factoryId": "gform-app/factory/SingleStoreGridFactory",
+									"factoryId": "gform-app/factory/ExtendedGridFactory",
 									"title": "db",
 									"storeId": "/mdbserver",
 									"gridxQueryTransform": new ToMongoQueryTransform(),

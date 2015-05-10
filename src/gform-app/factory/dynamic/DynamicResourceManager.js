@@ -5,8 +5,9 @@ define([
 	'dojo/Deferred',
 	"dojo/_base/declare",
 	'../../util/topic',
-	'dojo/aspect'
-], function (SubStore, lang, SchemaStore, Deferred, declare, topic, aspect) {
+	'dojo/aspect',
+	'dojo/when'
+], function (SubStore, lang, SchemaStore, Deferred, declare, topic, aspect, when) {
 
 
 	return declare([], {
@@ -14,6 +15,7 @@ define([
 		ctx: null,
 		config: null,
 		StoreClass: null,
+		storeFactory:null,
 		createEditorFactory: null,
 		metaStore: null,
 		schemaStore: null,
@@ -30,9 +32,14 @@ define([
 			aspect.after(this.metaStore, "add", function (result, args) {
 				var store = args[0];
 				var a = args;
-				result.then(function (id) {
+				when(result).then(function (result) {
 					// TODO stores should return persisted object. assume that return value is the id for now.
-					store[me.metaStore.idProperty] = id;
+					if (typeof result ==="object") {
+						store=result;
+					}else{
+						var id =result;
+						store[me.metaStore.idProperty] = id;
+					}
 					me.addMeta(store);
 					topic.publish("/store/new", {store: store.name});
 				});
@@ -40,23 +47,24 @@ define([
 			})
 			aspect.after(this.metaStore, "remove", function (result, args) {
 				// we don't know the entity. only the id.
-				result.then(function () {
+				when(result).then(function () {
 					var store = me.removeMeta(args[0]);
 					topic.publish("/store/deleted", {store: store.name});
 				});
 			})
 			aspect.after(this.metaStore, "put", function (result, args) {
 				// we don't know the entity. only the id.
-				result.then(function () {
+				when(result).then(function () {
 					var store = me.updateMeta(args[0]);
 					topic.publish("/store/updated", {store: store.name});
 				});
 			})
 			topic.subscribeStore("/updated", function (e) {
-				me.metaStore.get(e.id).then(function (result) {
+				when(me.metaStore.get(e.id)).then(function (result) {
 					var store = me.updateMeta(result);
 					topic.publish("/store/updated", {store: store.name});
 				})
+				// TODO his needs to be configurable
 			}, ["/mdbcollection"]);
 
 
@@ -65,7 +73,7 @@ define([
 			var deferred = new Deferred();
 			var me = this;
 			this.stores = {};
-			this.metaStore.query({}).then(function (metas) {
+			when(this.metaStore.query({})).then(function (metas) {
 				metas.forEach(function (meta) {
 					me.updateMeta(meta);
 				})
@@ -77,7 +85,7 @@ define([
 			var deferred = new Deferred();
 			var me = this;
 			this.stores = {};
-			this.metaStore.query({}).then(function (metas) {
+			when(this.metaStore.query({})).then(function (metas) {
 				metas.forEach(function (meta) {
 					me.addMeta(meta);
 				})
@@ -103,18 +111,29 @@ define([
 			return store;
 		},
 		createStore: function (meta) {
-			var target = lang.replace(this.config.url, meta);
-			return new this.StoreClass({
-				idProperty: this.config.idProperty,
-				name:  this.metaStore.getIdentity(meta),
-				assignableId: meta.assignableId,
-				target: target,//this.config.baseUrl + meta.collection + "/",
+			// target is a store specific prop
+			var target = this.config.url ? lang.replace(this.config.url, meta):"dummy";
+			var props ={
 				editorFactory: this.createEditorFactory(this.config.efConfig),
 				metaStore: this.metaStore.name,
 				metaId: this.metaStore.getIdentity(meta),
 				description: meta.description,
-				fallbackSchema: this.config.fallbackSchema
-			});
+				fallbackSchema: this.config.fallbackSchema,
+				idProperty: this.config.idProperty,
+				name:  this.metaStore.getIdentity(meta),
+				assignableId: meta.assignableId
+			}
+			var store;
+			if (this.config.StoreClass) {
+				store = new this.config.StoreClass({
+					idProperty: this.config.idProperty,
+					target: target
+				});
+			}else{
+				store = this.config.storeFactory(this.config,props);
+			}
+			lang.mixin(store,props);
+			return store;
 		},
 		addMeta: function (meta) {
 			this.stores[this.metaStore.getIdentity(meta)] = meta;

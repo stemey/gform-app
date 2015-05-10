@@ -52,7 +52,7 @@ define({
 			{ name: 'dojo', location: 'src/dojo' },
 			{ name: 'dijit', location: 'src/dijit' },
 			{ name: 'dojox', location: 'src/dojox' },
-			{ name: 'cms', location: 'src/cms' },
+			{ name: 'gform-app', location: 'src/gform-app' },
             { name: 'gform', location: 'src/gform' },
             { name: 'mustache', location: 'src/mustache' },
             { name: 'handlebars', location: 'src/handlebars' }
@@ -66,5 +66,5 @@ define({
 	functionalSuites: [ 'gform-app/tests/functional' ],
 
 	// A regular expression matching URLs to files that should not be included in code coverage analysis
-	excludeInstrumentation: /^(?:node_modules|src\/(?:dojo|dijit|dojox|cms\/tests))\//
+	excludeInstrumentation: /^(?:node_modules|src\/(?:dojo|handlebars|dijit|dojox|gform-app\/tests))\//
 });

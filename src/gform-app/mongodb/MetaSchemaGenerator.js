@@ -4,8 +4,8 @@ define([
     'dojo/when',
     './SchemaGenerator',
     "dojo/_base/declare",
-    "dojo/text!../schema/mdbschema.json"
-], function (Deferred, lang, when, SchemaGenerator, declare, mdbschema) {
+    "dojo/text!../schema/metaSchemaTemplate.json"
+], function (Deferred, lang, when, SchemaGenerator, declare, metaSchemaTemplate) {
 
     /**
      * store to store our schemas.
@@ -34,7 +34,7 @@ define([
             //meta.store = "/schema";
             // get attributes of root.listpane
             //var attributes = meta.attributes[0].groups[0].attributes[2];
-            var baseSchema = JSON.parse(mdbschema)
+            var baseSchema = JSON.parse(metaSchemaTemplate)
             var idAttribute = {};
 
             // adding the schema store's id attribute

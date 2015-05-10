@@ -5,10 +5,10 @@ define([
 	'dojo/promise/all',
 	'gform/schema/meta',
 	'dojo/_base/lang',
-	'./SingleStoreGridFactory',
+	'./ExtendedGridFactory',
 	'dojo/topic',
 	"dojo/_base/declare"
-], function (OnDemandViewCreator, when, Deferred, all, meta, lang, SingleStoreGridFactory, topic, declare) {
+], function (OnDemandViewCreator, when, Deferred, all, meta, lang, ExtendedGridFactory, topic, declare) {
 
 
 	return declare([], {
@@ -16,7 +16,7 @@ define([
 		ctx: null,
 		factory: null,
 		createGridFactory: function (config) {
-			return new SingleStoreGridFactory();
+			return new ExtendedGridFactory();
 		},
 		start: function (container, ctx, config, promise) {
 			this.groupProperty = config.groupProperty;
@@ -37,7 +37,7 @@ define([
 			this.refresh();
 		},
 		refresh: function () {
-			this.metaStore.query({}).then(lang.hitch(this, "onUpdate"));
+			when(this.metaStore.query({})).then(lang.hitch(this, "onUpdate"));
 		},
 		createView: function (meta, schema) {
 			var config = {schema: schema, title: meta.name, storeId: this.metaStore.getIdentity(meta)}
@@ -98,20 +98,23 @@ define([
 			}
 			this.ctx.removeView(store);
 		},
+		getMetaId: function(meta) {
+			return this.metaStore.getIdentity(meta);
+		},
 		createOnDemandView: function (meta, schema) {
 			var me = this;
-			var id = meta._id;
+			var id = this.getMetaId(meta);
 			var group = meta[this.groupProperty];
 			this.ctx.addView({label: meta.name, id: id, group: group, store: id});
 			var creator = {
 				isStore: function (store) {
-					return meta._id == store;
+					return me.getMetaId(meta) === store;
 				},
 				create: function () {
 					return me.createView(meta, schema);
 				}
 			}
-			this.currentStores[meta._id] = this.creator.create(creator);
+			this.currentStores[this.getMetaId(meta)] = this.creator.create(creator);
 		},
 		addStore: function (meta) {
 			// TODO respect the order of the stores
@@ -120,7 +123,7 @@ define([
 				// single or no schema
 				var me = this;
 				deferred = new Deferred();
-				var store = this.ctx.getStore(meta._id);
+				var store = this.ctx.getStore(this.getMetaId(meta));
 				when(this.ctx.schemaRegistry.get(store.template)).then(function (schema) {
 					me.createOnDemandView(meta, schema);
 					deferred.resolve("done");
@@ -130,11 +133,11 @@ define([
 			} else {
 				// multiple schemas
 				var me = this;
-				var store = this.ctx.getStore(meta._id);
+				var store = this.ctx.getStore(this.getMetaId(meta));
 				var templateStoreId = store.templateStore;
 				var templateStore = this.ctx.getStore(templateStoreId);
 				deferred = new Deferred();
-				templateStore.query({}).then(function (schemas) {
+				when(templateStore.query({})).then(function (schemas) {
 					var labelMap = [];
 					schemas.forEach(function (schema) {
 						labelMap.push({value: schema[templateStore.idProperty], label: schema.name});

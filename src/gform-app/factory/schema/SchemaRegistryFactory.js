@@ -16,13 +16,15 @@ define([
 			var me = this;
 			return load([config.registryClass], function (registryClass) {
 				var registry = new registryClass();
-				config.stores.forEach(function (storeConfig) {
-					var store = ctx.getStore(storeConfig.id);
-					var props = {store: store, ctx: ctx};
-					lang.mixin(props, storeConfig);
-					var schemaStore = new storeConfig.storeClass(props);
-					registry.registerStore(storeConfig.id, schemaStore);
-				});
+				if (config.stores) {
+					config.stores.forEach(function (storeConfig) {
+						var store = ctx.getStore(storeConfig.id);
+						var props = {store: store, ctx: ctx};
+						lang.mixin(props, storeConfig);
+						var schemaStore = new storeConfig.storeClass(props);
+						registry.registerStore(storeConfig.id, schemaStore);
+					});
+				}
 				return loadAll(registry, config.schemaGenerators, function (schema) {
 					registry.register(schema.id, schema);
 				}, ctx);

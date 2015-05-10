@@ -5,7 +5,7 @@ define([
 		'../mongodb/createEditorFactory',
 		'../factory/DynamicResourceFactory',
 		'../factory/schema/SchemaGenerator',
-		'../mongodb/MdbSchemaGenerator',
+		'../meta/AbstractSchemaGenerator',
 		'../factory/schema/StaticSchemaGenerator',
 		'../factory/schema/SchemaRegistryFactory',
 		'../mongodb/createSchemaEditorFactory',
@@ -20,7 +20,7 @@ define([
 		'../mongodb/MdbSchemaStore',
 		'../jcr/TemplateStore',
 		'../util/ToMongoQueryTransform',
-		'../factory/SingleStoreGridFactory',
+		'../factory/ExtendedGridFactory',
 		'dojo/store/JsonRest',
 		'../factory/HandlebarsCreateFactory',
 		'../factory/ToggleSizeFactory',
@@ -45,7 +45,7 @@ define([
 		"dijit/_editor/plugins/TextColor",
 		"dijit/_editor/plugins/ViewSource",
 		"dijit/_editor/plugins/Print"
-	], function (HelpFactory, SelectViewFactory, BrandFactory, createEditorFactory, DynamicResourceFactory, SchemaGenerator, MdbSchemaGenerator, StaticSchemaGenerator, SchemaRegistryFactory, createSchemaEditorFactory, createCollectionEditorFactory, createMdbServerEditorFactory, MongoRest, JcrTemplateRest, StoreFactory, JsonRest, Delete, OpenAsJson, MdbSchemaStore, TemplateStore, ToMongoQueryTransform) {
+	], function (HelpFactory, SelectViewFactory, BrandFactory, createEditorFactory, DynamicResourceFactory, SchemaGenerator, MetaSchemaGenerator, StaticSchemaGenerator, SchemaRegistryFactory, createSchemaEditorFactory, createCollectionEditorFactory, createMdbServerEditorFactory, MongoRest, JcrTemplateRest, StoreFactory, JsonRest, Delete, OpenAsJson, MdbSchemaStore, TemplateStore, ToMongoQueryTransform) {
 
 
 		return function (config) {
@@ -102,7 +102,7 @@ define([
 					],
 					"schemaGenerators": [
 						{
-							"factoryId": "gform-app/factory/schema/SchemaGenerator",
+							"factoryId": "gform-app/factory/meta/CmsSchemaGenerator",
 							"store": "/template" // instances of the generated schema will be place into this store. id Proeprty and idType are taken from this store and added to the schema.
 						},
 						{

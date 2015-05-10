@@ -25,7 +25,12 @@ define([
 				}
 			})
 
+			var promises = [];
+
+
 			config.children.forEach(function (config) {
+				var d = new Deferred();
+				promises.push(d);
 				require([config.factoryId], function (Factory) {
 					var store = ctx.getStore(config.storeId);
 					var storeId = store.mainStore ? store.mainStore:store.name;
@@ -39,40 +44,15 @@ define([
 						}
 					}
 					onDemandViewCreator.create(creator);
+					d.resolve(creator);
 				});
 			});
 
 
 			var promise;
-			var me = this;
-			var focus = function (evt) {
-				if (false && evt.source != this) {
-					when(me.started).then(function () {
-						var storeChild = container.getChildren().filter(function (child) {
-							var store = ctx.getStore(child.storeId);
-							var storeId;
-							if (store.mainStore) {
-								storeId = store.mainStore;
-							} else {
-								storeId = store.name;
-							}
-							return storeId == evt.store;
-						})[0];
-						if (storeChild) {
-							container.selectChild(storeChild);
-						}
-					});
-				}
-			};
-
-
-			topic.subscribe("/focus", focus);
-			topic.subscribe("/store/focus", focus);
-
 			container.selectChild(container.getChildren()[0]);
 
 			if (config.controllers) {
-				var promises = [];
 				config.controllers.forEach(function (controllerConfig) {
 					var d = new Deferred();
 					promises.push(d);
@@ -82,13 +62,13 @@ define([
 					});
 
 				})
-				promise = new Deferred();
-				all(promises).then(function () {
-					promise.resolve(container);
-				});
-			} else {
-				promise = container;
 			}
+
+			promise = new Deferred();
+			all(promises).then(function () {
+				promise.resolve(container);
+			});
+
 
 			return promise;
 		}

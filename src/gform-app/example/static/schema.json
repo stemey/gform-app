@@ -1,0 +1,14 @@
+{
+	"id":"static",
+	"attributes": [
+		{
+			"code":"id",
+			"type":"number",
+			"disabled":true
+		},
+		{
+			"code":"name",
+			"type":"string"
+		}
+	]
+}

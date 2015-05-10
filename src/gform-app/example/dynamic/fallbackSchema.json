@@ -1,0 +1,17 @@
+{
+	"id": "fallbackSchema",
+	"additionalProperties": {
+		"code": "entity"
+	},
+	"attributes": [
+		{
+			"code": "id",
+			"type": "number",
+			"disabled": true
+		},
+		{
+			"code": "entity",
+			"type": "any"
+		}
+	]
+}

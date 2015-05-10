@@ -1,9 +1,9 @@
 define([
 	'dojo/_base/lang',
-	'./SingleStoreGridFactory',
+	'./ExtendedGridFactory',
     "dojo/_base/declare"
 
-], function (lang, SingleStoreGridFactory, declare) {
+], function (lang, ExtendedGridFactory, declare) {
 
 
 
@@ -12,7 +12,7 @@ define([
 
             var grids = [];
             config.storeIds.forEach(function(storeId) {
-                var f = new SingleStoreGridFactory();
+                var f = new ExtendedGridFactory();
 				var props = {storeId:storeId, title:storeId};
 				lang.mixin(props, config.config);
                 var grid = f.create(ctx,props);

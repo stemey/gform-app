@@ -1,19 +1,26 @@
 define([
 	'dojo/topic',
 	'dojo/Stateful',
-	"dojo/_base/declare"//
+	"dojo/_base/declare"
 ], function (topic, Stateful, declare) {
 
 	return declare([Stateful], {
 		storeRegistry: null,
+		schemaRegistry:null,
 		storeId: null,
 		// TODO make default view configurable
-		views: [{id: "documentation", label: "documentation"}],
+		views: [],//{id: "documentation", label: "documentation"}],
 		constructor: function (config) {
 			this.storeRegistry = config.storeRegistry;
 		},
 		getStore: function (id) {
 			return this.storeRegistry.get(id);
+		},
+		getSchema: function(id) {
+			return this.schemaRegistry.get(id);
+		},
+		getCurrentStore: function () {
+			return this.storeRegistry.get(this.storeId);
 		},
 		getCurrentStore: function () {
 			return this.storeRegistry.get(this.get("storeId"));
@@ -41,15 +48,15 @@ define([
 		removeStore: function (id) {
 			this.storeRegistry.unregister(id);
 		},
-		addSchema: function (id, schema) {
-			this.schemaRegistry.register(id, schema);
-		},
 		removeView: function (view) {
 			var idx = this.views.indexOf(view);
 			if (idx >= 0) {
 				this.views.remove(idx);
 				topic.publish("/view/deleted", view);
 			}
+		},
+		addSchema: function (id, schema) {
+			this.schemaRegistry.register(id, schema);
 		},
 		addSchemaStore: function (id, store) {
 			this.schemaRegistry.registerStore(id, store);

@@ -2,7 +2,7 @@
 <html style="width:100%;height:100%">
 <head>
 	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
-	<title>Mongomat</title>
+	<title>static</title>
 
 
 	<link rel="stylesheet" href="dijit/themes/claro/claro.css"/>
@@ -24,10 +24,10 @@
 	<script type="text/javascript" src="dojoConfig.js"></script>
 	<script type="text/javascript" src="dojo/dojo.js"></script>
 	<script>
-		require(['gform-app/config/mongodb', "dojo/parser", "dojo/ready", "gform-app/controller/AppController"], function (mongodb, parser) {
+		require(['gform-app/example/static/static', "dojo/parser", "dojo/ready", "gform-app/controller/AppController"], function (static, parser) {
 			parser.parse();
 			var appConfig = {baseUrl: "../"};
-			window.appController.start(appConfig, mongodb);
+			window.appController.start(appConfig, static);
 		})
 	</script>
 

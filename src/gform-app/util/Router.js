@@ -22,8 +22,8 @@ define(['dojo/_base/lang',
 			router.register(entityRoute, lang.hitch(this, "onGoToEntity"));
 			router.register(entityTemplateRoute, lang.hitch(this, "onGoToEntity"));
 		},
-		start: function() {
-			router.startup("/store/documentation");
+		start: function(url) {
+			router.startup(url);
 		},
 		onStoreFocus: function (evt) {
 			this.ctx.set("storeId", evt.store);
