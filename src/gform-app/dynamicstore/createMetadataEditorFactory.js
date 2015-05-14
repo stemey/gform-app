@@ -29,15 +29,14 @@ define([
         ef.addConverterForType(converter, "ref");
         ef.addConverterForType(converter, "multi-ref");
 
-
 		ef.addAttributeFactory(new FormAttributeFactory({editorFactory: ef}));
         ef.addAttributeFactory(new AttributeRefFactory({editorFactory: ef}));
         ef.addCtrValidator("form",FormValidator);
 		ef.addCtrValidator("requiredAttributes", RequiredAttributes);
 
 		var pvf = new SchemaPlainValueFactory({
-			idProperty: "id",
-			idType: "string"
+			idProperty: config.idProperty,
+			idType: config.idType
 		});
 
 		ef.putFunction("/dynamicstore/multi-schema/create", pvf.createMultiSchema.bind(pvf));

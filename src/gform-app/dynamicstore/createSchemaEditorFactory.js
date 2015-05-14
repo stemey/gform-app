@@ -27,9 +27,6 @@ define([
 		attributeFactoryFinder.addAttributeFactory(new SchemaAttributeFactory({editorFactory: ef}));
 		ef.addCtrValidator("requiredAttributes", RequiredAttributes);
 
-		ef.getAttributeFactory({type: "binary"}).fileServerUrl = config["fileserver-upload"];//http://localhost:4444/upload";
-		ef.getAttributeFactory({type: "binary"}).baseUrl = config["fileserver-download"];//="http://localhost:4444/";
-
 		ef.addConverterForType(converter, "ref");
 		ef.addConverterForType(converter, "multi-ref");
 

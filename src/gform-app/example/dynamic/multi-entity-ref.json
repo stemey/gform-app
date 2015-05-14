@@ -5,7 +5,7 @@
 	"description": "",
 	"groups": [
 		{
-			"$ref": "../../gform/schema/attributes/header.json"
+			"$ref": "../../../gform/schema/attributes/header.json"
 		},
 		{
 			"label": "reference",
@@ -60,7 +60,7 @@
 			]
 		},
 		{
-			"$ref": "../../gform/schema/attributes/messages.json"
+			"$ref": "../../../gform/schema/attributes/messages.json"
 		}
 	]
 }

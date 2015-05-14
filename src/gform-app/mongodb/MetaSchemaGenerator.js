@@ -1,5 +1,5 @@
 define([
-	'../util/MetaSchemaGenerator',
+	'../dynamicstore/MetaSchemaGenerator',
 	'./SchemaGenerator',
 	"dojo/_base/declare"
 ], function (MetaSchemaGenerator, SchemaGenerator, declare) {

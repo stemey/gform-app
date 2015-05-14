@@ -1,7 +1,8 @@
 [
 	{
 		"id": 1,
-		"name": "Will"
+		"name": "Will",
+		"friend":2
 	},
 	{
 		"id": 2,
