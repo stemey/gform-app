@@ -1,5 +1,5 @@
 define([
-	'../mongodb/SchemaTransformer',
+	'../dynamicstore/SchemaTransformer',
 	'dojo/_base/lang',
 	'gform/Editor',
 	"dojo/_base/declare"
@@ -8,6 +8,7 @@ define([
 
 	return declare("cms.SchemaPreviewer", [Editor], {
 		ctx: null,
+		idProperty:null,
 		baseClass: "gformSchemaPreviewer",
 		onEntityFocus: function (evt) {
 			var store = this.ctx.getStore(evt.store);
@@ -26,7 +27,7 @@ define([
 		},
 		display: function (store, entity) {
 			// TODO get transformer from store?
-			var transformer = new SchemaTransformer({ctx:this.ctx});
+			var transformer = new SchemaTransformer({ctx:this.ctx, idProperty:this.idProperty});
 			var me = this;
 			try {
 				transformer.transform(entity.group).then(function (schema) {

@@ -1,7 +1,5 @@
 define([
 	'./ejsonDateConverter',
-	'./MultiEntityRefAttributeFactory',
-	'./SchemaRefAttributeFactory',
 	'../controller/actions/Preview',
 	'../controller/actions/CreateInstance',
     '../controller/actions/Save',
@@ -9,22 +7,14 @@ define([
     'gform/controller/actions/Discard',
     'gform/controller/actions/Delete',
     'gform/controller/actions/ActionFactory',
-    'gform/special/formbuilder/FormValidator',
-    'gform/special/formbuilder/AttributeRefFactory',
-    'gform/special/formbuilder/FormAttributeFactory',
 	'gform/primitive/nullablePrimitiveConverter',
-    '../meta/TemplateRefAttributeFactory',
-    '../RequiredAttributes',
 	'gform/createFullEditorFactory'
-], function (ejsonDateConverter, MultiEntityRefAttributeFactory, SchemaRefAttributeFactory, Preview, CreateInstance, Save, Close, Discard, Delete, ActionFactory, FormValidator, AttributeRefFactory, FormAttributeFactory, converter, TemplateRefAttributeFactory, RequiredAttributes, createFullEditorFactory) {
+], function (ejsonDateConverter, Preview, CreateInstance, Save, Close, Discard, Delete, ActionFactory, converter, createFullEditorFactory) {
 
 
     return function (config) {
         var ef = createFullEditorFactory();
         var attributeFactoryFinder = ef.get("attributeFactoryFinder");
-        attributeFactoryFinder.addAttributeFactory(new TemplateRefAttributeFactory({editorFactory: ef}));
-		attributeFactoryFinder.addAttributeFactory(new MultiEntityRefAttributeFactory({editorFactory: ef}));
-		ef.addCtrValidator("requiredAttributes", RequiredAttributes);
 
         binaryAf = ef.getAttributeFactory({type:"binary"});
 		if (binaryAf && config) {
@@ -32,15 +22,11 @@ define([
 			binaryAf.baseUrl = config["fileserver-download"];//="http://localhost:4444/";
 		}
 
-		attributeFactoryFinder.addAttributeFactory(new SchemaRefAttributeFactory({editorFactory: ef}));
 		ef.addConverterForType(converter, "ref");
         ef.addConverterForType(converter, "multi-ref");
 		ef.addConverterForType(ejsonDateConverter, "date");
         //ef.addConverterForid(stringTemplateConverter, "templateConverter");
 
-        ef.addAttributeFactory(new FormAttributeFactory({editorFactory: ef}));
-        ef.addAttributeFactory(new AttributeRefFactory({editorFactory: ef}));
-        ef.addCtrValidator("form",FormValidator);
 
         var af = new ActionFactory();
         af.add({type:Save})

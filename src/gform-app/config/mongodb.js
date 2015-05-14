@@ -1,11 +1,11 @@
 define([
+		'../mongodb/SchemaGenerator',
 		'../factory/tools/HelpFactory',
 		'../factory/SelectViewFactory',
 		'../factory/BrandFactory',
 		'../mongodb/createEditorFactory',
 		'../factory/DynamicResourceFactory',
-		'../factory/schema/SchemaGenerator',
-		'../mongodb/MetaSchemaGenerator',
+		'../dynamicstore/MetaSchemaGenerator',
 		'../factory/schema/StaticSchemaGenerator',
 		'../factory/schema/SchemaRegistryFactory',
 		'../mongodb/createSchemaEditorFactory',
@@ -17,7 +17,7 @@ define([
 		'../util/JsonRest',
 		'../controller/gridactions/Delete',
 		'../controller/gridactions/OpenAsJson',
-		'../mongodb/MdbSchemaStore',
+		'../dynamicstore/SchemaStore',
 		'../jcr/TemplateStore',
 		'../util/ToMongoQueryTransform',
 		'../factory/ExtendedGridFactory',
@@ -45,10 +45,13 @@ define([
 		"dijit/_editor/plugins/TextColor",
 		"dijit/_editor/plugins/ViewSource",
 		"dijit/_editor/plugins/Print"
-	], function (HelpFactory, SelectViewFactory, BrandFactory, createEditorFactory, DynamicResourceFactory, SchemaGenerator, MetaSchemaGenerator, StaticSchemaGenerator, SchemaRegistryFactory, createSchemaEditorFactory, createCollectionEditorFactory, createMdbServerEditorFactory, MongoRest, JcrTemplateRest, StoreFactory, JsonRest, Delete, OpenAsJson, MdbSchemaStore, TemplateStore, ToMongoQueryTransform) {
+	], function (SchemaGenerator, HelpFactory, SelectViewFactory, BrandFactory, createEditorFactory, DynamicResourceFactory, MetaSchemaGenerator, StaticSchemaGenerator, SchemaRegistryFactory, createSchemaEditorFactory, createCollectionEditorFactory, createMdbServerEditorFactory, MongoRest, JcrTemplateRest, StoreFactory, JsonRest, Delete, OpenAsJson, SchemaStore, TemplateStore, ToMongoQueryTransform) {
 
 
 		return function (config) {
+			config.idProperty="_id";
+			config.idType="string";
+			var schemaGenerator = new SchemaGenerator()
 			var baseUrl = config.baseUrl;
 			return {
 				"storeRegistry": {
@@ -77,8 +80,8 @@ define([
 							"name": "/mdbcollection",
 							"storeClass": "gform-app/util/MongoRest",
 							"assignableId": true,
-							"idProperty": "_id",
-							"idType": "string",
+							"idProperty": config.idProperty,
+							"idType": config.idType,
 							"target": baseUrl + "meta/",
 							"template": "/mdbcollection",
 							"createEditorFactory": "gform-app/mongodb/createCollectionEditorFactory",
@@ -90,8 +93,8 @@ define([
 							"name": "/mdbschema",
 							"assignableId": true,
 							"storeClass": "gform-app/util/MongoRest",
-							"idProperty": "_id",
-							"idType": "string",
+							"idProperty": config.idProperty,
+							"idType": config.idType,
 							"target": baseUrl + "schema/",
 							"template": "/mdbschema",
 							"createEditorFactory": "gform-app/mongodb/createSchemaEditorFactory",
@@ -109,12 +112,13 @@ define([
 					"registryClass": "gform-app/SchemaRegistry",
 					"stores": [
 						/*{id: "/template", storeClass: TemplateStore},*/
-						{id: "/mdbschema", storeClass: MdbSchemaStore}
+						{id: "/mdbschema", storeClass: SchemaStore, idProperty: config.idProperty}
 					],
 					"schemaGenerators": [
 						{
-							"factoryId": "gform-app/mongodb/MetaSchemaGenerator",
-							"store": "/mdbschema" // instances of the generated schema will be place into this store. id Proeprty and idType are taken from this store and added to the schema.
+							"factoryId": "gform-app/dynamicstore/MetaSchemaGenerator",
+							"store": "/mdbschema", // instances of the generated schema will be place into this store. id Proeprty and idType are taken from this store and added to the schema.
+							"schemaGenerator":schemaGenerator
 						},
 						{
 							"factoryId": "gform-app/factory/schema/StaticSchemaGenerator",
@@ -141,7 +145,7 @@ define([
 						"url": baseUrl + "data/{db}/{collection}/",
 						"storeId": "/mdbcollection",
 						"schemaStore": "/mdbschema",
-						"idProperty": "_id",
+						"idProperty": config.idProperty,
 						"fallbackSchema": "/mdbFallbackSchema",
 						"createEditorFactory": "gform-app/mongodb/createEditorFactory"
 					}
@@ -298,6 +302,7 @@ define([
 								{
 									"previewerId": "gform",
 									"region": "center",
+									"idProperty":"_id",
 									"factoryId": "gform-app/factory/SchemaPreviewerFactory",
 									"splitter": true
 								},

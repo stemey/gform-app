@@ -124,8 +124,8 @@ define([
 				assignableId: meta.assignableId
 			}
 			var store;
-			if (this.config.StoreClass) {
-				store = new this.config.StoreClass({
+			if (this.config.storeClass) {
+				store = new this.config.storeClass({
 					idProperty: this.config.idProperty,
 					target: target
 				});

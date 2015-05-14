@@ -2,7 +2,7 @@ define([
 	'./dynamic/DynamicResourceManager',
 	'dojo/Deferred',
 	"dojo/_base/declare",
-	'../mongodb/SchemaTransformer'
+	'../dynamicstore/SchemaTransformer'
 ], function (DynamicResourceManager, Deferred, declare, SchemaTransformer) {
 
 
