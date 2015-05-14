@@ -9,8 +9,8 @@ define([
 				//var url = baseUrl + ".." + obj.collectionUrl + "/" + obj.collection;
 				var cb = function (value) {
 					obj.group = value.group;
-					obj.type="object";
-					delete obj.editor;
+					obj.type = "object";
+					delete obj.editor;// = "object";
 				}
 				return {store: obj.schema_store, id: obj.schema_id, setter: cb};
 			} else {

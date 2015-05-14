@@ -32,8 +32,8 @@ define([
 			lang.mixin(gformAppConfig, hash);
 			config.init(gformAppConfig);
 			var appConfig = factory(config);
-			var appFactory = new AppFactory(appConfig);
-			var promise = appFactory.create();
+			this.appFactory = new AppFactory(appConfig);
+			var promise = this.appFactory.create();
 			var loadingScreen = query('.loadingScreen')[0];
 			var me = this;
 			promise.then(function (container) {
@@ -41,7 +41,7 @@ define([
 				loadingScreen.style.display = 'none';
 				container.placeAt(me.domNode);
 				container.startup();
-				appFactory.afterAttached();
+				me.appFactory.afterAttached();
 			})
 		},
 		followPreviewLink: function (url) {

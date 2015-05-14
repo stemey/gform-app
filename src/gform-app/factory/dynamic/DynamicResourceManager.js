@@ -15,7 +15,7 @@ define([
 		ctx: null,
 		config: null,
 		StoreClass: null,
-		storeFactory:null,
+		storeFactory: null,
 		createEditorFactory: null,
 		metaStore: null,
 		schemaStore: null,
@@ -34,10 +34,10 @@ define([
 				var a = args;
 				when(result).then(function (result) {
 					// TODO stores should return persisted object. assume that return value is the id for now.
-					if (typeof result ==="object") {
-						store=result;
-					}else{
-						var id =result;
+					if (typeof result === "object") {
+						store = result;
+					} else {
+						var id = result;
 						store[me.metaStore.idProperty] = id;
 					}
 					me.addMeta(store);
@@ -112,15 +112,15 @@ define([
 		},
 		createStore: function (meta) {
 			// target is a store specific prop
-			var target = this.config.url ? lang.replace(this.config.url, meta):"dummy";
-			var props ={
+			var target = this.config.url ? lang.replace(this.config.url, meta) : "dummy";
+			var props = {
 				editorFactory: this.createEditorFactory(this.config.efConfig),
 				metaStore: this.metaStore.name,
 				metaId: this.metaStore.getIdentity(meta),
 				description: meta.description,
 				fallbackSchema: this.config.fallbackSchema,
 				idProperty: this.config.idProperty,
-				name:  this.metaStore.getIdentity(meta),
+				name: this.metaStore.getIdentity(meta),
 				assignableId: meta.assignableId
 			}
 			var store;
@@ -129,10 +129,10 @@ define([
 					idProperty: this.config.idProperty,
 					target: target
 				});
-			}else{
-				store = this.config.storeFactory(this.config,props);
+			} else {
+				store = this.config.storeFactory(this.config, meta, props);
 			}
-			lang.mixin(store,props);
+			lang.mixin(store, props);
 			return store;
 		},
 		addMeta: function (meta) {

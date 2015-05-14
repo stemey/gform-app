@@ -26,7 +26,7 @@ define([
 		},
 		display: function (store, entity) {
 			// TODO get transformer from store?
-			var transformer = new SchemaTransformer(this.ctx);
+			var transformer = new SchemaTransformer({ctx:this.ctx});
 			var me = this;
 			try {
 				transformer.transform(entity.group).then(function (schema) {

@@ -6,15 +6,15 @@ gform-app
 examples
 --------
  
-**mongster:**
+**mongomat:**
 
-An admin ui for mongodb: (More)[github.com/stemey/mongster]. 
+An admin ui for mongodb: (More)[github.com/stemey/mongomat]. 
  
  
 VIDEO
 
 
-**tinycms**
+**cms4apps**
 
 A cms using handlebars as templates. Content and data is stored in mongodb or jcr-repository. 
 Create schemas and associated templates. Manage instances in a tree structure.
@@ -27,6 +27,11 @@ installation
 
 * git clone github.com/stemey/gform-app
 * cd gform-app
+* bower install
+* run the examples
+
+to optimize js:
+
 * npm install
 * grunt build
 

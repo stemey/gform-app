@@ -1,9 +1,9 @@
-define(['dstore/Memory',
-		'dstore/RequestMemory',
+define(['../../controller/gridactions/OpenAsJson',
+		'dstore/Memory',
 		'../../util/dynamicDstoreFactory',
 		'../../mongodb/MdbSchemaStore',
 		'../../util/ToMongoQueryTransform',
-		'gform-app/controller/gridactions/Delete'], function (Memory, RequestMemory, dynamicDstoreFactory, MdbSchemaStore, ToMongoQueryTransform, Delete) {
+		'gform-app/controller/gridactions/Delete'], function (OpenAsJson, Memory, dynamicDstoreFactory, MdbSchemaStore, ToMongoQueryTransform, Delete) {
 
 
 		return function (config) {
@@ -13,15 +13,16 @@ define(['dstore/Memory',
 					"stores": [
 						{
 							"factoryId": "gform-app/factory/DstoreFactory",
-							"storeClass": "dstore/Memory",
+							"storeClass": "dstore/RequestMemory",
 							"template": "schema",
 							"name": "schema",
 							"idProperty": "id",
-							"idType":"number",
-							"assignableId":false,
+							"idType": "number",
+							"assignableId": false,
 							"dstoreConfig": {
-								//"target": "gform-app/example/dynamic/schema-data.json"
-							}
+								"target": "gform-app/example/dynamic/schema-data.json"
+							},
+							"createEditorFactory": "gform-app/dynamicstore/createSchemaEditorFactory"
 						},
 						{
 							"factoryId": "gform-app/factory/DstoreFactory",
@@ -31,7 +32,8 @@ define(['dstore/Memory',
 							"idProperty": "id",
 							"dstoreConfig": {
 								"target": "gform-app/example/dynamic/metadata-data.json"
-							}
+							},
+							"createEditorFactory": "gform-app/dynamicstore/createMetadataEditorFactory"
 						}
 					]
 				},
@@ -39,16 +41,16 @@ define(['dstore/Memory',
 					"factoryId": "gform-app/factory/schema/SchemaRegistryFactory",
 					"registryClass": "gform-app/SchemaRegistry",
 					"stores": [
-						{id: "schema", storeClass: MdbSchemaStore}
+						{id: "schema", storeClass: MdbSchemaStore, idProperty: "id"}
 					],
 					"schemaGenerators": [
 						{
-							"factoryId": "gform-app/mongodb/MetaSchemaGenerator",
+							"factoryId": "gform-app/dynamicstore/MetaSchemaGenerator",
 							"store": "schema"
 						},
 						{
 							"factoryId": "gform-app/factory/schema/StaticSchemaGenerator",
-							"module": "gform-app/example/dynamic/metadata.json"
+							"module": "gform-app/dynamicstore/metadata.json"
 						},
 						{
 							"factoryId": "gform-app/factory/schema/StaticSchemaGenerator",
@@ -61,6 +63,7 @@ define(['dstore/Memory',
 						"factoryId": "gform-app/factory/DynamicResourceFactory",
 						"storeFactory": dynamicDstoreFactory,
 						"idProperty": "id",
+						"initialDataUrl": "gform-app/example/dynamic/data-{name}.json",
 						"storeConfig": {
 							"storeClass": Memory
 						},
@@ -118,7 +121,7 @@ define(['dstore/Memory',
 									"gridConfig": {
 										"gridxQueryTransform": new ToMongoQueryTransform(),
 										"menuItems": [
-											 Delete
+											Delete, {type: OpenAsJson, fallbackSchema: "fallbackSchema"}
 										]
 									}
 								}],
@@ -129,7 +132,7 @@ define(['dstore/Memory',
 									"storeId": "metadata",
 									"gridxQueryTransform": new ToMongoQueryTransform(),
 									"menuItems": [
-										Delete
+										Delete, {type: OpenAsJson, fallbackSchema: "fallbackSchema"}
 									],
 									sync: true,
 									conditions: {
@@ -147,7 +150,7 @@ define(['dstore/Memory',
 									"storeId": "schema",
 									"gridxQueryTransform": new ToMongoQueryTransform(),
 									"menuItems": [
-										Delete
+										Delete, {type: OpenAsJson, fallbackSchema: "fallbackSchema"}
 									],
 									sync: true,
 									conditions: {

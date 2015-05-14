@@ -1,0 +1,69 @@
+[
+	{
+		"id":1,
+		"name": "person",
+		"group": {
+			"attributes": [
+				{
+					"code": "id",
+					"required": false,
+					"disabled": false,
+					"visible": true,
+					"mock": false,
+					"type": "number",
+					"editor": "number"
+				},
+				{
+					"code": "address",
+					"required": false,
+					"type": "object",
+					"editor": "schema-ref",
+					"schema_id":"2",
+					"schema_store":"schema"
+				},
+				{
+					"code": "name",
+					"required": false,
+					"intermediateChanges": true,
+					"type": "string",
+					"editor": "string"
+				},
+				{
+					"code": "friend",
+					"required": false,
+					"disabled": false,
+					"visible": true,
+					"mock": false,
+					"type": "multi-ref",
+					"editor": "multi-entity-ref",
+					"searchProperty": "name",
+					"entity_id": "1",
+					"store_id": "metadata",
+					"schemas": [
+						"1"
+					]
+				}
+			],
+			"editor": "listpane"
+		}
+	},
+	{
+		"id": 2,
+		"name": "address",
+		"group": {
+			"editor": "listpane",
+			"attributes": [
+				{
+					"code": "street",
+					"type": "string",
+					"editor": "string"
+				},
+				{
+					"code": "zip",
+					"type": "string",
+					"editor": "string"
+				}
+			]
+		}
+	}
+]

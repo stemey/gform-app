@@ -15,6 +15,7 @@ define([
 
 	return declare([], {
 		deferred: null,
+		ctx:null,
 		constructor: function (config) {
 			this.config = config;
 		},

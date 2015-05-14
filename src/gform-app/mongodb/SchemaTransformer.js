@@ -10,24 +10,24 @@ define([
 //		gform/util/Resolver
 
 
-	return declare("cms.mongodb.SchemaTransfomer", [], {
-		idType: null,
+	return declare([], {
 		idProperty: null,
-		baseUrl: null,
-		constructor: function (ctx) {
-			this.ctx = ctx;
+		ctx:null,
+		constructor: function (kwArgs) {
+			this.ctx=kwArgs.ctx;
+			this.idProperty=kwArgs.idProperty;
 		},
 		transform: function (schema, skipResolve) {
 			var d = new Deferred();
 			var resolver = new SchemaResolver(this.ctx);
-			resolver.addResolver(new MultiEntityRefResolver(resolver))
-			resolver.addResolver(new SchemaRefResolver(resolver))
-			p = resolver.resolve(schema);
+			resolver.addResolver(new MultiEntityRefResolver({idProperty:this.idProperty}))
+			resolver.addResolver(new SchemaRefResolver())
+			// TODO schemaResolver modifies input so we need to clone here
+			var clonedSchema = JSON.parse(JSON.stringify(schema));
+			p = resolver.resolve(clonedSchema);
 			var me = this;
 			when(p).then(function () {
-				// TODO remove dependency on schema property and group property
-				d.resolve(schema);
-
+				d.resolve(clonedSchema);
 			}).otherwise(function (e) {
 				d.reject(e)
 			});

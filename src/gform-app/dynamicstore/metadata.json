@@ -1,6 +1,6 @@
 {
 	"id": "metadata",
-	"description": "meta data for mongodb collection",
+	"description": "meta data for stores and their types",
 	"editor": "verticalgroup",
 	"groups": [
 		{
@@ -64,7 +64,7 @@
 											"code": "schemas",
 											"type": "array",
 											"minItems": 1,
-											"initialValueFactory": "/mdbcollection/multi-schema/create",
+											"initialValueFactory": "/dynamicstore/multi-schema/create",
 											"element": {
 												"type": "ref",
 												"schemaUrl": "schema",
@@ -78,7 +78,7 @@
 									"label": "single schema",
 									"attributes": [
 										{
-											"initialValueFactory": "/mdbcollection/single-schema/create",
+											"initialValueFactory": "/dynamicstore/single-schema/create",
 											"code": "schema",
 											"type": "ref",
 											"required": true,

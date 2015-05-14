@@ -79,7 +79,7 @@
 											"type": "array",
 											"description": {"#ref": "schemas.html"},
 											"minItems": 1,
-											"initialValueFactory": "/mdbcollection/multi-schema/create",
+											"initialValueFactory": "/dynamicstore/multi-schema/create",
 											"element": {
 												"type": "ref",
 												"schemaUrl": "/mdbschema",
@@ -94,7 +94,7 @@
 									"editorDescription": {"#ref": "singleSchemaDescription.html"},
 									"attributes": [
 										{
-											"initialValueFactory": "/mdbcollection/single-schema/create",
+											"initialValueFactory": "/dynamicstore/single-schema/create",
 											"code": "schema",
 											"type": "ref",
 											"required": true,

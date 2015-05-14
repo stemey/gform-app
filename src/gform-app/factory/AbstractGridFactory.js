@@ -1,4 +1,5 @@
 define([
+	'dojo/_base/lang',
 	'gridx/core/model/cache/Async',
 	'gridx/core/model/cache/Sync',
 	'gridx/modules/filter/QuickFilter',
@@ -13,7 +14,7 @@ define([
 	'dojo/topic',
 	"dojo/_base/declare"
 
-], function (Async, Sync, QuickFilter, Filter, FilterBar, ContainerFactory, MenuItem, DijitMenu, GformSchema2TableConverter, aspect, Deferred, topic, declare) {
+], function (lang, Async, Sync, QuickFilter, Filter, FilterBar, ContainerFactory, MenuItem, DijitMenu, GformSchema2TableConverter, aspect, Deferred, topic, declare) {
 
 
 	var allFilterConditions = {
@@ -81,8 +82,16 @@ define([
 			if (config.menuItems) {
 				var menu = new DijitMenu();
 				grid.menu.bind(menu, {hookPoint: "row"});
-				config.menuItems.forEach(function (ItemType) {
-					var item = new ItemType();
+				config.menuItems.forEach(function (cfg) {
+					var item;
+					if (typeof cfg === "function") {
+						item = new cfg();
+					} else{
+						var props = {};
+						lang.mixin(props,cfg);
+						delete props.type;
+						item = cfg.type(props);
+					}
 					var click;
 					if (item.type == "single") {
 						click = function () {

@@ -1,0 +1,35 @@
+{
+	"code": "schema-ref",
+	"editor": "tab",
+	"groupLabel":"references",
+	"description": "",
+	"groups": [
+		{
+			"$ref": "../../gform/schema/attributes/header.json"
+		},
+		{
+			"label": "template",
+			"attributes": [
+				{
+					"code": "schema_id",
+					"label":"schema",
+					"type": "ref",
+					"searchProperty": "name",
+					"idProperty": "id",
+					"url": "schema",
+					"schemaUrl": "schema"
+				},
+				{
+					"code": "schema_store",
+					"values": ["schema"],
+					"required": true,
+					"visible": false,
+					"type": "string"
+				}
+			]
+		},
+		{
+			"$ref": "../../gform/schema/attributes/messages.json"
+		}
+	]
+}

@@ -1,5 +1,9 @@
-define([], function () {
-	return {
+define(['dojo/_base/lang',
+	'dojo/_base/declare'], function (lang, declare) {
+	return declare([], {
+		constructor: function (kwArgs) {
+			lang.mixin(this, kwArgs);
+		},
 		// TODO the id attribute's props are the id from the store that this model is stored in. That information needs to be configured by the DyanmicResourceFactory
 		createMultiSchema: function (model, ctx) {
 			var typeProperty;
@@ -15,18 +19,18 @@ define([], function () {
 			}
 			var schema = {
 				"group": {
-					"editor":"listpane",
+					"editor": "listpane",
 					"attributes": [
 						{
-							"code": "_id",
-							"editor": "string",
-							"type": "string"
+							"code": this.idProperty,
+							"type": this.idType,
+							"disabled":!this._isAssignableId(model)
 						},
 						{
 							"code": typeProperty,
-							"editor":"string",
+							"editor": "string",
 							"type": "string",
-							"visible":false
+							"visible": false
 						}
 					]
 				}
@@ -34,15 +38,22 @@ define([], function () {
 			return schema;
 
 		},
+		_isAssignableId: function(model) {
+			var assignabledIdModel = model.getModelByPath("...assignableId");
+			if (assignabledIdModel==null) {
+				assignabledIdModel = model.getModelByPath(".....assignableId");
+			}
+			return assignabledIdModel.getPlainValue();
+		},
 		createSingleSchema: function (model, ctx) {
 			var schema = {
 				"group": {
-					"editor":"listpane",
+					"editor": "listpane",
 					"attributes": [
 						{
-							"code": "_id",
-							"editor": "string",
-							"type": "string"
+							"code": this.idProperty,
+							"editor": this.idType,
+							"disabled":!this._isAssignableId(model)
 						}
 					]
 				}
@@ -50,6 +61,7 @@ define([], function () {
 			return schema;
 
 		}
-	}
-});
+	});
+})
+;
 

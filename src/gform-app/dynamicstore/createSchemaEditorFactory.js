@@ -1,9 +1,9 @@
 define([
-	'./../dynamicstore/SchemaPlainValueFactory',
+	'./SchemaPlainValueFactory',
 	'../controller/actions/DiscardAndPreview',
 	'../controller/actions/PreviewButton',
 	'../util/urlConverter',
-	'../dynamicstore/SchemaAttributeFactory',
+	'./SchemaAttributeFactory',
 	'../util/stringTemplateConverter',
 	'../controller/actions/Save',
 	'gform/controller/actions/Close',
@@ -13,12 +13,11 @@ define([
 	'gform/special/formbuilder/AttributeRefFactory',
 	'gform/special/formbuilder/FormAttributeFactory',
 	'gform/special/formbuilder/RepeatedFormAttributeFactory',
-	'./refConverter',
 	'gform/primitive/nullablePrimitiveConverter',
 	'../meta/TemplateRefAttributeFactory',
 	'../RequiredAttributes',
 	'gform/createFullEditorFactory'
-], function (PlainValueFactory, DiscardAndPreview, PreviewButton,  urlConverter, SchemaAttributeFactory, stringTemplateConverter, Save, Close, Delete, ActionFactory, FormValidator, AttributeRefFactory, FormAttributeFactory, RepeatedFormAttributeFactory, refConverter, converter, TemplateRefAttributeFactory, RequiredAttributes, createFullEditorFactory) {
+], function (SchemaPlainValueFactory, DiscardAndPreview, PreviewButton,  urlConverter, SchemaAttributeFactory, stringTemplateConverter, Save, Close, Delete, ActionFactory, FormValidator, AttributeRefFactory, FormAttributeFactory, RepeatedFormAttributeFactory,  converter, TemplateRefAttributeFactory, RequiredAttributes, createFullEditorFactory) {
 
 
 	return function (config) {
@@ -33,7 +32,7 @@ define([
 
 		ef.addConverterForType(converter, "ref");
 		ef.addConverterForType(converter, "multi-ref");
-		ef.addConverterForid(refConverter, "refConverter");
+
 		ef.addConverterForid(stringTemplateConverter, "templateConverter");
 		ef.addConverterForid(urlConverter, "urlConverter");
 
@@ -42,14 +41,6 @@ define([
 		ef.addAttributeFactory(new RepeatedFormAttributeFactory({editorFactory: ef}));
 		ef.addAttributeFactory(new AttributeRefFactory({editorFactory: ef}));
 		ef.addCtrValidator("form", FormValidator);
-
-		var pvf = new SchemaPlainValueFactory({
-			idProperty: "_id",
-			idType: "string"
-		});
-
-		ef.putFunction("/mdbcollection/multi-schema/create", pvf.createMultiSchema.bind(pvf));
-		ef.putFunction("/mdbcollection/single-schema/create", pvf.createSingleSchema.bind(pvf));
 
 		var af = new ActionFactory();
 		af.add({type: Save})

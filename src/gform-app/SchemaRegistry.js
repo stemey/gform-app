@@ -28,7 +28,7 @@ define([
 				return cached;
 			} else {
 				// TODO is this still necessaryy
-				var matches = url.match(/^(\/[^\/]+)\/(.*)/);
+				var matches = url.match(/^(\/?[^\/]+)\/(.*)/);
 				if (matches == null) {
 					throw "no schema " + url;
 				}

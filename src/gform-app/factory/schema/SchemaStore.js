@@ -4,8 +4,6 @@ define([
     'dojo/Deferred',
     "dojo/_base/declare"
 ], function (lang, when, Deferred, declare) {
-// module:
-//		gform/controller/SchemaRegistry
 
 
     return declare([], {

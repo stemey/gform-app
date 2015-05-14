@@ -3,15 +3,26 @@
 	"additionalProperties": {
 		"code": "entity"
 	},
-	"attributes": [
+	"editor": "verticalgroup",
+	"groups": [
 		{
-			"code": "id",
-			"type": "number",
-			"disabled": true
+			"editor": "listpane",
+			"region": "top",
+			"attributes": [
+				{
+					"code": "id",
+					"type": "number",
+					"disabled": true
+				}
+			]
 		},
 		{
-			"code": "entity",
-			"type": "any"
+			"editor": "single",
+			"region": "center",
+			"attribute": {
+				"code": "entity",
+				"type": "any"
+			}
 		}
 	]
 }
