@@ -14,7 +14,7 @@ module.exports = function (grunt) {
 				options: {
 					dojo: path.join('src', 'dojo', 'dojo.js'),
 					dojoConfig: path.join('src', 'dojoConfig.js'),
-					profile: path.join('profiles', 'cms.profile.js'),
+					profile: path.join('profiles', 'gform-app.profile.js'),
 					releaseDir: path.join('..', 'dist'),
 					basePath: path.join(__dirname, 'src')
 				}
@@ -49,7 +49,7 @@ module.exports = function (grunt) {
 				}, {
 					src: path.join('src', 'cms-jcr.html'),
 					dest: path.join('dist', 'cms-jcr.html')
-				}]
+				}	]
 			}
 		},
 		connect: {
@@ -82,13 +82,13 @@ module.exports = function (grunt) {
 			local: {
 				options: {
 					runType: 'client',
-					config: 'src/cms/tests/intern'
+					config: 'src/gform-app/tests/intern'
 				}
 			},
 			remote: {
 				options: {
 					runType: 'runner',
-					config: 'src/cms/tests/intern'
+					config: 'src/gform-app/tests/intern'
 				}
 			}
 		}

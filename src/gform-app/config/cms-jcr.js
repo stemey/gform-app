@@ -5,7 +5,6 @@ define([
 		'../mongodb/createEditorFactory',
 		'../factory/DynamicResourceFactory',
 		'../factory/schema/SchemaGenerator',
-		'../meta/AbstractSchemaGenerator',
 		'../factory/schema/StaticSchemaGenerator',
 		'../factory/schema/SchemaRegistryFactory',
 		'../mongodb/createSchemaEditorFactory',
@@ -17,7 +16,6 @@ define([
 		'../util/JsonRest',
 		'../controller/gridactions/Delete',
 		'../controller/gridactions/OpenAsJson',
-		'../mongodb/MdbSchemaStore',
 		'../jcr/TemplateStore',
 		'../util/ToMongoQueryTransform',
 		'../factory/ExtendedGridFactory',
@@ -45,7 +43,7 @@ define([
 		"dijit/_editor/plugins/TextColor",
 		"dijit/_editor/plugins/ViewSource",
 		"dijit/_editor/plugins/Print"
-	], function (HelpFactory, SelectViewFactory, BrandFactory, createEditorFactory, DynamicResourceFactory, SchemaGenerator, MetaSchemaGenerator, StaticSchemaGenerator, SchemaRegistryFactory, createSchemaEditorFactory, createCollectionEditorFactory, createMdbServerEditorFactory, MongoRest, JcrTemplateRest, StoreFactory, JsonRest, Delete, OpenAsJson, MdbSchemaStore, TemplateStore, ToMongoQueryTransform) {
+	], function (HelpFactory, SelectViewFactory, BrandFactory, createEditorFactory, DynamicResourceFactory, SchemaGenerator, StaticSchemaGenerator, SchemaRegistryFactory, createSchemaEditorFactory, createCollectionEditorFactory, createMdbServerEditorFactory, MongoRest, JcrTemplateRest, StoreFactory, JsonRest, Delete, OpenAsJson, TemplateStore, ToMongoQueryTransform) {
 
 
 		return function (config) {

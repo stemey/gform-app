@@ -7,7 +7,7 @@ define([
 	'dijit/form/DropDownButton',
 	'dijit/TooltipDialog',
 	'dojo/request/xhr',
-	'dojo/i18n!../..//nls/messages',
+	'dojo/i18n!../../nls/messages',
 	"dojo/_base/declare",
 	"gform/controller/actions/_ActionMixin"
 

@@ -21,7 +21,7 @@ var profile = {
 		// are typically binaries (images, etc.) and may be corrupted by the build system if it attempts to process
 		// them and naively assumes they are scripts.
 		copyOnly: function (filename, moduleId) {
-			return (/^cms\/resources\//.test(filename) && !/\.css$/.test(filename));
+			return (/^gform-app\/resources\//.test(filename) && !/\.css$/.test(filename));
 		},
 
 		// Files that are AMD modules.
@@ -35,7 +35,7 @@ var profile = {
 		// In this case, we are excluding this package configuration file which is not necessary in a built copy of
 		// the application.
 		miniExclude: function (filename, moduleId) {
-			return (/^cms\/tests\//).test(moduleId) || moduleId in {
+			return (/^gform-app\/tests\//).test(moduleId) || moduleId in {
 				'gform-app/package': 1
 			};
 		}

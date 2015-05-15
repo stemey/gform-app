@@ -9,10 +9,10 @@ var dojoConfig = {
         'dijit',
         'dojox',
 		'gform',
+		'dstore',
 		'gridx',
 		'components-font-awesome',
         'gform-app',
-		"handlebars",
         {name: 'ace', location: 'ace-builds/src-noconflict'}
     ]
 };

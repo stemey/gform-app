@@ -51,10 +51,12 @@ var profile = {
 		},
 
 
-		'cms/main': {
+		'gform-app/main': {
 			include: [],
-			exclude:['ace/ace','handlebars/handlebars']
+			exclude:['ace/ace']
 		}
+
+
 	},
 
 	// Providing hints to the build system allows code to be conditionally removed on a more granular level than

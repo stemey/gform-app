@@ -9,7 +9,8 @@
         "gridx": "git://github.com/oria/gridx.git#~1.3.8",
         "dojo": "~1.9.7",
         "dijit": "~1.9.7",
-        "dojox": "~1.9.7",
+		"dstore": "~1.1.0",
+		"dojox": "~1.9.7",
         "ace-builds": "~1.1.3",
         "util": "dojo-util#~1.9.7"
     }
