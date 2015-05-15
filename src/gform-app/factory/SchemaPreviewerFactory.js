@@ -1,14 +1,14 @@
 define([
-	'../CmsContext',
+	'gform/Context',
 	'dojo/_base/lang',
 	'../controller/SchemaPreviewer',
 	"dojo/_base/declare"
-], function (CmsContext, lang, SchemaPreviewer, declare) {
+], function (Context, lang, SchemaPreviewer, declare) {
 
 
 	return declare([], {
 		create: function (ctx, config) {
-			var ectx = new CmsContext();
+			var ectx = new Context();
 			ectx.storeRegistry = ctx.storeRegistry;
 			ectx.schemaRegistry = ctx.schemaRegistry;
 			ectx.opener = {

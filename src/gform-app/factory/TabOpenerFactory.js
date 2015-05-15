@@ -1,15 +1,15 @@
 define([
     'dijit/registry',
-    '../CmsContext',
+    'gform/Context',
     '../controller/TabOpener',
     'dijit/layout/TabContainer',
     "dojo/_base/declare"
-], function (registry, CmsContext, TabOpener, TabContainer, declare) {
+], function (registry, Context, TabOpener, TabContainer, declare) {
 
 
     return declare([], {
         _createOpener: function (tabContainer, ectx) {
-            var ctx = new CmsContext();
+            var ctx = new Context();
             ctx.storeRegistry = ectx.storeRegistry;
             ctx.schemaRegistry = ectx.schemaRegistry;
             var opener = new TabOpener();

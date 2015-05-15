@@ -1,24 +1,14 @@
 define([
 	'./SchemaPlainValueFactory',
-	'../controller/actions/GenerateSchema',
 	'../controller/actions/GoToData',
 	'../controller/actions/DiscardAndPreview',
-	'./SchemaPlainValueFactory',
-	'../util/urlConverter',
-	'./SchemaAttributeFactory',
-	'../util/stringTemplateConverter',
 	'../controller/actions/Save',
     'gform/controller/actions/Close',
 	'gform/controller/actions/Delete',
     'gform/controller/actions/ActionFactory',
-    'gform/special/formbuilder/FormValidator',
-    'gform/special/formbuilder/AttributeRefFactory',
-    'gform/special/formbuilder/FormAttributeFactory',
-    'gform/primitive/nullablePrimitiveConverter',
-    '../meta/TemplateRefAttributeFactory',
-    '../RequiredAttributes',
+	'gform/primitive/nullablePrimitiveConverter',
 	'gform/createFullEditorFactory'
-], function (SchemaPlainValueFactory, GenerateSchema, GoToData, DiscardAndPreview, PlainValueFactory, urlConverter, SchemaAttributeFactory, stringTemplateConverter, Save, Close, Delete, ActionFactory, FormValidator, AttributeRefFactory, FormAttributeFactory,  converter, TemplateRefAttributeFactory, RequiredAttributes, createFullEditorFactory) {
+], function (SchemaPlainValueFactory, GoToData, DiscardAndPreview, Save, Close, Delete, ActionFactory, converter, createFullEditorFactory) {
 
 
     return function (config) {
@@ -28,11 +18,6 @@ define([
 
         ef.addConverterForType(converter, "ref");
         ef.addConverterForType(converter, "multi-ref");
-
-		ef.addAttributeFactory(new FormAttributeFactory({editorFactory: ef}));
-        ef.addAttributeFactory(new AttributeRefFactory({editorFactory: ef}));
-        ef.addCtrValidator("form",FormValidator);
-		ef.addCtrValidator("requiredAttributes", RequiredAttributes);
 
 		var pvf = new SchemaPlainValueFactory({
 			idProperty: config.idProperty,

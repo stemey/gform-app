@@ -1,5 +1,4 @@
 define([
-	'./SchemaPlainValueFactory',
 	'../controller/actions/DiscardAndPreview',
 	'../controller/actions/PreviewButton',
 	'../util/urlConverter',
@@ -15,9 +14,9 @@ define([
 	'gform/special/formbuilder/RepeatedFormAttributeFactory',
 	'gform/primitive/nullablePrimitiveConverter',
 	'../meta/TemplateRefAttributeFactory',
-	'../RequiredAttributes',
+	'./	RequiredAttributes',
 	'gform/createFullEditorFactory'
-], function (SchemaPlainValueFactory, DiscardAndPreview, PreviewButton,  urlConverter, SchemaAttributeFactory, stringTemplateConverter, Save, Close, Delete, ActionFactory, FormValidator, AttributeRefFactory, FormAttributeFactory, RepeatedFormAttributeFactory,  converter, TemplateRefAttributeFactory, RequiredAttributes, createFullEditorFactory) {
+], function (DiscardAndPreview, PreviewButton,  urlConverter, SchemaAttributeFactory, stringTemplateConverter, Save, Close, Delete, ActionFactory, FormValidator, AttributeRefFactory, FormAttributeFactory, RepeatedFormAttributeFactory,  converter, TemplateRefAttributeFactory, RequiredAttributes, createFullEditorFactory) {
 
 
 	return function (config) {

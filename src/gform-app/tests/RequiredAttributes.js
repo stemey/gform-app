@@ -1,5 +1,5 @@
 define([
-	'../RequiredAttributes',
+	'../dynamicstore/RequiredAttributes',
 	'intern!bdd',
 	'intern/chai!assert'
 ], function (RequiredAttributes, bdd, assert) {

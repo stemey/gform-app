@@ -85,6 +85,7 @@ define([
 							"target": baseUrl + "meta/",
 							"template": "/mdbcollection",
 							"createEditorFactory": "gform-app/mongodb/createCollectionEditorFactory",
+							"efConfig":config,
 							"description": "Hallo"
 
 						},

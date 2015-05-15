@@ -31,11 +31,7 @@ define(['./SchemaGenerator',
 							"dstoreConfig": {
 								"target": "gform-app/example/dynamic/data/schema-data.json"
 							},
-							"createEditorFactory": "gform-app/dynamicstore/createSchemaEditorFactory",
-							"efConfig":{
-								"idProperty":config.idProperty,
-								"idType":config.idType
-							}
+							"createEditorFactory": "gform-app/dynamicstore/createSchemaEditorFactory"
 						},
 						{
 							"factoryId": "gform-app/factory/DstoreFactory",
@@ -46,7 +42,11 @@ define(['./SchemaGenerator',
 							"dstoreConfig": {
 								"target": "gform-app/example/dynamic/data/metadata-data.json"
 							},
-							"createEditorFactory": "gform-app/dynamicstore/createMetadataEditorFactory"
+							"createEditorFactory": "gform-app/dynamicstore/createMetadataEditorFactory",
+							"efConfig":{
+								"idProperty":config.idProperty,
+								"idType":config.idType
+							}
 						}
 					]
 				},
