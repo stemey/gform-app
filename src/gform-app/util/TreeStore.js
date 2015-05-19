@@ -13,6 +13,11 @@ define([
         mayHaveChildren: function (object) {
             return object.folder;
         },
+		/**
+		 *
+		 * @param parents the parent path as an array
+		 * @returns {Array}
+		 */
         getUnloadedParents: function (parents) {
             // ["","/test","/test/tt"]
             var me = this;

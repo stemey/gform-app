@@ -24,6 +24,8 @@ define([
 				} else {
 					this.hide();
 				}
+			} else {
+				this.show();
 			}
 		},
 		show: function() {

@@ -1,8 +1,7 @@
 define([
-    //
-    "dojo/_base/array",//
-    "dojo/_base/declare",//
-    "gform/schema/meta"//
+    "dojo/_base/array",
+    "dojo/_base/declare",
+    "gform/schema/meta"
 ], function (array, declare, metaHelper) {
 // module:
 //		gform/model/visit

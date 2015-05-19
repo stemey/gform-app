@@ -1,0 +1,107 @@
+{
+	"id": "metadata",
+	"description": "meta data for stores and their types",
+	"editor": "verticalgroup",
+	"groups": [
+		{
+			"code": "general",
+			"label": "General",
+			"editor": "columnsgroup",
+			"region": "top",
+			"attributes": [
+				{
+					"code": "name",
+					"type": "string",
+					"required": true,
+					"description": "the name of the store."
+				},
+				{
+					"code": "store",
+					"type": "string",
+					"required": true,
+					"description": "the actual id of the store."
+				},
+				{
+					"code": "id",
+					"type": "number",
+					"disabled": true
+				}
+			]
+		},
+		{
+			"code": "schema",
+			"region": "center",
+			"editor": "tab",
+			"groups": [
+				{
+					"label": "schema",
+					"attributes": [
+						{
+							"decorator": "inline",
+							"code": "assignableId",
+							"label": "allow user assigned id ?",
+							"type": "boolean",
+							"description": "Let the user assign an id."
+						},
+						{
+							"type": "object",
+							"code": "schema",
+							"typeProperty": "schemaType",
+							"nullLabel": "no schema",
+							"groups": [
+								{
+									"code": "multi-schema",
+									"label": "multiple schemas",
+									"attributes": [
+										{
+											"code": "typeProperty",
+											"type": "string",
+											"required": true,
+											"defaultValue": "_type",
+											"description": "this property's value refers to its schema"
+										},
+										{
+											"code": "schemas",
+											"type": "array",
+											"minItems": 1,
+											"initialValueFactory": "/dynamicstore/multi-schema/create",
+											"element": {
+												"type": "ref",
+												"schemaUrl": "schema",
+												"url": "schema"
+											}
+										}
+									]
+								},
+								{
+									"code": "single-schema",
+									"label": "single schema",
+									"attributes": [
+										{
+											"initialValueFactory": "/dynamicstore/single-schema/create",
+											"code": "schema",
+											"type": "ref",
+											"required": true,
+											"schemaUrl": "schema",
+											"url": "schema"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"label": "description",
+					"editor": "single",
+					"attribute": {
+						"code": "description",
+						"type": "string",
+						"editor": "richtext"
+
+					}
+				}
+			]
+		}
+	]
+}

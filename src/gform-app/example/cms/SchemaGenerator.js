@@ -1,5 +1,5 @@
 define([
-	'../factory/schema/SchemaGenerator',
+	'gform/schema/SchemaGenerator',
 	'dojo/_base/declare',
 	'dojo/text!../../meta/group.json'
 ], function (SchemaGenerator, declare, group) {
@@ -7,7 +7,7 @@ define([
 	return declare([SchemaGenerator], {
 		loadTemplateSchema: function () {
 			var t = this.createTransformer();
-			t.replace("gform/schema/attributes.json", "gform-app/example/dynamic/attributes.json");
+			t.replace("gform/schema/attributes.json", "gform-app/example/cms/attributes.json");
 			t.replace("gform/schema/attributes/header.json", "gform-app/meta/header.json");
 			t.replace("gform/schema/group/properties/attribute.json", "gform-app/meta/group-attribute.json");
 			t.replace("gform/schema/group/properties/attributes.json", "gform-app/meta/group-attributes.json");

@@ -1,11 +1,10 @@
 define([
-	'../../meta/CmsSchemaGenerator',
 	'dojo/_base/Deferred',
     'dojo/_base/lang',
     'dojo/when',
     "dojo/_base/declare",
     "dojo/text!../../schema/template.json"
-], function (SchemaGenerator, Deferred, lang, when,  declare, templateSchema) {
+], function (Deferred, lang, when,  declare, templateSchema) {
 
     /**
      * store to store our schemas.
@@ -15,8 +14,10 @@ define([
 
     return declare([], {
         deferred: null,
+		schemaGenerator:null,
         create: function (ctx, config) {
             var store = ctx.getStore(config.store);
+			this.schemaGenerator = config.schemaGenerator;
             //var templateToSchemaTransformer = new TemplateSchemaTransformer(store);
             //registry.pageTransformer = templateToSchemaTransformer
             //registry.templateTransformer = templateToSchemaTransformer;
@@ -26,8 +27,7 @@ define([
 
         },
         loadTemplateSchema: function (store) {
-            var generator = new CmsSchemaGenerator();
-            var promise = generator.loadTemplateSchema();
+            var promise = this.schemaGenerator.loadTemplateSchema();
             when(promise).then(lang.hitch(this, "onTemplateSchemaLoaded", store));
         },
         onTemplateSchemaLoaded: function (store,  meta) {

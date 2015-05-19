@@ -1,9 +1,10 @@
 define([
+	'../util/tree/TreeMixin',
 	'./load',
 	'./StoreFactory',
-	'dstore/legacy/DstoreAdapter',
+	'../util/DstoreAdapter',
 	"dojo/_base/declare"
-], function (load, StoreFactory, DstoreAdapter, declare) {
+], function (TreeMixin, load, StoreFactory, DstoreAdapter, declare) {
 
 
 	return declare([StoreFactory], {
@@ -12,7 +13,12 @@ define([
 			return load([config.storeClass], function (StoreClass) {
 				config.dstoreConfig.idProperty = config.idProperty;
 				var dstore = new StoreClass(config.dstoreConfig);
-				var store = new DstoreAdapter(dstore);
+				var Adapter=DstoreAdapter;
+				if (config.parentProperty) {
+					config.dstoreConfig.parentProperty = config.parentProperty;
+					Adapter = declare([DstoreAdapter,TreeMixin]);
+				}
+				var store = new Adapter	(dstore);
 				store.idProperty = config.idProperty;
 				return me._load(store, config);
 			});

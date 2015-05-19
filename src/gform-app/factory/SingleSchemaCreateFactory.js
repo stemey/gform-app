@@ -14,7 +14,7 @@ define([
 					if (store.template) {
 						this.inherited(arguments);
 					}else{
-						this.domNode.style.display="none";
+						this.hide();
 					}
 				}
 			});

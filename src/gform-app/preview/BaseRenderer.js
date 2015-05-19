@@ -245,7 +245,7 @@ define([
             when(me.findByUrl(pageUrl)).then(function (page) {
                 if (page[me.pageStore.typeProperty]) {
                     // TODO replace findByUrl by getById
-                    when(me.templateStore.findByUrl("/template/" + page.template)).then(function (template) {
+                    when(me.templateStore.get(page.template)).then(function (template) {
                         ////console.log("renderInternally p=" + page.url + "  t=" + template.name);
                         if (!template.sourceCode) {
                             renderPromise.resolve({noPage:true});
@@ -344,7 +344,7 @@ define([
             ////console.log(" get TemplateAndData " + pageUrl);
             when(me.findByUrl(pageUrl)).then(function (page) {
                 // TODO replace findByUrl by getById
-                when(me.templateStore.findByUrl("/template/" + page.template)).then(function (template) {
+                when(me.templateStore.get(page.template)).then(function (template) {
                     var includesPromise = me.renderIncludes(template, page);
                     when(includesPromise).then(function (ctx) {
 

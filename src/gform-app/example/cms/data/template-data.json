@@ -1,0 +1,73 @@
+[
+	{
+		"id": "page",
+		"name": "page",
+		"group": {
+			"editor":"listpane",
+			"attributes": [
+				{
+					"editor":"number",
+					"code": "id",
+					"type": "number",
+					"disabled": true
+				},
+				{
+					"editor":"string",
+					"code": "name",
+					"type": "string"
+				},
+				{
+					"editor":"string",
+					"code": "text",
+					"type": "string"
+				},
+				{
+					"editor":"multi-ref",
+					"code": "parent",
+					"type": "multi-ref",
+					"url": "page",
+					"typeProperty": "template",
+					"schemas": ["folder"]
+				},
+				{
+					"editor":"string",
+					"code": "template",
+					"type": "string"
+				}
+			]
+		}
+	},
+	{
+		"id": "folder",
+		"name": "folder",
+		"group": {
+			"editor":"listpane",
+			"attributes": [
+				{
+					"editor":"number",
+					"code": "id",
+					"type": "number",
+					"disabled": true
+				},
+				{
+					"editor":"string",
+					"code": "name",
+					"type": "string"
+				},
+				{
+					"editor":"multi-ref",
+					"code": "parent",
+					"type": "multi-ref",
+					"url": "page",
+					"typeProperty": "template",
+					"schemas": ["folder"]
+				},
+				{
+					"editor":"string",
+					"code": "template",
+					"type": "string"
+				}
+			]
+		}
+	}
+]

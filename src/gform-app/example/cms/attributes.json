@@ -1,0 +1,80 @@
+	[
+    {
+        "$ref": "../../../gform/schema/attributes/textarea.json"
+    },
+    {
+        "$ref": "../../../gform/schema/attributes/richtext.json"
+    },
+    {
+        "$ref": "../../../gform/schema/attributes/string.json"
+    },
+    {
+		"$ref": "schema-ref.json"
+	},
+	{
+		"$ref": "../../../gform/schema/attributes/multi-ref.json"
+	},
+    {
+        "$ref": "../../../gform/schema/attributes/boolean.json"
+    },
+    {
+		"$ref": "../../../gform/schema/attributes/object.json"
+	},
+	{
+		"$ref": "../../../gform/schema/attributes/array.json"
+	},
+	{
+		"$ref": "../../../gform/schema/attributes/multi-array.json"
+	},
+	{
+		"$ref": "../../../gform/schema/attributes/multi-object.json"
+	},
+	{
+		"$ref": "../../../gform/schema/attributes/primitive-array.json"
+	},
+	{
+		"$ref": "../../../gform/schema/attributes/primitive-map.json"
+	},
+	{
+		"$ref": "../../../gform/schema/attributes/map.json"
+	},
+	{
+		"$ref": "../../../gform/schema/attributes/number.json"
+	},
+	{
+		"$ref": "../../../gform/schema/attributes/currencyamount.json"
+	},
+	{
+		"$ref": "../../../gform/schema/attributes/date.json"
+	},
+	{
+		"$ref": "../../../gform/schema/attributes/time.json"
+	},
+	{
+		"$ref": "../../../gform/schema/attributes/simpletextarea.json"
+	},
+	{
+		"$ref": "../../../gform/schema/attributes/select.json"
+	},
+	{
+		"$ref": "../../../gform/schema/attributes/checked-select.json"
+	},
+	{
+		"$ref": "../../../gform/schema/attributes/multi-checked-select.json"
+	},
+	{
+		"$ref": "../../../gform/schema/attributes/table.json"
+	},
+	{
+		"$ref": "../../../gform/schema/attributes/multi-table.json"
+	},
+	{
+		"$ref": "../../../gform/schema/attributes/ref.json"
+	},
+	{
+		"$ref": "../../../gform/schema/attributes/any.json"
+	}
+
+]
+
+

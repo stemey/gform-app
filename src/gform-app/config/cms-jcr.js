@@ -1,4 +1,5 @@
 define([
+		'../meta/CmsSchemaGenerator',
 		'../factory/tools/HelpFactory',
 		'../factory/SelectViewFactory',
 		'../factory/BrandFactory',
@@ -43,11 +44,12 @@ define([
 		"dijit/_editor/plugins/TextColor",
 		"dijit/_editor/plugins/ViewSource",
 		"dijit/_editor/plugins/Print"
-	], function (HelpFactory, SelectViewFactory, BrandFactory, createEditorFactory, DynamicResourceFactory, SchemaGenerator, StaticSchemaGenerator, SchemaRegistryFactory, createSchemaEditorFactory, createCollectionEditorFactory, createMdbServerEditorFactory, MongoRest, JcrTemplateRest, StoreFactory, JsonRest, Delete, OpenAsJson, TemplateStore, ToMongoQueryTransform) {
+	], function (CmsSchemaGenerator, HelpFactory, SelectViewFactory, BrandFactory, createEditorFactory, DynamicResourceFactory, SchemaGenerator, StaticSchemaGenerator, SchemaRegistryFactory, createSchemaEditorFactory, createCollectionEditorFactory, createMdbServerEditorFactory, MongoRest, JcrTemplateRest, StoreFactory, JsonRest, Delete, OpenAsJson, TemplateStore, ToMongoQueryTransform) {
 
 
 		return function (config) {
 			var baseUrl = config.baseUrl;
+			var schemaGenerator = new SchemaGenerator();
 			return {
 				"storeRegistry": {
 					"stores": [
@@ -57,7 +59,8 @@ define([
 							"name": "documentation",
 							"previewerId": "documentation",
 							"target": "gform-app/documentation"
-						}, {
+						},
+						{
 							"factoryId": "gform-app/factory/StoreFactory",
 							"storeClass": "gform-app/util/JsonRest",
 							"name": "/pagetree",
@@ -101,6 +104,7 @@ define([
 					"schemaGenerators": [
 						{
 							"factoryId": "gform-app/factory/meta/CmsSchemaGenerator",
+							"schemaGenerator":schemaGenerator,
 							"store": "/template" // instances of the generated schema will be place into this store. id Proeprty and idType are taken from this store and added to the schema.
 						},
 						{

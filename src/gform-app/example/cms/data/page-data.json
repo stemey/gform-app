@@ -1,0 +1,26 @@
+[
+	{
+		"id": 1,
+		"parent": null,
+		"template":"folder",
+		"name":"root"
+	},
+	{
+		"id": 2,
+		"parent": 1,
+		"template":"page",
+		"name":"a"
+	},
+	{
+		"id": 3,
+		"parent": 1,
+		"template":"page",
+		"name":"b"
+	},
+	{
+		"id": 4,
+		"parent": 1,
+		"template":"folder",
+		"name":"XX"
+	}
+]

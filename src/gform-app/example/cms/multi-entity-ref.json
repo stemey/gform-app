@@ -1,0 +1,66 @@
+{
+	"code": "multi-entity-ref",
+	"editor": "tab",
+	"groupLabel":"references",
+	"description": "",
+	"groups": [
+		{
+			"$ref": "../../../gform/schema/attributes/header.json"
+		},
+		{
+			"label": "reference",
+			"attributes": [
+				{
+					"code": "type",
+					"type": "string",
+					"visible": false,
+					"required": true,
+					"values": ["multi-ref"]
+				},
+				{
+					"code": "editor",
+					"type": "string",
+					"visible": false,
+					"required": true,
+					"values": ["multi-entity-ref"]
+				},
+				{
+					"code": "searchProperty",
+					"description": "The property displayed and matched against the user input.",
+					"type": "string",
+					"required": true
+				},
+				{
+					"code": "entity_id",
+					"label": "store",
+					"required": true,
+					"description": "the store",
+					"type": "ref",
+					"required": true,
+					"url": "metadata",
+					"searchProperty": "name",
+					"idProperty":"id"
+				},
+				{
+					"code": "store_id",
+					"required": true,
+					"visible": false,
+					"values": ["metadata"]
+				},
+				{
+					"code": "schemas",
+					"required": true,
+					"type": "array",
+					"element": {
+						"type": "number",
+						"editor": "schema-collection",
+						"mapped_attribute": "..entity_id"
+					}
+				}
+			]
+		},
+		{
+			"$ref": "../../../gform/schema/attributes/messages.json"
+		}
+	]
+}

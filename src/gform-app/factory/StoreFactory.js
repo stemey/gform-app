@@ -1,4 +1,5 @@
 define([
+	'../util/tree/TreeMixin',
 	'dojo/_base/Deferred',
 	'dojo/_base/lang',
 	'dojo/topic',
@@ -7,7 +8,7 @@ define([
 	'./ContainerFactory',
 	"dojo/_base/declare",
 	'dojo/when'
-], function (Deferred, lang, topic, aspect, load, ContainerFactory, declare, when) {
+], function (TreeMixin, Deferred, lang, topic, aspect, load, ContainerFactory, declare, when) {
 
 
 	return declare([ContainerFactory], {
@@ -45,6 +46,9 @@ define([
 		create: function (config) {
 			var me = this;
 			return load([config.storeClass], function (storeClass) {
+				if (config.parentProperty) {
+					storeClass = declare([storeClass,TreeMixin]);
+				}
 				var store = new storeClass(config);
 				return me._load(store, config);
 			});
