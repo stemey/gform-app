@@ -11,7 +11,6 @@ define([
 		'../mongodb/createSchemaEditorFactory',
 		'../mongodb/createCollectionEditorFactory',
 		'../mongodb/createMdbServerEditorFactory',
-		'../util/MongoRest',
 		'../util/JcrTemplateRest',
 		'../factory/StoreFactory',
 		'../util/JsonRest',
@@ -44,12 +43,12 @@ define([
 		"dijit/_editor/plugins/TextColor",
 		"dijit/_editor/plugins/ViewSource",
 		"dijit/_editor/plugins/Print"
-	], function (CmsSchemaGenerator, HelpFactory, SelectViewFactory, BrandFactory, createEditorFactory, DynamicResourceFactory, SchemaGenerator, StaticSchemaGenerator, SchemaRegistryFactory, createSchemaEditorFactory, createCollectionEditorFactory, createMdbServerEditorFactory, MongoRest, JcrTemplateRest, StoreFactory, JsonRest, Delete, OpenAsJson, TemplateStore, ToMongoQueryTransform) {
+	], function (CmsSchemaGenerator, HelpFactory, SelectViewFactory, BrandFactory, createEditorFactory, DynamicResourceFactory, SchemaGenerator, StaticSchemaGenerator, SchemaRegistryFactory, createSchemaEditorFactory, createCollectionEditorFactory, createMdbServerEditorFactory, JcrTemplateRest, StoreFactory, JsonRest, Delete, OpenAsJson, TemplateStore, ToMongoQueryTransform) {
 
 
 		return function (config) {
 			var baseUrl = config.baseUrl;
-			var schemaGenerator = new SchemaGenerator();
+			var schemaGenerator = new SchemaGenerator({requiredAttribute:"url"});
 			return {
 				"storeRegistry": {
 					"stores": [

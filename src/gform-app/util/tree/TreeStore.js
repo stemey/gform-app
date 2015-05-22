@@ -52,8 +52,8 @@ define([
                 });
             }
         },
-        createEntity: function (url) {
-            var parents = this.getParents(url);
+        createEntity: function (entity) {
+            var parents = this.getParents(entity.url);
             this.loadChildren(parents);
         },
         updateEntity: function (entity, oldEntity) {

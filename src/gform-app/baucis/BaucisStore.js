@@ -1,5 +1,5 @@
 define([
-	'./DijitToMongoQueryTransform',
+	'./../util/DijitToMongoQueryTransform',
 	'dojo/request/xhr',
     'dojo/store/util/QueryResults',
     'dojo/Deferred',
@@ -9,8 +9,7 @@ define([
 ], function (DijitToMongoQueryTransform, xhr, QueryResults, Deferred, lang, declare, JsonRest) {
 
     return declare([ JsonRest ], {
-        transform: null,
-		transform: new DijitToMongoQueryTransform(),
+        transform: new DijitToMongoQueryTransform(),
         query: function (query, options) {
             var params = {};
 	

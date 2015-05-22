@@ -1,10 +1,11 @@
 define([
-	'dojo/_base/Deferred',
+    'gform/util/Resolver',
+    'dojo/_base/Deferred',
     'dojo/_base/lang',
     'dojo/when',
     "dojo/_base/declare",
     "dojo/text!../../schema/template.json"
-], function (Deferred, lang, when,  declare, templateSchema) {
+], function (Resolver, Deferred, lang, when,  declare, templateSchema) {
 
     /**
      * store to store our schemas.
@@ -23,6 +24,7 @@ define([
             //registry.templateTransformer = templateToSchemaTransformer;
             this.loadTemplateSchema(store);
             this.deferred = new Deferred();
+            this.requiredAttribute=config.requiredAttribute;
             return this.deferred;
 
         },
@@ -35,6 +37,7 @@ define([
             // get attributes of root.listpane
             //var attributes = meta.attributes[0].groups[0].attributes[2];
             var baseSchema = JSON.parse(templateSchema)
+            new Resolver({values:{pageStore:"page"}}).resolve(baseSchema,null);
             var idAttribute = {};
 
             // adding the schema store's id attribute
@@ -44,7 +47,9 @@ define([
             baseSchema.groups[0].attributes.push(idAttribute);
 
             var group = meta.attributes[0];
-            group.requiredAttributes = [{code:'url'}];
+            if (this.requiredAttribute) {
+                group.requiredAttributes = [{code: this.requiredAttribute}];
+            }
             baseSchema.groups[3].attributes.push(group);
             this.deferred.resolve(baseSchema);
         }

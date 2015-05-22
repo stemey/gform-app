@@ -12,6 +12,9 @@
 		"$ref": "schema-ref.json"
 	},
 	{
+	    "$ref": "../../meta/template-ref.json"
+	},
+	{
 		"$ref": "../../../gform/schema/attributes/multi-ref.json"
 	},
     {

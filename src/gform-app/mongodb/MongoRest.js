@@ -1,5 +1,5 @@
 define([
-	'./DijitToMongoQueryTransform',
+	'./../util/DijitToMongoQueryTransform',
 	'./FindByUrlMixin',
 	'dojo/request/handlers',
 	'dojo/request/xhr',

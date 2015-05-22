@@ -1,5 +1,5 @@
 define([
-    '../util/TreeStore',
+    '../util/tree/TreeStore',
     'intern!bdd',
     'intern/chai!assert'
 ], function (TreeStore, bdd, assert) {

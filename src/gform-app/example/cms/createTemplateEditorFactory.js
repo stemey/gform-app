@@ -1,8 +1,8 @@
 define([
-	'./controller/actions/Preview',
-	'./util/stringTemplateConverter',
-	'./controller/actions/CreateInstance',
-	'./controller/actions/Save',
+	'../../controller/actions/Preview',
+	'../../util/identityConverter',
+	'../../controller/actions/CreateInstance',
+	'../../controller/actions/Save',
 	'gform/controller/actions/Close',
 	'gform/controller/actions/Discard',
 	'gform/controller/actions/Delete',
@@ -13,11 +13,11 @@ define([
 	'gform/special/formbuilder/RepeatedFormAttributeFactory',
 	'gform/primitive/refConverter',
 	'gform/primitive/nullablePrimitiveConverter',
-	'./meta/TemplateRefAttributeFactory',
-	'./dynamicstore/RequiredAttributes',
+	'../../meta/TemplateRefAttributeFactory',
+	'../../dynamicstore/RequiredAttributes',
 	'./TemplateAttributes',
 	'gform/createFullEditorFactory'
-], function (Preview, stringTemplateConverter, CreateInstance, Save, Close, Discard, Delete, ActionFactory, FormValidator, AttributeRefFactory, FormAttributeFactory, RepeatedFormAttributeFactory, refConverter, converter, TemplateRefAttributeFactory, RequiredAttributes, TemplateAttributes, createFullEditorFactory) {
+], function (Preview, identityConverter, CreateInstance, Save, Close, Discard, Delete, ActionFactory, FormValidator, AttributeRefFactory, FormAttributeFactory, RepeatedFormAttributeFactory, refConverter, converter, TemplateRefAttributeFactory, RequiredAttributes, TemplateAttributes, createFullEditorFactory) {
 
 
 	return function () {
@@ -26,15 +26,11 @@ define([
 		attributeFactoryFinder.addAttributeFactory(new TemplateRefAttributeFactory({editorFactory: ef}));
 		ef.addCtrValidator("requiredAttributes", RequiredAttributes);
 		ef.addValidator("templateAttributes", TemplateAttributes);
-		//ef.addConverterForid(urlConverter,"urlConverter");
-		// TODO file server url needs to be configurable
-		ef.getAttributeFactory({type: "binary"}).fileServerUrl = "http://localhost:4444/upload";
-		ef.getAttributeFactory({type: "binary"}).baseUrl = "http://localhost:4444/";
 
 		ef.addConverterForType(converter, "ref");
 		ef.addConverterForType(converter, "multi-ref");
 		ef.addConverterForid(refConverter, "refConverter");
-		ef.addConverterForid(stringTemplateConverter, "templateConverter");
+		ef.addConverterForid(identityConverter, "identityConverter");
 
 		ef.addAttributeFactory(new FormAttributeFactory({editorFactory: ef}));
 		ef.addAttributeFactory(new RepeatedFormAttributeFactory({editorFactory: ef}));

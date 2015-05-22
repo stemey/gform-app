@@ -3,7 +3,7 @@ define([
 	'../controller/actions/PreviewButton',
 	'../util/urlConverter',
 	'./SchemaAttributeFactory',
-	'../util/stringTemplateConverter',
+	'../util/identityConverter',
 	'../controller/actions/Save',
 	'gform/controller/actions/Close',
 	'gform/controller/actions/Delete',
@@ -16,7 +16,7 @@ define([
 	'../meta/TemplateRefAttributeFactory',
 	'./RequiredAttributes',
 	'gform/createFullEditorFactory'
-], function (DiscardAndPreview, PreviewButton,  urlConverter, SchemaAttributeFactory, stringTemplateConverter, Save, Close, Delete, ActionFactory, FormValidator, AttributeRefFactory, FormAttributeFactory, RepeatedFormAttributeFactory,  converter, TemplateRefAttributeFactory, RequiredAttributes, createFullEditorFactory) {
+], function (DiscardAndPreview, PreviewButton,  urlConverter, SchemaAttributeFactory, identityConverter, Save, Close, Delete, ActionFactory, FormValidator, AttributeRefFactory, FormAttributeFactory, RepeatedFormAttributeFactory,  converter, TemplateRefAttributeFactory, RequiredAttributes, createFullEditorFactory) {
 
 
 	return function (config) {
@@ -29,7 +29,7 @@ define([
 		ef.addConverterForType(converter, "ref");
 		ef.addConverterForType(converter, "multi-ref");
 
-		ef.addConverterForid(stringTemplateConverter, "templateConverter");
+		ef.addConverterForid(identityConverter, "templateConverter");
 		ef.addConverterForid(urlConverter, "urlConverter");
 
 

@@ -11,7 +11,7 @@ define([
 		'../mongodb/createSchemaEditorFactory',
 		'../mongodb/createCollectionEditorFactory',
 		'../mongodb/createMdbServerEditorFactory',
-		'../util/MongoRest',
+		'../mongodb/MongoRest',
 		'../util/JcrTemplateRest',
 		'../factory/StoreFactory',
 		'../util/JsonRest',

@@ -16,6 +16,7 @@ define(['dojo/aspect',
 		init: function () {
 			topic.subscribe("/focus", lang.hitch(this, "onPageFocus"));
 			topic.subscribe("/new", lang.hitch(this, "onNew"));
+			topic.subscribe("/deleted", lang.hitch(this, "onDeleted"));
 
 			aspect.before(this.tabContainer, "closeChild", function (child) {
 				this.closing = true;
@@ -50,6 +51,9 @@ define(['dojo/aspect',
 					}
 				})
 			);
+		},
+		onDeleted: function(evt) {
+			this.closeById(evt);
 		},
 		onClose: function (page) {
 			if (page.store) {

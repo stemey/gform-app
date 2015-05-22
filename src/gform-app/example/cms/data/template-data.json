@@ -26,8 +26,8 @@
 					"code": "parent",
 					"type": "multi-ref",
 					"url": "page",
-					"typeProperty": "template",
-					"schemas": ["folder"]
+				  	"typeProperty": "template",
+					"schemas": [{"label":"folder","code":"folder"}]
 				},
 				{
 					"editor":"string",

@@ -1,4 +1,5 @@
 define([
+	'dojo/request',
 	'../util/tree/TreeMixin',
 	'dojo/_base/Deferred',
 	'dojo/_base/lang',
@@ -8,13 +9,35 @@ define([
 	'./ContainerFactory',
 	"dojo/_base/declare",
 	'dojo/when'
-], function (TreeMixin, Deferred, lang, topic, aspect, load, ContainerFactory, declare, when) {
+], function (request, TreeMixin, Deferred, lang, topic, aspect, load, ContainerFactory, declare, when) {
 
 
 	return declare([ContainerFactory], {
 		_load: function (store, config) {
 			//aspect.around(store, "put", lang.hitch(me, "onPageUpdated", store));
 			lang.mixin(store, config);
+
+			if (config.initialDataUrl) {
+				store.resetData= function() {
+					when(store.query({})).then(function(results) {
+						results.forEach(function(e) {
+							store.remove(store.getIdentity(e));
+						})
+						request(url, {handleAs: "json"}).then(function (data) {
+							data.forEach(function (e) {
+								store.add(e);
+							});
+						});
+					});
+				}
+				var url = config.initialDataUrl;
+				when(store.query({})).then(function(results){
+					if (results.length==0) {
+						store.resetData();
+					}
+				})
+			}
+
 			aspect.around(store, "remove", lang.hitch(this, "onPageDeleted", store));
 			aspect.around(store, "add", lang.hitch(this, "onPageAdded", store));
 			var modules = [];
@@ -65,9 +88,9 @@ define([
 		},
 		onPageDeleted: function (store, superCall) {
 			var me = this;
-			return function (entity) {
+			return function (id) {
 				var result = superCall.apply(this, arguments);
-				topic.publish("/deleted", {store: store.name, id: store.getIdentity(entity), entity: entity})
+				topic.publish("/deleted", {store: store.name, id: id});
 				return result;
 			}
 		},

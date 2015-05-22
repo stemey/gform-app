@@ -7,6 +7,9 @@ define([
 		return value;
 	}
 
+	/**
+	 * this converts a gridx query to a mongob query
+	 */
 	return declare([], {
 		selectIsStartsWith: true,
 		convertValue: idConverter,

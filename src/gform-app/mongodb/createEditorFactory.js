@@ -25,7 +25,6 @@ define([
 		ef.addConverterForType(converter, "ref");
         ef.addConverterForType(converter, "multi-ref");
 		ef.addConverterForType(ejsonDateConverter, "date");
-        //ef.addConverterForid(stringTemplateConverter, "templateConverter");
 
 
         var af = new ActionFactory();

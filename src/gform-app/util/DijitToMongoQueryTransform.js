@@ -1,7 +1,10 @@
 define([
 	"dojo/_base/declare"
 ], function (declare) {
-
+	/**
+	 * this converts regex functions in simple queries into mongodb $regex:expr.
+	 * Helps to implement the queries that dijit/FilteringSelect uses.
+	 */
 	return declare([], {
 		transform: function (oquery) {
 			if (!oquery) {

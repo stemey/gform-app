@@ -48,15 +48,6 @@
             "label": "Partials",
             "attributes": [
                 {
-                    "code": "outer",
-                    "type": "ref",
-                    "idProperty": "identifier",
-                    "url": "/template",
-                    "schemaUrl": "/template",
-                    "required": false,
-                    "searchProperty": "name"
-                },
-                {
                     "code": "partials",
                     "type": "map",
                     "keyAttribute": {},
@@ -64,7 +55,7 @@
                         "type":"ref",
                         "typeProperty": "template",
                         "idProperty": "identifier",
-                        "url": "/page",
+                        "url": {"$ref":"pageStore"},
                         "searchProperty": "url"
 
                     }
