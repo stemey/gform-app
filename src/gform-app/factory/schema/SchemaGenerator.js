@@ -29,29 +29,63 @@ define([
 
         },
         loadTemplateSchema: function (store) {
-            var promise = this.schemaGenerator.loadTemplateSchema();
+                var t = this.schemaGenerator.createTransformer();
+                t.replace("gform/schema/attributes.json", "gform-app/example/cms/attributes.json");
+                t.replace("gform/schema/attributes/header.json", "gform-app/meta/header.json");
+                t.replace("gform/schema/group/properties/attribute.json", "gform-app/meta/group-attribute.json");
+                t.replace("gform/schema/group/properties/attributes.json", "gform-app/meta/group-attributes.json");
+                t.replace("gform/schema/attributes/properties/group.json", "gform-app/meta/group.json");
+                t.replace("gform/schema/attributes/properties/groups.json", "gform-app/meta/groups.json");
+                t.replace("gform/schema/group.json", "gform-app/factory/schema/group.json");
+
+            var baseSchema = JSON.parse(templateSchema)
+
+
+            var values = {
+                pageStore:"page",
+                pageIdProperty:"id",
+                idProperty:"id",
+                idType:"string",
+                idRequired:true,
+                idDisabled:false,
+                templateStore:"/template",
+                templateSchema:"/template",
+                pageStore:"page",
+                pageSearchProperty:"name",
+                pageTypeProperty:"template"
+            }
+
+            // TODO variables should be global scope
+            Object.keys(values).forEach(function(key) {
+                values["gform/schema/"+key]=values[key];
+                values["gform-app/meta/"+key]=values[key];
+            })
+
+            var promise = this.schemaGenerator.load(baseSchema, "gform/schema/", t,values);
             when(promise).then(lang.hitch(this, "onTemplateSchemaLoaded", store));
         },
         onTemplateSchemaLoaded: function (store,  meta) {
-            meta.store = "/schema";
-            // get attributes of root.listpane
-            //var attributes = meta.attributes[0].groups[0].attributes[2];
-            var baseSchema = JSON.parse(templateSchema)
-            new Resolver({values:{pageStore:"page"}}).resolve(baseSchema,null);
-            var idAttribute = {};
+            //meta.store = "/schema";
 
+
+            /*
             // adding the schema store's id attribute
             idAttribute["type"] = store.idType || "string";
             idAttribute["code"] = store.idProperty;
             idAttribute["disabled"] = true;
             baseSchema.groups[0].attributes.push(idAttribute);
+            */
 
+            /*
+            //TODO migrate
             var group = meta.attributes[0];
             if (this.requiredAttribute) {
                 group.requiredAttributes = [{code: this.requiredAttribute}];
             }
-            baseSchema.groups[3].attributes.push(group);
-            this.deferred.resolve(baseSchema);
+             */
+
+            //baseSchema.groups[3].attributes.push(group);
+            this.deferred.resolve(meta);
         }
     });
 

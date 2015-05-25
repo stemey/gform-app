@@ -1,0 +1,9 @@
+		{
+			"code": "group",
+			"type": "object",
+			"typeProperty": "editor",
+			"required": true,
+			"groups": {
+				"$ref": "gform/schema/groups.json?transforms=nocode&transforms=nolabel"
+			}
+		}

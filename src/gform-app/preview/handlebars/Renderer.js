@@ -20,19 +20,23 @@ define([
         }
     });
     Handlebars.registerHelper('style-tag', function (styles, options) {
-        return "<style>"+styles+"</style>"
+        return "<style>" + styles + "</style>"
     });
     Handlebars.registerHelper('link', function (url, options) {
-        return "javascript:preview('" + url + "');";
+        var param = url;
+        if (typeof url === "string") {
+            param = "'" + url + "'"
+        }
+        return "javascript:preview(" + url + ");";
     });
 
     Handlebars.registerHelper('formatCurrency', function (value, options) {
-        return value/100;
+        return value / 100;
     });
 
 
     return declare([BaseRenderer], {
-       renderTemplate: function (code, ctx, partials) {
+        renderTemplate: function (code, ctx, partials) {
             Object.keys(partials).forEach(function (key) {
                 Handlebars.registerPartial(key, partials[key]);
             });

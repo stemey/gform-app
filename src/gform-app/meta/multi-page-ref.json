@@ -1,6 +1,7 @@
 {
     "code": "multi-page-ref",
     "editor": "tab",
+    "groupLabel":"references",
     "description": "This is a select displaying the labels of referenced entities. The autocomplete functionality allows searching through possible entities to associate. It is based on 'dijit.form.FilteringSelect'. There are also buttons to edit the referenced entity or create a new entity in a separate editor. The location of the editor is defined by the opener in the parent editor's context. There are multiple schemata for the referenced resource. The schema is encoded in the resource's typeProperty.",
     "groups": [
         {
@@ -22,7 +23,7 @@
                     "type": "string",
                     "visible": false,
                     "required": true,
-                    "values": ["identifier"]
+                    "values": [{"$ref":"pageIdProperty"}]
                 },
                 {
                     "code": "searchProperty",
@@ -30,7 +31,7 @@
                     "type": "string",
                     "visible": false,
                     "required": true,
-                    "values": ["url"]
+                    "values": [{"$ref":"pageSearchProperty"}]
                 },
                 {
                     "code": "url",
@@ -39,7 +40,7 @@
                     "type": "string",
                     "visible": false,
                     "required": true,
-                    "values": ["/page"]
+                    "values": [{"$ref":"pageStore"}]
                 },
                 {
                     "code": "usage",
@@ -54,7 +55,7 @@
                     "type": "string",
                     "visible": false,
                     "required": true,
-                    "values":["template"]
+                    "values":[{"$ref":"pageTypeProperty"}]
                 },
                 {
                    "code":"schemaUrlPrefix",
@@ -68,8 +69,8 @@
                     "required": true,
                     "element": {
                         "type": "ref",
-                        "schemaUrl": "/template",
-                        "url": "/template",
+                        "schemaUrl": {"$ref":"templateSchema"},
+                        "url": {"$ref":"templateStore"},
                         "idProperty": "code",
                         "searchProperty": "name"
                     }

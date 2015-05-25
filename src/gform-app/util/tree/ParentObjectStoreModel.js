@@ -19,7 +19,8 @@ define([
             return obj[this.store.typeProperty];
         },
         mayHaveChildren: function (object) {
-            return this._getType(object).match(/(f|F)older/);
+            var type = this._getType(object);
+            return  type.match(/(f|F)older/);
         },
         createEntity: function (entity) {
             var me = this;
@@ -30,8 +31,7 @@ define([
                     me.onChildrenChange({id: parentId}, result);
                 })
             }
-        }
-        ,
+        },
         updateEntity: function (entity, oldEntity) {
             if (entity.parent !== this._getParentId(oldEntity)) {
                 this.deleteEntity(this.store.getIdentity(oldEntity));

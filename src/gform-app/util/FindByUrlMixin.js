@@ -6,7 +6,7 @@ define([
     return declare([], {
 
         findByUrl: function (url) {
-            if (url.indexOf("/")==-1) {
+            if (typeof url !== "string" || url.indexOf("/")==-1) {
                 return this.get(url);
             }else{
                 // TODO should always start with /

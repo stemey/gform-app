@@ -1,9 +1,13 @@
 define([
+    '../util/SchemaResolver',
+    '../cms/TemplateRefResolver',
+    '../dynamicstore/MultiEntityRefResolver',
+    '../dynamicstore/SchemaRefResolver',
     'dojo/when',
     'dojo/Deferred',
     './Resolver',
     'dojo/_base/declare'
-], function (when, Deferred, Resolver, declare) {
+], function (SchemaResolver, TemplateRefResolver, MultiEntityRefResolver, SchemaRefResolver, when, Deferred, Resolver, declare) {
 // module:
 //		gform/util/Resolver
 
@@ -11,49 +15,43 @@ define([
     return declare("cms.TemplateSchemaTransfomer", [], {
         idType: null,
         idProperty: null,
-        baseUrl:null,
-        constructor: function (store) {
+        baseUrl: null,
+        ctx: null,
+        constructor: function (kwArgs) {
+            var store = kwArgs.store;
+            this.ctx = kwArgs.ctx;
             this.idProperty = store.idProperty;
             this.idType = store.idType;
-            this.baseUrl=store.target;
+            this.baseUrl = store.target;
         },
         transform: function (schema, skipResolve) {
             var d = new Deferred();
-            var resolver = new Resolver();
-            resolver.idProperty = this.idProperty;
-            resolver.baseUrl=this.baseUrl;
+            var resolver = new SchemaResolver(this.ctx);
+            resolver.addResolver(new MultiEntityRefResolver({idProperty: this.idProperty}))
+            resolver.addResolver(new SchemaRefResolver())
+            resolver.addResolver(new TemplateRefResolver())
+            // TODO schemaResolver modifies input so we need to clone here
+            var clonedSchema = JSON.parse(JSON.stringify(schema));
+            //var resolver = new Resolver();
+            //resolver.idProperty = this.idProperty;
+            resolver.baseUrl = this.baseUrl;
             var p;
             if (!skipResolve) {
-                p = resolver.resolve(schema, this.baseUrl);
+                p = resolver.resolve(clonedSchema);
+                //p = resolver.resolve(schema, this.baseUrl);
             } else {
-                p=schema;
+                p = resolver.resolve(clonedSchema);
+                //p = schema;
             }
             var me = this;
             when(p).then(function () {
-				// TODO remove dependency on schema property and group property
-                d.resolve(schema);
+                // TODO remove dependency on schema property and group property
+                d.resolve(clonedSchema);
 
             }).otherwise(function (e) {
-                    d.reject(e)
-                });
+                d.reject(e)
+            });
             return d;
-        },
-        _transformTemplate: function (schema) {
-            var attributes = this._findAttributes(schema);
-            // TODO make this configurable
-            attributes.push({code: "template", type: "string", "editor": "string", visible: false});
-            return schema;
-
-        },
-        _findAttributes: function (schema) {
-            if (schema.attributes) {
-                return schema.attributes;
-            }
-            if (schema.group && schema.group.attributes) {
-                return this._findAttributes(schema.group);
-            } else if (schema.groups) {
-                return this._findAttributes(schema.groups[0]);
-            }
         }
 
     })

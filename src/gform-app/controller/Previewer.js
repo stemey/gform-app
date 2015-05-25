@@ -13,6 +13,7 @@ define([
 		pageStore: null,
 		iframe: null,
 		url: null,
+		urlProperty:null,
 		onEntityFocus: function (evt) {
 			this.display(evt.store + "/" + evt.id);
 		},
@@ -29,7 +30,9 @@ define([
 		onEntityNavigate: function (evt) {
 			//TODO move to general component or AppController
 			var me = this;
-			var page = this.pageStore.query({url: evt.url});
+			var query ={};
+			query[this.urlProperty]=evt.url;
+			var page = this.pageStore.query(query);
 			when(page).then(function (pageResults) {
 				var id = me.pageStore.getIdentity(pageResults[0]);
 				var template = pageResults[0].template;
@@ -40,33 +43,37 @@ define([
 		},
 		rendering: false,
 		display: function (url) {
-			// TODO improve error reporting
-			var me = this;
-			var scollToTop = this.url !== url;
-			this.url = url;
-			var renderer = this.createRenderer();
-			when(renderer.render(url))
-				.then(function (result) {
-					me.rendering = false;
-					if (!result.noPage) {
+			try {
+				// TODO improve error reporting
+				var me = this;
+				var scollToTop = this.url !== url;
+				this.url = url;
+				var renderer = this.createRenderer();
+				when(renderer.render(url))
+					.then(function (result) {
+						me.rendering = false;
+						if (!result.noPage) {
 
-						var html = result.html;
-						if (result.errors && result.errors.length > 0) {
-							html = "<ul>";
-							result.errors.forEach(function (error) {
-								html += "<li>" + error.message + "</li>";
-							});
-							html += "</ul>";
+							var html = result.html;
+							if (result.errors && result.errors.length > 0) {
+								html = "<ul>";
+								result.errors.forEach(function (error) {
+									html += "<li>" + error.message + "</li>";
+								});
+								html += "</ul>";
+							}
+							// remove preexisting amd define
+							me.displayHtml(html, scollToTop);
+
+						} else {
+							me.style.width = "0px";
 						}
-						// remove preexisting amd define
-						me.displayHtml(html, scollToTop);
-
-					} else {
-						me.style.width = "0px";
-					}
-				}).otherwise(function (e) {
-					alert("cannot render " + e.stack)
-				});
+					}).otherwise(function (e) {
+						alert("cannot render " + e.stack)
+					});
+			} catch (e) {
+				alert("cannot render " + e.stack)
+			}
 		},
 		displayHtml: function (html, scollToTop) {
 			var ifrm = (this.iframe.contentWindow) ? this.iframe.contentWindow : (this.iframe.contentDocument.document) ? this.iframe.contentDocument.document : this.iframe.contentDocument;

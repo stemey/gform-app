@@ -6,7 +6,7 @@ define([
 
 	return declare([SchemaStore], {
 		constructor: function (kwArgs) {
-			this.transformer = new TemplateSchemaTransformer(kwArgs.store);
+			this.transformer = new TemplateSchemaTransformer(kwArgs);
 		}
 	});
 

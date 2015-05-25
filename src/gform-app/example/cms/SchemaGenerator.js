@@ -15,7 +15,9 @@ define([
             t.replace("gform/schema/attributes/properties/groups.json", "gform-app/meta/groups.json");
             var base = JSON.parse(group)
 
-            return this.load({attributes: [base]}, "gform/schema/", t);
+
+
+            return this.load({attributes: [base]}, "gform/schema/", t,variables);
         }
 
     })

@@ -1,10 +1,11 @@
 define([
+	'dojo/when',
 	"dojo/_base/Deferred",
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/promise/all"
 
-], function (Deferred, declare, lang, all) {
+], function (when, Deferred, declare, lang, all) {
 // module:
 //		gform/util/Resolver
 
@@ -99,7 +100,7 @@ define([
 		},
 		loadFromStore: function(ref,deferred) {
 			var me = this;
-			this.ctx.getStore(ref.store).get(ref.id).then(function(value) {
+			when(this.ctx.getStore(ref.store).get(ref.id)).then(function(value) {
 				var p = me.resolveMore(value);
 				p.then(function() {
 					deferred.resolve(value);

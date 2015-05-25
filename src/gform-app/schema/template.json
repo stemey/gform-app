@@ -1,86 +1,89 @@
 {
-    "id": "/template",
-    "description": "A template",
-    "editor": "tab",
-    "groups": [
+  "id": "/template",
+  "description": "A template",
+  "editor": "tab",
+  "groups": [
+    {
+      "code": "general",
+      "label": "General",
+      "attributes": [
         {
-            "code": "general",
-            "label": "General",
-            "attributes": [
-                {
-                    "code": "name",
-                    "type": "string",
-                    "required":true
-                },
-                {
-                    "code": "description",
-                    "type": "string"
-                },
-                {
-                    "code": "partial",
-                    "type": "boolean",
-                    "description": "the value of a referenced partial is the rendered html fragment."
-                },
-                {
-                    "code": "schema",
-                    "type": "string",
-                    "required": true,
-                    "values": ["template"]
-                }
-            ]
+          "code": "name",
+          "type": "string",
+          "required": true
         },
         {
-            "code": "template",
-            "label": "Template",
-            "editor": "single",
-            "attribute": {
-                "code": "sourceCode",
-                "editor": "acetext",
-                "height": "300px",
-                "type": "string",
-                "mode": "ace/mode/handlebars",
-                "autoComplete": true
-            }
-
+          "code": {"$ref": "idProperty"},
+          "type": {"$ref": "idType"},
+          "disabled": {"$ref": "idDisabled"},
+          "required":{"$ref": "idRequired"}
         },
         {
-            "code": "partials",
-            "label": "Partials",
-            "attributes": [
-                {
-                    "code": "partials",
-                    "type": "map",
-                    "keyAttribute": {},
-                    "valueAttribute": {
-                        "type":"ref",
-                        "typeProperty": "template",
-                        "idProperty": "identifier",
-                        "url": {"$ref":"pageStore"},
-                        "searchProperty": "url"
-
-                    }
-                },
-                {
-                    "code": "partialTemplates",
-                    "type": "map",
-                    "keyAttribute": {},
-                    "valueAttribute": {
-                        "type": "ref",
-                        "searchProperty": "name",
-                        "idProperty":"code",
-                        "converter":"refConverter",
-                        "url": "/template",
-                        "schemaUrl": "/template"
-
-                    }
-                }
-            ]
+          "code": "description",
+          "type": "string"
         },
         {
-            "code": "form",
-            "label": "Form",
-            "attributes": [
-            ]
+          "code": "partial",
+          "type": "boolean",
+          "description": "the value of a referenced partial is the rendered html fragment."
+        },
+        {
+          "code": "schema",
+          "type": "string",
+          "required": true,
+          "values": ["template"]
         }
-    ]
+      ]
+    },
+    {
+      "code": "template",
+      "label": "Template",
+      "editor": "single",
+      "attribute": {
+        "code": "sourceCode",
+        "editor": "acetext",
+        "height": "300px",
+        "type": "string",
+        "mode": "ace/mode/handlebars",
+        "autoComplete": true
+      }
+    },
+    {
+      "code": "partials",
+      "label": "Partials",
+      "attributes": [
+        {
+          "code": "partials",
+          "type": "map",
+          "keyAttribute": {},
+          "valueAttribute": {
+            "type": "ref",
+            "typeProperty": "template",
+            "idProperty": "identifier",
+            "url": {"$ref": "pageStore"},
+            "searchProperty": {"$ref": "pageSearchProperty"}
+          }
+        },
+        {
+          "code": "partialTemplates",
+          "type": "map",
+          "keyAttribute": {},
+          "valueAttribute": {
+            "type": "ref",
+            "searchProperty": "name",
+            "idProperty": "code",
+            "converter": "refConverter",
+            "url": {"$ref": "templateStore"},
+            "schemaUrl": {"$ref": "templateSchema"}
+          }
+        }
+      ]
+    },
+    {
+      "code": "form",
+      "label": "Form",
+      "editor":"listpane",
+      "attributes": [{"$ref": "../../gform-app/meta/group.json"}]
+    }
+  ]
 }

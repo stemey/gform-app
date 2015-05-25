@@ -1,8 +1,10 @@
 define([
+        '../../controller/gridactions/Delete',
+        '../../controller/gridactions/OpenAsJson',
         './SchemaGenerator',
         '../../jcr/TemplateStore',
         '../../util/ToMongoQueryTransform'
-    ], function (SchemaGenerator, TemplateStore, ToMongoQueryTransform) {
+    ], function (Delete, OpenAsJson, SchemaGenerator, TemplateStore, ToMongoQueryTransform) {
 
 
         // id of store and schema for templates must be /template. Fixed by template.json
@@ -134,7 +136,10 @@ define([
                                     "title": "tree",
                                     "osm": true,
                                     "storeId": "page",
-                                    "labelAttribute": "name"
+                                    "labelAttribute": "name",
+                                    "menuItems": [
+                                        Delete, {type: OpenAsJson, fallbackSchema: "fallbackSchema"}
+                                    ]
 
                                 },
                                 {
@@ -142,6 +147,9 @@ define([
                                     "title": "template",
                                     "storeId": TEMPLATE_STORE,
                                     "gridxQueryTransform": new ToMongoQueryTransform(),
+                                    "menuItems": [
+                                        Delete, {type: OpenAsJson, fallbackSchema: "fallbackSchema"}
+                                    ],
                                     "columns": [
                                         {
                                             "id": "name",
@@ -163,7 +171,8 @@ define([
                                     "factoryId": "gform-app/factory/PreviewerFactory",
                                     "splitter": true,
                                     "rendererClass": "gform-app/preview/handlebars/Renderer",
-                                    "pageStore": PAGE_STORE
+                                    "pageStore": PAGE_STORE,
+                                    "urlProperty":"id"
                                 }
                             ]
                         },

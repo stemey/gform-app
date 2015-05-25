@@ -10,14 +10,15 @@ define([
 ], function (Resolver, lang, declare, Deferred, visit, metaHelper, when, all) {
 
 
-
-    return declare([ ], {
+    return declare([], {
         pageStore: null,
         templateStore: null,
         resolver: null,
         templateToSchemaTransformer: null,
-        constructor: function() {
-          this.tmpls={};
+        urlProperty: null,
+        constructor: function (kwArgs) {
+            this.urlProperty = kwArgs.urlProperty || "url";
+            this.tmpls = {};
         },
         findByUrl: function (url) {
             //var res =url.match(/page\/([^\/]+)/);
@@ -37,10 +38,10 @@ define([
                 var p = this.findByUrl(value);
                 ctx.promises.push(p);
                 when(p).then(function (page) {
-                    ctx.page[idx] = page.url;
+                    ctx.page[idx] = page[me.urlProperty];
                 }).otherwise(function (e) {
-                        ctx.errors.push({message: "error during getting link of " + value, error: e});
-                    });
+                    ctx.errors.push({message: "error during getting link of " + value, error: e});
+                });
             } else if (attribute.usage === "partial") {
                 ////console.log("getTemplateAndData " + idx);
                 var p = this.getTemplateAndData(value, ctx);
@@ -57,8 +58,8 @@ define([
                         })
                     }
                 }).otherwise(function (e) {
-                        ctx.errors.push({message: "error during getting template and data of " + value, error: e});
-                    });
+                    ctx.errors.push({message: "error during getting template and data of " + value, error: e});
+                });
             } else if (attribute.usage === "data") {
                 ////console.log("getData " + idx);
                 var p = this.getData(value);
@@ -71,8 +72,8 @@ define([
                     }
 
                 }).otherwise(function (e) {
-                        ctx.errors.push({message: "error while getting data for " + value, error: e});
-                    });
+                    ctx.errors.push({message: "error while getting data for " + value, error: e});
+                });
             } else {
                 //console.log("render page ref " + idx);
                 var p = this.renderInternally(value);
@@ -83,8 +84,8 @@ define([
                         ctx.errors = ctx.errors.concat(result.errors)
                     }
                 }).otherwise(function (e) {
-                        ctx.errors.push({message: "error during rendering of " + value, error: e});
-                    });
+                    ctx.errors.push({message: "error during rendering of " + value, error: e});
+                });
             }
         },
         handleTemplateRef: function (attribute, value, goon, ctx) {
@@ -109,8 +110,8 @@ define([
                             ctx.errors = ctx.errors.concat(result.errors);
                         }
                     }).otherwise(function (e) {
-                            //console.error("error during rendering " + e.stack);
-                        });
+                        //console.error("error during rendering " + e.stack);
+                    });
 
                 }, this);
             }
@@ -119,7 +120,12 @@ define([
                     ctx.templates[key] = attribute.template.partialTemplates[key].sourceCode;
                 });
             }
-            var newCtx = {page: ctx.page[attribute.code], promises: ctx.promises, templates: ctx.templates, errors: ctx.errors};
+            var newCtx = {
+                page: ctx.page[attribute.code],
+                promises: ctx.promises,
+                templates: ctx.templates,
+                errors: ctx.errors
+            };
             visit(this, attribute.template.group, newCtx.page, newCtx);
         },
         visit: function (attribute, value, goon, ctx) {
@@ -129,7 +135,7 @@ define([
                 // nothing
             } else if (attribute.editor == "template-ref") {
                 this.handleTemplateRef(attribute, value, goon, ctx);
-            } else if (attribute.type == "ref" || attribute.type == "multi-ref") {
+            } else if (attribute.usage && (attribute.type == "ref" || attribute.type == "multi-ref")) {
                 this.handlePageRef(attribute, value, ctx, attribute.code, attribute.code);
             } else {
                 if (metaHelper.isComplex(attribute)) {
@@ -137,7 +143,12 @@ define([
                     if (attribute.type_code) {
                         ctx.page[attribute.code][type_code] = value[type_code];
                     }
-                    ctx = {page: ctx.page[attribute.code], promises: ctx.promises, templates: ctx.templates, errors: ctx.errors};
+                    ctx = {
+                        page: ctx.page[attribute.code],
+                        promises: ctx.promises,
+                        templates: ctx.templates,
+                        errors: ctx.errors
+                    };
                 } else {
                     ctx.page[attribute.code] = value;
                 }
@@ -163,7 +174,13 @@ define([
         },
         visitArray: function (attribute, value, goon, ctx) {
             ctx.page[attribute.code] = [];
-            ctx = {arrayCode: attribute.code, page: ctx.page[attribute.code], promises: ctx.promises, templates: ctx.templates, errors: ctx.errors};
+            ctx = {
+                arrayCode: attribute.code,
+                page: ctx.page[attribute.code],
+                promises: ctx.promises,
+                templates: ctx.templates,
+                errors: ctx.errors
+            };
             goon(ctx);
         },
         tmpls: null,
@@ -193,11 +210,11 @@ define([
                     when(p).then(function (resolvedTemplateX) {
                         templatePromise.resolve(resolvedTemplateX);
                     }).otherwise(function (e) {
-                            //console.error("error during rendering " + e.stack);
-                        });
-                }).otherwise(function (e) {
                         //console.error("error during rendering " + e.stack);
                     });
+                }).otherwise(function (e) {
+                    //console.error("error during rendering " + e.stack);
+                });
             }
             var includesPromise = new Deferred();
             var me = this;
@@ -206,11 +223,11 @@ define([
                 when(all(ctx.promises)).then(function () {
                     includesPromise.resolve(ctx);
                 }).otherwise(function (e) {
-                        //console.error("error during rendering " + e.stack);
-                    });
-            }).otherwise(function (e) {
                     //console.error("error during rendering " + e.stack);
                 });
+            }).otherwise(function (e) {
+                //console.error("error during rendering " + e.stack);
+            });
             return includesPromise;
         },
         render: function (pageUrl, parentPage, checkPartial) {
@@ -237,9 +254,11 @@ define([
             }
             var error = function (e) {
                 var errorPage = {}
-                renderPromise.resolve({errors: [
-                    {message: "error during rendering of " + pageUrl, error: e}
-                ]});
+                renderPromise.resolve({
+                    errors: [
+                        {message: "error during rendering of " + pageUrl, error: e}
+                    ]
+                });
             }
 
             when(me.findByUrl(pageUrl)).then(function (page) {
@@ -248,7 +267,7 @@ define([
                     when(me.templateStore.get(page.template)).then(function (template) {
                         ////console.log("renderInternally p=" + page.url + "  t=" + template.name);
                         if (!template.sourceCode) {
-                            renderPromise.resolve({noPage:true});
+                            renderPromise.resolve({noPage: true});
                             return;
                         }
                         if (!checkPartial || template.partial) {
@@ -287,8 +306,8 @@ define([
                                                 ctx.errors = ctx.errors.concat(result.errors);
                                             }
                                         }).otherwise(function (e) {
-                                                //console.error("error during rendering " + e.stack);
-                                            });
+                                            //console.error("error during rendering " + e.stack);
+                                        });
                                     });
                                 }
 
@@ -312,26 +331,26 @@ define([
                                     var html = me.renderTemplate(sourceCode, newPage, ctx.templates);
                                     renderPromise.resolve({html: html, errors: ctx.errors});
                                 }).otherwise(function (e) {
-                                        //console.error("error during rendering " + e.stack);
-                                        error(ctx);
-                                    });
-                            }).otherwise(function (e) {
                                     //console.error("error during rendering " + e.stack);
-                                    //alert("error during rendering " + e.stack);
+                                    error(ctx);
                                 });
+                            }).otherwise(function (e) {
+                                //console.error("error during rendering " + e.stack);
+                                //alert("error during rendering " + e.stack);
+                            });
                         } else {
                             renderPromise.resolve(page);
                         }
                     }).otherwise(error);
                 } else {
-                    renderPromise.resolve({noPage:true});
+                    renderPromise.resolve({noPage: true});
                 }
             }).otherwise(error);
 
             return renderPromise;
 
         },
-         tadCache: {},
+        tadCache: {},
         getTemplateAndData: function (pageUrl) {
             var me = this;
             var renderPromise = new Deferred();
@@ -350,21 +369,21 @@ define([
 
                         renderPromise.resolve({template: template, page: ctx.page, templates: ctx.templates});
                     }).otherwise(function (e) {
-                            //console.error("error during rendering " + e.stack);
-                        });
-                }).otherwise(function (e) {
-                        var errors = [
-                            {message: "error during rendering ", error: e}
-                        ];
-                        renderPromise.resolve({template: {}, page: {}, templates: {}, errors: errors});
-
+                        //console.error("error during rendering " + e.stack);
                     });
-            }).otherwise(function (e) {
+                }).otherwise(function (e) {
                     var errors = [
                         {message: "error during rendering ", error: e}
                     ];
                     renderPromise.resolve({template: {}, page: {}, templates: {}, errors: errors});
+
                 });
+            }).otherwise(function (e) {
+                var errors = [
+                    {message: "error during rendering ", error: e}
+                ];
+                renderPromise.resolve({template: {}, page: {}, templates: {}, errors: errors});
+            });
             return renderPromise;
         },
         getData: function (pageUrl) {
@@ -375,11 +394,11 @@ define([
             when(me.findByUrl("/page/" + pageUrl)).then(function (page) {
                 renderPromise.resolve({page: page});
             }).otherwise(function (e) {
-                    var errors = [
-                        {message: "error during rendering ", error: e}
-                    ];
-                    renderPromise.resolve({errors: errors});
-                });
+                var errors = [
+                    {message: "error during rendering ", error: e}
+                ];
+                renderPromise.resolve({errors: errors});
+            });
             return renderPromise;
         }
     })
