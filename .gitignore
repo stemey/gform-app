@@ -13,6 +13,8 @@ src/handlebars
 src/ace-builds
 src/dstore
 src/components-font-awesome
+src/bootstrap
+src/jquery
 .settings
 *~
 .idea

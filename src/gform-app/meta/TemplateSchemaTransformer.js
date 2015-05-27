@@ -1,4 +1,6 @@
 define([
+    '../cms/TemplateRefArrayResolver',
+    '../cms/MultiTemplateRefResolver',
     '../util/SchemaResolver',
     '../cms/TemplateRefResolver',
     '../dynamicstore/MultiEntityRefResolver',
@@ -7,7 +9,7 @@ define([
     'dojo/Deferred',
     './Resolver',
     'dojo/_base/declare'
-], function (SchemaResolver, TemplateRefResolver, MultiEntityRefResolver, SchemaRefResolver, when, Deferred, Resolver, declare) {
+], function (TemplateRefArrayResolver, MultiTemplateRefResolver, SchemaResolver, TemplateRefResolver, MultiEntityRefResolver, SchemaRefResolver, when, Deferred, Resolver, declare) {
 // module:
 //		gform/util/Resolver
 
@@ -30,6 +32,8 @@ define([
             resolver.addResolver(new MultiEntityRefResolver({idProperty: this.idProperty}))
             resolver.addResolver(new SchemaRefResolver())
             resolver.addResolver(new TemplateRefResolver())
+            resolver.addResolver(new TemplateRefArrayResolver())
+            resolver.addResolver(new MultiTemplateRefResolver());
             // TODO schemaResolver modifies input so we need to clone here
             var clonedSchema = JSON.parse(JSON.stringify(schema));
             //var resolver = new Resolver();

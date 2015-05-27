@@ -48,7 +48,14 @@ define([
 				resolved=this.resolvers.some(function(resolver) {
 					var ref = resolver.resolve(obj);
 					if (ref) {
-						references.push(ref);
+						if (Array.isArray(ref)) {
+							ref.forEach(function(r) {
+								references.push(r);
+							});
+						} else{
+							references.push(ref);
+						}
+
 						return true;
 					}else{
 						return false;

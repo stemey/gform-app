@@ -15,6 +15,12 @@
     "$ref": "../../meta/template-ref.json"
   },
   {
+    "$ref": "../../meta/template-ref.json"
+  },
+  {
+    "$ref": "../../meta/multi-template-ref.json"
+  },
+  {
     "$ref": "../../meta/multi-page-ref.json"
   },
   {

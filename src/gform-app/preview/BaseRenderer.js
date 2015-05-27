@@ -88,20 +88,37 @@ define([
                 });
             }
         },
-        handleTemplateRef: function (attribute, value, goon, ctx) {
+        handleMultiTemplateRef: function (attribute, value, goon, ctx) {
             if (!value) {
                 return;
             }
+            var templates = attribute.templates.filter(function (template) {
+                return template.id == value.__type
+            });
+            if (templates.length > 0) {
+                var template = templates[0];
+                this._handleTemplateRef(attribute, template, value, goon, ctx);
+            }
+
+        },
+        handleTemplateRef: function (attribute, value, goon, ctx) {
+            this._handleTemplateRef(attribute, attribute.template, value, goon, ctx);
+        },
+        _handleTemplateRef: function (attribute, template, value, goon, ctx) {
+            if (!value) {
+                return;
+            }
+
             if (attribute.outer) {
                 ctx.outer = attribute;
             } else {
-                ctx.templates[attribute.code] = attribute.template.sourceCode;
+                ctx.templates[attribute.code] = template.sourceCode;
             }
             ctx.page[attribute.code] = value;
-            if (value && attribute.template.partials) {
-                Object.keys(attribute.template.partials).forEach(function (key) {
-                    var url = attribute.template.partials[key];
-                    console.log("render partial of template-ref " + key);
+            if (value && template && template.partials) {
+                Object.keys(template.partials).forEach(function (key) {
+                    var url = template.partials[key];
+                    //console.log("render partial of template-ref " + key);
                     var p = this.renderInternally("/page/" + url, ctx.page);
                     ctx.promises.push(p);
                     when(p).then(function (result) {
@@ -115,9 +132,9 @@ define([
 
                 }, this);
             }
-            if (attribute.template.partialTemplates) {
-                Object.keys(attribute.template.partialTemplates).forEach(function (key) {
-                    ctx.templates[key] = attribute.template.partialTemplates[key].sourceCode;
+            if (template && template.partialTemplates) {
+                Object.keys(template.partialTemplates).forEach(function (key) {
+                    ctx.templates[key] = template.partialTemplates[key].sourceCode;
                 });
             }
             var newCtx = {
@@ -126,7 +143,7 @@ define([
                 templates: ctx.templates,
                 errors: ctx.errors
             };
-            visit(this, attribute.template.group, newCtx.page, newCtx);
+            visit(this, template.group, newCtx.page, newCtx);
         },
         visit: function (attribute, value, goon, ctx) {
             var me = this;
@@ -135,13 +152,15 @@ define([
                 // nothing
             } else if (attribute.editor == "template-ref") {
                 this.handleTemplateRef(attribute, value, goon, ctx);
+            } else if (attribute.editor == "multi-template-ref") {
+                this.handleMultiTemplateRef(attribute, value, goon, ctx);
             } else if (attribute.usage && (attribute.type == "ref" || attribute.type == "multi-ref")) {
                 this.handlePageRef(attribute, value, ctx, attribute.code, attribute.code);
             } else {
                 if (metaHelper.isComplex(attribute)) {
                     ctx.page[attribute.code] = {};
                     if (attribute.type_code) {
-                        ctx.page[attribute.code][type_code] = value[type_code];
+                        ctx.page[attribute.code][attribute.type_code] = value[attribute.type_code];
                     }
                     ctx = {
                         page: ctx.page[attribute.code],
@@ -162,7 +181,7 @@ define([
                 if (metaHelper.isComplex(type)) {
                     ctx.page[idx] = {};
                     if (type.type_code) {
-                        ctx.page[idx][type_code] = value[type_code];
+                        ctx.page[idx][type.type_code] = value[type.type_code];
                     }
                     ctx = {page: ctx.page[idx], promises: ctx.promises, templates: ctx.templates, errors: ctx.errors};
                     goon(ctx);
