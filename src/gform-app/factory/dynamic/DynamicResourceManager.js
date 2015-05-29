@@ -101,11 +101,12 @@ define([
 			var store = this.stores[id];
 			if (store) {
 				delete this.stores[id];
-				this.ctx.removeStore(store.name);
-				var destruction = this.destructions[store.name];
+				var metaId=[this.metaStore.getIdentity(store)];
+				this.ctx.removeStore(metaId);
+				var destruction = this.destructions[id];
 				if (destruction) {
 					destruction();
-					delete this.destructions[store.name];
+					delete this.destructions[id];
 				}
 			}
 			return store;

@@ -1,7 +1,10 @@
 define([
+    'handlebars/handlebars.min',
     '../BaseRenderer',
     "dojo/_base/declare"
-], function (BaseRenderer, declare) {
+], function (handlebars, BaseRenderer, declare) {
+
+    Handlebars=handlebars;
 
     // TODO extract helpers to custom and standard configuration folders
     Handlebars.registerHelper('equals', function (a, b, options) {

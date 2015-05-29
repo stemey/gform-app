@@ -17,7 +17,9 @@ define([
         templateToSchemaTransformer: null,
         urlProperty: null,
         constructor: function (kwArgs) {
-            this.urlProperty = kwArgs.urlProperty || "url";
+            if (kwArgs) {
+                this.urlProperty = kwArgs.urlProperty || "url";
+            }
             this.tmpls = {};
         },
         findByUrl: function (url) {
@@ -95,16 +97,19 @@ define([
             var templates = attribute.templates.filter(function (template) {
                 return template.id == value.__type
             });
+            var groups = attribute.groups.filter(function (group) {
+                return group.code == value.__type
+            });
             if (templates.length > 0) {
                 var template = templates[0];
-                this._handleTemplateRef(attribute, template, value, goon, ctx);
+                this._handleTemplateRef(attribute, groups[0],template, value, goon, ctx);
             }
 
         },
         handleTemplateRef: function (attribute, value, goon, ctx) {
-            this._handleTemplateRef(attribute, attribute.template, value, goon, ctx);
+            this._handleTemplateRef(attribute, attribute.group, attribute.template, value, goon, ctx);
         },
-        _handleTemplateRef: function (attribute, template, value, goon, ctx) {
+        _handleTemplateRef: function (attribute, group, template, value, goon, ctx) {
             if (!value) {
                 return;
             }
@@ -143,16 +148,16 @@ define([
                 templates: ctx.templates,
                 errors: ctx.errors
             };
-            visit(this, template.group, newCtx.page, newCtx);
+            visit(this, group, newCtx.page, newCtx);
         },
         visit: function (attribute, value, goon, ctx) {
             var me = this;
             if (attribute.code === "template") {
                 // TODO make template property configurable
                 // nothing
-            } else if (attribute.editor == "template-ref") {
+            } else if (attribute.template && attribute.group) {
                 this.handleTemplateRef(attribute, value, goon, ctx);
-            } else if (attribute.editor == "multi-template-ref") {
+            } else if (attribute.groups && attribute.templates) {
                 this.handleMultiTemplateRef(attribute, value, goon, ctx);
             } else if (attribute.usage && (attribute.type == "ref" || attribute.type == "multi-ref")) {
                 this.handlePageRef(attribute, value, ctx, attribute.code, attribute.code);
@@ -200,6 +205,10 @@ define([
                 templates: ctx.templates,
                 errors: ctx.errors
             };
+            if (attribute.template) {
+                // TODO we don't support partials and partialTemplates for array
+                ctx.templates[attribute.code]=attribute.template.sourceCode;
+            }
             goon(ctx);
         },
         tmpls: null,
@@ -281,9 +290,10 @@ define([
             }
 
             when(me.findByUrl(pageUrl)).then(function (page) {
-                if (page[me.pageStore.typeProperty]) {
+                var templateId = page[me.pageStore.typeProperty];
+                if (templateId) {
                     // TODO replace findByUrl by getById
-                    when(me.templateStore.get(page.template)).then(function (template) {
+                    when(me.templateStore.get(templateId)).then(function (template) {
                         ////console.log("renderInternally p=" + page.url + "  t=" + template.name);
                         if (!template.sourceCode) {
                             renderPromise.resolve({noPage: true});

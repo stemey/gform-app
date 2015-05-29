@@ -45,6 +45,12 @@ define([
 			}
 		})
 
+		var storeFactory = function(config,meta,props) {
+			return new StoreClass(props);
+		}
+
+
+
 		bdd.before(function () {
 			var schemaStore = new StoreClass({idProperty: "id", name: "schema"});
 			var metaStore = new StoreClass({idProperty: "id", name: "meta"});
@@ -90,7 +96,8 @@ define([
 				storeId: "meta",
 				schemaStore: "schema",
 				idProperty: "id",
-				baseUrl: "/base/"
+				baseUrl: "/base/",
+				storeFactory:storeFactory
 			}
 			var rm = new DynamicResourceManager({
 				ctx: ctx,
@@ -100,11 +107,11 @@ define([
 			})
 
 			rm.addMeta({name: "test", collection: "testc", id: "2", schema: null});
-			assert.equal(ctx.stores["test"].kwArgs.target, "/base/testc/");
-			assert.equal(ctx.stores["test"].kwArgs.idProperty, "id");
+			//assert.equal(ctx.stores["2"].kwArgs.target, "/base/testc/");
+			assert.equal(ctx.stores["2"].kwArgs.idProperty, "id");
 
 			rm.removeMeta("2");
-			assert.equal(ctx.stores["test"], null);
+			assert.equal(ctx.stores["2"], null);
 			assert.equal(ctx.isClean(),true);
 		});
 
@@ -113,7 +120,8 @@ define([
 				storeId: "meta",
 				schemaStore: "schema",
 				idProperty: "id",
-				baseUrl: "/base/"
+				baseUrl: "/base/",
+				storeFactory:storeFactory
 			}
 			var rm = new DynamicResourceManager({
 				ctx: ctx,
@@ -127,9 +135,9 @@ define([
 
 
 			rm.addMeta({name: "test", collection: "testc", id: "2", schema: {schema: "1111"}});
-			assert.equal(ctx.stores["test"].kwArgs.target, "/base/testc/");
-			assert.equal(ctx.stores["test"].kwArgs.idProperty, "id");
-			assert.equal(ctx.stores["test"].template, "schema/1111");
+			//assert.equal(ctx.stores["test"].kwArgs.target, "/base/testc/");
+			assert.equal(ctx.stores["2"].kwArgs.idProperty, "id");
+			assert.equal(ctx.stores["2"].template, "schema/1111");
 
 
 			rm.removeMeta("2");
@@ -142,7 +150,8 @@ define([
 				storeId: "meta",
 				schemaStore: "schema",
 				idProperty: "id",
-				baseUrl: "/base/"
+				baseUrl: "/base/",
+				storeFactory:storeFactory
 			}
 			var rm = new DynamicResourceManager({
 				ctx: ctx,
@@ -158,10 +167,10 @@ define([
 
 
 			rm.addMeta({name: "test", collection: "testc", id: "2", schema: {typeProperty: "type", schemas: ["1111"]}});
-			assert.equal(ctx.stores["test"].kwArgs.target, "/base/testc/");
-			assert.equal(ctx.stores["test"].kwArgs.idProperty, "id");
-			assert.equal(ctx.stores["test"].typeProperty, "type");
-			assert.equal(ctx.stores["test"].templateStore, "/schema-test");
+			//assert.equal(ctx.stores["test"].kwArgs.target, "/base/testc/");
+			assert.equal(ctx.stores["2"].kwArgs.idProperty, "id");
+			assert.equal(ctx.stores["2"].typeProperty, "type");
+			assert.equal(ctx.stores["2"].templateStore, "/schema-test");
 			assert.equal(ctx.schemaStores["/schema-test"].name, "/schema-test");
 			ctx.schemaStores["/schema-test"].query({}).then(function (results) {
 				assert.equal(results.length, 1);
@@ -170,7 +179,7 @@ define([
 
 
 			rm.removeMeta("2");
-			assert.equal(ctx.stores["test"], null);
+			assert.equal(ctx.stores["2"], null);
 			assert.equal(ctx.isClean(),true);
 		});
 

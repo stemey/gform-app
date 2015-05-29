@@ -1,10 +1,11 @@
 define([
+        '../../cms/TemplateCreateFactory',
         '../../controller/gridactions/Delete',
         '../../controller/gridactions/OpenAsJson',
         './SchemaGenerator',
         '../../jcr/TemplateStore',
         '../../util/ToMongoQueryTransform'
-    ], function (Delete, OpenAsJson, SchemaGenerator, TemplateStore, ToMongoQueryTransform) {
+    ], function (TemplateCreateFactory, Delete, OpenAsJson, SchemaGenerator, TemplateStore, ToMongoQueryTransform) {
 
 
         // id of store and schema for templates must be /template. Fixed by template.json
@@ -49,6 +50,7 @@ define([
                             "previewerId": "handlebars",
                             "typeProperty": "template",
                             "parentProperty": "parent",
+                            "idType":"number",// used by createValueFactory
                             "idProperty": config.idProperty,
                             "initialDataUrl": "gform-app/example/cms/data/page-data.json",
                             "dstoreConfig": {
@@ -106,14 +108,19 @@ define([
                                     "searchProperty": "name",
                                     "placeHolder": "add entity.."
                                 },
-                               {
-                                    "factoryId": "gform-app/factory/SingleSchemaCreateFactory",
+                                {
+                                    "factoryId": "gform-app/cms/TemplateCreateFactory",
                                     "label": "add",
-                                    "iconClass": "fa fa-plus"
+                                    "storeId":"/template"
                                 },
                                 {
                                     "factoryId": "gform-app/factory/ResetStoreFactory",
                                     "label": "reset store"
+                                },
+                                {
+                                    "factoryId": "gform-app/factory/ToggleSizeFactory",
+                                    "label": "full size",
+                                    "includedStoreIds": ["page"]
                                 },
                                 {
                                     "factoryId": "gform-app/factory/SelectViewFactory",

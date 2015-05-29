@@ -46,7 +46,7 @@ define([
 
                         var template = store.templateStore+"/"+node[store.typeProperty];//node.folder ? "jcr.folder" : undefined;
                         // TODO we should use the folders own template "base" from the server. Does not work right now.
-                        topic.publish("/focus", {id: node.id, store: realStore, source: this, template: template});
+                        topic.publish("/focus", {id: node.id, store: realStore, source: this});
                     } catch (e) {
                         //console.log(e.stack);
                     }

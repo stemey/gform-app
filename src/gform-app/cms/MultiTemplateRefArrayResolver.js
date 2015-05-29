@@ -5,15 +5,18 @@ define([
 	// TOD this attribute is not properly handled by meta.isComplexType etc.
 	return declare( [], {
 		resolve: function (obj) {
-			if (obj && obj.type && obj.type=="array" && obj.element && obj.element.editor === "template-ref") {
+			if (obj && obj.type && obj.type=="array" && obj.element && obj.element.editor === "multi-template-ref") {
 				//var url = baseUrl + ".." + obj.collectionUrl + "/" + obj.collection;
 				delete obj.editor;
+				obj.groups=[];
+				delete obj.element;
+				obj.type="array";
 				var cb = function (value) {
-					obj.group = value.group;
-					obj.group.type="object";
-					obj.type="array";
-					obj.template = value;
-					delete obj.element;
+					var group ={};
+					groups = value.group;
+					group.type="object";
+					group.template = value;
+					groups.push(group);
 					//obj.type = "object";
 					//delete obj.editor;
 					//delete obj.editor;// = "object";

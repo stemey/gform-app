@@ -10,7 +10,9 @@ define([
 
         bdd.before(function () {
             renderer = new Renderer();
+            renderer.urlProperty="url"
             renderer.templateStore = new MemoryStore();
+            renderer.templateStore.basePath="/template/";
             renderer.templateStore.add("/template/t1.html", {
                 sourceCode: "<title>{{title}}</title>",
                 attributes: [
@@ -20,7 +22,7 @@ define([
             renderer.templateStore.add("/template/t2.html", {
                 sourceCode: "<body>{{{content}}}</body>",
                 attributes: [
-                    {code: "content", type: "ref"}
+                    {code: "content", type: "ref", usage:"html"}
                 ]
             });
             renderer.templateStore.add("/template/t3.html", {
@@ -80,7 +82,7 @@ define([
             renderer.templateStore.add("/template/inner.html", {
                 sourceCode: "-{{title}}-",
                 attributes: [
-                    {code: "outer", editor: "template-ref", outer: true, template: outer},
+                    {code: "outer", editor: "template-ref", outer: true, template: outer, group:outer.group},
                     {code: "title", type: "string"}
                 ]
             });
@@ -97,7 +99,7 @@ define([
             renderer.templateStore.add("/template/innerWithPartials.html", {
                 sourceCode: "--",
                 attributes: [
-                    {code: "outer", editor: "template-ref", outer: true, template: outerWithPartials},
+                    {code: "outer", editor: "template-ref", outer: true, template: outerWithPartials, group:outerWithPartials.group},
                     {code: "title", type: "string"}
                 ]
             });
@@ -114,11 +116,12 @@ define([
             renderer.templateStore.add("/template/innerWithPartialTemplate.html", {
                 sourceCode: "--",
                 attributes: [
-                    {code: "outer", editor: "template-ref", outer: true, template: outerWithPartialTemplate},
+                    {code: "outer", editor: "template-ref", outer: true, template: outerWithPartialTemplate, group:outerWithPartialTemplate.group},
                     {code: "title", type: "string"}
                 ]
             });
             renderer.pageStore = new MemoryStore();
+            renderer.pageStore.typeProperty="template";
             renderer.pageStore.add("/page/p1.html", {template: "t1.html", title: "hello", url: "p1.html"});
             renderer.pageStore.add("/page/link.html", {template: "link.html", page: "/page/p1.html"});
             renderer.pageStore.add("/page/p2.html", {template: "t2.html", content: "/page/teaser.html"});
