@@ -1,5 +1,10 @@
 define([
 
+		'./BorderContainer',
+		'./TemplateRefArrayResolver',
+		'./MultiTemplateRefResolver',
+		'./MultiTemplateRefArrayResolver',
+		'./TemplateRefResolver',
 		'./Renderer',
  		'./UrlTreeModel',
 		'./TreeStore',

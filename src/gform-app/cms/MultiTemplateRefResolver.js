@@ -16,7 +16,6 @@ define([
                     var cb = function (value) {
                         value.group.code = value.id;
                         obj.groups.push(value.group);
-                        obj.typeProperty="__type";
                         obj.templates.push(value);
                         //value.group.template=value;
                         //obj.type = "object";
@@ -25,6 +24,7 @@ define([
                     refs.push({store: "/template", id: template, setter: cb});
                 })
                 obj.templates=[];
+                obj.typeProperty="__type__";
                 delete obj.editor;
                 obj.type="object";
                 // TODO template store needs to be configured

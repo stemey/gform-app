@@ -1,41 +1,48 @@
 define([
-    'handlebars/handlebars.min',
     '../BaseRenderer',
     "dojo/_base/declare"
-], function (handlebars, BaseRenderer, declare) {
+], function (BaseRenderer, declare) {
 
-    Handlebars=handlebars;
 
-    // TODO extract helpers to custom and standard configuration folders
-    Handlebars.registerHelper('equals', function (a, b, options) {
-        if (a == b) {
-            return options.fn(this);
-        }
-    });
-    Handlebars.registerHelper('gt', function (a, b, options) {
-        if (a > b) {
-            return options.fn(this);
-        }
-    });
-    Handlebars.registerHelper('gte', function (a, b, options) {
-        if (a >= b) {
-            return options.fn(this);
-        }
-    });
-    Handlebars.registerHelper('style-tag', function (styles, options) {
-        return "<style>" + styles + "</style>"
-    });
-    Handlebars.registerHelper('link', function (url, options) {
-        var param = url;
-        if (typeof url === "string") {
-            param = "'" + url + "'"
-        }
-        return "javascript:preview(" + url + ");";
-    });
+    var initHb = function () {
+        // TODO extract helpers to custom and standard configuration folders
+        Handlebars.registerHelper('equals', function (a, b, options) {
+            if (a == b) {
+                return options.fn(this);
+            }
+        });
+        Handlebars.registerHelper('gt', function (a, b, options) {
+            if (a > b) {
+                return options.fn(this);
+            }
+        });
+        Handlebars.registerHelper('gte', function (a, b, options) {
+            if (a >= b) {
+                return options.fn(this);
+            }
+        });
+        Handlebars.registerHelper('style-tag', function (styles, options) {
+            return "<style>" + styles + "</style>"
+        });
+        Handlebars.registerHelper('link', function (url, options) {
+            var param = url;
+            if (typeof url === "string") {
+                param = "'" + url + "'"
+            }
+            return "javascript:preview(" + url + ");";
+        });
 
-    Handlebars.registerHelper('formatCurrency', function (value, options) {
-        return value / 100;
-    });
+        Handlebars.registerHelper('formatCurrency', function (value, options) {
+            return value / 100;
+        });
+    }
+    // including hb via amd require does not seem to work with dojo build
+    if (typeof Handlebars === "undefined") {
+        require(["handlebars/handlebars.min"], function (hb) {
+            Handlebars = hb;
+            initHb();
+        })
+    }
 
 
     return declare([BaseRenderer], {

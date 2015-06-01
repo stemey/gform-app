@@ -1,11 +1,10 @@
 define([
-        '../../cms/TemplateCreateFactory',
         '../../controller/gridactions/Delete',
         '../../controller/gridactions/OpenAsJson',
         './SchemaGenerator',
         '../../jcr/TemplateStore',
         '../../util/ToMongoQueryTransform'
-    ], function (TemplateCreateFactory, Delete, OpenAsJson, SchemaGenerator, TemplateStore, ToMongoQueryTransform) {
+    ], function (Delete, OpenAsJson, SchemaGenerator, TemplateStore, ToMongoQueryTransform) {
 
 
         // id of store and schema for templates must be /template. Fixed by template.json
@@ -84,12 +83,12 @@ define([
                     "layouts": {
                         "standard": {
                             "store": {"region": "left", "width": "20%"},
-                            "entity": {"region": "right", "width": "30%"},
-                            "preview": {"region": "center"}
+                            "entity": {"region": "right", "width": "40%"},
+                            "preview": {"region": "center",width:"100%"}
                         },
                         "/template": {
                             "store": {"region": "left", "width": "50%"},
-                            "entity": {"region": "center", "width": "100%"},
+                            "entity": {"region": "center",width:"100%"},
                             "preview": {"hidden": true, "region": "right"}
                         }
                     },
@@ -100,7 +99,7 @@ define([
                             "children": [
                                 {
                                     "factoryId": "gform-app/factory/BrandFactory",
-                                    "label": "static"
+                                    "label": "cms"
                                 },
                                 {
                                     "factoryId": "gform-app/factory/MultiSchemaCreateFactory",
@@ -113,10 +112,10 @@ define([
                                     "label": "add",
                                     "storeId":"/template"
                                 },
-                                {
+                                /*{
                                     "factoryId": "gform-app/factory/ResetStoreFactory",
                                     "label": "reset store"
-                                },
+                                },*/
                                 {
                                     "factoryId": "gform-app/factory/ToggleSizeFactory",
                                     "label": "full size",

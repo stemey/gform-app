@@ -1,8 +1,8 @@
 define([
-	'../factory/schema/SchemaGenerator',
+	'../../factory/schema/SchemaGenerator',
 	'dojo/_base/declare',
 	'dojo/text!../../meta/group.json'
-], function (SchemaGenerator, declare, group) {
+], function ( SchemaGenerator, declare, group) {
 
 	return declare([SchemaGenerator], {
 		loadTemplateSchema: function () {

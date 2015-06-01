@@ -1,10 +1,12 @@
 define([
-	'../preview/handlebars/Renderer',
+    'dojo/_base/lang',
+    'handlebars/handlebars.min',
+    '../preview/handlebars/Renderer',
 	'./when',
     './MemoryStore',
     'intern!bdd',
     'intern/chai!assert'
-], function (Renderer, when, MemoryStore, bdd, assert) {
+], function (lang, handlebars, Renderer, when, MemoryStore, bdd, assert) {
     bdd.describe('Renderer', function () {
         var renderer;
 
@@ -25,12 +27,26 @@ define([
                     {code: "content", type: "ref", usage:"html"}
                 ]
             });
-            renderer.templateStore.add("/template/t3.html", {
+            var t3={
                 sourceCode: "<p>{{text}}</p>",
-                attributes: [
-                    {code: "text", type: "string"}
-                ]
-            });
+                group:{
+                    code:"a",
+                    attributes: [
+                        {code: "text", type: "string"}
+                    ]
+                }
+            };
+            var t4={
+                sourceCode: "<span>{{count}}</span>",
+                group:{
+                    code:"b",
+                    attributes: [
+                        {code: "count", type: "number"}
+                    ]
+                }
+            };
+            renderer.templateStore.add("/template/t3.html", t3);
+            renderer.templateStore.add("/template/t4.html", t4);
             renderer.templateStore.add("/template/partial.html", {
                 sourceCode: "<body>{{#partial}}{{>partial}}{{/partial}}</body>",
                 attributes: [
@@ -83,6 +99,25 @@ define([
                 sourceCode: "-{{title}}-",
                 attributes: [
                     {code: "outer", editor: "template-ref", outer: true, template: outer, group:outer.group},
+                    {code: "title", type: "string"}
+                ]
+            });
+
+            renderer.templateStore.add("/template/template-ref-array.html", {
+                sourceCode: "el{{#elements}}XX{{>elements}}{{/elements}}",
+                attributes: [
+                    {code: "elements", type:"array",template:t3,group:t3.group},
+                    {code: "title", type: "string"}
+                ]
+            });
+            var t3e = {code:"a"};
+            lang.mixin(t3e,t3.group);
+            var t4e = {code:"b"};
+            lang.mixin(t4e,t4.group);
+            renderer.templateStore.add("/template/multi-template-ref-array.html", {
+                sourceCode: "el{{#elements}}XX{{{.}}}{{/elements}}",
+                attributes: [
+                    {code: "elements", type:"array",typeProperty:"__type__",templates:[t3,t4],groups:[t3.group,t4.group]},
                     {code: "title", type: "string"}
                 ]
             });
@@ -213,6 +248,22 @@ define([
                 assert.equal(result[0].html, "<html><title>hello</title>--</html>");
             });
         });
+
+        bdd.it('page should render array of template-ref', function () {
+            renderer.pageStore.add("/page/template-ref-array.html", {template: "template-ref-array.html", elements:[{text:"h1"},{text:"h2"}]});
+            return when(renderer.render("/page/template-ref-array.html"), function (result) {
+                assert.equal(result[0].html, "elXX<p>h1</p>XX<p>h2</p>");
+            });
+        });
+
+        bdd.it('page should render array of multi-template-ref', function () {
+            renderer.pageStore.add("/page/multi-template-ref-array.html", {template: "multi-template-ref-array.html", elements:[{__type__:"a",text:"h1"},{__type__:"b",count:2}]});
+            return when(renderer.render("/page/multi-template-ref-array.html"), function (result) {
+                assert.equal(result[0].html, "elXX<p>h1</p>XX<span>2</span>");
+            });
+        });
+
+
 
 
     });

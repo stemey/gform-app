@@ -95,14 +95,14 @@ define([
                 return;
             }
             var templates = attribute.templates.filter(function (template) {
-                return template.id == value.__type
+                return template.id == value.__type__
             });
             var groups = attribute.groups.filter(function (group) {
-                return group.code == value.__type
+                return group.code == value.__type__
             });
             if (templates.length > 0) {
                 var template = templates[0];
-                this._handleTemplateRef(attribute, groups[0],template, value, goon, ctx);
+                this._handleTemplateRef(attribute, groups[0], template, value, goon, ctx);
             }
 
         },
@@ -207,9 +207,36 @@ define([
             };
             if (attribute.template) {
                 // TODO we don't support partials and partialTemplates for array
-                ctx.templates[attribute.code]=attribute.template.sourceCode;
+                ctx.templates[attribute.code] = attribute.template.sourceCode;
             }
-            goon(ctx);
+            if (attribute.templates) {
+                this._renderMultiRefTemplateArray(attribute, value, ctx);
+            } else {
+                goon(ctx);
+            }
+        },
+        _renderMultiRefTemplateArray: function (attribute, value, ctx) {
+            var me = this;
+            var elements = [];
+            value.forEach(function (model) {
+                if (model) {
+                    var templateId = model[attribute.typeProperty];
+                    var template = attribute.templates.filter(function (t) {
+                        return t.group.code == templateId;
+                    })
+                    var renderPromise = new Deferred();
+                    if (template.length == 1) {
+                        ctx.promises.push(renderPromise);
+                        me._renderPage(model, template[0], null, false, renderPromise);
+                        renderPromise.then(function (result) {
+                            ctx.page.push(result.html);
+                        })
+                    } else {
+                        console.log("cannot find type " + templateId);
+                    }
+                }
+            })
+
         },
         tmpls: null,
         renderIncludes: function (template, page) {
@@ -294,82 +321,7 @@ define([
                 if (templateId) {
                     // TODO replace findByUrl by getById
                     when(me.templateStore.get(templateId)).then(function (template) {
-                        ////console.log("renderInternally p=" + page.url + "  t=" + template.name);
-                        if (!template.sourceCode) {
-                            renderPromise.resolve({noPage: true});
-                            return;
-                        }
-                        if (!checkPartial || template.partial) {
-                            var includesPromise = me.renderIncludes(template, page);
-                            when(includesPromise).then(function (ctx) {
-                                var partialPromises = [];
-                                var newPage = ctx.page;
-                                if (parentPage) {
-                                    newPage = {};
-                                    lang.mixin(newPage, parentPage);
-                                    lang.mixin(newPage, ctx.page);
-                                }
-                                var outerTemplate;
-                                var partials = {};
-                                lang.mixin(partials, template.partials);
-                                if (template.outer) {
-                                    outerTemplate = template.outer;
-                                    lang.mixin(partials, outerTemplate.partials);
-                                    var octx = {page: {}, promises: [], templates: {}};
-                                    visit(me, outerTemplate.group, newPage, octx);
-                                    octx.promises.forEach(function (p) {
-                                        partialPromises.push(p);
-                                    });
-
-                                } else if (ctx.outer) {
-                                    outerTemplate = ctx.outer[me.pageStore.typeProperty];
-
-                                }
-                                if (partials) {
-                                    Object.keys(partials).forEach(function (key) {
-                                        var p = me.render(partials[key], newPage);
-                                        partialPromises.push(p);
-                                        when(p).then(function (result) {
-                                            newPage[key] = result.html;
-                                            if (result.errors) {
-                                                ctx.errors = ctx.errors.concat(result.errors);
-                                            }
-                                        }).otherwise(function (e) {
-                                            //console.error("error during rendering " + e.stack);
-                                        });
-                                    });
-                                }
-
-                                if (template.partialTemplates) {
-                                    Object.keys(template.partialTemplates).forEach(function (key) {
-                                        ctx.templates[key] = template.partialTemplates[key].sourceCode;
-                                    });
-                                }
-                                when(all(partialPromises)).then(function () {
-                                    if (outerTemplate) {
-                                        ctx.templates["inner"] = template.sourceCode;
-                                        if (ctx.outer) {
-                                            var inner = newPage;
-                                            newPage = ctx.page[ctx.outer.code];
-                                            newPage.inner = inner;
-                                        } else {
-                                            newPage.inner = newPage;
-                                        }
-                                    }
-                                    var sourceCode = outerTemplate ? outerTemplate.sourceCode : template.sourceCode;
-                                    var html = me.renderTemplate(sourceCode, newPage, ctx.templates);
-                                    renderPromise.resolve({html: html, errors: ctx.errors});
-                                }).otherwise(function (e) {
-                                    //console.error("error during rendering " + e.stack);
-                                    error(ctx);
-                                });
-                            }).otherwise(function (e) {
-                                //console.error("error during rendering " + e.stack);
-                                //alert("error during rendering " + e.stack);
-                            });
-                        } else {
-                            renderPromise.resolve(page);
-                        }
+                        me._renderPage(page, template, parentPage, checkPartial, renderPromise, error);
                     }).otherwise(error);
                 } else {
                     renderPromise.resolve({noPage: true});
@@ -377,6 +329,86 @@ define([
             }).otherwise(error);
 
             return renderPromise;
+
+        },
+        _renderPage: function (page, template, parentPage, checkPartial, renderPromise, error) {
+            var me = this;
+            ////console.log("renderInternally p=" + page.url + "  t=" + template.name);
+            if (!template.sourceCode) {
+                renderPromise.resolve({noPage: true});
+                return;
+            }
+            if (!checkPartial || template.partial) {
+                var includesPromise = me.renderIncludes(template, page);
+                when(includesPromise).then(function (ctx) {
+                    var partialPromises = [];
+                    var newPage = ctx.page;
+                    if (parentPage) {
+                        newPage = {};
+                        lang.mixin(newPage, parentPage);
+                        lang.mixin(newPage, ctx.page);
+                    }
+                    var outerTemplate;
+                    var partials = {};
+                    lang.mixin(partials, template.partials);
+                    if (template.outer) {
+                        outerTemplate = template.outer;
+                        lang.mixin(partials, outerTemplate.partials);
+                        var octx = {page: {}, promises: [], templates: {}};
+                        visit(me, outerTemplate.group, newPage, octx);
+                        octx.promises.forEach(function (p) {
+                            partialPromises.push(p);
+                        });
+
+                    } else if (ctx.outer) {
+                        outerTemplate = ctx.outer[me.pageStore.typeProperty];
+
+                    }
+                    if (partials) {
+                        Object.keys(partials).forEach(function (key) {
+                            var p = me.render(partials[key], newPage);
+                            partialPromises.push(p);
+                            when(p).then(function (result) {
+                                newPage[key] = result.html;
+                                if (result.errors) {
+                                    ctx.errors = ctx.errors.concat(result.errors);
+                                }
+                            }).otherwise(function (e) {
+                                //console.error("error during rendering " + e.stack);
+                            });
+                        });
+                    }
+
+                    if (template.partialTemplates) {
+                        Object.keys(template.partialTemplates).forEach(function (key) {
+                            ctx.templates[key] = template.partialTemplates[key].sourceCode;
+                        });
+                    }
+                    when(all(partialPromises)).then(function () {
+                        if (outerTemplate) {
+                            ctx.templates["inner"] = template.sourceCode;
+                            if (ctx.outer) {
+                                var inner = newPage;
+                                newPage = ctx.page[ctx.outer.code];
+                                newPage.inner = inner;
+                            } else {
+                                newPage.inner = newPage;
+                            }
+                        }
+                        var sourceCode = outerTemplate ? outerTemplate.sourceCode : template.sourceCode;
+                        var html = me.renderTemplate(sourceCode, newPage, ctx.templates);
+                        renderPromise.resolve({html: html, errors: ctx.errors});
+                    }).otherwise(function (e) {
+                        //console.error("error during rendering " + e.stack);
+                        error(ctx);
+                    });
+                }).otherwise(function (e) {
+                    //console.error("error during rendering " + e.stack);
+                    //alert("error during rendering " + e.stack);
+                });
+            } else {
+                renderPromise.resolve(page);
+            }
 
         },
         tadCache: {},

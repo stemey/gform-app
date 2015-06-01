@@ -7,22 +7,34 @@ define([
 		resolve: function (obj) {
 			if (obj && obj.type && obj.type=="array" && obj.element && obj.element.editor === "multi-template-ref") {
 				//var url = baseUrl + ".." + obj.collectionUrl + "/" + obj.collection;
+				var groups=[];
+				var templates=[];
+
+
+				var refs =obj.element.templates.map(function(template){
+					var cb = function (value) {
+						var group =value.group;
+						group.type="object";
+						group.code=value.id;
+						obj.groups.push(group);
+						obj.templates.push(value);
+						//obj.type = "object";
+						//delete obj.editor;
+						//delete obj.editor;// = "object";
+					}
+					return {store: "/template", id: template, setter: cb}
+				})
+
+				obj.groups=groups;
+				obj.templates=templates;
 				delete obj.editor;
-				obj.groups=[];
-				delete obj.element;
 				obj.type="array";
-				var cb = function (value) {
-					var group ={};
-					groups = value.group;
-					group.type="object";
-					group.template = value;
-					groups.push(group);
-					//obj.type = "object";
-					//delete obj.editor;
-					//delete obj.editor;// = "object";
-				}
+				obj.typeProperty="__type__";
+				delete obj.element;
+
+
 				// TODO template store needs to be configured
-				return {store: "/template", id: obj.element.template, setter: cb};
+				return refs;
 			} else {
 				return false;
 			}

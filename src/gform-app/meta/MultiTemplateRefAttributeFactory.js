@@ -17,7 +17,7 @@ define([
             embeddedAttribute.groups=attribute.templates.map(function(template) {
                 return template.group;
             });
-            embeddedAttribute.typeProperty="__type";
+            embeddedAttribute.typeProperty="__type__";
             // TODO we don't need a url attribute for the embedded template
             return embeddedAttribute;
         },

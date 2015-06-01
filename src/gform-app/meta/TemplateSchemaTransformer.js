@@ -1,4 +1,5 @@
 define([
+    '../cms/MultiTemplateRefArrayResolver',
     '../cms/TemplateRefArrayResolver',
     '../cms/MultiTemplateRefResolver',
     '../util/SchemaResolver',
@@ -9,7 +10,7 @@ define([
     'dojo/Deferred',
     './Resolver',
     'dojo/_base/declare'
-], function (TemplateRefArrayResolver, MultiTemplateRefResolver, SchemaResolver, TemplateRefResolver, MultiEntityRefResolver, SchemaRefResolver, when, Deferred, Resolver, declare) {
+], function (MultiTemplateRefArrayResolver, TemplateRefArrayResolver, MultiTemplateRefResolver, SchemaResolver, TemplateRefResolver, MultiEntityRefResolver, SchemaRefResolver, when, Deferred, Resolver, declare) {
 // module:
 //		gform/util/Resolver
 
@@ -29,6 +30,7 @@ define([
         transform: function (schema, skipResolve) {
             var d = new Deferred();
             var resolver = new SchemaResolver(this.ctx);
+            resolver.addResolver(new MultiTemplateRefArrayResolver());
             resolver.addResolver(new MultiEntityRefResolver({idProperty: this.idProperty}))
             resolver.addResolver(new SchemaRefResolver())
             resolver.addResolver(new TemplateRefResolver())

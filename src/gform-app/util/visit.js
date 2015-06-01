@@ -42,21 +42,25 @@ define([
             }, ctx);
         },
         goonElement: function (meta, model, ctx) {
-            array.forEach(model, function (el, idx) {
-                var single = meta.element || meta.group;
-                var me = this;
-                this.visitor.visitElement(single, el, function (newCtx) {
-                    if (meta.group) {
-                        me.visit(single, el, newCtx);
-                    }
-                }, idx, ctx);
-            }, this);
+            if (model) {
+                array.forEach(model, function (el, idx) {
+                    var single = meta.element || meta.group;
+                    var me = this;
+                    this.visitor.visitElement(single, el, function (newCtx) {
+                        if (meta.group) {
+                            me.visit(single, el, newCtx);
+                        }
+                    }, idx, ctx);
+                }, this);
+            }
         },
         goonArray: function (meta, model, ctx) {
-            var me = this;
-            this.visitor.visitArray(meta, model, function (x) {
-                me.goonElement(meta, model, x);
-            }, ctx);
+            if (model) {
+                var me = this;
+                this.visitor.visitArray(meta, model, function (x) {
+                    me.goonElement(meta, model, x);
+                }, ctx);
+            }
         }
     });
 

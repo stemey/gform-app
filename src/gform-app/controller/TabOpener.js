@@ -70,6 +70,7 @@ define(['dojo/aspect',
 			return controller;
 		},
 		openSingle: function (param) {
+			//return;
 			if (!this.opening) {
 				topic.publish("/focus", {store: param.url, id: param.id});
 			}else{
