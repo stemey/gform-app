@@ -13,17 +13,15 @@ define([
 	'gform/special/formbuilder/RepeatedFormAttributeFactory',
 	'gform/primitive/refConverter',
 	'gform/primitive/nullablePrimitiveConverter',
-	'../../meta/TemplateRefAttributeFactory',
 	'../../dynamicstore/RequiredAttributes',
 	'./TemplateAttributes',
 	'gform/createFullEditorFactory'
-], function (Preview, identityConverter, CreateInstance, Save, Close, Discard, Delete, ActionFactory, FormValidator, AttributeRefFactory, FormAttributeFactory, RepeatedFormAttributeFactory, refConverter, converter, TemplateRefAttributeFactory, RequiredAttributes, TemplateAttributes, createFullEditorFactory) {
+], function (Preview, identityConverter, CreateInstance, Save, Close, Discard, Delete, ActionFactory, FormValidator, AttributeRefFactory, FormAttributeFactory, RepeatedFormAttributeFactory, refConverter, converter, RequiredAttributes, TemplateAttributes, createFullEditorFactory) {
 
 
 	return function () {
 		var ef = createFullEditorFactory();
 		var attributeFactoryFinder = ef.get("attributeFactoryFinder");
-		attributeFactoryFinder.addAttributeFactory(new TemplateRefAttributeFactory({editorFactory: ef}));
 		ef.addCtrValidator("requiredAttributes", RequiredAttributes);
 		ef.addValidator("templateAttributes", TemplateAttributes);
 

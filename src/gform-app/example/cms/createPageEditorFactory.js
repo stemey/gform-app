@@ -1,6 +1,4 @@
 define([
-	'../../meta/MultiTemplateRefAttributeFactory',
-	'../../meta/TemplateRefAttributeFactory',
 	'../../controller/actions/DiscardAndPreview',
 	'../../controller/actions/Preview',
 	'../../controller/actions/Save',
@@ -9,15 +7,13 @@ define([
 	'gform/controller/actions/ActionFactory',
 	'gform/primitive/nullablePrimitiveConverter',
 	'gform/createFullEditorFactory'
-], function (MultiTemplateRefAttributeFactory, TemplateRefAttributeFactory, DiscardAndPreview, Preview,  Save, Close, Delete, ActionFactory, converter, createFullEditorFactory) {
+], function (DiscardAndPreview, Preview,  Save, Close, Delete, ActionFactory, converter, createFullEditorFactory) {
 
 
 	return function (config) {
 		var ef = createFullEditorFactory();
 
 		var attributeFactoryFinder = ef.get("attributeFactoryFinder");
-		attributeFactoryFinder.addAttributeFactory(new TemplateRefAttributeFactory({editorFactory: ef}));
-		attributeFactoryFinder.addAttributeFactory(new MultiTemplateRefAttributeFactory({editorFactory: ef}));
 
 
 		ef.addConverterForType(converter, "ref");

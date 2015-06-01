@@ -13,16 +13,14 @@ define([
 	'gform/special/formbuilder/FormAttributeFactory',
 	'gform/special/formbuilder/RepeatedFormAttributeFactory',
 	'gform/primitive/nullablePrimitiveConverter',
-	'../meta/TemplateRefAttributeFactory',
 	'./RequiredAttributes',
 	'gform/createFullEditorFactory'
-], function (DiscardAndPreview, PreviewButton,  urlConverter, SchemaAttributeFactory, identityConverter, Save, Close, Delete, ActionFactory, FormValidator, AttributeRefFactory, FormAttributeFactory, RepeatedFormAttributeFactory,  converter, TemplateRefAttributeFactory, RequiredAttributes, createFullEditorFactory) {
+], function (DiscardAndPreview, PreviewButton,  urlConverter, SchemaAttributeFactory, identityConverter, Save, Close, Delete, ActionFactory, FormValidator, AttributeRefFactory, FormAttributeFactory, RepeatedFormAttributeFactory,  converter, RequiredAttributes, createFullEditorFactory) {
 
 
 	return function (config) {
 		var ef = createFullEditorFactory();
 		var attributeFactoryFinder = ef.get("attributeFactoryFinder");
-		attributeFactoryFinder.addAttributeFactory(new TemplateRefAttributeFactory({editorFactory: ef}));
 		attributeFactoryFinder.addAttributeFactory(new SchemaAttributeFactory({editorFactory: ef}));
 		ef.addCtrValidator("requiredAttributes", RequiredAttributes);
 
