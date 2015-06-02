@@ -4,6 +4,7 @@ define(['dojo/_base/declare',
 	return declare([TabCrudController], {
 		schemaUrlPrefix: null,
 		_setTitleAttr: null,
+		showSelectButton:true,
 		postCreate: function () {
 			if (this.store.editorFactory) {
 				this.editorFactory = this.store.editorFactory;
@@ -13,6 +14,13 @@ define(['dojo/_base/declare',
 		getSchema: function (url) {
 			var schemaUrl = this.schemaUrlPrefix ? this.schemaUrlPrefix + "/" + url : url;
 			return this.inherited(arguments, [schemaUrl]);
+		},
+		gotoTemplate: function(evt) {
+			var template = this.schemaSelector.get("value");
+			var templateStore = this.store.templateStore;
+			if (template && this.editor.ctx && this.editor.ctx.opener ) {
+				this.editor.ctx.opener.openSingle({url:templateStore, typeProperty:templateStore.typeProperty,id:template});
+			}
 		},
 		getFallbackSchema: function () {
 			// TODO move to store?
