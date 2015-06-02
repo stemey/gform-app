@@ -12,7 +12,7 @@ define([
         var layoutNoPreview = {
             entity: {region: "center"},
             preview: {state:"closed", region: "right"},
-            store: {region: "left", width: "40%"}
+            store: {region: "left", width: "60%"}
         }
 
         var layoutDefaultPreview = {
@@ -85,6 +85,19 @@ define([
 
             assert.equal(preview._splitterWidget.state, "closed");
             assert.equal(preview._splitterWidget, container.rightSplitter);
+
+        });
+
+        bdd.it('test switchlayout and keep width', function () {
+
+            container.switchLayout("layoutDefaultPreview");
+
+            container.getByAppType("entity").domNode.style.width="20%";
+            container.switchLayout("layoutNoPreview");
+            assert.equal(container.layouts.layoutDefaultPreview.entity.width,"20%");
+            assert.equal(container.getByAppType("entity").domNode.style.width, "60%");
+            container.switchLayout("layoutDefaultPreview");
+            assert.equal(container.getByAppType("entity").domNode.style.width, "20%");
 
         });
 

@@ -22,7 +22,13 @@ define([
 		afterAttached: function () {
 			var me = this;
 			setTimeout(function () {
-				me.router.start(me.ctx.getViews()[0]);
+				var path;
+				if (me.config.view.startPath) {
+					path=me.config.view.startPath;
+				}else{
+					path="/store/"+me.ctx.getViews()[0].store;
+				}
+				me.router.start(path);
 			}, 0);
 		},
 		create: function (config) {

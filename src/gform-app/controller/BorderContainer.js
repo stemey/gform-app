@@ -66,9 +66,22 @@ define([
             this.getChildren().forEach(function (child) {
                 var splitter = child._splitterWidget;
                 if (splitter && splitter.get("state") != state) {
-                    splitter.set("state", state);
+                    if (child.appType) {
+                        if (state=="closed") {
+                            this.layouts[this.layoutId][child.appType].width=child.domNode.style.width;
+                            splitter.set("state", state);
+                        } else {
+                            var width = this.layouts[this.layoutId][child.appType].width;
+                            splitter.set("state", state);
+                            child.domNode.style.width=width;
+                        }
+                    }else{
+                        splitter.set("state", state);
+                    }
+
+
                 }
-            });
+            },this);
             this.layout();
         },
         restSplitter: function (state) {
@@ -95,9 +108,13 @@ define([
                 var appType = child.get("appType");
                 var app = layout[appType];
                 if (app && app.region !== "center") {
+                    if (child._splitterWidget !== "closed") {
                         var width = child.domNode.style.width;
-                        app.width = width;
-					app.state = child._splitterWidget.state;
+                        if (width!="0px") {
+                            app.width = width;
+                        }
+                    }
+                    app.state = child._splitterWidget.state;
                 }
             }, this);
         },
@@ -124,8 +141,8 @@ define([
 
             Object.keys(nu).forEach(function (appType) {
                 var child = this.getByAppType(appType);
-                if (child._splitterWidget && child._splitterWidget.get("state")=="closed") {
-                    child._splitterWidget.set("state","full")
+                if (child._splitterWidget && child._splitterWidget.get("state") == "closed") {
+                    child._splitterWidget.set("state", "full")
                 }
             }, this);
             Object.keys(nu).forEach(function (appType) {
@@ -143,7 +160,7 @@ define([
                 if (nuApp.hidden) {
                     child.domNode.style.display = "none";
                     if (child._splitterWidget) {
-                        child._splitterWidget.set("state","closed");
+                        child._splitterWidget.set("state", "closed");
                         child._splitterWidget.domNode.style.display = "none";
                     }
                 } else {
@@ -153,10 +170,11 @@ define([
                     }
                     if (nuApp.state) {
                         child._splitterWidget.set("state", nuApp.state);
+
                     } else if (child._splitterWidget) {
                         child._splitterWidget.set("state", "full");
                     }
-                    if (nuApp.width) {
+                    if (nuApp.width && nuApp.state!=="closed") {
                         child.domNode.style.width = nuApp.width;
                     }
                 }
