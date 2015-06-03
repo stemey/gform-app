@@ -38,7 +38,7 @@ define([
                             "dstoreConfig": {
                                 "storeName": TEMPLATE_STORE
                             },
-                            "initialDataUrl":"gform-app/example/cms/data/template-data.json",
+                            "initialDataUrl": "gform-app/example/cms/data/template-data.json",
                             "createEditorFactory": "gform-app/example/cms/createTemplateEditorFactory"
                         },
                         {
@@ -49,11 +49,11 @@ define([
                             "previewerId": "handlebars",
                             "typeProperty": "template",
                             "parentProperty": "parent",
-                            "idType":"number",// used by createValueFactory
+                            "idType": "number",// used by createValueFactory
                             "idProperty": config.idProperty,
                             "initialDataUrl": "gform-app/example/cms/data/page-data.json",
                             "dstoreConfig": {
-                                "storeName":PAGE_STORE
+                                "storeName": PAGE_STORE
                             },
                             "createEditorFactory": "gform-app/example/cms/createPageEditorFactory"
                         }
@@ -80,16 +80,16 @@ define([
                 },
                 "resourceFactories": [],
                 "view": {
-                    "startPath":"/entity/page/2",
+                    "startPath": "/entity/page/2",
                     "layouts": {
                         "standard": {
                             "store": {"region": "left", "width": "20%"},
                             "entity": {"region": "right", "width": "40%"},
-                            "preview": {"region": "center",width:"100%"}
+                            "preview": {"region": "center", width: "100%"}
                         },
                         "/template": {
                             "store": {"region": "left", "width": "50%"},
-                            "entity": {"region": "center",width:"100%"},
+                            "entity": {"region": "center", width: "100%"},
                             "preview": {"hidden": true, "region": "right"}
                         }
                     },
@@ -111,12 +111,12 @@ define([
                                 {
                                     "factoryId": "gform-app/cms/TemplateCreateFactory",
                                     "label": "add",
-                                    "storeId":"/template"
+                                    "storeId": "/template"
                                 },
                                 /*{
-                                    "factoryId": "gform-app/factory/ResetStoreFactory",
-                                    "label": "reset store"
-                                },*/
+                                 "factoryId": "gform-app/factory/ResetStoreFactory",
+                                 "label": "reset store"
+                                 },*/
                                 {
                                     "factoryId": "gform-app/factory/ToggleSizeFactory",
                                     "label": "full size",
@@ -137,18 +137,59 @@ define([
                             "factoryId": "gform-app/factory/StoreViewFactory",
                             "controllers": [],
                             "children": [
-
                                 {
-                                    "factoryId": "gform-app/factory/TreeFactory",
-                                    "title": "tree",
-                                    "osm": true,
+                                    "factoryId": "gform-app/factory/TabFactory",
                                     "storeId": "page",
-                                    "labelAttribute": "name",
-                                    "menuItems": [
-                                        Delete, {type: OpenAsJson, fallbackSchema: "fallbackSchema"}
-                                    ]
+                                    "children": [
+                                        {
+                                            "factoryId": "gform-app/factory/TreeFactory",
+                                            "title": "tree",
+                                            "osm": true,
+                                            "storeId": "page",
+                                            "labelAttribute": "name",
+                                            "menuItems": [
+                                                Delete, {type: OpenAsJson, fallbackSchema: "fallbackSchema"}
+                                            ]
 
-                                },
+                                        },
+                                        {
+                                            "factoryId": "gform-app/factory/GridFactory",
+                                            "title": "grid",
+                                            "storeId": "page",
+                                            "menuItems": [
+                                                Delete, {type: OpenAsJson, fallbackSchema: "fallbackSchema"}
+                                            ],
+                                            "columns": [
+                                                {
+                                                    "id": "name",
+                                                    "field": "name",
+                                                    "name": "name"
+                                                },
+                                                {
+                                                    "id": "template",
+                                                    "field": "template",
+                                                    "name": "template"
+                                                },
+                                                {
+                                                    "id": "parent",
+                                                    "field": "parent",
+                                                    "name": "parent"
+                                                }
+                                            ],
+                                            sync: true,
+                                            conditions: {
+                                                "string": ["equal"],
+                                                "number": ["equal"],
+                                                "date": ["equal"],
+                                                "time": ["equal"],
+                                                "enum": ["equal"],
+                                                "boolean": ["equal"]
+                                            }
+
+                                        }
+                                    ]
+                                }
+                                ,
                                 {
                                     "factoryId": "gform-app/factory/GridFactory",
                                     "title": "template",
@@ -179,7 +220,7 @@ define([
                                     "splitter": true,
                                     "rendererClass": "gform-app/preview/handlebars/Renderer",
                                     "pageStore": PAGE_STORE,
-                                    "urlProperty":"id"
+                                    "urlProperty": "id"
                                 }
                             ]
                         },

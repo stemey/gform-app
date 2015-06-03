@@ -42,6 +42,8 @@ define([
             Handlebars = hb;
             initHb();
         })
+    } else{
+        initHb();
     }
 
 

@@ -66,7 +66,7 @@ define([
 						{
 							"factoryId": "gform-app/factory/StoreFactory",
 							"name": "/mdbserver",
-							"storeClass": "gform-app/util/MongoRest",
+							"storeClass": "gform-app/mongodb/MongoRest",
 							"assignableId": true,
 							"idProperty": "name",
 							"idType": "string",
@@ -78,7 +78,7 @@ define([
 						{
 							"factoryId": "gform-app/factory/StoreFactory",
 							"name": "/mdbcollection",
-							"storeClass": "gform-app/util/MongoRest",
+							"storeClass": "gform-app/mongodb/MongoRest",
 							"assignableId": true,
 							"idProperty": config.idProperty,
 							"idType": config.idType,
@@ -93,7 +93,7 @@ define([
 							"factoryId": "gform-app/factory/StoreFactory",
 							"name": "/mdbschema",
 							"assignableId": true,
-							"storeClass": "gform-app/util/MongoRest",
+							"storeClass": "gform-app/mongodb/MongoRest",
 							"idProperty": config.idProperty,
 							"idType": config.idType,
 							"target": baseUrl + "schema/",
