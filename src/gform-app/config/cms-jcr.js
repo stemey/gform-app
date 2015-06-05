@@ -5,7 +5,7 @@ define([
 		'../factory/BrandFactory',
 		'../mongodb/createEditorFactory',
 		'../factory/DynamicResourceFactory',
-		'../factory/schema/SchemaGenerator',
+		'../factory/schema/SchemaFactory',
 		'../factory/schema/StaticSchemaGenerator',
 		'../factory/schema/SchemaRegistryFactory',
 		'../mongodb/createSchemaEditorFactory',

@@ -9,12 +9,6 @@
     "$ref": "../../../gform/schema/attributes/string.json"
   },
   {
-    "$ref": "schema-ref.json"
-  },
-  {
-    "$ref": "../../meta/template-ref.json"
-  },
-  {
     "$ref": "../../meta/template-ref.json"
   },
   {

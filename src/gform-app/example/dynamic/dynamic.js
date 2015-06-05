@@ -1,10 +1,10 @@
-define(['./SchemaGenerator',
+define([
 		'../../controller/gridactions/OpenAsJson',
 		'dstore/Memory',
 		'../../util/dynamicDstoreFactory',
 		'../../dynamicstore/SchemaStore',
 		'../../util/ToMongoQueryTransform',
-		'gform-app/controller/gridactions/Delete'], function (SchemaGenerator, OpenAsJson, Memory, dynamicDstoreFactory, SchemaStore, ToMongoQueryTransform, Delete) {
+		'gform-app/controller/gridactions/Delete'], function (OpenAsJson, Memory, dynamicDstoreFactory, SchemaStore, ToMongoQueryTransform, Delete) {
 
 
 		return function (config) {
@@ -15,7 +15,6 @@ define(['./SchemaGenerator',
 				config.idProperty = "id";
 				config.idType="number"
 			}
-			var schemaGenerator = new SchemaGenerator();
 			var baseUrl = config.baseUrl;
 			return {
 				"storeRegistry": {
@@ -29,7 +28,7 @@ define(['./SchemaGenerator',
 							"idType": config.idType,
 							"assignableId": false,
 							"dstoreConfig": {
-								"target": "gform-app/example/dynamic/data/template-data.json"
+								"target": "gform-app/example/dynamic/data/schema-data.json"
 							},
 							"createEditorFactory": "gform-app/dynamicstore/createSchemaEditorFactory"
 						},
@@ -40,7 +39,7 @@ define(['./SchemaGenerator',
 							"name": "metadata",
 							"idProperty": config.idProperty,
 							"dstoreConfig": {
-								"target": "gform-app/example/dynamic/data/page-data.json"
+								"target": "gform-app/example/dynamic/data/metadata-data.json"
 							},
 							"createEditorFactory": "gform-app/dynamicstore/createMetadataEditorFactory",
 							"efConfig":{
@@ -58,9 +57,9 @@ define(['./SchemaGenerator',
 					],
 					"schemaGenerators": [
 						{
-							"factoryId": "gform-app/dynamicstore/MetaSchemaGenerator",
+							"factoryId": "gform-app/example/dynamic/MetaSchemaFactory",
 							"store": "schema",
-							"schemaGenerator":schemaGenerator
+							"schemaId":"schema"
 
 						},
 						{

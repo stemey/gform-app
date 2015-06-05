@@ -1,16 +1,26 @@
 define([
+        '../../cms/createValueFactory',
         '../../controller/gridactions/Delete',
         '../../controller/gridactions/OpenAsJson',
-        './SchemaGenerator',
+        'gform/schema/SchemaGenerator',
         '../../jcr/TemplateStore',
         '../../util/ToMongoQueryTransform'
-    ], function (Delete, OpenAsJson, SchemaGenerator, TemplateStore, ToMongoQueryTransform) {
+    ], function (createValueFactory, Delete, OpenAsJson, SchemaGenerator, TemplateStore, ToMongoQueryTransform) {
 
 
         // id of store and schema for templates must be /template. Fixed by template.json
         var TEMPLATE_STORE = TEMPLATE_SCHEMA = "/template";
+        var PARTIAL_STORE = "partial";
 
         var PAGE_STORE = "page";
+
+        var createTemplateValueFactory = function(ctx, store) {
+            var instanceStore = ctx.getStore(store.instanceStore);
+            return createValueFactory.createTemplate(store, instanceStore);
+        }
+        var createPartialValueFactory = function(ctx,store) {
+            return createValueFactory.createPartial(store);
+        }
 
         return function (config) {
 
@@ -44,6 +54,20 @@ define([
                         {
                             "factoryId": "gform-app/factory/DstoreFactory",
                             "storeClass": "dstore/db/LocalStorage",
+                            "template": TEMPLATE_SCHEMA,
+                            "name": PARTIAL_STORE,
+                            "idProperty": config.idProperty,
+                            "idType": "string",
+                            "assignableId": true,
+                            "dstoreConfig": {
+                                "storeName": PARTIAL_STORE
+                            },
+                            "initialDataUrl": "gform-app/example/cms/data/partial-data.json",
+                            "createEditorFactory": "gform-app/example/cms/createPartialTemplateEditorFactory"
+                        },
+                        {
+                            "factoryId": "gform-app/factory/DstoreFactory",
+                            "storeClass": "dstore/db/LocalStorage",
                             "templateStore": TEMPLATE_STORE,
                             "name": PAGE_STORE,
                             "previewerId": "handlebars",
@@ -67,14 +91,14 @@ define([
                     ],
                     "schemaGenerators": [
                         {
-                            "factoryId": "gform-app/factory/schema/SchemaGenerator",
+                            "factoryId": "gform-app/factory/schema/SchemaFactory",
                             "schemaGenerator": schemaGenerator,
-                            "store": TEMPLATE_STORE // instances of the generated schema will be place into this store. id Proeprty and idType are taken from this store and added to the schema.
-
+                            "store": TEMPLATE_STORE,
+                            "partialStore":PARTIAL_STORE
                         },
                         {
                             "factoryId": "gform-app/factory/schema/StaticSchemaGenerator",
-                            "module": "gform-app/example/dynamic/fallbackSchema.json"
+                            "module": "gform-app/example/cms/fallbackSchema.json"
                         }
                     ]
                 },
@@ -88,6 +112,11 @@ define([
                             "preview": {"region": "center", width: "100%"}
                         },
                         "/template": {
+                            "store": {"region": "left", "width": "50%"},
+                            "entity": {"region": "center", width: "100%"},
+                            "preview": {"hidden": true, "region": "right"}
+                        },
+                        "partial": {
                             "store": {"region": "left", "width": "50%"},
                             "entity": {"region": "center", width: "100%"},
                             "preview": {"hidden": true, "region": "right"}
@@ -109,14 +138,20 @@ define([
                                     "placeHolder": "add entity.."
                                 },
                                 {
-                                    "factoryId": "gform-app/cms/TemplateCreateFactory",
+                                    "factoryId": "gform-app/factory/SingleSchemaCreateFactory",
                                     "label": "add",
-                                    "storeId": "/template"
+                                    "valueFactory":createTemplateValueFactory,
+                                    "includedStoreIds":["/template"]
+                                },{
+                                    "factoryId": "gform-app/factory/SingleSchemaCreateFactory",
+                                    "label": "add",
+                                    "valueFactory":createPartialValueFactory,
+                                    "includedStoreIds":["partial"]
                                 },
-                                /*{
+                                {
                                  "factoryId": "gform-app/factory/ResetStoreFactory",
                                  "label": "reset store"
-                                 },*/
+                                 },
                                 {
                                     "factoryId": "gform-app/factory/ToggleSizeFactory",
                                     "label": "full size",
@@ -194,6 +229,22 @@ define([
                                     "factoryId": "gform-app/factory/GridFactory",
                                     "title": "template",
                                     "storeId": TEMPLATE_STORE,
+                                    "gridxQueryTransform": new ToMongoQueryTransform(),
+                                    "menuItems": [
+                                        Delete, {type: OpenAsJson, fallbackSchema: "fallbackSchema"}
+                                    ],
+                                    "columns": [
+                                        {
+                                            "id": "name",
+                                            "field": "name",
+                                            "name": "name"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "factoryId": "gform-app/factory/GridFactory",
+                                    "title": "partial templates",
+                                    "storeId": PARTIAL_STORE,
                                     "gridxQueryTransform": new ToMongoQueryTransform(),
                                     "menuItems": [
                                         Delete, {type: OpenAsJson, fallbackSchema: "fallbackSchema"}

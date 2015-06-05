@@ -16,6 +16,7 @@ define([
         resolver: null,
         templateToSchemaTransformer: null,
         urlProperty: null,
+        needsToClonePage: true,
         constructor: function (kwArgs) {
             if (kwArgs) {
                 this.urlProperty = kwArgs.urlProperty || "url";
@@ -23,9 +24,15 @@ define([
             this.tmpls = {};
         },
         findByUrl: function (url) {
-            //var res =url.match(/page\/([^\/]+)/);
-            //var store=pageStoreRegistry.get(template).get(res[1]);
-            return this.pageStore.findByUrl(url);
+
+            var page = this.pageStore.findByUrl(url);
+            if (this.needsToClonePage && page && typeof page.then !== "function") {
+                // TODO also clone for pormise and cache OR simply improve rendering code to not modify original page
+                var clone = JSON.parse(JSON.stringify(page));
+                return clone;
+            } else {
+                return page;
+            }
         },
         handlePageRef: function (attribute, value, ctx, idx, templateKey) {
             if (!value) {

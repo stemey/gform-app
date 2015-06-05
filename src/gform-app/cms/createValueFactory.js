@@ -1,38 +1,53 @@
-define([
-], function () {
+define([], function () {
 
-    return function (templateStore, instanceStore, partial) {
+    return {
+        _createTemplate: function () {
+            var attributes = [];
+            var group = {editor: "listpane", attributes: attributes};
+            var template = {};
+            template.group = group;
+            return template;
+        },
+        _createNameAttribute: function () {
+            var nameAttribute = {};
+            nameAttribute.code = "name";
+            nameAttribute.type = "string";
+            nameAttribute.editor = "string";
+            nameAttribute.visible = false;
+            return nameAttribute;
+        },
+        createPartial: function (templateStore) {
+            var template = this._createTemplate();
+            template.group.attributes.push(this._createNameAttribute());
+            return template;
 
-        // this is the template sore
-        var typeAttribute={};
-        typeAttribute.code=instanceStore.typeProperty;
-        typeAttribute.type=templateStore.idType || "string";
-        typeAttribute.editor="string";
-        typeAttribute.visible=false;
+        },
+        createTemplate: function (templateStore, instanceStore) {
+            var template = this._createTemplate();
+            var attributes = template.group.attributes;
 
-        var nameAttribute={};
-        nameAttribute.code="name";
-        nameAttribute.type="string";
-        nameAttribute.editor="string";
-        nameAttribute.visible=false;
+            attributes.push(this._createNameAttribute());
+
+            var typeAttribute = {};
+            typeAttribute.code = instanceStore.typeProperty;
+            typeAttribute.type = templateStore.idType || "string";
+            typeAttribute.editor = "string";
+            typeAttribute.visible = false;
+            attributes.push(typeAttribute);
+
+            var parentAttribute = {};
+            parentAttribute.code = instanceStore.parentProperty;
+            parentAttribute.typeProperty = instanceStore.typeProperty;
+            parentAttribute.url = instanceStore.name;
+            parentAttribute.idProperty = instanceStore.idProperty;
+            parentAttribute.searchProperty = "name";
+            parentAttribute.type = "multi-ref";
+            parentAttribute.editor = "multi-page-ref";
+            parentAttribute.query={template:{$regex:".*[fF]older.*"}}
+            parentAttribute.required = true;
+            attributes.push(parentAttribute);
 
 
-        var parentAttribute={};
-        parentAttribute.code=instanceStore.parentProperty;
-        parentAttribute.typeProperty=instanceStore.typeProperty;
-        parentAttribute.schemas=["folder"];
-        parentAttribute.url=instanceStore.name;
-        parentAttribute.idProperty=instanceStore.idProperty;
-        parentAttribute.searchProperty="name";
-        parentAttribute.type="multi-ref";
-        parentAttribute.editor="multi-ref";
-        parentAttribute.required=true;
-
-
-        var attributes = [];
-        attributes.push(nameAttribute);
-        attributes.push(typeAttribute);
-        if (!partial) {
             attributes.push({
                 code: instanceStore.idProperty,
                 "editor": instanceStore.idType || "string",
@@ -40,15 +55,12 @@ define([
                 required: false,
                 disabled: true
             });
-            attributes.push(parentAttribute);
+
+            return template;
         }
 
-        var group = {editor: "listpane", attributes: attributes};
-        var template = {};
-        template.partial = partial === true;
-        template.group = group;
 
-
-        return template;
     }
+
+
 });

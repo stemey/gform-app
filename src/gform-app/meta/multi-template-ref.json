@@ -18,8 +18,8 @@
                         "type":"ref",
                         "searchProperty": "name",
                         "idProperty":"code",
-                        "url": "/template",
-                        "schemaUrl": "/template"
+                        "url":  {"$ref":"partialStore"},
+                        "schemaUrl": {"$ref":"partialSchema"}
                     }
                 },
                 {

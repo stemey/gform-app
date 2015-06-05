@@ -1,28 +1,15 @@
 {
-	"id": "fallbackSchema",
-	"additionalProperties": {
-		"code": "entity"
-	},
-	"editor": "verticalgroup",
-	"groups": [
-		{
-			"editor": "listpane",
-			"region": "top",
-			"attributes": [
-				{
-					"code": "id",
-					"type": "number",
-					"disabled": true
-				}
-			]
-		},
-		{
-			"editor": "single",
-			"region": "center",
-			"attribute": {
-				"code": "entity",
-				"type": "any"
-			}
-		}
-	]
+  "id": "fallbackSchema",
+  "additionalProperties": {
+    "code": "entity"
+  },
+  "editor": "single",
+  "attribute": {
+    "editor": "single",
+    "region": "center",
+    "attribute": {
+      "code": "entity",
+      "type": "any"
+    }
+  }
 }

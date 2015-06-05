@@ -29,9 +29,9 @@ define([
 				}.bind(this)
 			});
 			if (parentItem) {
-				parentItem.popup.addChild(menuItem);
+				parentItem.popup.addChild(menuItem,view.index);
 			} else {
-				this.addChild(menuItem);
+				this.addChild(menuItem, view.index);
 			}
 		},
 		refresh: function() {

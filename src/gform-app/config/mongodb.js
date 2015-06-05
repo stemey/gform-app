@@ -5,7 +5,7 @@ define([
 		'../factory/BrandFactory',
 		'../mongodb/createEditorFactory',
 		'../factory/DynamicResourceFactory',
-		'../dynamicstore/MetaSchemaGenerator',
+		'../example/dynamic/MetaSchemaFactory',
 		'../factory/schema/StaticSchemaGenerator',
 		'../factory/schema/SchemaRegistryFactory',
 		'../mongodb/createSchemaEditorFactory',
@@ -51,17 +51,17 @@ define([
 		return function (config) {
 			config.idProperty="_id";
 			config.idType="string";
-			var schemaGenerator = new SchemaGenerator()
 			var baseUrl = config.baseUrl;
 			return {
 				"storeRegistry": {
 					"stores": [
 						{
+							// TODO remove this. Only exists as a dummy for the documentation menu item
 							"factoryId": "gform-app/factory/StoreFactory",
 							"storeClass": "gform-app/util/JsonRest",
 							"name": "documentation",
 							"previewerId": "documentation",
-							"target": "gform-app/documentation"
+							"target": "fake-store"
 						},
 						{
 							"factoryId": "gform-app/factory/StoreFactory",
@@ -100,10 +100,6 @@ define([
 							"template": "/mdbschema",
 							"createEditorFactory": "gform-app/mongodb/createSchemaEditorFactory",
 							"previewerId": "gform"
-							/*						"efConfig": {
-							 "fileserver-upload": "http://localhost:4444/upload",
-							 "fileserver-download": "http://localhost:4444/"
-							 }*/
 
 						}
 					]
@@ -117,9 +113,9 @@ define([
 					],
 					"schemaGenerators": [
 						{
-							"factoryId": "gform-app/dynamicstore/MetaSchemaGenerator",
-							"store": "/mdbschema", // instances of the generated schema will be place into this store. id Proeprty and idType are taken from this store and added to the schema.
-							"schemaGenerator":schemaGenerator
+							"factoryId": "gform-app/mongodb/MetaSchemaFactory",
+							"store": "/mdbschema",
+							"schemaId":"/mdbschema"
 						},
 						{
 							"factoryId": "gform-app/factory/schema/StaticSchemaGenerator",
@@ -152,6 +148,7 @@ define([
 					}
 				],
 				"view": {
+					"startPath": "/store/documentation",
 					"layouts": {
 						"standard": {
 							"preview": {"region": "right", "hidden": true},
@@ -164,9 +161,9 @@ define([
 							entity: {region: "right", "width": "35%"}
 						},
 						"/mdbschema": {
-							preview: {region: "center"},
 							store: {region: "left", "width": "200px"},
-							entity: {region: "right", "width": "50%"}
+							entity: {region: "center"},
+							preview: {region: "right", "width": "30%"}
 						},
 						"documentation": {
 							preview: {region: "center"},
@@ -295,7 +292,8 @@ define([
 							]
 						},
 						{
-							"region": "center",
+							"region": "right",
+							"width": "45%",
 							"appType": "preview",
 							"factoryId": "gform-app/factory/PreviewDispatcherFactory",
 							"splitter": true,
@@ -311,13 +309,13 @@ define([
 									"previewerId": "documentation",
 									"region": "center",
 									"factoryId": "gform-app/factory/DocumentationPreviewerFactory",
-									"splitter": true
+									"splitter": true,
+									"id":"documentation"
 								}
 							]
 						},
 						{
-							"width": "45%",
-							"region": "right",
+							"region": "center",
 							"appType": "entity",
 							"factoryId": "gform-app/factory/TabOpenerFactory",
 							"splitter": true

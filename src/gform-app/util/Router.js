@@ -56,7 +56,6 @@ define(['dojo/_base/lang',
 					event.template=template;
 				}
 				topic.publish("/focus", event);
-				document.title=store+"/"+id;
 			}
 			return true;
 		},
@@ -68,7 +67,6 @@ define(['dojo/_base/lang',
 				this.ctx.set("id", null);
 				var event = {source: this, store: store};
 				topic.publish("/store/focus", event);
-				document.title=store;
 			}
 			return true;
 		}

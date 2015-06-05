@@ -1,0 +1,34 @@
+{
+  "id": {"$ref": "schemaId"},
+  "description": "A template",
+  "editor": "tab",
+  "groups": [
+    {
+      "code": "general",
+      "label": "General",
+      "attributes": [
+        {
+          "code": "name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "code": {"$ref": "idProperty"},
+          "type": {"$ref": "idType"},
+          "disabled": {"$ref": "idDisabled"},
+          "required":{"$ref": "idRequired"}
+        },
+        {
+          "code": "description",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "code": "form",
+      "label": "Form",
+      "editor":"listpane",
+      "attributes": [{"$ref": "../../gform-app/meta/group.json"}]
+    }
+  ]
+}

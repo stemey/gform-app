@@ -74,6 +74,12 @@
                         "idProperty": "code",
                         "searchProperty": "name"
                     }
+                },
+                {
+                    "code": "query",
+                    "type": "any",
+                    "editor":"anyAce",
+                    "height":"200px"
                 }
             ]
         },

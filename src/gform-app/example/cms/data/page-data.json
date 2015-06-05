@@ -1,26 +1,43 @@
 [
-	{
-		"id": 1,
-		"parent": null,
-		"template":"folder",
-		"name":"root"
-	},
-	{
-		"id": 2,
-		"parent": 1,
-		"template":"page",
-		"name":"a"
-	},
-	{
-		"id": 3,
-		"parent": 1,
-		"template":"page",
-		"name":"b"
-	},
-	{
-		"id": 4,
-		"parent": 1,
-		"template":"folder",
-		"name":"XX"
-	}
+  {
+    "id": 1,
+    "parent": null,
+    "template": "folder",
+    "name": "root"
+  },
+  {
+    "id": 2,
+    "parent": 1,
+    "template": "page",
+    "name": "Getting started",
+    "main": {
+      "selectedNavItem": "Getting started"
+    }
+  },
+  {
+    "id": 3,
+    "parent": 1,
+    "template": "page",
+    "name": "Documentation",
+    "main": {
+      "selectedNavItem": "Documentation"
+    }
+  },
+  {
+    "id": 4,
+    "brand": "cms4apps",
+    "navItems": [
+      {
+        "label": "Getting started",
+        "page": 2
+      },
+      {
+        "label": "Documentation",
+        "page": 3
+      }
+    ],
+    "template": "navbar",
+    "parent": 1,
+    "name": "navbar"
+  }
 ]
