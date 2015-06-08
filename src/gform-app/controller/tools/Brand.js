@@ -6,7 +6,7 @@ define([
 
 
     return declare("cms.Toolbar", [ _WidgetBase, _TemplatedMixin], {
-        templateString: '<span><span style="height: 18px;width: 20px;background: url(databear.svg);"></span><span class="dijit dijitInline" style="margin-top:2px;margin-left:5px;margin-right:20px"><strong data-dojo-attach-point="labelNode"></strong></span></span>',
+        templateString: '<span><span class="dijit dijitInline" style="margin-top:2px;margin-left:5px;margin-right:20px"><strong data-dojo-attach-point="labelNode"></strong></span></span>',
         label:"mini cms",
         postCreate: function() {
             this.labelNode.innerHTML=this.label;

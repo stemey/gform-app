@@ -24,6 +24,9 @@ define([
         Handlebars.registerHelper('style-tag', function (styles, options) {
             return "<style>" + styles + "</style>"
         });
+        Handlebars.registerHelper('script-tag', function (script, options) {
+            return "<script>" + script + "</script>"
+        });
         Handlebars.registerHelper('link', function (url, options) {
             var param = url;
             if (typeof url === "string") {

@@ -26,16 +26,17 @@ define([
             this.idProperty = store.idProperty;
             this.idType = store.idType;
             this.baseUrl = store.target;
+            this.templateStore="partial";
         },
         transform: function (schema, skipResolve) {
             var d = new Deferred();
             var resolver = new SchemaResolver(this.ctx);
-            resolver.addResolver(new MultiTemplateRefArrayResolver());
+            resolver.addResolver(new MultiTemplateRefArrayResolver({templateStore:this.templateStore}));
             resolver.addResolver(new MultiEntityRefResolver({idProperty: this.idProperty}))
             resolver.addResolver(new SchemaRefResolver())
-            resolver.addResolver(new TemplateRefResolver())
-            resolver.addResolver(new TemplateRefArrayResolver())
-            resolver.addResolver(new MultiTemplateRefResolver());
+            resolver.addResolver(new TemplateRefResolver({templateStore:this.templateStore}))
+            resolver.addResolver(new TemplateRefArrayResolver({templateStore:this.templateStore}))
+            resolver.addResolver(new MultiTemplateRefResolver({templateStore:this.templateStore}));
             // TODO schemaResolver modifies input so we need to clone here
             var clonedSchema = JSON.parse(JSON.stringify(schema));
             //var resolver = new Resolver();

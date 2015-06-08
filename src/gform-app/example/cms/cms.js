@@ -1,11 +1,14 @@
 define([
+        '../../util/LoadRichtextPlugins',
         '../../cms/createValueFactory',
         '../../controller/gridactions/Delete',
         '../../controller/gridactions/OpenAsJson',
         'gform/schema/SchemaGenerator',
         '../../jcr/TemplateStore',
         '../../util/ToMongoQueryTransform'
-    ], function (createValueFactory, Delete, OpenAsJson, SchemaGenerator, TemplateStore, ToMongoQueryTransform) {
+    ], function (LoadRichtextPlugins, createValueFactory, Delete, OpenAsJson, SchemaGenerator, TemplateStore, ToMongoQueryTransform) {
+
+
 
 
         // id of store and schema for templates must be /template. Fixed by template.json
@@ -87,7 +90,8 @@ define([
                     "factoryId": "gform-app/factory/schema/SchemaRegistryFactory",
                     "registryClass": "gform-app/SchemaRegistry",
                     "stores": [
-                        {id: TEMPLATE_STORE, storeClass: TemplateStore, idProperty: config.idProperty}
+                        {id: TEMPLATE_STORE, storeClass: TemplateStore, idProperty: config.idProperty},
+                        {id: PARTIAL_STORE, storeClass: TemplateStore, idProperty: config.idProperty}
                     ],
                     "schemaGenerators": [
                         {

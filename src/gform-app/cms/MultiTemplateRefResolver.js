@@ -1,9 +1,13 @@
 define([
+    'dojo/_base/lang',
     "dojo/_base/declare"
-], function (declare) {
+], function (lang, declare) {
 
     // TOD this attribute is not properly handled by meta.isComplexType etc.
     return declare([], {
+        constructor: function(kwArgs) {
+            lang.mixin(this,kwArgs);
+        },
         resolve: function (obj) {
             if (obj && obj.editor && obj.editor === "multi-template-ref" && obj.templates) {
                 //var url = baseUrl + ".." + obj.collectionUrl + "/" + obj.collection;
@@ -21,8 +25,8 @@ define([
                         //obj.type = "object";
                         //delete obj.editor;
                     }
-                    refs.push({store: "/template", id: template, setter: cb});
-                })
+                    refs.push({store: this.templateStore, id: template, setter: cb});
+                },this)
                 obj.templates=[];
                 obj.typeProperty="__type__";
                 delete obj.editor;

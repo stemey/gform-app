@@ -235,7 +235,7 @@ define([
 							"children": [
 								{
 									"factoryId": "gform-app/factory/ExtendedGridFactory",
-									"title": "collection",
+									"title": "settings",
 									"storeId": "/mdbcollection",
 									"gridxQueryTransform": new ToMongoQueryTransform(),
 									"columns": [
