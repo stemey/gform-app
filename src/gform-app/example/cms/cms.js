@@ -133,13 +133,13 @@ define([
                             "children": [
                                 {
                                     "factoryId": "gform-app/factory/BrandFactory",
-                                    "label": "cms"
+                                    "label": "cms<strong style='color:red'>4</strong>apps"
                                 },
                                 {
                                     "factoryId": "gform-app/factory/MultiSchemaCreateFactory",
                                     "label": "+",
                                     "searchProperty": "name",
-                                    "placeHolder": "add entity.."
+                                    "placeHolder": "select template .."
                                 },
                                 {
                                     "factoryId": "gform-app/factory/SingleSchemaCreateFactory",

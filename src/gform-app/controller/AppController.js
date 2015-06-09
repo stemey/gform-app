@@ -1,4 +1,5 @@
 define([
+	'dojo/when',
 	'../config',
 	'dojo/io-query',
 	'dojo/_base/lang',
@@ -14,7 +15,7 @@ define([
 	'dojox/mvc/_atBindingExtension'
 
 
-], function (config, ioQuery, lang, query, AppFactory, topic, declare, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, template) {
+], function (when, config, ioQuery, lang, query, AppFactory, topic, declare, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, template) {
 
 
 	return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
@@ -46,6 +47,12 @@ define([
 		},
 		followPreviewLink: function (url) {
 			topic.publish("/page/navigate", {url: url})
+		},
+
+		exportAsJson: function(store) {
+			when(this.appFactory.ctx.getStore(store).query({})).then(function(results) {
+				console.log(store+" data:"+JSON.stringify(results));
+			})
 		}
 	});
 

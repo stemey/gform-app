@@ -14,6 +14,7 @@ define([
 		url:"",
 		target:"_blank",
 		iconClass: "dijitNoIcon",
+		onClick:null,
 		_setIconClassAttr: { node: "iconNode", type: "class" }
 	})
 });
