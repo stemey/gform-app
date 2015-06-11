@@ -18,7 +18,7 @@ define([], function () {
         },
         createPartial: function (templateStore) {
             var template = this._createTemplate();
-            template.group.attributes.push(this._createNameAttribute());
+            //template.group.attributes.push(this._createNameAttribute());
             return template;
 
         },
