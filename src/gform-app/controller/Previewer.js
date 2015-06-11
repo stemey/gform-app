@@ -1,33 +1,42 @@
 define([
+	'dojo/query',
+	'dojo/dom-construct',
+	'dijit/layout/ContentPane',
 	'../util/topic',
 	"dojo/_base/declare",
 	"dojo/when",
 	"dijit/_WidgetBase",
 	"dijit/_TemplatedMixin",
 	"dojo/text!./Previewer.html"
-], function (topic, declare, when, _WidgetBase, _TemplatedMixin, template) {
+], function (query, domConstruct, ContentPane, topic, declare, when, _WidgetBase, _TemplatedMixin, template) {
 
 
-	return declare("cms.Previewer", [_WidgetBase, _TemplatedMixin], {
-		templateString: template,
+	return declare("cms.Previewer", [ContentPane], {
 		pageStore: null,
 		iframe: null,
 		url: null,
 		urlProperty:null,
-		onEntityFocus: function (evt) {
+		postCreate: function() {
+			this.setContent(template);
+			this.iframe=query("iframe",this.containerNode)[0];
+		},
+		onPageFocus: function(evt) {
 			this.display(evt.store + "/" + evt.id);
 		},
-		onEntityUpdated: function (evt) {
-			this.display(evt.store + "/" + this.pageStore.getIdentity(evt.entity));
+		onModifyUpdate: function (evt) {
+			this.display(evt.store + "/" + evt.id);
 		},
-		onEntityDeleted: function (evt) {
+		onModifyCancel: function (evt) {
+			this.display(evt.store + "/" + evt.id);
+		},
+		onPageUpdate: function (evt) {
+			this.display(evt.store + "/" + evt.id);
+		},
+		onPageDeleted: function (evt) {
 			// TODO display nothing?
 			// this.display("/page/"+evt.id);
 		},
-		onEntityRefresh: function (evt) {
-			this.refresh();
-		},
-		onEntityNavigate: function (evt) {
+		onPageNavigate: function (evt) {
 			//TODO move to general component or AppController
 			var me = this;
 			var query ={};
@@ -90,7 +99,7 @@ define([
 		displayById: function (id) {
 			this.display("/page/" + id);
 		},
-		refresh: function () {
+		refreshXXX: function () {
 			if (this.url) {
 				this.display(this.url);
 			}

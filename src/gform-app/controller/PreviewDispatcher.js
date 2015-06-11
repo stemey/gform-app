@@ -19,14 +19,18 @@ define([
 			topic.subscribe("/modify/cancel", lang.hitch(this, "onModifyCancel"));
 		},
 		onPageFocus: function (evt) {
-			this.delegate("onEntityFocus",evt);
+			this.delegate("onPageFocus",evt);
 
 		},
 		delegate: function(fn, evt) {
 			var store = this.ctx.getStore(evt.store);
 			var selected = this._selectChildByStore(store);
-			if (selected && typeof this.selectedChildWidget[fn]=="function") {
-				this.selectedChildWidget[fn](evt);
+			if (selected) {
+				if( typeof this.selectedChildWidget[fn]=="function") {
+					this.selectedChildWidget[fn](evt);
+				} else {
+					console.log("no method "+fn+" defined on previewer");
+				}
 			}
 		},
 		_selectChildByStore: function (store) {
@@ -55,10 +59,7 @@ define([
 			this._selectChildByStore(store);
 		},
 		onPageUpdated: function (evt) {
-			this.delegate("onEntityUpdated",evt);
-			var store = this.ctx.getStore(evt.store);
-			this._selectChildByStore(store);
-			this.selectedChildWidget.onEntityUpdated(evt);
+			this.delegate("onPageUpdated",evt);
 		}
 		,
 		onPageDeleted: function (evt) {
@@ -66,13 +67,13 @@ define([
 			// this.display("/page/"+evt.id);
 		}
 		,
-		onPageRefresh: function (evt) {
+		onPageRefreshXXX: function (evt) {
 			this.delegate("refresh",evt);
 		}
 		,
 		onPageNavigate: function (evt) {
-			if (this.selectedChildWidget && this.selectedChildWidget["onEntityNavigate"]) {
-				this.selectedChildWidget["onEntityNavigate"]( evt);
+			if (this.selectedChildWidget && this.selectedChildWidget["onPageNavigate"]) {
+				this.selectedChildWidget["onPageNavigate"]( evt);
 			}
 		}
 		,
@@ -84,7 +85,7 @@ define([
 			this.delegate("onModifyUpdate",evt);
 		}
 		,
-		refresh: function () {
+		refreshXXX: function () {
 			this.delegate("onEntityRefresh",evt);
 		}
 	});

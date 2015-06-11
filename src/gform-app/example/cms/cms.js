@@ -108,7 +108,7 @@ define([
                 },
                 "resourceFactories": [],
                 "view": {
-                    "startPath": "/entity/page/2",
+                    "startPath": "/store/page",
                     "layouts": {
                         "standard": {
                             "store": {"region": "left", "width": "20%"},

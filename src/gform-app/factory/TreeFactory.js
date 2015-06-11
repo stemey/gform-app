@@ -34,7 +34,7 @@ define([
                 model.updateEntity(evt.entity, evt.oldEntity);
             }, realStore);
             topic.subscribeStore("/deleted", function (evt) {
-                model.deleteEntity(evt.entity);
+                model.deleteEntity(evt.id);
             }, realStore);
             topic.subscribeStore("/focus", function (evt) {
             });

@@ -53,7 +53,12 @@ define(['dojo/aspect',
 			);
 		},
 		onDeleted: function(evt) {
-			this.closeById(evt);
+			var me =this;
+			// TODO fix this: if the crud controller is the cause o the removal, then we have to wait for it to finish
+			setTimeout(function() {
+				me.closeById(evt);
+			},0);
+
 		},
 		onClose: function (page) {
 			if (page.store) {

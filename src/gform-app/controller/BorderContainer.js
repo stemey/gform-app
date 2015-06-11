@@ -21,11 +21,10 @@ define([
         postCreate: function () {
             this.inherited(arguments);
             topic.subscribe("/previewer/toggle", lang.hitch(this, "toggleFullSize"));
-            topic.subscribe("/focus", lang.hitch(this, "onChange"));
-            topic.subscribe("/store/focus", lang.hitch(this, "onChange"));
-        },
-        onChange: function (evt) {
-            var store = this.ctx.getStore(evt.store);
+            this.ctx.watch("storeId", lang.hitch(this, "onChange"))
+         },
+        onChange: function () {
+            var store = this.ctx.getCurrentStore();
             var layoutId = store.layout || store.name;
             if (!(layoutId in this.layouts)) {
                 layoutId = "standard";
