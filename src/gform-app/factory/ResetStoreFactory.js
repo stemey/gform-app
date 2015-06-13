@@ -24,8 +24,14 @@ define([
 				includedStoreIds: config.includedStoreIds,
 				ctx:ctx,
 				onClick: function () {
-					var store = ctx.getCurrentStore();
-					store.resetData();
+					["page","/template","partial"].forEach(function(storeId) {
+						var store = ctx.getStore(storeId);
+						if (store.resetData) {
+							store.resetData();
+						}else{
+							this.hide();
+						}
+					})
 				}
 			})
 		}

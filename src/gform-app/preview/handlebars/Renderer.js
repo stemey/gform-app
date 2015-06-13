@@ -16,6 +16,11 @@ define([
                 return options.fn(this);
             }
         });
+        Handlebars.registerHelper('debug', function (a, b, options) {
+            var ctx = a? a : this;
+            return  JSON.stringify(ctx, null, ' ');
+
+        });
         Handlebars.registerHelper('gte', function (a, b, options) {
             if (a >= b) {
                 return options.fn(this);
@@ -56,6 +61,7 @@ define([
                 Handlebars.registerPartial(key, partials[key]);
             });
             var template = Handlebars.compile(code);
+            ctx.__cms4apps__={sourceCode:code, partials:partials}
             return template(ctx);
         }
     })

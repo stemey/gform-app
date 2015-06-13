@@ -21,7 +21,11 @@ define([
 				store.resetData= function() {
 					when(store.query({})).then(function(results) {
 						results.forEach(function(e) {
-							store.remove(store.getIdentity(e));
+							try {
+								store.remove(store.getIdentity(e));
+							} catch (e) {
+								// TODO ui throws errors when data ist reset
+							}
 						})
 						request(url, {handleAs: "json"}).then(function (data) {
 							data.forEach(function (e) {

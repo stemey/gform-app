@@ -1,4 +1,5 @@
 define([
+	'../../controller/actions/Duplicate',
 	'../../controller/actions/DiscardAndPreview',
 	'../../controller/actions/Preview',
 	'../../controller/actions/Save',
@@ -7,7 +8,7 @@ define([
 	'gform/controller/actions/ActionFactory',
 	'gform/primitive/nullablePrimitiveConverter',
 	'gform/createFullEditorFactory'
-], function (DiscardAndPreview, Preview,  Save, Close, Delete, ActionFactory, converter, createFullEditorFactory) {
+], function (Duplicate, DiscardAndPreview, Preview,  Save, Close, Delete, ActionFactory, converter, createFullEditorFactory) {
 
 
 	return function (config) {
@@ -25,6 +26,7 @@ define([
 		af.add({type: Delete})
 		af.add({type: Close});
 		af.add({type: Preview});
+		af.add({type: Duplicate});
 
 		ef.actionFactory = af;
 

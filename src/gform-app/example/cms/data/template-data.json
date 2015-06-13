@@ -3,7 +3,7 @@
     "name": "bs-doc",
     "id": "bs-doc",
     "schema": "template",
-    "sourceCode": "\n<div class=\"container\"/>\n<div class=\"row\">\n    <div class=\"col-md-9\" style=\"position:relative\">\n        <h1>{{{headline}}}</h1>\n        <p>{{{text}}}</p>\n        {{#sections}}\n            <h2 id=\"nav_{{@index}}\" class=\"page-header\">{{{headline}}}</h2>\n            <p>{{{text}}}</p>\n        {{/sections}}\n    </div>\n    <div class=\"col-md-3\">\n        <nav id=\"navigation\" class=\"affix\">\n            <ul class=\"nav\">\n            {{#sections}}\n                <li>\n                    <a href=\"#nav_{{@index}}\">{{headline}}</a>\n                </li>\n            {{/sections}}\n            </ul>\n        </nav>\n    </div>\n</div>\n",
+    "sourceCode": "\n<div class=\"container\"/>\n<div class=\"row\">\n    <div class=\"col-md-9\" style=\"position:relative\">\n        <h1>{{{headline}}}</h1>\n        <p>{{{text}}}</p>\n        {{#sections}}\n            <h2 id=\"nav_{{@index}}\" class=\"page-header\">{{{headline}}}</h2>\n            {{#blocks}}\n                {{{.}}}    \n            {{/blocks}}\n        {{/sections}}\n    </div>\n    <div class=\"col-md-3\">\n        <nav id=\"navigation\" class=\"affix\">\n            <ul class=\"nav\">\n            {{#sections}}\n                <li>\n                    <a href=\"#nav_{{@index}}\">{{headline}}</a>\n                </li>\n            {{/sections}}\n            </ul>\n        </nav>\n    </div>\n</div>\n",
     "partials": {},
     "partialTemplates": {},
     "group": {
@@ -116,34 +116,19 @@
                     "editor": "string"
                   },
                   {
-                    "code": "text",
-                    "updateInterval": "100",
-                    "height": "500px",
-                    "plugins": [
-                      {"name": "undo"},
-                      {"name": "redo"},
-                      {"name": "bold"},
-                      {"name": "italic"},
-                      {"name": "underline"},
-                      {"name": "strikethrough"},
-                      {"name": "subscript"},
-                      {"name": "superscript"},
-                      {"name": "removeFormat"},
-                      {"name": "insertOrderedList"},
-                      {"name": "insertUnorderedList"},
-                      {"name": "insertHorizontalRule"},
-                      {"name": "indent"},
-                      {"name": "outdent"},
-                      {"name": "justifyLeft"},
-                      {"name": "justifyCenter"},
-                      {"name": "justifyRight"},
-                      {"name": "createLink"},
-                      {"name": "dijit/_editor/plugins/FullScreen"},
-                      {"name": "dijit/_editor/plugins/AlwaysShowToolbar"},
-                      {"name": "dijit._editor.plugins.ViewSource"}
-                    ],
-                    "type": "string",
-                    "editor": "richtext"
+                    "code": "blocks",
+                    "type": "array",
+                    "element": {
+                      "templates": [
+                        "paragraph",
+                        "callout",
+                        "alert",
+                        "linklist"
+                      ],
+                      "type": "ref",
+                      "editor": "multi-template-ref"
+                    },
+                    "editor": "primitive-array"
                   }
                 ],
                 "editor": "listpane"
@@ -155,6 +140,181 @@
           "editor": "listpane"
         }
       ],
+      "editor": "tab"
+    }
+  },
+  {
+    "name": "embed-example",
+    "id": "embed-example",
+    "schema": "template",
+    "sourceCode": "{{#teaser}}\n{{>teaser}}\n{{/teaser}}\n",
+    "partials": {},
+    "partialTemplates": {},
+    "group": {
+      "groups": [
+        {
+          "attributes": [
+            {
+              "code": "teaser",
+              "template": "Teaser",
+              "type": "ref",
+              "editor": "template-ref"
+            }
+          ],
+          "label": "try out",
+          "editor": "listpane"
+        },
+        {
+          "attributes": [
+            {
+              "code": "name",
+              "type": "string",
+              "editor": "string"
+            },
+            {
+              "code": "template",
+              "visible": false,
+              "type": "string",
+              "editor": "string"
+            },
+            {
+              "code": "parent",
+              "required": true,
+              "type": "multi-ref",
+              "idProperty": "id",
+              "searchProperty": "name",
+              "url": "page",
+              "usage": "html",
+              "typeProperty": "template",
+              "schemaUrlPrefix": "",
+              "schemas": [],
+              "query": {"template": {"$regex": ".*[fF]older.*"}},
+              "editor": "multi-page-ref"
+            },
+            {
+              "code": "id",
+              "disabled": true,
+              "type": "number",
+              "editor": "number"
+            }
+          ],
+          "label": "general",
+          "editor": "listpane"
+        },
+        {
+          "attributes": [
+            {
+              "code": "general",
+              "template": "tutorial",
+              "outer": true,
+              "type": "ref",
+              "editor": "template-ref"
+            }
+          ],
+          "label": "tutorial",
+          "editor": "listpane"
+        }
+      ],
+      "editor": "tab"
+    }
+  },
+  {
+    "name": "first-example",
+    "id": "first-example",
+    "schema": "template",
+    "sourceCode": "<p>{{{text}}}</p>\n",
+    "partials": {},
+    "partialTemplates": {},
+    "group": {
+      "groups": [
+        {
+          "attributes": [
+            {
+              "code": "text",
+              "updateInterval": "100",
+              "height": "200px",
+              "plugins": [
+                {"name": "undo"},
+                {"name": "redo"},
+                {"name": "bold"},
+                {"name": "italic"},
+                {"name": "underline"},
+                {"name": "strikethrough"},
+                {"name": "subscript"},
+                {"name": "superscript"},
+                {"name": "removeFormat"},
+                {"name": "insertOrderedList"},
+                {"name": "insertUnorderedList"},
+                {"name": "insertHorizontalRule"},
+                {"name": "indent"},
+                {"name": "outdent"},
+                {"name": "justifyLeft"},
+                {"name": "justifyCenter"},
+                {"name": "justifyRight"},
+                {"name": "createLink"},
+                {"name": "dijit/_editor/plugins/FullScreen"},
+                {"name": "dijit/_editor/plugins/AlwaysShowToolbar"}
+              ],
+              "type": "string",
+              "editor": "richtext"
+            }
+          ],
+          "label": "try out",
+          "editor": "listpane"
+        },
+        {
+          "attributes": [
+            {
+              "code": "name",
+              "type": "string",
+              "editor": "string"
+            },
+            {
+              "code": "template",
+              "visible": false,
+              "type": "string",
+              "editor": "string"
+            },
+            {
+              "code": "parent",
+              "required": true,
+              "type": "multi-ref",
+              "idProperty": "id",
+              "searchProperty": "name",
+              "url": "page",
+              "usage": "html",
+              "typeProperty": "template",
+              "schemaUrlPrefix": "",
+              "schemas": [],
+              "query": {"template": {"$regex": ".*[fF]older.*"}},
+              "editor": "multi-page-ref"
+            },
+            {
+              "code": "id",
+              "disabled": true,
+              "type": "number",
+              "editor": "number"
+            }
+          ],
+          "label": "general",
+          "editor": "listpane"
+        },
+        {
+          "attributes": [
+            {
+              "code": "general",
+              "required": true,
+              "template": "tutorial",
+              "outer": true,
+              "type": "ref",
+              "editor": "template-ref"
+            }
+          ],
+          "label": "tutorial",
+          "editor": "listpane"
+        }
+      ],
+      "labelAttribute": "name",
       "editor": "tab"
     }
   },
@@ -199,6 +359,87 @@
         }
       ],
       "editor": "listpane"
+    }
+  },
+  {
+    "name": "link-example",
+    "id": "link-example",
+    "schema": "template",
+    "sourceCode": "\n<script src=\"gform-app/controller/mock.js\"></script>\ngo to <a href=\"{{link link}}\">Documentation</a>.\n",
+    "partials": {},
+    "partialTemplates": {},
+    "group": {
+      "groups": [
+        {
+          "attributes": [
+            {
+              "code": "link",
+              "type": "multi-ref",
+              "idProperty": "id",
+              "searchProperty": "name",
+              "url": "page",
+              "usage": "link",
+              "typeProperty": "template",
+              "schemaUrlPrefix": "",
+              "schemas": ["bs-doc"],
+              "editor": "multi-page-ref"
+            }
+          ],
+          "label": "try out",
+          "editor": "listpane"
+        },
+        {
+          "attributes": [
+            {
+              "code": "name",
+              "type": "string",
+              "editor": "string"
+            },
+            {
+              "code": "template",
+              "visible": false,
+              "type": "string",
+              "editor": "string"
+            },
+            {
+              "code": "parent",
+              "required": true,
+              "type": "multi-ref",
+              "idProperty": "id",
+              "searchProperty": "name",
+              "url": "page",
+              "usage": "html",
+              "typeProperty": "template",
+              "schemaUrlPrefix": "",
+              "schemas": [],
+              "query": {"template": {"$regex": ".*[fF]older.*"}},
+              "editor": "multi-page-ref"
+            },
+            {
+              "code": "id",
+              "disabled": true,
+              "type": "number",
+              "editor": "number"
+            }
+          ],
+          "label": "general",
+          "editor": "listpane"
+        },
+        {
+          "attributes": [
+            {
+              "code": "general",
+              "template": "tutorial",
+              "outer": true,
+              "type": "ref",
+              "editor": "template-ref"
+            }
+          ],
+          "label": "tutorial",
+          "editor": "listpane"
+        }
+      ],
+      "editor": "tab"
     }
   },
   {

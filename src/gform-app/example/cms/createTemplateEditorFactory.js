@@ -1,4 +1,5 @@
 define([
+	'../../controller/actions/Duplicate',
 	'../../controller/actions/Preview',
 	'../../util/identityConverter',
 	'../../controller/actions/CreateInstance',
@@ -16,7 +17,7 @@ define([
 	'../../dynamicstore/RequiredAttributes',
 	'./TemplateAttributes',
 	'gform/createFullEditorFactory'
-], function (Preview, identityConverter, CreateInstance, Save, Close, Discard, Delete, ActionFactory, FormValidator, AttributeRefFactory, FormAttributeFactory, RepeatedFormAttributeFactory, refConverter, converter, RequiredAttributes, TemplateAttributes, createFullEditorFactory) {
+], function (Duplicate, Preview, identityConverter, CreateInstance, Save, Close, Discard, Delete, ActionFactory, FormValidator, AttributeRefFactory, FormAttributeFactory, RepeatedFormAttributeFactory, refConverter, converter, RequiredAttributes, TemplateAttributes, createFullEditorFactory) {
 
 
 	return function () {
@@ -42,6 +43,7 @@ define([
 		af.add({type: Close});
 		af.add({type: CreateInstance});
 		af.add({type: Preview});
+		af.add({type: Duplicate});
 
 		ef.actionFactory = af;
 

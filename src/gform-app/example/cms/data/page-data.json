@@ -6,6 +6,24 @@
     "id": 0.26918259798549116
   },
   {
+    "name": "etc",
+    "parent": 1,
+    "template": "folder",
+    "id": 0.4034360437653959
+  },
+  {
+    "link": 0.43755838507786393,
+    "name": "2. create a link",
+    "template": "link-example",
+    "parent": 0.9207160123623908,
+    "id": 0.43688156083226204,
+    "general": {
+      "text": "<span style=\"color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 20px; background-color: rgb(255, 255, 255);\">The attribute </span><i style=\"box-sizing: border-box; color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 20px; background-color: rgb(255, 255, 255);\">multi-page-ref</i><span style=\"color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 20px; background-color: rgb(255, 255, 255);\"> creates a reference to another page. Inthis case the </span><i style=\"box-sizing: border-box; color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 20px; background-color: rgb(255, 255, 255);\">usage</i><span style=\"color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 20px; background-color: rgb(255, 255, 255);\"> is set to </span><i style=\"box-sizing: border-box; color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 20px; background-color: rgb(255, 255, 255);\">link</i><span style=\"color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 20px; background-color: rgb(255, 255, 255);\"> which means that the page's id is added to the render context. By using the </span><i style=\"box-sizing: border-box; color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 20px; background-color: rgb(255, 255, 255);\">link</i><span style=\"color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 20px; background-color: rgb(255, 255, 255);\"> handlebars helper a proper href is generated from that.</span>",
+      "previous": 0.9611864553298801,
+      "next": 0.6374826563987881
+    }
+  },
+  {
     "name": "Documentation",
     "template": "bs-doc",
     "parent": 1,
@@ -19,22 +37,92 @@
     "sections": [
       {
         "headline": "Introduction",
-        "text": "Cms4apps provides a very flexible solution to manage your content.<div><br /></div><blockquote style=\"margin: 0 0 0 40px; border: none; padding: 0px;\"><div><b>template language agnostic</b></div><div>cms4apps can be integrated with different languages. The interface between cms and preview are well defined. It comes down to synchronizing navigation and content.</div><div><br /></div><div><b>datastore agnostic</b></div><div>Any rest server with crud and query operations can be used as a backend. JCR, MongoDb and localStorage are supported out-of-the-box. Others can be intergated by implementing the javascript store abstraction.</div><div><br /></div><div><b>Integration</b></div><div>Cms4apps is based on gform-app which makes it possible to provide data and content management for different dynamically or statically typed data stores side-by-side in one tool.</div><div><br /></div><div><b>powerful modeling</b></div><div>Cms4apps provides a sophisticated metadata editor to create the content authors user interface. No need to learn a complex dsl to create ui metadata in xml.</div></blockquote><div><br /></div><div><br /><div><br /></div><div><br /></div></div>"
+        "blocks": [
+          {
+            "text": "Cms4apps provides a very flexible solution to manage the content of dynamic web applications. <div><br /></div><div><b>application integration minimized</b></div><div>Cms4apps can be integrated with any dynamic web application. It only shares templates and content with the application. The application's logic is not integrated in the cms but rather mocked with managed data. An Application with a shopping cart will store the contents of the cart in the session while cms4apps simply provides the author with an editor to create mock cart content. This works well for side-effect free template languages like handlebars.<div><br /></div><b>template language agnostic</b><br /><div>cms4apps can be integrated with different templating frameworks Handlebars is supported out-of-the-box.</div><div><br /></div><div><b>datastore agnostic</b></div><div>Any rest server with crud and query operations can be used as a backend for content data. JCR, MongoDb and localstorage are supported out-of-the-box. Others can be integrated by implementing the javascript store abstraction.</div><div><br /></div><div><b>powerful modeling</b></div><div>Cms4apps provides a sophisticated metadata editor to create the content author's user interface. No need to learn a complex dsl to create ui metadata.</div><div><b><br /></b></div><div><b>Integration</b></div><div>Cms4apps is based on gform-app which makes it possible to provide data and content management for different dynamically or statically typed data stores side-by-side in a single tool.</div></div><div><br /></div><div><br /></div>",
+            "__type__": "paragraph"
+          }
+        ]
       },
       {
-        "headline": "Looking around",
-        "text": "The application consists of three views which can be switched in the selector in the top toolbar. <div><br /></div><div><b>page view</b></div><div><br /></div><div>this view provides a tree and a grid to browse the pages. It provides a context menu. It is located in the left pane. In the center pane is the page preview. It displays the currently selected page. On the right there is the detail editor. Each page is opened in a new tab. Checkout the context menu in the tab header. The detail editor provides the data editing features. In the top toolbar there is a button to add a new page and to expand the size of the preview.</div><div><br /></div><div><b>template view</b></div><div><br /></div><div>this view provides a grid to browse the templates on the left and a detail editor on the right. The templates define the following</div><div><br /></div><div><ul><li>the ui that the author uses to edit the content<br /></li><li>the actual handlebars template</li><li>the schema of the content including validation rules</li></ul></div><div><br /></div><div><br /></div><div><b>partial view</b></div><div><b><br /></b></div><div>The partial view is similar to the template view. The main difference between templates and partials is that a partial cannot be instantiated to create a new page. Partials can be used as components of templates.</div>"
+        "headline": "Getting started",
+        "blocks": [
+          {
+            "text": "The application consists of three views which can be switched in the selector in the top toolbar. <div><br /></div><div><b>page view</b></div><div><br /></div><div>this view provides a tree and a grid to browse the pages in the left pane. It provides a context menu to delete pages. In the center pane is the page preview. It displays the currently selected page. On the right there is the detail editor. Each page is opened in a new tab. Checkout the context menu in the tab header. The detail editor provides the data editing features. In the top toolbar there is a button to add a new page and to expand the size of the preview.</div><div><br /></div><div><b>template view</b></div><div><br /></div><div>this view provides a grid to browse the templates on the left and a detail editor on the right. The templates provide the following information</div><div><br /></div><div><ul><li>the ui that the author uses to edit the content<br /></li><li>the actual handlebars template</li><li>the schema of the content including validation rules</li></ul></div><div><br /></div><div><br /></div><div><b>partial view</b></div><div><b><br /></b></div><div>The partial view is similar to the template view. The main difference between templates and partials is that a partial cannot be instantiated to create a new page. Partials can be used as components of templates.</div><div><br /></div><div><br /></div><div><br /></div>",
+            "__type__": "paragraph"
+          },
+          {
+            "level": "info",
+            "text": "This cms4apps instance uses <b>localstorage</b> as data store. You may edit all of the content. Once you press <i>reset store </i>in the top toolbar all your data will be lost and the original will be restored. To export the current content open the console and call <i>appController.exportToJson(&quot;page&quot;)</i>. Repeat with the stores <i>/template</i> and <i>partial</i>.",
+            "__type__": "alert"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "teaser": {
+      "amount": 12,
+      "text": "A brand new bathtub"
+    },
+    "name": "3. embed a template",
+    "template": "embed-example",
+    "parent": 0.9207160123623908,
+    "id": 0.6374826563987881,
+    "general": {
+      "text": "<span style=\"font-family: Times; font-size: medium; line-height: normal;\">The markup below the ruler is defined in an embedded template. To embed a template an attribute of type </span><i style=\"font-family: Times; font-size: medium; line-height: normal;\">template-ref</i><span style=\"font-family: Times; font-size: medium; line-height: normal;\"> is used.</span>",
+      "previous": 0.43688156083226204
+    }
+  },
+  {
+    "name": "Tutorial",
+    "template": "bs-doc",
+    "parent": 1,
+    "id": 0.6610063819680363,
+    "main": {
+      "selectedNavItem": "Tutorial",
+      "title": "tutorial"
+    },
+    "headline": "Tutorial",
+    "text": "",
+    "sections": [
+      {
+        "headline": "General",
+        "blocks": [
+          {
+            "text": "This tutorial consists of a series of example pages. The templates are intentionally kept very simple. There is only a short description of the example and the rendered output. To understand what is going on do the following:<div><br /></div><div><ol><li>investigate the detail editor and change it's values. </li><li>In the detail editor click on &quot;<i>...&quot; </i>in the toolbar to open the template editor. In the template editor checkout the template tab to see the handlebars template. Also in the form tab checkout the attribute defininitions.</li><li>open the context menu of the page in the tree and choose <i>open as json</i>. This will give yoou an understanding of the actual content data.</li></ol></div>",
+            "__type__": "paragraph"
+          },
+          {
+            "level": "info",
+            "text": "If you think you messed up the content, then simply press <i>reset store </i>in the top toolbar.",
+            "__type__": "alert"
+          }
+        ]
       },
       {
-        "headline": "Tutorials",
-        "text": "<div>Here is a list of videos that explain the first basic steps in the cms.</div><div><br /></div><ol><li>How to create a page from an existing template<br /></li><li>How to create a simple template and customize the author ui.</li><li>How to embed a partial in a template </li><li>How to define a common header and footer for your pages. </li></ol>"
+        "headline": "First Steps",
+        "blocks": [
+          {
+            "text": "The first steps are very basic. Simply follow the links below and have a look at the detail editor and its template. There is usually a single field that can be edited. Remember that the attributes id, name and parent always present in a page's template.",
+            "__type__": "paragraph"
+          },
+          {
+            "links": [
+              0.9611864553298801,
+              0.6374826563987881,
+              0.43688156083226204
+            ],
+            "__type__": "linklist"
+          }
+        ]
       }
     ]
   },
   {
     "name": "mongomat",
     "template": "bs-doc",
-    "parent": 1,
+    "parent": 0.4034360437653959,
     "id": 0.839099807664752,
     "main": {
       "selectedNavItem": "Mongomat",
@@ -45,21 +133,58 @@
     "sections": [
       {
         "headline": "Introduction",
-        "text": "The main application is split into different views. The views can be switched in the drop-down-list in the top toolbar. The list will start with the following items:<div><br /></div><div><ul><li><b>documentation</b> calls up this document<br /></li><li><b>settings</b> calls up the collection metadata, which holds all the customization</li><li><b>db</b> calls up the list of configured databases</li><li><b>schema</b> calls up the list of schemas and </li></ul><div>The entries following the schema view will be the configured databases. These open up submenus with links to all collections' views.</div></div>"
+        "blocks": [
+          {
+            "text": "The main application is split into different views. The views can be switched in the drop-down-list in the top toolbar. The list will start with the following items:<div><br /></div><div><ul><li><b>documentation</b> calls up this document<br /></li><li><b>settings</b> calls up the collection metadata, which holds all the customization</li><li><b>db</b> calls up the list of configured databases</li><li><b>schema</b> calls up the list of schemas and </li></ul><div>The entries following the schema view will be the configured databases. These open up submenus with links to all collections' views.</div></div>",
+            "__type__": "paragraph"
+          }
+        ]
       },
       {
         "headline": "Collection view",
-        "text": "Select a database and a collection from the view selector in the top toolbar. The view changes and provides a grid on the left and a detail editor on the right. <div><br /></div><div><br /></div><div><b>Toolbar</b></div><div><b><br /></b></div><div>In the top toolbar there is the view selector and three more buttons:<div><br /></div><div><ul><li><b>add</b> for adding a new document <br /></li><li><b>settings</b> for opening the settings view</li><li><b>help</b> for displaying a help tooltip</li></ul><div><b><br /></b></div><div><b>Grid</b></div></div></div><div><b><br /></b></div><div>The grid provides a json editor to create a customer query. Also it provides a query builder which opens when clicking on the filter icon on the top left of the grid. Clicking on the column header sorts the data by the columns values. The context menu on the rows provide two actions:</div><div><br /></div><div><ul><li><b>open as json</b> opens the document in a pure json editor.</li><li><b>delete</b> opens a confirmation dialog and will delete the document.</li></ul><div><b><br /></b></div><div><b>Detail editor</b></div></div><div><br /></div><div>The detail editor provides a number of self-explanatory actions on the bottom:</div><div><br /></div><div><ul><li>save<br /></li><li>discard</li><li>delete</li><li>close</li></ul><div>On the top there can be a selector which shows the schema of the document and can be used to switch to a different type. The selector shows up only if the collection was configured to have more than one schema in the settings view.</div></div><div><br /></div><div><br /></div>"
+        "blocks": [
+          {
+            "text": "Select a database and a collection from the view selector in the top toolbar. The view changes and provides a grid on the left and a detail editor on the right. <div><br /></div><div><br /></div><div><b>Toolbar</b></div><div><b><br /></b></div><div>In the top toolbar there is the view selector and three more buttons:<div><br /></div><div><ul><li><b>add</b> for adding a new document <br /></li><li><b>settings</b> for opening the settings view</li><li><b>help</b> for displaying a help tooltip</li></ul><div><b><br /></b></div><div><b>Grid</b></div></div></div><div><b><br /></b></div><div>The grid provides a json editor to create a customer query. Also it provides a query builder which opens when clicking on the filter icon on the top left of the grid. Clicking on the column header sorts the data by the columns values. The context menu on the rows provide two actions:</div><div><br /></div><div><ul><li><b>open as json</b> opens the document in a pure json editor.</li><li><b>delete</b> opens a confirmation dialog and will delete the document.</li></ul><div><b><br /></b></div><div><b>Detail editor</b></div></div><div><br /></div><div>The detail editor provides a number of self-explanatory actions on the bottom:</div><div><br /></div><div><ul><li>save<br /></li><li>discard</li><li>delete</li><li>close</li></ul><div>On the top there can be a selector which shows the schema of the document and can be used to switch to a different type. The selector shows up only if the collection was configured to have more than one schema in the settings view.</div></div><div><br /></div><div><br /></div>",
+            "__type__": "paragraph"
+          }
+        ]
       },
       {
         "headline": "Settings View",
-        "text": "<p>The settings view is accessed from the view selector or by clicking on settings in a collection view. The settings view contains metadata for the collections. This metadata is stored in a special mongodb database. The settings view is just like a collection view for the collection metadata with extra functionality.</p><p>The detail editor provides the following properties in the top pane:</p><p></p><ul><li><b>name</b> the name of the collection as used in the view selector <br /></li><li><b>collection</b> the monogdb collection name.</li><li><b>db</b> the database that contains the collection.</li><li><b>allow user assigned id?</b> check this if you want the user to provide the mongodb id.</li><li><b>description</b> is displayed in the help tooltip in the collection view.</li><li><b>schema </b>defines the schema or schemas that documents in the collection conform to.</li></ul><p></p><p><br /></p><p><b>Schema</b></p><p>A collection can have one or more schemas associated with it. The purpose of the schema is to guide the user in editing documents by providing a sophisticated detail editor. Either there is a single schema for all documents in the collection or each document contains a property that serves as type discriminator - called type property. Schemas are stored separately and it is possible to compose schemas by reference, so that even a recursive schema structure representing a tree model is possible. </p> The following operations are available: <ul> <li><b>add </b>creates a new collection (toolbar)</li> <li><b>delete</b> collection and its metadata</li> <li><b>go to view</b> jump to the data view of the selected collection</li> <li><b>generate schema</b> information by sampling existing data</li></ul><p><b><br /></b></p><p><b>\tGenerating the schema</b> </p><p>Generating the schema is a very useful feature if there is an existing collection containing documents. The\tgeneration dialog asks the user to specify the number of documents to sample and optionally the name of the type property. Restricting the number of samples will yield a faster generation process but may produce a less exact result. The type property maybe specified if one exists. A type property is a property whose value is interpreted as a type discriminator. There will be a distinct schema for each value of the property. If the documents in the collection were created by a Mapping library in a statically typed OO-language (e.g. Morphia or spring data for Java) then the name of the class will most likely be stored in the type property. </p><p>Once you generated the schema you still want to customize it.</p><p><b><br /></b></p><p><b>Customizing schema and editor</b></p><p>The schema contains information about the editor which the author uses to create and edit documents:</p><p><ul><li>the order of the attributes<br /></li><li>descriptions for each attribute<br /></li><li>attributes can be grouped in columns, tab or accordions</li><li>attributes can be made visible, disabled</li></ul></p>"
+        "blocks": [
+          {
+            "text": "<p>The settings view is accessed from the view selector or by clicking on settings in a collection view. The settings view contains metadata for the collections. This metadata is stored in a special mongodb database. The settings view is just like a collection view for the collection metadata with extra functionality.</p><p>The detail editor provides the following properties in the top pane:</p><p></p><ul><li><b>name</b> the name of the collection as used in the view selector <br /></li><li><b>collection</b> the monogdb collection name.</li><li><b>db</b> the database that contains the collection.</li><li><b>allow user assigned id?</b> check this if you want the user to provide the mongodb id.</li><li><b>description</b> is displayed in the help tooltip in the collection view.</li><li><b>schema </b>defines the schema or schemas that documents in the collection conform to.</li></ul><p></p><p><br /></p><p><b>Schema</b></p><p>A collection can have one or more schemas associated with it. The purpose of the schema is to guide the user in editing documents by providing a sophisticated detail editor. Either there is a single schema for all documents in the collection or each document contains a property that serves as type discriminator - called type property. Schemas are stored separately and it is possible to compose schemas by reference, so that even a recursive schema structure representing a tree model is possible. </p> The following operations are available: <ul> <li><b>add </b>creates a new collection (toolbar)</li> <li><b>delete</b> collection and its metadata</li> <li><b>go to view</b> jump to the data view of the selected collection</li> <li><b>generate schema</b> information by sampling existing data</li></ul><p><b><br /></b></p><p><b>\tGenerating the schema</b> </p><p>Generating the schema is a very useful feature if there is an existing collection containing documents. The\tgeneration dialog asks the user to specify the number of documents to sample and optionally the name of the type property. Restricting the number of samples will yield a faster generation process but may produce a less exact result. The type property maybe specified if one exists. A type property is a property whose value is interpreted as a type discriminator. There will be a distinct schema for each value of the property. If the documents in the collection were created by a Mapping library in a statically typed OO-language (e.g. Morphia or spring data for Java) then the name of the class will most likely be stored in the type property. </p><p>Once you generated the schema you still want to customize it.</p><p><b><br /></b></p><p><b>Customizing schema and editor</b></p><p>The schema contains information about the editor which the author uses to create and edit documents:</p><p><ul><li>the order of the attributes<br /></li><li>descriptions for each attribute<br /></li><li>attributes can be grouped in columns, tab or accordions</li><li>attributes can be made visible, disabled</li></ul></p>",
+            "__type__": "paragraph"
+          }
+        ]
       },
       {
         "headline": "Db view",
-        "text": "The list of dbs provides information about their size on disk. The details include the list of collections.<br />The operations available on a single db include the creation of a new collection and the synchronization between<br />the actual db's collections and the collections stored in the metadata store. When starting the app these two will be synchronized automatically. If a new collection is created in the db while this app is running then this new collection will not be displayed until a synchronization is performed. A db cannot be created in mongomat right now."
+        "blocks": [
+          {
+            "text": "The list of dbs provides information about their size on disk. The details include the list of collections.<br />The operations available on a single db include the creation of a new collection and the synchronization between<br />the actual db's collections and the collections stored in the metadata store. When starting the app these two will be synchronized automatically. If a new collection is created in the db while this app is running then this new collection will not be displayed until a synchronization is performed. A db cannot be created in mongomat right now.",
+            "__type__": "paragraph"
+          }
+        ]
       }
     ]
+  },
+  {
+    "name": "tutorial",
+    "parent": 1,
+    "template": "folder",
+    "id": 0.9207160123623908
+  },
+  {
+    "name": "1. simple property",
+    "template": "first-example",
+    "parent": 0.9207160123623908,
+    "id": 0.9611864553298801,
+    "text": "This is a dynamic text.",
+    "general": {
+      "text": "This is a simple example with one attribute <b>text </b>of type <i>string. </i>The template simply displays the string in a paragraph. <span style=\"line-height: 1.23099987323468;\">Try changing the value in the </span><b style=\"line-height: 1.23099987323468;\">richtext </b><span style=\"line-height: 1.23099987323468;\">editor.</span>",
+      "next": 0.43688156083226204
+    }
   },
   {
     "id": 1,
@@ -71,12 +196,12 @@
     "brand": "cms4apps",
     "navItems": [
       {
-        "label": "Documenation",
+        "label": "Documentation",
         "page": 0.43755838507786393
       },
       {
-        "label": "Mongomat",
-        "page": 0.839099807664752
+        "label": "Tutorial",
+        "page": 0.6610063819680363
       }
     ],
     "template": "navbar",

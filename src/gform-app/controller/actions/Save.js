@@ -1,7 +1,7 @@
 define([
 	'../../util/topic',
 	'gform/controller/actions/Save',
-	"../../../dojo/_base/declare"
+	"dojo/_base/declare"
 
 ], function (topic, Save, declare) {
 // module:

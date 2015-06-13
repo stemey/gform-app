@@ -4,6 +4,8 @@ define({
         "actions.create-page.iconClass": "dijitEditorIcon dijitEditorIconNewPage",
 		"actions.preview.label": "preview",
 		"actions.preview.iconClass": "fa fa-eye",
+		"actions.duplicate.label": "copy",
+		"actions.duplicate.iconClass": "fa fa-copy",
 		"actions.gotodata.label": "go to view",
 		"actions.gotodata.iconClass": "fa fa-arrow-right",
 		"actions.createCollection.label": "create collection",

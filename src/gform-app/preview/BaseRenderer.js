@@ -131,6 +131,7 @@ define([
                 Object.keys(template.partials).forEach(function (key) {
                     var url = template.partials[key];
                     //console.log("render partial of template-ref " + key);
+                    //TODO configure hardcoded url
                     var p = this.renderInternally("/page/" + url, ctx.page);
                     ctx.promises.push(p);
                     when(p).then(function (result) {
@@ -257,7 +258,8 @@ define([
             lang.mixin(ctx.page, page);
             //console.log("renderIncludes p=" + page.url + "  t=" + template.name);
             if (this.templateToSchemaTransformer) {
-                var cached = this.tmpls[template.code]//TODO 'code' is hardcoded. Only correct for atem dynamic types.
+                var id = this.templateStore.getIdentity(template);
+                var cached = this.tmpls[id];
                 if (cached) {
                     var resolved = cached;
                 } else {
@@ -398,6 +400,7 @@ define([
                                 var inner = newPage;
                                 newPage = ctx.page[ctx.outer.code];
                                 newPage.inner = inner;
+                                delete inner[ctx.outer.code]
                             } else {
                                 newPage.inner = newPage;
                             }
