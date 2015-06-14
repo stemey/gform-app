@@ -51,6 +51,20 @@ define(['dojo/aspect',
 					}
 				})
 			);
+			menu.addChild(
+				new MenuItem({
+					label: messages["tabopener.closeothers"],
+					ownerDocument: this.tabContainer.ownerDocument,
+					dir: this.tabContainer.dir,
+					lang: this.tabContainer.lang,
+					textDir: this.tabContainer.textDir,
+					onClick: function (evt) {
+						var tabElement = this.getParent().currentTarget;
+						var tab = registry.byNode(tabElement);
+						me.closeTabs(tab.page);
+					}
+				})
+			);
 		},
 		onDeleted: function(evt) {
 			var me =this;
@@ -107,10 +121,10 @@ define(['dojo/aspect',
 				}
 			}
 		},
-		closeTabs: function () {
+		closeTabs: function (excludedTab) {
 			var closeables = [];
 			this.tabContainer.getChildren().forEach(function (tab) {
-				if (!tab.editor.hasChanged()) {
+				if (!tab.editor.hasChanged() && tab!==excludedTab) {
 					closeables.push(tab);
 				}
 			});

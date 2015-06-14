@@ -1,14 +1,11 @@
 define([
 	'./load',
 	'./ContainerFactory',
-	'dojo/_base/lang',
-	'dojo/aspect',
 	'../meta/TemplateSchemaTransformer',
 	'../controller/Previewer',
-	'dijit/layout/ContentPane',
 	"dojo/_base/declare",
 	'../controller/CacheStore'
-], function (load, ContainerFactory, lang, aspect, TemplateSchemaTransformer, Previewer, ContentPane, declare, CacheStore) {
+], function (load, ContainerFactory, TemplateSchemaTransformer, Previewer, declare, CacheStore) {
 
 
 	return declare([ContainerFactory], {

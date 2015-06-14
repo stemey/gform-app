@@ -15,7 +15,11 @@ define([
 			this.saveOperation = {};
 			this.saveOperation.entity = this.ctrl.editor.getPlainValue();
 			this.saveOperation.oldEntity = this.ctrl.editor.getOldValue();
-			this.inherited(arguments);
+			var me =this;
+			var args = arguments;
+			this.ctrl.editor.bufferChange(function() {
+				me.inherited(args);
+			});
 
 		},
 		_onUpdate: function () {

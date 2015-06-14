@@ -1,11 +1,12 @@
 define([
+    'dojo/Evented',
     '../util/FindByUrlMixin',
     '../util/topic',
     'dojo/_base/declare',
 	'dojo/_base/lang'
-], function (FindByUrlMixin, topic, declare, lang) {
+], function (Evented, FindByUrlMixin, topic, declare, lang) {
 
-    return declare([FindByUrlMixin ], {
+    return declare([FindByUrlMixin,Evented ], {
         store: null,
         cache: null,
         constructor: function (store) {
@@ -17,10 +18,15 @@ define([
             topic.subscribeStore("/modify/cancel", lang.hitch(this, "onCancel"), this.store.name);
         },
         onUpdate: function (evt) {
-            this.cache[evt.id] = evt.value;
+            var old = this.cache[evt.id];
+            if (JSON.stringify(old)!=JSON.stringify(evt.value)) {
+                this.cache[evt.id] = evt.value;
+                this.emit("changed", {id:evt.id, store:evt.store})
+            }
         },
         onCancel: function (evt) {
             delete this.cache[evt.id];
+            this.emit("changed",{id:evt.id, store:evt.store})
         },
 		query: function(query, options) {
 			return this.store.query(query, options);

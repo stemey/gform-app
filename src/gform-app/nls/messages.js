@@ -14,7 +14,8 @@ define({
 		"actions.generateSchema.iconClass": "fa fa-refresh",
 		"actions.synchronizeCollections.label": "synchronize",
 		"actions.synchronizeCollections.iconClass": "fa fa-refresh",
-        "tabopener.closeall":"close all"
+        "tabopener.closeall":"close all",
+		"tabopener.closeothers":"close others"
     }),
     de:true
 });

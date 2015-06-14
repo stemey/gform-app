@@ -44,7 +44,7 @@
                 },
                 {
                     "code": "usage",
-                    "description": "options to include references page in rendering: <ul><li>rendered html snippet</li><li>only the url</li><li>partial</li><li>the top-level data (references not resolved)</li></ul>.",
+                    "description": {"$ref":"usage.html"},
                     "type": "string",
                     "values": ["html","link","partial","data"],
                     "required": true
@@ -58,12 +58,7 @@
                     "values":[{"$ref":"pageTypeProperty"}]
                 },
                 {
-                   "code":"schemaUrlPrefix",
-                    "type":"string",
-                    "required":true,
-                    "values":[""]
-                },
-                {
+                    "description":"restrict references by their template",
                     "code": "schemas",
                     "type": "array",
                     "required": true,
@@ -76,6 +71,7 @@
                     }
                 },
                 {
+                    "description":"restrict references by custom query (supports mongodb-like $in and $regex)",
                     "code": "query",
                     "type": "any",
                     "editor":"anyAce",

@@ -49,6 +49,7 @@
       "attributes": [
         {
           "code": "partials",
+          "description":"pages are added with data and template to the render context. <br>useful when all instances share he same data.",
           "type": "map",
           "keyAttribute": {},
           "valueAttribute": {
@@ -61,6 +62,7 @@
         },
         {
           "code": "partialTemplates",
+          "description":"templates are added to the render context.",
           "type": "map",
           "keyAttribute": {},
           "valueAttribute": {
@@ -68,8 +70,7 @@
             "searchProperty": "name",
             "idProperty": "code",
             "converter": "refConverter",
-            "url": {"$ref": "templateStore"},
-            "schemaUrl": {"$ref": "templateSchema"}
+            "url": {"$ref": "partialStore"}
           }
         }
       ]

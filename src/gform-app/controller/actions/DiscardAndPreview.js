@@ -15,9 +15,13 @@ define([
 			return messages;
 		},
 		execute: function () {
-			this.ctrl.editor.syncPendingChanges();
-			this.ctrl.reset();
-			//this.inherited(arguments);
+			var me =this;
+			var args=arguments;
+			this.ctrl.editor.bufferChange(function() {
+				me.ctrl.editor.syncPendingChanges();
+				me.ctrl.reset();
+				me.inherited(args);
+			})
 		}
 	});
 });

@@ -1,14 +1,11 @@
 define([
 	'dojo/query',
-	'dojo/dom-construct',
 	'dijit/layout/ContentPane',
 	'../util/topic',
 	"dojo/_base/declare",
 	"dojo/when",
-	"dijit/_WidgetBase",
-	"dijit/_TemplatedMixin",
 	"dojo/text!./Previewer.html"
-], function (query, domConstruct, ContentPane, topic, declare, when, _WidgetBase, _TemplatedMixin, template) {
+], function (query, ContentPane, topic, declare, when, template) {
 
 
 	return declare("cms.Previewer", [ContentPane], {
@@ -19,17 +16,21 @@ define([
 		postCreate: function() {
 			this.setContent(template);
 			this.iframe=query("iframe",this.containerNode)[0];
+			this.pageStore.on("changed",this.refresh.bind(this));
 		},
 		onPageFocus: function(evt) {
 			this.display(evt.store + "/" + evt.id);
 		},
 		onModifyUpdate: function (evt) {
-			this.display(evt.store + "/" + evt.id);
+			//this.display(evt.store + "/" + evt.id);
 		},
 		onModifyCancel: function (evt) {
-			this.display(evt.store + "/" + evt.id);
+			var url = evt.store + "/" + evt.id;
+			if (this.url===url) {
+				this.display(url);
+			}
 		},
-		onPageUpdate: function (evt) {
+		onPageUpdated: function (evt) {
 			this.display(evt.store + "/" + evt.id);
 		},
 		onPageDeleted: function (evt) {
@@ -52,6 +53,7 @@ define([
 		},
 		rendering: false,
 		display: function (url) {
+			console.log("render preview");
 			try {
 				// TODO improve error reporting
 				var me = this;
@@ -99,8 +101,8 @@ define([
 		displayById: function (id) {
 			this.display("/page/" + id);
 		},
-		refreshXXX: function () {
-			if (this.url) {
+		refresh: function (evt) {
+			if (evt.store+"/"+evt.id == this.url) {
 				this.display(this.url);
 			}
 		}

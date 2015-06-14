@@ -1,5 +1,54 @@
 [
   {
+    "name": "Ad",
+    "id": "Ad",
+    "schema": "template",
+    "sourceCode": "<span class=\"well\">{{{text}}}<strong>{{extra}}</strong></span>",
+    "partials": {},
+    "partialTemplates": {},
+    "group": {
+      "attributes": [
+        {
+          "code": "name",
+          "type": "string",
+          "editor": "string"
+        },
+        {
+          "code": "template",
+          "visible": false,
+          "type": "string",
+          "editor": "string"
+        },
+        {
+          "code": "parent",
+          "required": true,
+          "type": "multi-ref",
+          "idProperty": "id",
+          "searchProperty": "name",
+          "url": "page",
+          "usage": "html",
+          "typeProperty": "template",
+          "schemaUrlPrefix": "",
+          "schemas": [],
+          "query": {"template": {"$regex": ".*[fF]older.*"}},
+          "editor": "multi-page-ref"
+        },
+        {
+          "code": "id",
+          "disabled": true,
+          "type": "number",
+          "editor": "number"
+        },
+        {
+          "code": "text",
+          "type": "string",
+          "editor": "textarea"
+        }
+      ],
+      "editor": "listpane"
+    }
+  },
+  {
     "name": "bs-doc",
     "id": "bs-doc",
     "schema": "template",
@@ -159,6 +208,254 @@
               "template": "Teaser",
               "type": "ref",
               "editor": "template-ref"
+            }
+          ],
+          "label": "try out",
+          "editor": "listpane"
+        },
+        {
+          "attributes": [
+            {
+              "code": "name",
+              "type": "string",
+              "editor": "string"
+            },
+            {
+              "code": "template",
+              "visible": false,
+              "type": "string",
+              "editor": "string"
+            },
+            {
+              "code": "parent",
+              "required": true,
+              "type": "multi-ref",
+              "idProperty": "id",
+              "searchProperty": "name",
+              "url": "page",
+              "usage": "html",
+              "typeProperty": "template",
+              "schemaUrlPrefix": "",
+              "schemas": [],
+              "query": {"template": {"$regex": ".*[fF]older.*"}},
+              "editor": "multi-page-ref"
+            },
+            {
+              "code": "id",
+              "disabled": true,
+              "type": "number",
+              "editor": "number"
+            }
+          ],
+          "label": "general",
+          "editor": "listpane"
+        },
+        {
+          "attributes": [
+            {
+              "code": "general",
+              "template": "tutorial",
+              "outer": true,
+              "type": "ref",
+              "editor": "template-ref"
+            }
+          ],
+          "label": "tutorial",
+          "editor": "listpane"
+        }
+      ],
+      "editor": "tab"
+    }
+  },
+  {
+    "name": "embed-page-data-example",
+    "id": "embed-page-data-example",
+    "schema": "template",
+    "sourceCode": "\n{{page.text}}",
+    "partials": {},
+    "partialTemplates": {},
+    "group": {
+      "groups": [
+        {
+          "attributes": [
+            {
+              "code": "page",
+              "type": "multi-ref",
+              "idProperty": "id",
+              "searchProperty": "name",
+              "url": "page",
+              "usage": "data",
+              "typeProperty": "template",
+              "schemaUrlPrefix": "",
+              "schemas": [],
+              "editor": "multi-page-ref"
+            }
+          ],
+          "label": "try out",
+          "editor": "listpane"
+        },
+        {
+          "attributes": [
+            {
+              "code": "name",
+              "type": "string",
+              "editor": "string"
+            },
+            {
+              "code": "template",
+              "visible": false,
+              "type": "string",
+              "editor": "string"
+            },
+            {
+              "code": "parent",
+              "required": true,
+              "type": "multi-ref",
+              "idProperty": "id",
+              "searchProperty": "name",
+              "url": "page",
+              "usage": "html",
+              "typeProperty": "template",
+              "schemaUrlPrefix": "",
+              "schemas": [],
+              "query": {"template": {"$regex": ".*[fF]older.*"}},
+              "editor": "multi-page-ref"
+            },
+            {
+              "code": "id",
+              "disabled": true,
+              "type": "number",
+              "editor": "number"
+            }
+          ],
+          "label": "general",
+          "editor": "listpane"
+        },
+        {
+          "attributes": [
+            {
+              "code": "general",
+              "template": "tutorial",
+              "outer": true,
+              "type": "ref",
+              "editor": "template-ref"
+            }
+          ],
+          "label": "tutorial",
+          "editor": "listpane"
+        }
+      ],
+      "editor": "tab"
+    }
+  },
+  {
+    "name": "embed-page-example",
+    "id": "embed-page-example",
+    "schema": "template",
+    "sourceCode": "\n{{{page}}}",
+    "partials": {},
+    "partialTemplates": {},
+    "group": {
+      "groups": [
+        {
+          "attributes": [
+            {
+              "code": "page",
+              "type": "multi-ref",
+              "idProperty": "id",
+              "searchProperty": "name",
+              "url": "page",
+              "usage": "html",
+              "typeProperty": "template",
+              "schemaUrlPrefix": "",
+              "schemas": [],
+              "editor": "multi-page-ref"
+            }
+          ],
+          "label": "try out",
+          "editor": "listpane"
+        },
+        {
+          "attributes": [
+            {
+              "code": "name",
+              "type": "string",
+              "editor": "string"
+            },
+            {
+              "code": "template",
+              "visible": false,
+              "type": "string",
+              "editor": "string"
+            },
+            {
+              "code": "parent",
+              "required": true,
+              "type": "multi-ref",
+              "idProperty": "id",
+              "searchProperty": "name",
+              "url": "page",
+              "usage": "html",
+              "typeProperty": "template",
+              "schemaUrlPrefix": "",
+              "schemas": [],
+              "query": {"template": {"$regex": ".*[fF]older.*"}},
+              "editor": "multi-page-ref"
+            },
+            {
+              "code": "id",
+              "disabled": true,
+              "type": "number",
+              "editor": "number"
+            }
+          ],
+          "label": "general",
+          "editor": "listpane"
+        },
+        {
+          "attributes": [
+            {
+              "code": "general",
+              "template": "tutorial",
+              "outer": true,
+              "type": "ref",
+              "editor": "template-ref"
+            }
+          ],
+          "label": "tutorial",
+          "editor": "listpane"
+        }
+      ],
+      "editor": "tab"
+    }
+  },
+  {
+    "name": "embed-partial-example",
+    "id": "embed-partial-example",
+    "schema": "template",
+    "sourceCode": "{{#page}}\n{{>page extra=../extra}}\n{{/page}}",
+    "partials": {},
+    "partialTemplates": {},
+    "group": {
+      "groups": [
+        {
+          "attributes": [
+            {
+              "code": "page",
+              "type": "multi-ref",
+              "idProperty": "id",
+              "searchProperty": "name",
+              "url": "page",
+              "usage": "partial",
+              "typeProperty": "template",
+              "schemaUrlPrefix": "",
+              "schemas": [],
+              "editor": "multi-page-ref"
+            },
+            {
+              "code": "extra",
+              "type": "string",
+              "editor": "textarea"
             }
           ],
           "label": "try out",
@@ -515,7 +812,7 @@
     "name": "page",
     "id": "page",
     "schema": "template",
-    "sourceCode": "Moinsen Hallo Ballo {{{text}}}",
+    "sourceCode": "Moinsen Hallo Ballo {{{text}}}{{../text}}",
     "partials": {},
     "partialTemplates": {},
     "group": {

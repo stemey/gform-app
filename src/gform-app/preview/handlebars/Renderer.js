@@ -16,6 +16,10 @@ define([
                 return options.fn(this);
             }
         });
+        Handlebars.registerHelper('c4a-script', function (a, b, options) {
+            // TODO make script source configurable
+            return "<script src='gform-app/controller/mock.js'></script>"
+        });
         Handlebars.registerHelper('debug', function (a, b, options) {
             var ctx = a? a : this;
             return  JSON.stringify(ctx, null, ' ');

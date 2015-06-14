@@ -1,5 +1,17 @@
 [
   {
+    "page": 0.9503363266121596,
+    "name": "5. embed a page's data",
+    "template": "embed-page-data-example",
+    "parent": 0.9207160123623908,
+    "id": 0.1705826693214476,
+    "general": {
+      "text": "To use a page's data the usage of the page must be set to <b>data.</b>",
+      "previous": 0.7305031197611243,
+      "next": 0.5585797596722841
+    }
+  },
+  {
     "name": "components",
     "parent": 1,
     "template": "folder",
@@ -61,6 +73,19 @@
     ]
   },
   {
+    "page": 0.9503363266121596,
+    "extra": "  only 3 € today!",
+    "name": "6. embed a page as partial",
+    "template": "embed-partial-example",
+    "parent": 0.9207160123623908,
+    "id": 0.5585797596722841,
+    "general": {
+      "text": "It is also possible to embed the referenced page's template as a partial and add the data to the current render context. <div>This can be useful when rendering a navigation. It is the same on all pages but the highlighted item is passed from the parent context to the navigation.</div>",
+      "previous": 0.1705826693214476,
+      "next": 0.6610063819680363
+    }
+  },
+  {
     "teaser": {
       "amount": 12,
       "text": "A brand new bathtub"
@@ -71,7 +96,8 @@
     "id": 0.6374826563987881,
     "general": {
       "text": "<span style=\"font-family: Times; font-size: medium; line-height: normal;\">The markup below the ruler is defined in an embedded template. To embed a template an attribute of type </span><i style=\"font-family: Times; font-size: medium; line-height: normal;\">template-ref</i><span style=\"font-family: Times; font-size: medium; line-height: normal;\"> is used.</span>",
-      "previous": 0.43688156083226204
+      "previous": 0.43688156083226204,
+      "next": 0.7305031197611243
     }
   },
   {
@@ -111,13 +137,28 @@
             "links": [
               0.9611864553298801,
               0.6374826563987881,
-              0.43688156083226204
+              0.43688156083226204,
+              0.7305031197611243,
+              0.1705826693214476,
+              0.5585797596722841
             ],
             "__type__": "linklist"
           }
         ]
       }
     ]
+  },
+  {
+    "page": 0.9503363266121596,
+    "name": "4. embed a page",
+    "template": "embed-page-example",
+    "parent": 0.9207160123623908,
+    "id": 0.7305031197611243,
+    "general": {
+      "text": "This is an example of a reference to a page which is embeded as html.",
+      "previous": 0.6374826563987881,
+      "next": 0.1705826693214476
+    }
   },
   {
     "name": "mongomat",
@@ -176,13 +217,21 @@
     "id": 0.9207160123623908
   },
   {
+    "name": "An Ad",
+    "template": "Ad",
+    "parent": 0.26918259798549116,
+    "id": 0.9503363266121596,
+    "text": "Go get the new <strong>bathtub</strong>!"
+  },
+  {
+    "text": "This is a dynamic text.",
     "name": "1. simple property",
     "template": "first-example",
     "parent": 0.9207160123623908,
     "id": 0.9611864553298801,
-    "text": "This is a dynamic text.",
     "general": {
       "text": "This is a simple example with one attribute <b>text </b>of type <i>string. </i>The template simply displays the string in a paragraph. <span style=\"line-height: 1.23099987323468;\">Try changing the value in the </span><b style=\"line-height: 1.23099987323468;\">richtext </b><span style=\"line-height: 1.23099987323468;\">editor.</span>",
+      "previous": 0.6610063819680363,
       "next": 0.43688156083226204
     }
   },

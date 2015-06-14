@@ -34,7 +34,6 @@ define([
                 config.idProperty = "id";
                 config.idType = "number"
             }
-            var schemaGenerator = new SchemaGenerator({requiredAttribute: parent});
             var baseUrl = config.baseUrl;
             return {
                 "storeRegistry": {
@@ -96,7 +95,6 @@ define([
                     "schemaGenerators": [
                         {
                             "factoryId": "gform-app/factory/schema/SchemaFactory",
-                            "schemaGenerator": schemaGenerator,
                             "store": TEMPLATE_STORE,
                             "partialStore":PARTIAL_STORE
                         },
@@ -192,7 +190,7 @@ define([
 
                                         },
                                         {
-                                            "factoryId": "gform-app/factory/GridFactory",
+                                            "factoryId": "gform-app/factory/ExtendedGridFactory",
                                             "title": "grid",
                                             "storeId": "page",
                                             "menuItems": [
