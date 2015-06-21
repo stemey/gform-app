@@ -16,6 +16,12 @@ define([
                 return options.fn(this);
             }
         });
+        Handlebars.registerHelper("add", function(lvalue, rvalue, options) {
+            lvalue = parseFloat(lvalue);
+            rvalue = parseFloat(rvalue);
+
+            return lvalue + rvalue;
+        });
         Handlebars.registerHelper('c4a-script', function (a, b, options) {
             // TODO make script source configurable
             return "<script src='gform-app/controller/mock.js'></script>"

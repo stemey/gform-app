@@ -1,0 +1,16 @@
+<p>
+    the outer option reverses the relation between page and embedded.<br>
+    The page is rendered as an embedded called inner of the template-ref.<br>
+    The outer template must look like this:
+    <pre><code lang="html">
+    ..
+    {{#inner}}
+      {{>inner}}
+    {{/inner}}
+    ..
+    </code></pre>
+    <strong>Limitation</strong>:<br>
+    outer can only be used to wrap a page not an embedded.<br>
+    Also there may only be one per page.
+
+</p>

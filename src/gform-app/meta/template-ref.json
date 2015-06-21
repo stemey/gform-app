@@ -20,7 +20,8 @@
                 },
                 {
                     "code": "outer",
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description":{"$ref":"outer-description.html"}
                 },
                 {
                     "code": "type",
