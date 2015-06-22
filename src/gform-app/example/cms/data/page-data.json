@@ -37,7 +37,7 @@
   },
   {
     "name": "Documentation",
-    "template": "bs-doc",
+    "template": "test-tree",
     "parent": 1,
     "id": 0.43755838507786393,
     "main": {
@@ -102,7 +102,7 @@
   },
   {
     "name": "Tutorial",
-    "template": "bs-doc",
+    "template": "test-tree",
     "parent": 1,
     "id": 0.6610063819680363,
     "main": {
@@ -162,7 +162,7 @@
   },
   {
     "name": "mongomat",
-    "template": "bs-doc",
+    "template": "test-tree",
     "parent": 0.4034360437653959,
     "id": 0.839099807664752,
     "main": {

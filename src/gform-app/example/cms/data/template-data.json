@@ -913,5 +913,158 @@
       ],
       "editor": "verticalgroup"
     }
+  },
+  {
+    "name": "bs-doc-tree",
+    "id": "test-tree",
+    "schema": "template",
+    "sourceCode": "\n<div class=\"container\"/>\n<div class=\"row\">\n    <div class=\"col-md-9\" style=\"position:relative\">\n        <h1>{{{headline}}}</h1>\n        <p>{{{text}}}</p>\n        {{#sections}}\n            <h2 id=\"nav_{{@index}}\" class=\"page-header\">{{add @index 1}}. {{{headline}}}</h2>\n            {{#blocks}}\n                {{{.}}}    \n            {{/blocks}}\n        {{/sections}}\n    </div>\n    <div class=\"col-md-3\">\n        <nav id=\"navigation\" class=\"affix\">\n            <ul class=\"nav\">\n            {{#sections}}\n                <li>\n                    <a href=\"#nav_{{@index}}\">{{headline}}</a>\n                </li>\n            {{/sections}}\n            </ul>\n        </nav>\n    </div>\n</div>\n",
+    "partials": {},
+    "partialTemplates": {},
+    "group": {
+      "detailGroup": {
+        "groups": [
+          {
+            "attributes": [
+              {
+                "code": "name",
+                "type": "string",
+                "editor": "string"
+              },
+              {
+                "code": "template",
+                "visible": false,
+                "type": "string",
+                "editor": "string"
+              },
+              {
+                "code": "parent",
+                "required": true,
+                "type": "multi-ref",
+                "idProperty": "id",
+                "searchProperty": "name",
+                "url": "page",
+                "usage": "html",
+                "typeProperty": "template",
+                "schemas": [],
+                "query": {"template": {"$regex": ".*[fF]older.*"}},
+                "editor": "multi-page-ref"
+              },
+              {
+                "code": "id",
+                "disabled": true,
+                "type": "number",
+                "editor": "number"
+              }
+            ],
+            "label": "page",
+            "editor": "listpane"
+          },
+          {
+            "attributes": [
+              {
+                "code": "main",
+                "template": "main",
+                "outer": true,
+                "type": "ref",
+                "editor": "template-ref"
+              }
+            ],
+            "label": "main",
+            "editor": "listpane"
+          },
+          {
+            "groups": [
+              {
+                "attributes": [
+                  {
+                    "code": "headline",
+                    "type": "string",
+                    "editor": "string"
+                  }
+                ],
+                "region": "top",
+                "editor": "listpane"
+              },
+              {
+                "attribute": {
+                  "code": "text",
+                  "updateInterval": "100",
+                  "height": "500px",
+                  "plugins": [
+                    {"name": "undo"},
+                    {"name": "redo"},
+                    {"name": "bold"},
+                    {"name": "italic"},
+                    {"name": "underline"},
+                    {"name": "strikethrough"},
+                    {"name": "subscript"},
+                    {"name": "superscript"},
+                    {"name": "removeFormat"},
+                    {"name": "insertOrderedList"},
+                    {"name": "insertUnorderedList"},
+                    {"name": "insertHorizontalRule"},
+                    {"name": "indent"},
+                    {"name": "outdent"},
+                    {"name": "justifyLeft"},
+                    {"name": "justifyCenter"},
+                    {"name": "justifyRight"},
+                    {"name": "createLink"},
+                    {"name": "dijit/_editor/plugins/FullScreen"},
+                    {"name": "dijit/_editor/plugins/AlwaysShowToolbar"},
+                    {"name": "dijit._editor.plugins.ViewSource"}
+                  ],
+                  "type": "string",
+                  "editor": "richtext"
+                },
+                "region": "center",
+                "editor": "single"
+              }
+            ],
+            "label": "content",
+            "editor": "verticalgroup"
+          }
+        ],
+        "editor": "tab"
+      },
+      "nodeAttributes": [
+        {
+          "code": "sections",
+          "type": "array",
+          "group": {
+            "detailGroup": {
+              "attributes": [
+                {
+                  "code": "headline",
+                  "type": "string",
+                  "editor": "string"
+                }
+              ],
+              "editor": "listpane"
+            },
+            "nodeAttributes": [
+              {
+                "code": "blocks",
+                "type": "array",
+                "element": {
+                  "templates": [
+                    "paragraph",
+                    "callout",
+                    "alert",
+                    "linklist"
+                  ],
+                  "type": "ref",
+                  "editor": "multi-template-ref"
+                },
+                "editor": "primitive-array"
+              }
+            ],
+            "editor": "tree"
+          },
+          "editor": "array"
+        }
+      ],
+      "editor": "tree"
+    }
   }
 ]
