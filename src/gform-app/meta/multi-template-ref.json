@@ -1,43 +1,47 @@
 {
-    "code": "multi-template-ref",
-    "editor": "tab",
-    "groupLabel":"references",
-    "description": "",
-    "groups": [
+  "code": "multi-template-ref",
+  "editor": "tab",
+  "groupLabel": "references",
+  "description": "",
+  "groups": [
+    {
+      "$ref": "../../gform/schema/attributes/header.json"
+    },
+    {
+      "label": "template",
+      "attributes": [
         {
-            "$ref": "../../gform/schema/attributes/header.json"
+          "code": "templates",
+          "type": "array",
+          "editor": "primitive-array",
+          "element": {
+            "type": "ref",
+            "searchProperty": "name",
+            "idProperty": "code",
+            "url": {"$ref": "partialStore"},
+            "schemaUrl": {"$ref": "partialSchema"}
+          }
         },
         {
-            "label": "template",
-            "attributes": [
-                {
-                    "code": "templates",
-                    "type": "array",
-                    "editor":"primitive-array",
-                    "element": {
-                        "type":"ref",
-                        "searchProperty": "name",
-                        "idProperty":"code",
-                        "url":  {"$ref":"partialStore"},
-                        "schemaUrl": {"$ref":"partialSchema"}
-                    }
-                },
-                {
-                    "code": "outer",
-                    "type": "boolean"
-                },
-                {
-                    "code": "type",
-                    "values": ["ref"],
-                    "required":true,
-                    "visible":false,
-                    "type":"string"
-                }
-            ]
+          "code": "outer",
+          "type": "boolean"
         },
         {
-            "$ref": "../../gform/schema/attributes/messages.json"
+          "description": "If the templates are using editor like 'verticalgroup' or 'single' then you need to check this option.<br> The said groups grow according to their parent and can only be in a container of a fixed size.",
+          "code": "layout",
+          "type": "boolean"
+        },
+        {
+          "code": "type",
+          "values": ["ref"],
+          "required": true,
+          "visible": false,
+          "type": "string"
         }
-    ]
-
+      ]
+    },
+    {
+      "$ref": "../../gform/schema/attributes/messages.json"
+    }
+  ]
 }

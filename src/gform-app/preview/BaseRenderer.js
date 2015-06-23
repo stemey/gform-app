@@ -410,6 +410,7 @@ define([
                         renderPromise.resolve({html: html, errors: ctx.errors});
                     }).otherwise(function (e) {
                         //console.error("error during rendering " + e.stack);
+                        ctx.errors.push({message: e.message, error: e});
                         error(ctx);
                     });
                 }).otherwise(function (e) {
