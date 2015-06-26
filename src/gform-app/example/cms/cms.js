@@ -1,12 +1,11 @@
 define([
-        '../../util/LoadRichtextPlugins',
+
         '../../cms/createValueFactory',
         '../../controller/gridactions/Delete',
         '../../controller/gridactions/OpenAsJson',
-        'gform/schema/SchemaGenerator',
         '../../jcr/TemplateStore',
-        '../../util/ToMongoQueryTransform'
-    ], function (LoadRichtextPlugins, createValueFactory, Delete, OpenAsJson, SchemaGenerator, TemplateStore, ToMongoQueryTransform) {
+        '../../util/ToMongoQueryTransform', '../../util/LoadRichtextPlugins'
+    ], function (createValueFactory, Delete, OpenAsJson, TemplateStore, ToMongoQueryTransform) {
 
 
 
@@ -17,11 +16,11 @@ define([
 
         var PAGE_STORE = "page";
 
-        var createTemplateValueFactory = function(ctx, store) {
+        var createTemplateValueFactory = function (ctx, store) {
             var instanceStore = ctx.getStore(store.instanceStore);
             return createValueFactory.createTemplate(store, instanceStore);
         }
-        var createPartialValueFactory = function(ctx,store) {
+        var createPartialValueFactory = function (ctx, store) {
             return createValueFactory.createPartial(store);
         }
 
@@ -96,7 +95,7 @@ define([
                         {
                             "factoryId": "gform-app/factory/schema/SchemaFactory",
                             "store": TEMPLATE_STORE,
-                            "partialStore":PARTIAL_STORE
+                            "partialStore": PARTIAL_STORE
                         },
                         {
                             "factoryId": "gform-app/factory/schema/StaticSchemaGenerator",
@@ -142,15 +141,15 @@ define([
                                 {
                                     "factoryId": "gform-app/factory/SingleSchemaCreateFactory",
                                     "label": "add",
-                                    "valueFactory":createTemplateValueFactory,
-                                    "includedStoreIds":["/template"]
-                                },{
+                                    "valueFactory": createTemplateValueFactory,
+                                    "includedStoreIds": ["/template"]
+                                }, {
                                     "factoryId": "gform-app/factory/SingleSchemaCreateFactory",
                                     "label": "add",
-                                    "valueFactory":createPartialValueFactory,
-                                    "includedStoreIds":["partial"]
+                                    "valueFactory": createPartialValueFactory,
+                                    "includedStoreIds": ["partial"]
                                 },
-                               /* {
+                                /* {
                                  "factoryId": "gform-app/factory/ResetStoreFactory",
                                  "label": "reset store"
                                  },*/

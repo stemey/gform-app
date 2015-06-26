@@ -1,70 +1,72 @@
 {
-	"code": "group",
-	"type": "object",
-	"typeProperty": "editor",
-	"editor": "form",
-	"required": true,
-	"form": true,
-	"group": {
-		"editor": "tab",
-		"groups": [
-			{
-				"label": "attributes",
-				"attributes": [
-					{
-						"code": "attributes",
-						"type": "array",
-						"required": true,
-						"uniqueProperties": ["code"],
-						"typeProperty": "editor",
-						"reorderable":false,
-						"groups": {
-							"$ref": "../../gform/schema/attributes.json"
-						}
-					}
-				]
-			},
-			{
-				"label": "layout",
-				"attributes": [
-					{
-						"code": "group",
-						"label": "layout",
-						"type": "object",
-						"required": true,
-						"typeProperty": "editor",
-						"groups": {
-							"$ref": "../../gform/schema/groups.json?transforms=nocode&transforms=nolabel"
-						}
-					}
-				]
-			},
-			{
-				"label": "extra",
-				"attributes": [
-					{
-						"code": "additionalProperties",
-						"label": "additional properties",
-						"description":"<p>Allows the user to dynamically add properties.</p><p> additional properties are added via another attribute that contains json. This json is merged into the entity.</p>",
-						"type": "object",
-						"required": false,
-						"group": {
-							"attributes": [
-								{
-									"code": "code",
-									"label":"attribute",
-									"description":"select the attribute to contain the extra json.",
-									"type": "string",
-									"required": true,
-									"editor": "attribute-ref"
-
-								}
-							]
-						}
-					}
-				]
-			}
-		]
-	}
+  "code": "group",
+  "type": "object",
+  "typeProperty": "editor",
+  "editor": "form",
+  "layout":"true",
+  "required": true,
+  "form": true,
+  "group": {
+    "editor": "tree",
+    "iconClass":"fa fa-cubes",
+    "nodeAttributes": [
+      {
+        "code": "attributes",
+        "type": "array",
+        "tree":true,
+        "required": true,
+        "uniqueProperties": ["code"],
+        "typeProperty": "editor",
+        "reorderable": false,
+        "groups": {
+          "$ref": "../../gform/schema/attributes.json"
+        }
+      }
+    ],
+    "detailGroup": {
+      "editor": "tab",
+      "groups": [
+        {
+          "label": "layout",
+          "attributes": [
+            {
+              "code": "group",
+              "label": "layout",
+              "type": "object",
+              "required": true,
+              "typeProperty": "editor",
+              "groups": {
+                "$ref": "../../gform/schema/groups.json?transforms=nocode&transforms=nolabel"
+              }
+            }
+          ]
+        },
+        {
+          "label": "extra",
+          "attributes": [
+            {
+              "code": "additionalProperties",
+              "label": "additional properties",
+              "description": "<p>Allows the user to dynamically add properties.</p><p> additional properties are added via another attribute that contains json. This json is merged into the entity.</p>",
+              "type": "object",
+              "required": false,
+              "group": {
+                "attributes": [
+                  {
+                    "code": "code",
+                    "label": "attribute",
+                    "description": "select the attribute to contain the extra json.",
+                    "type": "string",
+                    "required": true,
+                    "editor": "attribute-ref"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
 }
 

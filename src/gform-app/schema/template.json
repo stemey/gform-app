@@ -78,8 +78,8 @@
     {
       "code": "form",
       "label": "Form",
-      "editor":"listpane",
-      "attributes": [{"$ref": "../../gform-app/meta/group.json"}]
+      "editor":"single",
+      "attribute": {"$ref": "../../gform-app/meta/group.json"}
     }
   ]
 }

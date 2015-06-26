@@ -1,5 +1,29 @@
 [
   {
+    "general": {
+      "text": "To have a common header and footer for a page you can use a template-ref with the property outer set to true. Uncheck the <b>general </b>value to see the effect of removing the outer. <div><br /></div><div>This can only be used once per page because the page's template is renamed to <i>inner</i> and rendered in the context of the referenced template as a partial.<div><br /></div><div>There for the outer template must include this snippet:</div><div><i><br /></i></div><div><i>..</i></div><div><i>{{#inner}}</i></div><div><i>  {{&gt;inner}}</i></div><div><i>{{/inner}} </i></div><div><i>..</i></div></div>",
+      "previous": 0.5585797596722841,
+      "next": 0.396803876850754
+    },
+    "name": "7. outer example ",
+    "template": "outer-example",
+    "parent": 0.9207160123623908,
+    "id": 0.0717921897303313
+  },
+  {
+    "embedded": {
+      "level": "info",
+      "headline": "This is a callout",
+      "text": "Calling out to the world !!!!",
+      "__type__": "callout"
+    },
+    "name": "9. embed a multi template",
+    "template": "multi-template-example",
+    "parent": 0.9207160123623908,
+    "id": 0.16910117072984576,
+    "general": {"text": "Here is an example of an embedded object which may be of different types.<div>The property <i>__type__ </i>defines which template is used.</div>"}
+  },
+  {
     "page": 0.9503363266121596,
     "name": "5. embed a page's data",
     "template": "embed-page-data-example",
@@ -16,6 +40,17 @@
     "parent": 1,
     "template": "folder",
     "id": 0.26918259798549116
+  },
+  {
+    "main": {"selectedNavItem": "Documentation"},
+    "name": "8. reuse content in templates",
+    "template": "embed-navbar-example",
+    "parent": 0.9207160123623908,
+    "id": 0.396803876850754,
+    "general": {
+      "text": "It is possible to embed content in a template instead of a page. All instances of the template inherit this content.<div><br /></div><div>That is useful for a global navigation for example. In this example the navbar is embedded and the selected item is defined by the property <i>selectedNavItem</i>.</div>",
+      "previous": 0.0717921897303313
+    }
   },
   {
     "name": "etc",
@@ -82,7 +117,7 @@
     "general": {
       "text": "It is also possible to embed the referenced page's template as a partial and add the data to the current render context. <div>This can be useful when rendering a navigation. It is the same on all pages but the highlighted item is passed from the parent context to the navigation.</div>",
       "previous": 0.1705826693214476,
-      "next": 0.6610063819680363
+      "next": 0.0717921897303313
     }
   },
   {
@@ -140,7 +175,8 @@
               0.43688156083226204,
               0.7305031197611243,
               0.1705826693214476,
-              0.5585797596722841
+              0.5585797596722841,
+              0.0717921897303313
             ],
             "__type__": "linklist"
           }
@@ -215,6 +251,13 @@
     "parent": 1,
     "template": "folder",
     "id": 0.9207160123623908
+  },
+  {
+    "name": "Another Ad",
+    "template": "Ad",
+    "parent": 0.26918259798549116,
+    "text": "Get a shower curtain! ",
+    "id": 0.9309477722272277
   },
   {
     "name": "An Ad",
