@@ -32,6 +32,7 @@ define([
 				obj.groups=groups;
 				obj.templates=templates;
 				delete obj.editor;
+				obj.tree=true;
 				obj.type="array";
 				obj.typeProperty="__type__";
 				delete obj.element;

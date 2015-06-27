@@ -107,6 +107,9 @@ define([
             var groups = attribute.groups.filter(function (group) {
                 return group.code == value.__type__
             });
+            attribute.templates.forEach(function(t) {
+                ctx.templates[t.id]=t.sourceCode;
+            })
             if (templates.length > 0) {
                 var template = templates[0];
                 this._handleTemplateRef(attribute, groups[0], template, value, goon, ctx);
@@ -218,32 +221,12 @@ define([
                 ctx.templates[attribute.code] = attribute.template.sourceCode;
             }
             if (attribute.templates) {
-                this._renderMultiRefTemplateArray(attribute, value, ctx);
-            } else {
-                goon(ctx);
+                //this._renderMultiRefTemplateArray(attribute, value, ctx);
+                attribute.templates.forEach(function(template) {
+                    ctx.templates[template.id]=template.sourceCode;
+                })
             }
-        },
-        _renderMultiRefTemplateArray: function (attribute, value, ctx) {
-            var me = this;
-            var elements = [];
-            value.forEach(function (model) {
-                if (model) {
-                    var templateId = model[attribute.typeProperty];
-                    var template = attribute.templates.filter(function (t) {
-                        return t.group.code == templateId;
-                    })
-                    var renderPromise = new Deferred();
-                    if (template.length == 1) {
-                        ctx.promises.push(renderPromise);
-                        me._renderPage(model, template[0], null, false, renderPromise);
-                        renderPromise.then(function (result) {
-                            ctx.page.push(result.html);
-                        })
-                    } else {
-                        console.log("cannot find type " + templateId);
-                    }
-                }
-            })
+                goon(ctx);
 
         },
         tmpls: null,

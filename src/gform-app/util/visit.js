@@ -10,9 +10,15 @@ define([
         constructor: function (visitor) {
             this.visitor = visitor;
         },
-        visit: function (schema, model, ctx) {
+        visit: function (schema, model, ctx, missingTypeProperty) {
             if (model) {
                 var attributes = metaHelper.collectAttributes(schema);
+                if (missingTypeProperty) {
+                    //  TODO hack or feature?
+                    if (attributes.filter(function(a){a.code==missingTypeProperty}).length==0) {
+                        attributes.push({code: missingTypeProperty, type: "string"})
+                    }
+                }
                 array.forEach(attributes, function (attribute) {
                     if (metaHelper.isSingleComplex(attribute)) {
                         this.goonComplex(attribute, model[attribute.code], ctx);
@@ -44,11 +50,19 @@ define([
         goonElement: function (meta, model, ctx) {
             if (model) {
                 array.forEach(model, function (el, idx) {
+                    var missingTypeProperty=null;
                     var single = meta.element || meta.group;
+                    if (!single && meta.groups) {
+                        var type = el[meta.typeProperty];
+                        single = meta.groups.filter(function (g) {
+                            return g.code == type;
+                        })[0];
+                        missingTypeProperty=meta.typeProperty;
+                    }
                     var me = this;
                     this.visitor.visitElement(single, el, function (newCtx) {
-                        if (meta.group) {
-                            me.visit(single, el, newCtx);
+                        if (meta.group || meta.groups) {
+                            me.visit(single, el, newCtx, missingTypeProperty);
                         }
                     }, idx, ctx);
                 }, this);
