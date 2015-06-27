@@ -21,7 +21,11 @@
     "template": "multi-template-example",
     "parent": 0.9207160123623908,
     "id": 0.16910117072984576,
-    "general": {"text": "Here is an example of an embedded object which may be of different types.<div>The property <i>__type__ </i>defines which template is used.</div>"}
+    "general": {
+      "text": "Here is an example of an embedded object which may be of different types.<div>The property <i>__type__ </i>defines which template is used.</div>",
+      "previous": 0.396803876850754,
+      "next": 0.779862648807466
+    }
   },
   {
     "page": 0.9503363266121596,
@@ -48,8 +52,9 @@
     "parent": 0.9207160123623908,
     "id": 0.396803876850754,
     "general": {
-      "text": "It is possible to embed content in a template instead of a page. All instances of the template inherit this content.<div><br /></div><div>That is useful for a global navigation for example. In this example the navbar is embedded and the selected item is defined by the property <i>selectedNavItem</i>.</div>",
-      "previous": 0.0717921897303313
+      "text": "It is possible to embed content in a template. All instances of the template inherit this content.<div><br /></div><div>That's useful for a global navigation for example. In this example the navbar is embedded and the selected item is defined by the property <i>selectedNavItem</i>. Change it to Tutorial to see the effect.</div>",
+      "previous": 0.0717921897303313,
+      "next": 0.16910117072984576
     }
   },
   {
@@ -176,13 +181,23 @@
               0.7305031197611243,
               0.1705826693214476,
               0.5585797596722841,
-              0.0717921897303313
+              0.0717921897303313,
+              0.396803876850754,
+              0.16910117072984576,
+              0.779862648807466
             ],
             "__type__": "linklist"
           }
         ]
       }
     ]
+  },
+  {
+    "name": "Pool Ad",
+    "template": "Ad",
+    "parent": 0.26918259798549116,
+    "id": 0.6658711258787662,
+    "text": "Leave the bathtubs. Get a pool!"
   },
   {
     "page": 0.9503363266121596,
@@ -195,6 +210,34 @@
       "previous": 0.6374826563987881,
       "next": 0.1705826693214476
     }
+  },
+  {
+    "name": "10. lots of multi templates",
+    "template": "multi-array-template-example",
+    "parent": 0.9207160123623908,
+    "id": 0.779862648807466,
+    "general": {
+      "text": "To embed a dynamic number of content with differente templates a <i>primitive array</i> of <i>multi-template-ref</i> is employed. <div><br /></div><div>The handlebars template iterates over the array an includes a dynamical partial. The name of the partial is looked up in the variable <i>__type__.</i><br /><div><br /></div><div><b>Layout</b></div><div>In this case the templates are all in a <i>verticalgroup</i> layout which means that their size needs to be defined by their container. Hence it is a good idea to use a tree container.</div></div>",
+      "previous": 0.16910117072984576,
+      "next": 0.6610063819680363
+    },
+    "embedded": [
+      {
+        "level": "danger",
+        "text": "RED ALERT !!!",
+        "__type__": "alert"
+      },
+      {
+        "level": "warning",
+        "headline": "Hello",
+        "text": "We are informing you with a callout.",
+        "__type__": "callout"
+      },
+      {
+        "text": "Just some <b>content</b>.",
+        "__type__": "paragraph"
+      }
+    ]
   },
   {
     "name": "mongomat",

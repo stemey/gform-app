@@ -370,8 +370,7 @@
               "url": "page",
               "usage": "data",
               "typeProperty": "template",
-              "schemaUrlPrefix": "",
-              "schemas": [],
+              "schemas": ["Ad"],
               "editor": "multi-page-ref"
             }
           ],
@@ -400,7 +399,6 @@
               "url": "page",
               "usage": "html",
               "typeProperty": "template",
-              "schemaUrlPrefix": "",
               "schemas": [],
               "query": {"template": {"$regex": ".*[fF]older.*"}},
               "editor": "multi-page-ref"
@@ -451,8 +449,7 @@
               "url": "page",
               "usage": "html",
               "typeProperty": "template",
-              "schemaUrlPrefix": "",
-              "schemas": [],
+              "schemas": ["Ad"],
               "editor": "multi-page-ref"
             }
           ],
@@ -481,7 +478,6 @@
               "url": "page",
               "usage": "html",
               "typeProperty": "template",
-              "schemaUrlPrefix": "",
               "schemas": [],
               "query": {"template": {"$regex": ".*[fF]older.*"}},
               "editor": "multi-page-ref"
@@ -608,39 +604,37 @@
     "group": {
       "groups": [
         {
-          "attributes": [
-            {
-              "code": "text",
-              "updateInterval": "100",
-              "height": "200px",
-              "plugins": [
-                {"name": "undo"},
-                {"name": "redo"},
-                {"name": "bold"},
-                {"name": "italic"},
-                {"name": "underline"},
-                {"name": "strikethrough"},
-                {"name": "subscript"},
-                {"name": "superscript"},
-                {"name": "removeFormat"},
-                {"name": "insertOrderedList"},
-                {"name": "insertUnorderedList"},
-                {"name": "insertHorizontalRule"},
-                {"name": "indent"},
-                {"name": "outdent"},
-                {"name": "justifyLeft"},
-                {"name": "justifyCenter"},
-                {"name": "justifyRight"},
-                {"name": "createLink"},
-                {"name": "dijit/_editor/plugins/FullScreen"},
-                {"name": "dijit/_editor/plugins/AlwaysShowToolbar"}
-              ],
-              "type": "string",
-              "editor": "richtext"
-            }
-          ],
+          "attribute": {
+            "code": "text",
+            "updateInterval": "100",
+            "height": "200px",
+            "plugins": [
+              {"name": "undo"},
+              {"name": "redo"},
+              {"name": "bold"},
+              {"name": "italic"},
+              {"name": "underline"},
+              {"name": "strikethrough"},
+              {"name": "subscript"},
+              {"name": "superscript"},
+              {"name": "removeFormat"},
+              {"name": "insertOrderedList"},
+              {"name": "insertUnorderedList"},
+              {"name": "insertHorizontalRule"},
+              {"name": "indent"},
+              {"name": "outdent"},
+              {"name": "justifyLeft"},
+              {"name": "justifyCenter"},
+              {"name": "justifyRight"},
+              {"name": "createLink"},
+              {"name": "dijit/_editor/plugins/FullScreen"},
+              {"name": "dijit/_editor/plugins/AlwaysShowToolbar"}
+            ],
+            "type": "string",
+            "editor": "richtext"
+          },
           "label": "try out",
-          "editor": "listpane"
+          "editor": "single"
         },
         {
           "attributes": [
@@ -664,7 +658,6 @@
               "url": "page",
               "usage": "html",
               "typeProperty": "template",
-              "schemaUrlPrefix": "",
               "schemas": [],
               "query": {"template": {"$regex": ".*[fF]older.*"}},
               "editor": "multi-page-ref"
@@ -823,10 +816,92 @@
     }
   },
   {
+    "name": "multi-array-template-example",
+    "id": "multi-array-template-example",
+    "schema": "template",
+    "sourceCode": "<ul>\n{{#embedded}}\n    <li>\n    {{> (lookup . '__type__')}}\n    </li>\n{{/embedded}}\n</ul>",
+    "partials": {},
+    "partialTemplates": {},
+    "group": {
+      "detailGroup": {
+        "groups": [
+          {
+            "attributes": [
+              {
+                "code": "name",
+                "type": "string",
+                "editor": "string"
+              },
+              {
+                "code": "template",
+                "visible": false,
+                "type": "string",
+                "editor": "string"
+              },
+              {
+                "code": "parent",
+                "required": true,
+                "type": "multi-ref",
+                "idProperty": "id",
+                "searchProperty": "name",
+                "url": "page",
+                "usage": "html",
+                "typeProperty": "template",
+                "schemas": [],
+                "query": {"template": {"$regex": ".*[fF]older.*"}},
+                "editor": "multi-page-ref"
+              },
+              {
+                "code": "id",
+                "disabled": true,
+                "type": "number",
+                "editor": "number"
+              }
+            ],
+            "label": "general",
+            "editor": "listpane"
+          },
+          {
+            "attributes": [
+              {
+                "code": "general",
+                "template": "tutorial",
+                "outer": true,
+                "type": "ref",
+                "editor": "template-ref"
+              }
+            ],
+            "label": "tutorial",
+            "editor": "listpane"
+          }
+        ],
+        "editor": "tab"
+      },
+      "nodeAttributes": [
+        {
+          "code": "embedded",
+          "type": "array",
+          "element": {
+            "templates": [
+              "alert",
+              "paragraph",
+              "callout"
+            ],
+            "type": "ref",
+            "editor": "multi-template-ref"
+          },
+          "editor": "primitive-array"
+        }
+      ],
+      "labelAttribute": "name",
+      "editor": "tree"
+    }
+  },
+  {
     "name": "multi-template-example",
     "id": "multi-template-example",
     "schema": "template",
-    "sourceCode": "{{#embedded}}\n{{>embedded}}\n{{/embedded}}",
+    "sourceCode": "{{#embedded}}\n{{> (lookup . '__type__')}}\n{{/embedded}}",
     "partials": {},
     "partialTemplates": {},
     "group": {
@@ -887,6 +962,7 @@
           "attributes": [
             {
               "code": "general",
+              "required": true,
               "template": "tutorial",
               "outer": true,
               "type": "ref",
@@ -1143,7 +1219,7 @@
     "name": "bs-doc-tree",
     "id": "test-tree",
     "schema": "template",
-    "sourceCode": "\n<div class=\"container\"/>\n<div class=\"row\">\n    <div class=\"col-md-9\" style=\"position:relative\">\n        <h1>{{{headline}}}</h1>\n        <p>{{{text}}}</p>\n        {{#sections}}\n            <h2 id=\"nav_{{@index}}\" class=\"page-header\">{{add @index 1}}. {{{headline}}}</h2>\n            {{#blocks}}\n                {{{.}}}    \n            {{/blocks}}\n        {{/sections}}\n    </div>\n    <div class=\"col-md-3\">\n        <nav id=\"navigation\" class=\"affix\">\n            <ul class=\"nav\">\n            {{#sections}}\n                <li>\n                    <a href=\"#nav_{{@index}}\">{{headline}}</a>\n                </li>\n            {{/sections}}\n            </ul>\n        </nav>\n    </div>\n</div>\n",
+    "sourceCode": "\n<div class=\"container\"/>\n<div class=\"row\">\n    <div class=\"col-md-9\" style=\"position:relative\">\n        <h1>{{{headline}}}</h1>\n        <p>{{{text}}}</p>\n        {{#sections}}\n            <h2 id=\"nav_{{@index}}\" class=\"page-header\">{{add @index 1}}. {{{headline}}}</h2>\n            {{#blocks}}\n                {{>(lookup . '__type__')}}    \n            {{/blocks}}\n        {{/sections}}\n    </div>\n    <div class=\"col-md-3\">\n        <nav id=\"navigation\" class=\"affix\">\n            <ul class=\"nav\">\n            {{#sections}}\n                <li>\n                    <a href=\"#nav_{{@index}}\">{{headline}}</a>\n                </li>\n            {{/sections}}\n            </ul>\n        </nav>\n    </div>\n</div>\n",
     "partials": {},
     "partialTemplates": {},
     "group": {
@@ -1290,6 +1366,182 @@
         }
       ],
       "editor": "tree"
+    }
+  },
+  {
+    "name": "test-tree-xx",
+    "id": "test-tree-xx",
+    "schema": "template",
+    "sourceCode": "{{#x}}\n{{z}}-{{y}}\n{{/x}}",
+    "partials": {},
+    "partialTemplates": {},
+    "group": {
+      "groups": [
+        {
+          "attributes": [
+            {
+              "code": "name",
+              "type": "string",
+              "editor": "string"
+            },
+            {
+              "code": "template",
+              "visible": false,
+              "type": "string",
+              "editor": "string"
+            },
+            {
+              "code": "parent",
+              "required": true,
+              "type": "multi-ref",
+              "idProperty": "id",
+              "searchProperty": "name",
+              "url": "page",
+              "usage": "html",
+              "typeProperty": "template",
+              "schemas": [],
+              "query": {"template": {"$regex": ".*[fF]older.*"}},
+              "editor": "multi-page-ref"
+            },
+            {
+              "code": "id",
+              "disabled": true,
+              "type": "number",
+              "editor": "number"
+            }
+          ],
+          "label": "general",
+          "editor": "listpane"
+        },
+        {
+          "attributes": [
+            {
+              "code": "multi",
+              "typeProperty": "type",
+              "type": "object",
+              "groups": [
+                {
+                  "attributes": [
+                    {
+                      "code": "dd",
+                      "type": "string",
+                      "editor": "string"
+                    }
+                  ],
+                  "editor": "listpane",
+                  "code": "A"
+                },
+                {
+                  "attributes": [
+                    {
+                      "code": "as",
+                      "type": "string",
+                      "editor": "string"
+                    }
+                  ],
+                  "editor": "listpane",
+                  "code": "B"
+                }
+              ],
+              "editor": "multi-object"
+            },
+            {
+              "code": "x",
+              "type": "object",
+              "group": {
+                "groups": [
+                  {
+                    "attributes": [
+                      {
+                        "code": "z",
+                        "type": "string",
+                        "editor": "textarea"
+                      }
+                    ],
+                    "editor": "listpane"
+                  },
+                  {
+                    "attributes": [
+                      {
+                        "code": "y",
+                        "type": "string",
+                        "editor": "textarea"
+                      }
+                    ],
+                    "editor": "listpane"
+                  }
+                ],
+                "editor": "listgroup"
+              },
+              "editor": "object"
+            }
+          ],
+          "label": "multi",
+          "editor": "listpane"
+        },
+        {
+          "attributes": [
+            {
+              "code": "sections",
+              "type": "array",
+              "group": {
+                "attributes": [
+                  {
+                    "code": "text",
+                    "type": "string",
+                    "editor": "textarea"
+                  }
+                ],
+                "editor": "listpane"
+              },
+              "editor": "array"
+            }
+          ],
+          "label": "sections",
+          "editor": "listpane"
+        },
+        {
+          "attributes": [
+            {
+              "code": "multi-sections",
+              "typeProperty": "type",
+              "groups": [
+                {
+                  "attributes": [
+                    {
+                      "code": "text",
+                      "type": "string",
+                      "editor": "textarea"
+                    },
+                    {
+                      "code": "x",
+                      "type": "string",
+                      "editor": "textarea"
+                    }
+                  ],
+                  "editor": "listpane",
+                  "code": "A"
+                },
+                {
+                  "attributes": [
+                    {
+                      "code": "x",
+                      "type": "string",
+                      "editor": "textarea"
+                    }
+                  ],
+                  "editor": "listpane",
+                  "code": "B"
+                }
+              ],
+              "editor": "multi-array"
+            }
+          ],
+          "label": "multi-sections",
+          "editor": "listpane"
+        }
+      ],
+      "editor": "tab"
     }
   }
 ]

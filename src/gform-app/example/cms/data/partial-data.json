@@ -113,16 +113,13 @@
               {"name": "dijit/_editor/plugins/AlwaysShowToolbar"}
             ],
             "type": "string",
-            "editor": "richtext",
-            "defaultValue": ""
+            "editor": "richtext"
           },
           "region": "center",
           "editor": "single"
         }
       ],
-      "editor": "verticalgroup",
-      "type": "object",
-      "code": "alert"
+      "editor": "verticalgroup"
     }
   },
   {
@@ -202,9 +199,7 @@
           "editor": "single"
         }
       ],
-      "editor": "verticalgroup",
-      "type": "object",
-      "code": "callout"
+      "editor": "verticalgroup"
     }
   },
   {
@@ -243,7 +238,7 @@
     "id": "main",
     "description": "this template contains the header and footer for all pages. It should be included as template-ref with outer set to true.",
     "schema": "template",
-    "sourceCode": "<!DOCTYPE html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\">\n    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->\n    <title>{{title}}</title>\n\n    <!-- Bootstrap -->\n    <link href=\"bootstrap/dist/css/bootstrap.min.css\" rel=\"stylesheet\">\n\n    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->\n    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->\n    <!--[if lt IE 9]>\n      <script src=\"https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js\"></script>\n      <script src=\"https://oss.maxcdn.com/respond/1.4.2/respond.min.js\"></script>\n    <![endif]-->\n    <style>\n    #navigation .active {\n        text-decoration: underline;\n    }\n    .callout.info {\n        border-left-color: #31708f;\n    }\n    .callout.info h4 {\n        color: #31708f;\n    }\n    .callout.success {\n        border-left-color: #3c763d;\n    }\n    .callout.success h4{\n        color: #3c763d;\n    }\n    .callout.warning {\n      border-left-color: #8a6d3b;\n    }\n    .callout.warning h4{\n      color: #8a6d3b;\n    }\n    .callout.danger {\n      border-left-color: #a94442;\n    }\n    .callout.danger h4{\n      color: #a94442;\n    }\n    .callout {\n      padding: 20px;\n      margin: 20px 0;\n      border: 1px solid #eee;\n      border-left-width: 5px;\n      border-radius: 3px;\n    }\n    </style>\n  </head>\n  <body>\n    {{{navbar}}}\n    {{#inner}}\n        {{>inner}}\n    {{/inner}}\n\n    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->\n    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js\"></script>\n    <!-- Include all compiled plugins (below), or include individual files as needed -->\n    <script src=\"bootstrap/dist/js/bootstrap.js\"></script>\n    <script src=\"gform-app/controller/mock.js\"></script>\n    <script>$('body').scrollspy({ target: '#navigation' })</script>\n  </body>\n</html>",
+    "sourceCode": "<!DOCTYPE html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\">\n    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->\n    <title>{{title}}</title>\n\n    <!-- Bootstrap -->\n    <link href=\"bootstrap/dist/css/bootstrap.min.css\" rel=\"stylesheet\">\n\n    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->\n    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->\n    <!--[if lt IE 9]>\n      <script src=\"https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js\"></script>\n      <script src=\"https://oss.maxcdn.com/respond/1.4.2/respond.min.js\"></script>\n    <![endif]-->\n    <style>\n    #navigation .active {\n        text-decoration: underline;\n    }\n    .callout.info {\n        border-left-color: #31708f;\n    }\n    .callout.info h4 {\n        color: #31708f;\n    }\n    .callout.success {\n        border-left-color: #3c763d;\n    }\n    .callout.success h4{\n        color: #3c763d;\n    }\n    .callout.warning {\n      border-left-color: #8a6d3b;\n    }\n    .callout.warning h4{\n      color: #8a6d3b;\n    }\n    .callout.danger {\n      border-left-color: #a94442;\n    }\n    .callout.danger h4{\n      color: #a94442;\n    }\n    .callout {\n      padding: 20px;\n      margin: 20px 0;\n      border: 1px solid #eee;\n      border-left-width: 5px;\n      border-radius: 3px;\n    }\n    </style>\n  </head>\n  <body>\n    {{{navbar}}}\n    {{#inner}}\n        {{>(lookup . '__template__')}}\n    {{/inner}}\n\n    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->\n    <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js\"></script>\n    <!-- Include all compiled plugins (below), or include individual files as needed -->\n    <script src=\"bootstrap/dist/js/bootstrap.js\"></script>\n    <script src=\"gform-app/controller/mock.js\"></script>\n    <script>$('body').scrollspy({ target: '#navigation' })</script>\n  </body>\n</html>",
     "partials": {"navbar": 4},
     "partialTemplates": {},
     "group": {
@@ -298,12 +293,9 @@
           {"name": "dijit._editor.plugins.ViewSource"}
         ],
         "type": "string",
-        "editor": "richtext",
-        "defaultValue": ""
+        "editor": "richtext"
       },
-      "editor": "single",
-      "type": "object",
-      "code": "paragraph"
+      "editor": "single"
     }
   },
   {
@@ -342,7 +334,8 @@
             {"name": "dijit/_editor/plugins/AlwaysShowToolbar"}
           ],
           "type": "string",
-          "editor": "richtext"
+          "editor": "richtext",
+          "defaultValue": ""
         },
         {
           "code": "previous",
