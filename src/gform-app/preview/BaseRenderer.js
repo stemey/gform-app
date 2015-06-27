@@ -102,13 +102,14 @@ define([
                 return;
             }
             var templates = attribute.templates.filter(function (template) {
-                return template.id == value.__type__
-            });
+                return template[this.templateStore.idProperty] == value.__type__
+            },this);
             var groups = attribute.groups.filter(function (group) {
                 return group.code == value.__type__
             });
             attribute.templates.forEach(function(t) {
-                ctx.templates[t.id]=t.sourceCode;
+                var id = t[this.templateStore.idProperty];
+                ctx.templates[id]=t.sourceCode;
             })
             if (templates.length > 0) {
                 var template = templates[0];
@@ -223,10 +224,11 @@ define([
             if (attribute.templates) {
                 //this._renderMultiRefTemplateArray(attribute, value, ctx);
                 attribute.templates.forEach(function(template) {
-                    ctx.templates[template.id]=template.sourceCode;
-                })
+                    var id = template[this.templateStore.idProperty]
+                    ctx.templates[id]=template.sourceCode;
+                },this)
             }
-                goon(ctx);
+            goon(ctx);
 
         },
         tmpls: null,

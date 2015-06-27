@@ -14,6 +14,7 @@ define([
             renderer = new Renderer();
             renderer.urlProperty="url"
             renderer.templateStore = new MemoryStore();
+            renderer.templateStore.idProperty="code";
             renderer.templateStore.basePath="/template/";
             renderer.templateStore.add("/template/t1.html", {
                 sourceCode: "<title>{{title}}</title>",
@@ -28,6 +29,7 @@ define([
                 ]
             });
             var t3={
+                "code":"a",
                 sourceCode: "<p>{{text}}</p>",
                 group:{
                     code:"a",
@@ -38,6 +40,7 @@ define([
             };
             var t4={
                 sourceCode: "<span>{{count}}</span>",
+                "code":"b",
                 group:{
                     code:"b",
                     attributes: [
@@ -115,7 +118,7 @@ define([
             var t4e = {code:"b"};
             lang.mixin(t4e,t4.group);
             renderer.templateStore.add("/template/multi-template-ref-array.html", {
-                sourceCode: "el{{#elements}}XX{{{.}}}{{/elements}}",
+                sourceCode: "el{{#elements}}XX{{>(lookup . '__type__')}}{{/elements}}",
                 attributes: [
                     {code: "elements", type:"array",typeProperty:"__type__",templates:[t3,t4],groups:[t3.group,t4.group]},
                     {code: "title", type: "string"}

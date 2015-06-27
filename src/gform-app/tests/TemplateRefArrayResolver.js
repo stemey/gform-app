@@ -9,7 +9,7 @@ define([
         var resolver;
 
         bdd.beforeEach(function () {
-            resolver = new TemplateRefArrayResolver();
+            resolver = new TemplateRefArrayResolver({templateStore:"/template"});
 
         });
 

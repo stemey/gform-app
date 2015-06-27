@@ -1,9 +1,10 @@
 define([
+    '../factory/AppContext',
     'dojo/_base/lang',
     '../controller/BorderContainer',
     'intern!bdd',
     'intern/chai!assert'
-], function (lang, BorderContainer, bdd, assert) {
+], function (AppContext, lang, BorderContainer, bdd, assert) {
 
 
     bdd.describe('BorderContainer', function () {
@@ -22,7 +23,8 @@ define([
         }
 
         bdd.beforeEach(function () {
-            container = new BorderContainer();
+            ctx=new AppContext();
+            container = new BorderContainer(ctx:ctx);
             container.layouts = {
                 layoutDefaultPreview: layoutDefaultPreview,
                 layoutNoPreview: layoutNoPreview
