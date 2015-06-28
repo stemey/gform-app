@@ -105,7 +105,7 @@ define([
                 },
                 "resourceFactories": [],
                 "view": {
-                    "startPath": "/page/0.43755838507786393",
+                    "startPath": "/entity/page/0.43755838507786393",
                     "layouts": {
                         "standard": {
                             "store": {"region": "left", "width": "20%"},
@@ -133,10 +133,9 @@ define([
                                     "label": "cms<strong style='color:red'>4</strong>apps"
                                 },
                                 {
-                                    "factoryId": "gform-app/factory/MultiSchemaCreateFactory",
-                                    "label": "+",
-                                    "searchProperty": "name",
-                                    "placeHolder": "select template .."
+                                    "factoryId": "gform-app/factory/SingleSchemaCreateFactory",
+                                    "label": "add",
+                                    "includedStoreIds": ["page"]
                                 },
                                 {
                                     "factoryId": "gform-app/factory/SingleSchemaCreateFactory",
@@ -190,6 +189,7 @@ define([
                                         },
                                         {
                                             "factoryId": "gform-app/factory/ExtendedGridFactory",
+                                            "gridxQueryTransform": new ToMongoQueryTransform(),
                                             "title": "grid",
                                             "storeId": "page",
                                             "menuItems": [
