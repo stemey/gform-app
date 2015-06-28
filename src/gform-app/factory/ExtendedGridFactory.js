@@ -25,7 +25,7 @@ define([
 
 
 			var props = {width: "100%", height: "100%"};
-			props.title = store.name;
+			props.title = config.title || store.name;
 			props.storeId = store.name;
 			this.applyGridProperties(props, config);
 			props.store = store;
@@ -55,7 +55,7 @@ define([
 			// TODO use simple grid if no query language defined
 			return new ExtendedGrid({
 				storeId: grid.storeId,
-				title: store.name,
+				title: config.title || store.name,
 				grid: grid,
 				queryLanguage: config.queryLanguage || "ace/mode/json"
 			});
