@@ -1,12 +1,12 @@
 define([
 	'dojo/_base/lang',
-	'dojo/topic',
 	"dojo/_base/declare"
-], function (lang, topic, declare) {
+], function (lang, declare) {
 
 
 	return declare([], {
 		container: null,
+		ctx:null,
 		constructor: function (kwArgs) {
 			lang.mixin(this, kwArgs);
 		},
@@ -15,8 +15,10 @@ define([
 				container: this.container,
 				creator: creator,
 				widget: null,
+				ctx:this.ctx,
 				onFocus: function (evt) {
-					if (creator.isStore(evt.store)) {
+					var store=this.ctx.get("storeId");
+					if (creator.isStore(store)) {
 						if (this.widget == null) {
 							this.widget = creator.create();
 							if (!this.widget) {
@@ -33,8 +35,7 @@ define([
 					}
 				}
 			}
-			topic.subscribe("/focus", handler.onFocus.bind(handler))
-			topic.subscribe("/store/focus", handler.onFocus.bind(handler))
+			this.ctx.watch("storeId", handler.onFocus.bind(handler))
 			return handler;
 		}
 	});

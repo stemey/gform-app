@@ -1,19 +1,17 @@
 define([
 	'./OnDemandViewCreator',
 	'dijit/layout/StackContainer',
-	'dojo/when',
 	'dojo/Deferred',
 	'dojo/promise/all',
-	'dojo/topic',
 	'./ContainerFactory',
 	"dojo/_base/declare"
-], function (OnDemandViewCreator, TabContainer, when, Deferred, all, topic, ContainerFactory, declare) {
+], function (OnDemandViewCreator, StackContainer, Deferred, all, ContainerFactory, declare) {
 
 
 	return declare([ContainerFactory], {
 		create: function (ctx, config) {
-			var container = new TabContainer();
-			var onDemandViewCreator = new OnDemandViewCreator({container: container});
+			var container = new StackContainer();
+			var onDemandViewCreator = new OnDemandViewCreator({ctx:ctx, container: container});
 			container.set("style", {width: config.width || "200px", height: "100%"});
 			config.children.forEach(function (config) {
 				// TODO move to child
