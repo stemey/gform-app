@@ -9,14 +9,7 @@ define([
     return declare([], {
         create: function (ctx, config) {
             var CreateButton = new declare([Button, StoreSensitiveMixin], {
-                onStoreChange: function () {
-                    var store = ctx.getStore(ctx.get("storeId"));
-                    if (store.template) {
-                        this.inherited(arguments);
-                    } else {
-                        this.hide();
-                    }
-                }
+
             });
             return new CreateButton({
                 label: config.label,
@@ -32,6 +25,12 @@ define([
                     if (store.template) {
                         schemaUrl = store.template;
                         var params = {store: storeId, schemaUrl: schemaUrl};
+                        if (config.valueFactory) {
+                            params.value = config.valueFactory(ctx, store);
+                        }
+                        topic.publish("/new", params)
+                    } else {
+                        var params = {store: storeId,schemaUrl:null};
                         if (config.valueFactory) {
                             params.value = config.valueFactory(ctx, store);
                         }
