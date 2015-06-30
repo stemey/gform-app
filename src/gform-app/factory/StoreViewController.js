@@ -20,7 +20,7 @@ define([
 		},
 		start: function (container, ctx, config, promise) {
 			this.groupProperty = config.groupProperty;
-			this.creator = new OnDemandViewCreator({container: container});
+			this.creator = new OnDemandViewCreator({ctx:ctx,container: container});
 			this.promise = promise;
 			this.factory = this.createGridFactory();
 			this.config = config;
