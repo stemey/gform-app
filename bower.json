@@ -11,6 +11,7 @@
         "dijit": "~1.9.7",
 		"dstore": "~1.1.0",
 		"dojox": "~1.9.7",
+        "jquery": "~.11.2",
         "ace-builds": "~1.1.3",
         "util": "dojo-util#~1.9.7"
     }

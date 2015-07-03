@@ -10,7 +10,7 @@ define([
 			var filter = new this.store.Filter();
 			Object.keys(query).forEach(function (key) {
 				if (query[key] && typeof query[key] === "object" && query[key].$in) {
-					filter = filter.in(key, query[key].$in);
+					filter = filter["in"](key, query[key].$in);
 				} else if (query[key] && typeof query[key] === "object" && query[key].$regex) {
 					filter = filter.match(key, new RegExp(query[key].$regex));
 				} else if (query[key] && typeof query[key].test === "function") {

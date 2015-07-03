@@ -32,7 +32,7 @@ var profile = {
 	selectorEngine: 'acme',
 
 	// Since we're using dojoConfig.map to patch dojo/_base/declare, we must build anonymous modules
-	insertAbsMids: 0,
+	insertAbsMids: 1,
 
 	// Builds can be split into multiple different JavaScript files called "layers". This allows applications to
 	// defer loading large sections of code until they are actually required while still allowing multiple modules to
@@ -52,8 +52,19 @@ var profile = {
 
 
 		'gform-app/main': {
-			include: [],
+			include:["gform-app/module"],
 			exclude:['ace/ace']
+		},
+
+
+		'gform-app/mongodb': {
+			include:["gform-app/config/mongodb"],
+			exclude:['ace/ace','gform-app/main']
+		},
+
+		'gform-app/cms': {
+			include:["gform-app/example/cms/cms"],
+			exclude:['ace/ace','gform-app/main']
 		}
 
 

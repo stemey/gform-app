@@ -1,4 +1,7 @@
 /*jshint unused:false*/
+/*
+these packages are copied to the dist folder. no minification or whatever
+ */
 var dojoConfig = {
     async: true,
     baseUrl: '',

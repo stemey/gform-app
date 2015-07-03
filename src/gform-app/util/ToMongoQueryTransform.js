@@ -45,7 +45,6 @@ define([
 				}
 				return query;
 			}
-			this.convertValue = idConverter;
 		},
 		createColumnValueConverter: function (convertMap) {
 			return function (columnId, columnValue) {
@@ -142,7 +141,7 @@ define([
 			return mcondition;
 		},
 		value: function(operands) {
-			var key = operands[0].data;this.converter
+			var key = operands[0].data;
 			return this.convertValue(key,operands[1].data);
 		}
 
