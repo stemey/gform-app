@@ -24,7 +24,7 @@ define([
 
         bdd.beforeEach(function () {
             ctx=new AppContext();
-            container = new BorderContainer(ctx:ctx);
+            container = new BorderContainer({ctx:ctx});
             container.layouts = {
                 layoutDefaultPreview: layoutDefaultPreview,
                 layoutNoPreview: layoutNoPreview

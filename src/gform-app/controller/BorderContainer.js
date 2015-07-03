@@ -6,7 +6,7 @@ define([
     "dojo/_base/declare"
 ], function (ToggleSplitter, BorderContainer, lang, topic, declare) {
 
-
+// TODO extract functionality to non-widget  type and integrate back into tests
     return declare([BorderContainer], {
         horizontalChildren: ["left", "right", "center"],
         previewVisible: true,

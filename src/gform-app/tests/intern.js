@@ -66,5 +66,5 @@ define({
 	functionalSuites: [ 'gform-app/tests/functional' ],
 
 	// A regular expression matching URLs to files that should not be included in code coverage analysis
-	excludeInstrumentation: /^(?:node_modules|src\/(?:dojo|handlebars|dijit|dojox|gform-app\/tests))\//
+	excludeInstrumentation: /^(?:node_modules|src\/(?:dojo|handlebars|dijit|gform|dojox|gform-app\/tests))\//
 });

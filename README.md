@@ -1,18 +1,17 @@
 gform-app
 ========
 
- A framework to rapidly create admin uis. Supports creation of master and detail views based on schemas. Also supports
+ A framework to rapidly create administrative uis such as database clients or cms.
+ Supports creation of master and detail views based on schemas. Also supports
  creation of schemas in the ui, which is the essential ingredient to create a cms.
  
-real world applications
+applications built with gfom-app
 --------
  
 **mongomat**
 
-An admin ui for mongodb: [More](github.com/stemey/mongomat). 
+An admin ui for mongodb: [More](http://github.com/stemey/mongomat).
  
- 
-VIDEO
 
 
 examples
@@ -22,10 +21,11 @@ Following examples store data in the browser:
 
 **static**
 
+
 A simple example a single store with a single static schema
 
 
-**cms4apps lite**
+**cms4apps**
 
 An example of a single store with its documents forming a tree structure. Documents are individually associated to schemas
 by a discriminator property. Each schema has a template. The gui provides a tree view, a preview and a details editor. 
@@ -56,6 +56,10 @@ to optimize the javascript:
 * grunt build
 * open browser to load examples: /dist/gform-app/examples/?.html
 
+Test
+----
+
+grunt test
 
 
 Documentation
@@ -64,7 +68,6 @@ Documentation
 - [domain](docs/domain.md) explains the basic concepts.
 - [messages](docs/messages.md) explains the messages that the loosely coupled components use to communicate.
 - [configuration](docs/configuration.md) explains how to configure an application from the basic building blockes.
-- Browse [examples](src/gform-app/examples) to find out more about the different applciation types.
 
 
 

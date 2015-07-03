@@ -1,6 +1,6 @@
 define([
 
-		'./BorderContainer',
+		//'./BorderContainer',
 		'./TemplateRefArrayResolver',
 		'./MultiTemplateRefResolver',
 		'./MultiTemplateRefArrayResolver',
