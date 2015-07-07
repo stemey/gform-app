@@ -103,14 +103,14 @@ define([
             }
             var templates = attribute.templates.filter(function (template) {
                 return template[this.templateStore.idProperty] == value.__type__
-            },this);
+            }, this);
             var groups = attribute.groups.filter(function (group) {
                 return group.code == value.__type__
             });
-            attribute.templates.forEach(function(t) {
+            attribute.templates.forEach(function (t) {
                 var id = t[this.templateStore.idProperty];
-                ctx.templates[id]=t.sourceCode;
-            })
+                ctx.templates[id] = t.sourceCode;
+            }, this)
             if (templates.length > 0) {
                 var template = templates[0];
                 this._handleTemplateRef(attribute, groups[0], template, value, goon, ctx);
@@ -120,7 +120,40 @@ define([
         handleTemplateRef: function (attribute, value, goon, ctx) {
             this._handleTemplateRef(attribute, attribute.group, attribute.template, value, goon, ctx);
         },
-        _handleTemplateRef: function (attribute, group, template, value, goon, ctx) {
+        renderPartials: function (partials, ctx, page) {
+            Object.keys(partials).forEach(function (key) {
+                var url = partials[key];
+                //console.log("render partial of template-ref " + key);
+                //TODO configure hardcoded url
+                ////console.log("getTemplateAndData " + idx);
+                var p = this.getTemplateAndData(url, ctx);
+                ctx.promises.push(p);
+                when(p).then(function (result) {
+                    if (result.errors) {
+                        ctx.errors = ctx.errors.concat(result.errors);
+                    } else {
+                        page[key] = result.page;
+                        ctx.templates[key] = result.template.sourceCode;
+                        Object.keys(result.templates).forEach(function (key2) {
+                            ctx.templates[key2] = result.templates[key2];
+                        })
+                    }
+                }).otherwise(function (e) {
+                    ctx.errors.push({message: "error during getting template and data", error: e});
+                });
+                /* var p = this.renderInternally("/page/" + url, ctx.page);
+                 ctx.promises.push(p);
+                 when(p).then(function (result) {
+                 ctx.page[attribute.code][key] = result.html;
+                 if (result.errors) {
+                 ctx.errors = ctx.errors.concat(result.errors);
+                 }
+                 }).otherwise(function (e) {
+                 //console.error("error during rendering " + e.stack);
+                 });*/
+
+            }, this);
+        }, _handleTemplateRef: function (attribute, group, template, value, goon, ctx) {
             if (!value) {
                 return;
             }
@@ -132,22 +165,7 @@ define([
             }
             ctx.page[attribute.code] = value;
             if (value && template && template.partials) {
-                Object.keys(template.partials).forEach(function (key) {
-                    var url = template.partials[key];
-                    //console.log("render partial of template-ref " + key);
-                    //TODO configure hardcoded url
-                    var p = this.renderInternally("/page/" + url, ctx.page);
-                    ctx.promises.push(p);
-                    when(p).then(function (result) {
-                        ctx.page[attribute.code][key] = result.html;
-                        if (result.errors) {
-                            ctx.errors = ctx.errors.concat(result.errors);
-                        }
-                    }).otherwise(function (e) {
-                        //console.error("error during rendering " + e.stack);
-                    });
-
-                }, this);
+                this.renderPartials(template.partials, ctx, ctx.page[attribute.code]);
             }
             if (template && template.partialTemplates) {
                 Object.keys(template.partialTemplates).forEach(function (key) {
@@ -176,8 +194,8 @@ define([
             } else {
                 if (metaHelper.isComplex(attribute)) {
                     ctx.page[attribute.code] = {};
-                    if (attribute.type_code) {
-                        ctx.page[attribute.code][attribute.type_code] = value[attribute.type_code];
+                    if (attribute.typeProperty) {
+                        ctx.page[attribute.code][attribute.typeProperty] = value[attribute.typeProperty];
                     }
                     ctx = {
                         page: ctx.page[attribute.code],
@@ -223,10 +241,10 @@ define([
             }
             if (attribute.templates) {
                 //this._renderMultiRefTemplateArray(attribute, value, ctx);
-                attribute.templates.forEach(function(template) {
+                attribute.templates.forEach(function (template) {
                     var id = template[this.templateStore.idProperty]
-                    ctx.templates[id]=template.sourceCode;
-                },this)
+                    ctx.templates[id] = template.sourceCode;
+                }, this)
             }
             goon(ctx);
 
@@ -359,18 +377,8 @@ define([
 
                     }
                     if (partials) {
-                        Object.keys(partials).forEach(function (key) {
-                            var p = me.render(partials[key], newPage);
-                            partialPromises.push(p);
-                            when(p).then(function (result) {
-                                newPage[key] = result.html;
-                                if (result.errors) {
-                                    ctx.errors = ctx.errors.concat(result.errors);
-                                }
-                            }).otherwise(function (e) {
-                                //console.error("error during rendering " + e.stack);
-                            });
-                        });
+                        me.renderPartials(partials, ctx, newPage);
+
                     }
 
                     if (template.partialTemplates) {

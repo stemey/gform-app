@@ -125,12 +125,12 @@ define([
                 ]
             });
             var outerWithPartials = {
-                sourceCode: "<html>{{{partial}}}{{#inner}}{{>inner}}{{/inner}}</html>",
+                sourceCode: "<html>{{#partial}}{{>partial}}{{/partial}}{{#inner}}{{>inner}}{{/inner}}</html>",
                 group: {
                     attributes: []
                 },
                 partials:{
-                    partial:"p1.html"
+                    partial:"/page/p1.html"
                 }
 
             };

@@ -12,6 +12,8 @@
         },
         {
             "$ref": "../../gform/schema/attributes/properties/required.json"
+        },{
+            "$ref": "../../gform/schema/attributes/properties/defaultValue.json"
         },
         {
             "code": "disabled",

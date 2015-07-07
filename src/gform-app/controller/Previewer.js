@@ -13,7 +13,8 @@ define([
 		iframe: null,
 		url: null,
 		urlProperty:null,
-		postCreate: function() {
+        baseClass:"previewer",
+        postCreate: function() {
 			this.setContent(template);
 			this.iframe=query("iframe",this.containerNode)[0];
 			this.pageStore.on("changed",this.refresh.bind(this));

@@ -22,6 +22,24 @@ define([
 
             return lvalue + rvalue;
         });
+        Handlebars.registerHelper("concat", function() {
+            var value ="";
+            for (var i =0;i<arguments.length-1;i++) {
+                value+=arguments[i];
+            };
+            return value;
+        });
+        Handlebars.registerHelper("length", function(arrayValue, options) {
+            return Array.isArray(arrayValue) ? arrayValue.length : 0;
+        });
+        // TODO remove helper
+        Handlebars.registerHelper("bs-col", function(arrayValue, options) {
+            if (Array.isArray(arrayValue)) {
+                return 12/arrayValue.length;
+            }else{
+                return "not-an-array"
+            }
+        });
         Handlebars.registerHelper('c4a-script', function (a, b, options) {
             // TODO make script source configurable
             return "<script src='gform-app/controller/mock.js'></script>"
