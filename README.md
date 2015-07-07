@@ -21,7 +21,6 @@ Following examples store data in the browser:
 
 **static**
 
-
 A simple example a single store with a single static schema
 
 
