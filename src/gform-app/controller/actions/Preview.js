@@ -8,8 +8,9 @@ define([
 ], function (aspect, lang, topic, declare, _ActionMixin) {
 
     return declare([_ActionMixin], {
+        currentValue: null,
         createButton: function () {
-            aspect.after(this.ctrl.editor,"onChange", lang.hitch(this, "onChange"));
+            aspect.after(this.ctrl.editor, "onChange", lang.hitch(this, "onChange"));
             aspect.before(this.ctrl, "destroy", lang.hitch(this, "onCancel"));
             return null;
         },
@@ -17,7 +18,11 @@ define([
             topic.publish("/modify/cancel", this._getEvent());
         },
         onChange: function () {
-            topic.publish("/modify/update", this._getEvent({value: this.ctrl.editor.getPlainValue()}));
+            var value = this.ctrl.editor.getPlainValue();
+            if (JSON.stringify(value) != JSON.stringify(this.currentValue)) {
+                this.currentValue = value;
+                topic.publish("/modify/update", this._getEvent({value: value}));
+            }
         },
         _getEvent: function (evt) {
             if (!evt) {

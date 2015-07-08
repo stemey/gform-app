@@ -1,37 +1,21 @@
 define([
 	'dijit/layout/StackContainer',
 	'dojo/_base/lang',
-	'../util/topic',
-	"dojo/_base/declare"
-], function (StackContainer, lang, topic, declare) {
+    "dojo/_base/declare"
+], function (StackContainer, lang, declare) {
 
 
 	return declare("cms.PreviewDispatcher", [StackContainer], {
 		ctx: null,
 		postCreate: function () {
 			this.inherited(arguments);
-			topic.subscribe("/page/navigate", lang.hitch(this, "onPageNavigate"));
-			topic.subscribe("/focus", lang.hitch(this, "onPageFocus"));
-			topic.subscribe("/updated", lang.hitch(this, "onPageUpdated"));
-			topic.subscribe("/deleted", lang.hitch(this, "onPageDeleted"));
-			topic.subscribe("/store/focus", lang.hitch(this, "onStoreFocus"));
-			topic.subscribe("/modify/update", lang.hitch(this, "onModifyUpdate"));
-			topic.subscribe("/modify/cancel", lang.hitch(this, "onModifyCancel"));
-		},
-		onPageFocus: function (evt) {
-			this.delegate("onPageFocus",evt);
+			this.ctx.watch("storeId", lang.hitch(this, "onStoreChange"));
 
 		},
-		delegate: function(fn, evt) {
-			var store = this.ctx.getStore(evt.store);
+        onStoreChange: function () {
+			var store = this.ctx.getCurrentStore();
 			var selected = this._selectChildByStore(store);
-			if (selected) {
-				if( typeof this.selectedChildWidget[fn]=="function") {
-					this.selectedChildWidget[fn](evt);
-				} else {
-					console.log("no method "+fn+" defined on previewer");
-				}
-			}
+
 		},
 		_selectChildByStore: function (store) {
 			var previewerId = store.previewerId;
@@ -52,41 +36,6 @@ define([
 				}
 			}
 			return false;
-		}
-		,
-		onStoreFocus: function (evt) {
-			var store = this.ctx.getStore(evt.store);
-			this._selectChildByStore(store);
-		},
-		onPageUpdated: function (evt) {
-			this.delegate("onPageUpdated",evt);
-		}
-		,
-		onPageDeleted: function (evt) {
-			// TODO display nothing?
-			// this.display("/page/"+evt.id);
-		}
-		,
-		onPageRefreshXXX: function (evt) {
-			this.delegate("refresh",evt);
-		}
-		,
-		onPageNavigate: function (evt) {
-			if (this.selectedChildWidget && this.selectedChildWidget["onPageNavigate"]) {
-				this.selectedChildWidget["onPageNavigate"]( evt);
-			}
-		}
-		,
-		onModifyCancel: function (evt) {
-			this.delegate("onModifyCancel",evt);
-		}
-		,
-		onModifyUpdate: function (evt) {
-			this.delegate("onModifyUpdate",evt);
-		}
-		,
-		refreshXXX: function () {
-			this.delegate("onEntityRefresh",evt);
 		}
 	});
 });
