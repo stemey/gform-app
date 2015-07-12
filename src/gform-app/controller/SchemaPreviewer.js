@@ -13,9 +13,9 @@ define([
         idProperty: null,
         baseClass: "gformSchemaPreviewer",
         constructor: function () {
-            topic.subscribe("/focus", lang.hitch(this, "onEntityFocus"));
-            topic.subscribe("/modify/update", lang.hitch(this, "onModifyUpdate"));
-            topic.subscribe("/modify/cancel", lang.hitch(this, "onModifyCancel"));
+            //topic.subscribe("/focus", lang.hitch(this, "onEntityFocus"));
+            //topic.subscribe("/modify/update", lang.hitch(this, "onModifyUpdate"));
+            //topic.subscribe("/modify/cancel", lang.hitch(this, "onModifyCancel"));
         },
         onEntityFocus: function (evt) {
             var store = this.appCtx.getCurrentStore();

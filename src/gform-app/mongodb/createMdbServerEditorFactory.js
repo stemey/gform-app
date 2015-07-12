@@ -1,5 +1,5 @@
 define([
-	'../controller/actions/CreateCollection',
+    '../controller/actions/CreateCollection',
 	'../util/identityConverter',
 	'gform/controller/actions/ActionFactory',
 	'../controller/actions/SynchronizeCollections',

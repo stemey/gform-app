@@ -56,7 +56,7 @@ define([
 					}
 				],
 				"view": {
-					"startPath": "",
+					"startPath": "/store/%2Fapi%2Fblogposts%2F",
 					"layouts": {
 						"standard": {
 							"store": {"region": "left", "width": "50%"},

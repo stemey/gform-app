@@ -10,21 +10,30 @@ applications built with gfom-app
  
 **mongomat**
 
-An admin ui for mongodb: [More](http://github.com/stemey/mongomat).
+An admin ui for mongodb: [More](http://github.com/stemey/mongomat)
+This is an example of the dynamic resources approach. Stores and schemas can be created and modified at runtime.
+
  
+**mongoose admin example**
+
+An example of how to create an admin ui for [mongoose](http://mongoosejs.com/): [More](http://github.com/stemey/mongoose-administration-example).
+This is an example of the static resources approach. All stores and schemas are defined externally and do not
+change.
 
 
 examples
 ---------
 
-Following examples store data in the browser:
+The following examples use localstorage to persist data. Check them out in the browser
 
 **static**
 
-A simple example a single store with a single static schema
+A simple example a single store with a single static schema:
 
 
 **cms4apps**
+
+A cms that uses handlebars for rendering.
 
 An example of a single store with its documents forming a tree structure. Documents are individually associated to schemas
 by a discriminator property. Each schema has a template. The gui provides a tree view, a preview and a details editor. 
@@ -44,21 +53,32 @@ An example of a dynamic resource factory, which provides a way to dynamically cr
 installation
 ------------
 
-* git clone www.github.com/stemey/gform-app
-* cd gform-app
-* bower install
-* open browser to load examples: /src/gform-app/examples/?.html
+```sh
+git clone www.github.com/stemey/gform-app
+cd gform-app
+bower install
+```
 
-to optimize the javascript:
+open browser to load examples: /src/gform-app/examples/?.html
 
-* npm install
-* grunt build
-* open browser to load examples: /dist/gform-app/examples/?.html
+to optimize te javascript:
+
+```sh
+npm install
+grunt build
+```
+
+open browser to load examples: /dist/gform-app/examples/?.html
+
 
 Test
 ----
 
+```
 grunt test
+```
+
+open in browser: node_modules/intern/client.html?config=src/gform-app/tests/intern
 
 
 Documentation

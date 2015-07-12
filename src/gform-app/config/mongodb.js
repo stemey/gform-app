@@ -1,5 +1,6 @@
 define([
-		'../mongodb/SchemaGenerator',
+        'gform-app/controller/tools/Link',
+        '../mongodb/SchemaGenerator',
 		'../factory/tools/HelpFactory',
 		'../factory/SelectViewFactory',
 		'../factory/BrandFactory',
@@ -45,7 +46,7 @@ define([
 		"dijit/_editor/plugins/TextColor",
 		"dijit/_editor/plugins/ViewSource",
 		"dijit/_editor/plugins/Print"
-	], function (SchemaGenerator, HelpFactory, SelectViewFactory, BrandFactory, createEditorFactory, DynamicResourceFactory, MetaSchemaGenerator, StaticSchemaGenerator, SchemaRegistryFactory, createSchemaEditorFactory, createCollectionEditorFactory, createMdbServerEditorFactory, MongoRest, JcrTemplateRest, StoreFactory, JsonRest, Delete, OpenAsJson, SchemaStore, TemplateStore, ToMongoQueryTransform) {
+	], function (Link, SchemaGenerator, HelpFactory, SelectViewFactory, BrandFactory, createEditorFactory, DynamicResourceFactory, MetaSchemaGenerator, StaticSchemaGenerator, SchemaRegistryFactory, createSchemaEditorFactory, createCollectionEditorFactory, createMdbServerEditorFactory, MongoRest, JcrTemplateRest, StoreFactory, JsonRest, Delete, OpenAsJson, SchemaStore, TemplateStore, ToMongoQueryTransform) {
 
 
 		return function (config) {
@@ -210,7 +211,15 @@ define([
 									"factoryId": "gform-app/factory/tools/HelpFactory",
 									"label": "help",
 									"iconClass": "fa fa-question-circle"
-								}
+								},
+                                {
+                                    "factoryId": "gform-app/factory/WidgetFactory",
+                                    "widgetClass": Link,
+                                    "label": "github",
+                                    "iconClass":"fa fa-github",
+                                    "style":"float:right;padding-right:10px;",
+                                    "url":"http://github.com/stemey/mongomat"
+                                }
 							]
 						},
 						{

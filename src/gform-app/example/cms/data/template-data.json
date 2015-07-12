@@ -1,1547 +1,1673 @@
 [
-  {
-    "name": "Ad",
-    "id": "Ad",
-    "schema": "template",
-    "sourceCode": "<span class=\"well\">{{{text}}}<strong>{{extra}}</strong></span>",
-    "partials": {},
-    "partialTemplates": {},
-    "group": {
-      "attributes": [
-        {
-          "code": "name",
-          "type": "string",
-          "editor": "string"
-        },
-        {
-          "code": "template",
-          "visible": false,
-          "type": "string",
-          "editor": "string"
-        },
-        {
-          "code": "parent",
-          "required": true,
-          "type": "multi-ref",
-          "idProperty": "id",
-          "searchProperty": "name",
-          "url": "page",
-          "usage": "html",
-          "typeProperty": "template",
-          "schemaUrlPrefix": "",
-          "schemas": [],
-          "query": {"template": {"$regex": ".*[fF]older.*"}},
-          "editor": "multi-page-ref"
-        },
-        {
-          "code": "id",
-          "disabled": true,
-          "type": "number",
-          "editor": "number"
-        },
-        {
-          "code": "text",
-          "type": "string",
-          "editor": "textarea"
-        }
-      ],
-      "editor": "listpane"
-    }
-  },
-  {
-    "name": "bs-doc",
-    "id": "bs-doc",
-    "schema": "template",
-    "sourceCode": "\n<div class=\"container\"/>\n<div class=\"row\">\n    <div class=\"col-md-9\" style=\"position:relative\">\n        <h1>{{{headline}}}</h1>\n        <p>{{{text}}}</p>\n        {{#sections}}\n            <h2 id=\"nav_{{@index}}\" class=\"page-header\">{{{headline}}}</h2>\n            {{#blocks}}\n                {{{.}}}    \n            {{/blocks}}\n        {{/sections}}\n    </div>\n    <div class=\"col-md-3\">\n        <nav id=\"navigation\" class=\"affix\">\n            <ul class=\"nav\">\n            {{#sections}}\n                <li>\n                    <a href=\"#nav_{{@index}}\">{{headline}}</a>\n                </li>\n            {{/sections}}\n            </ul>\n        </nav>\n    </div>\n</div>\n",
-    "partials": {},
-    "partialTemplates": {},
-    "group": {
-      "groups": [
-        {
-          "attributes": [
-            {
-              "code": "name",
-              "type": "string",
-              "editor": "string"
-            },
-            {
-              "code": "template",
-              "visible": false,
-              "type": "string",
-              "editor": "string"
-            },
-            {
-              "code": "parent",
-              "required": true,
-              "type": "multi-ref",
-              "idProperty": "id",
-              "searchProperty": "name",
-              "url": "page",
-              "usage": "html",
-              "typeProperty": "template",
-              "schemaUrlPrefix": "",
-              "schemas": [],
-              "query": {"template": {"$regex": ".*[fF]older.*"}},
-              "editor": "multi-page-ref"
-            },
-            {
-              "code": "id",
-              "disabled": true,
-              "type": "number",
-              "editor": "number"
-            },
-            {
-              "code": "main",
-              "template": "main",
-              "outer": true,
-              "type": "ref",
-              "editor": "template-ref"
-            }
-          ],
-          "label": "general",
-          "editor": "listpane"
-        },
-        {
-          "groups": [
-            {
-              "attributes": [
+    {
+        "name": "Ad",
+        "id": "Ad",
+        "schema": "template",
+        "sourceCode": "<span class=\"well\">{{{text}}}<strong>{{extra}}</strong></span>",
+        "partials": {},
+        "partialTemplates": {},
+        "group": {
+            "attributes": [
                 {
-                  "code": "headline",
-                  "type": "string",
-                  "editor": "string"
-                }
-              ],
-              "region": "top",
-              "editor": "listpane"
-            },
-            {
-              "attribute": {
-                "code": "text",
-                "updateInterval": "100",
-                "height": "500px",
-                "plugins": [
-                  {"name": "undo"},
-                  {"name": "redo"},
-                  {"name": "bold"},
-                  {"name": "italic"},
-                  {"name": "underline"},
-                  {"name": "strikethrough"},
-                  {"name": "subscript"},
-                  {"name": "superscript"},
-                  {"name": "removeFormat"},
-                  {"name": "insertOrderedList"},
-                  {"name": "insertUnorderedList"},
-                  {"name": "insertHorizontalRule"},
-                  {"name": "indent"},
-                  {"name": "outdent"},
-                  {"name": "justifyLeft"},
-                  {"name": "justifyCenter"},
-                  {"name": "justifyRight"},
-                  {"name": "createLink"},
-                  {"name": "dijit/_editor/plugins/FullScreen"},
-                  {"name": "dijit/_editor/plugins/AlwaysShowToolbar"},
-                  {"name": "dijit._editor.plugins.ViewSource"}
-                ],
-                "type": "string",
-                "editor": "richtext"
-              },
-              "region": "center",
-              "editor": "single"
-            }
-          ],
-          "label": "headline",
-          "editor": "verticalgroup"
-        },
-        {
-          "attributes": [
-            {
-              "code": "sections",
-              "type": "array",
-              "group": {
-                "attributes": [
-                  {
-                    "code": "headline",
+                    "code": "name",
                     "type": "string",
                     "editor": "string"
-                  },
-                  {
-                    "code": "blocks",
-                    "type": "array",
-                    "element": {
-                      "templates": [
-                        "paragraph",
-                        "callout",
-                        "alert",
-                        "linklist"
-                      ],
-                      "type": "ref",
-                      "editor": "multi-template-ref"
-                    },
-                    "editor": "primitive-array"
-                  }
-                ],
-                "editor": "listpane"
-              },
-              "editor": "array"
-            }
-          ],
-          "label": "sections",
-          "editor": "listpane"
-        }
-      ],
-      "editor": "tab"
-    }
-  },
-  {
-    "name": "embed-example",
-    "id": "embed-example",
-    "schema": "template",
-    "sourceCode": "{{#teaser}}\n{{>teaser}}\n{{/teaser}}\n",
-    "partials": {},
-    "partialTemplates": {},
-    "group": {
-      "groups": [
-        {
-          "attributes": [
-            {
-              "code": "teaser",
-              "template": "Teaser",
-              "type": "ref",
-              "editor": "template-ref"
-            }
-          ],
-          "label": "try out",
-          "editor": "listpane"
-        },
-        {
-          "attributes": [
-            {
-              "code": "name",
-              "type": "string",
-              "editor": "string"
-            },
-            {
-              "code": "template",
-              "visible": false,
-              "type": "string",
-              "editor": "string"
-            },
-            {
-              "code": "parent",
-              "required": true,
-              "type": "multi-ref",
-              "idProperty": "id",
-              "searchProperty": "name",
-              "url": "page",
-              "usage": "html",
-              "typeProperty": "template",
-              "schemaUrlPrefix": "",
-              "schemas": [],
-              "query": {"template": {"$regex": ".*[fF]older.*"}},
-              "editor": "multi-page-ref"
-            },
-            {
-              "code": "id",
-              "disabled": true,
-              "type": "number",
-              "editor": "number"
-            }
-          ],
-          "label": "general",
-          "editor": "listpane"
-        },
-        {
-          "attributes": [
-            {
-              "code": "general",
-              "template": "tutorial",
-              "outer": true,
-              "type": "ref",
-              "editor": "template-ref"
-            }
-          ],
-          "label": "tutorial",
-          "editor": "listpane"
-        }
-      ],
-      "editor": "tab"
-    }
-  },
-  {
-    "name": "embed-navbar-example",
-    "id": "embed-navbar-example",
-    "schema": "template",
-    "sourceCode": "{{{navbar}}}",
-    "partials": {"navbar": 4},
-    "partialTemplates": {},
-    "group": {
-      "groups": [
-        {
-          "attributes": [
-            {
-              "code": "main",
-              "type": "object",
-              "group": {
-                "attributes": [
-                  {
-                    "code": "selectedNavItem",
+                },
+                {
+                    "code": "template",
+                    "visible": false,
                     "type": "string",
                     "editor": "string"
-                  }
-                ],
-                "editor": "listpane"
-              },
-              "editor": "object"
-            }
-          ],
-          "label": "try out",
-          "editor": "listpane"
-        },
-        {
-          "attributes": [
-            {
-              "code": "name",
-              "type": "string",
-              "editor": "string"
-            },
-            {
-              "code": "template",
-              "visible": false,
-              "type": "string",
-              "editor": "string"
-            },
-            {
-              "code": "parent",
-              "required": true,
-              "type": "multi-ref",
-              "idProperty": "id",
-              "searchProperty": "name",
-              "url": "page",
-              "usage": "html",
-              "typeProperty": "template",
-              "schemas": [],
-              "query": {"template": {"$regex": ".*[fF]older.*"}},
-              "editor": "multi-page-ref"
-            },
-            {
-              "code": "id",
-              "disabled": true,
-              "type": "number",
-              "editor": "number"
-            }
-          ],
-          "label": "general",
-          "editor": "listpane"
-        },
-        {
-          "attributes": [
-            {
-              "code": "general",
-              "template": "tutorial",
-              "outer": true,
-              "type": "ref",
-              "editor": "template-ref"
-            }
-          ],
-          "label": "tutorial",
-          "editor": "listpane"
-        }
-      ],
-      "labelAttribute": "name",
-      "editor": "tab"
-    }
-  },
-  {
-    "name": "embed-page-data-example",
-    "id": "embed-page-data-example",
-    "schema": "template",
-    "sourceCode": "\n{{page.text}}",
-    "partials": {},
-    "partialTemplates": {},
-    "group": {
-      "groups": [
-        {
-          "attributes": [
-            {
-              "code": "page",
-              "type": "multi-ref",
-              "idProperty": "id",
-              "searchProperty": "name",
-              "url": "page",
-              "usage": "data",
-              "typeProperty": "template",
-              "schemas": ["Ad"],
-              "editor": "multi-page-ref"
-            }
-          ],
-          "label": "try out",
-          "editor": "listpane"
-        },
-        {
-          "attributes": [
-            {
-              "code": "name",
-              "type": "string",
-              "editor": "string"
-            },
-            {
-              "code": "template",
-              "visible": false,
-              "type": "string",
-              "editor": "string"
-            },
-            {
-              "code": "parent",
-              "required": true,
-              "type": "multi-ref",
-              "idProperty": "id",
-              "searchProperty": "name",
-              "url": "page",
-              "usage": "html",
-              "typeProperty": "template",
-              "schemas": [],
-              "query": {"template": {"$regex": ".*[fF]older.*"}},
-              "editor": "multi-page-ref"
-            },
-            {
-              "code": "id",
-              "disabled": true,
-              "type": "number",
-              "editor": "number"
-            }
-          ],
-          "label": "general",
-          "editor": "listpane"
-        },
-        {
-          "attributes": [
-            {
-              "code": "general",
-              "template": "tutorial",
-              "outer": true,
-              "type": "ref",
-              "editor": "template-ref"
-            }
-          ],
-          "label": "tutorial",
-          "editor": "listpane"
-        }
-      ],
-      "editor": "tab"
-    }
-  },
-  {
-    "name": "embed-page-example",
-    "id": "embed-page-example",
-    "schema": "template",
-    "sourceCode": "\n{{{page}}}",
-    "partials": {},
-    "partialTemplates": {},
-    "group": {
-      "groups": [
-        {
-          "attributes": [
-            {
-              "code": "page",
-              "type": "multi-ref",
-              "idProperty": "id",
-              "searchProperty": "name",
-              "url": "page",
-              "usage": "html",
-              "typeProperty": "template",
-              "schemas": ["Ad"],
-              "editor": "multi-page-ref"
-            }
-          ],
-          "label": "try out",
-          "editor": "listpane"
-        },
-        {
-          "attributes": [
-            {
-              "code": "name",
-              "type": "string",
-              "editor": "string"
-            },
-            {
-              "code": "template",
-              "visible": false,
-              "type": "string",
-              "editor": "string"
-            },
-            {
-              "code": "parent",
-              "required": true,
-              "type": "multi-ref",
-              "idProperty": "id",
-              "searchProperty": "name",
-              "url": "page",
-              "usage": "html",
-              "typeProperty": "template",
-              "schemas": [],
-              "query": {"template": {"$regex": ".*[fF]older.*"}},
-              "editor": "multi-page-ref"
-            },
-            {
-              "code": "id",
-              "disabled": true,
-              "type": "number",
-              "editor": "number"
-            }
-          ],
-          "label": "general",
-          "editor": "listpane"
-        },
-        {
-          "attributes": [
-            {
-              "code": "general",
-              "template": "tutorial",
-              "outer": true,
-              "type": "ref",
-              "editor": "template-ref"
-            }
-          ],
-          "label": "tutorial",
-          "editor": "listpane"
-        }
-      ],
-      "editor": "tab"
-    }
-  },
-  {
-    "name": "embed-partial-example",
-    "id": "embed-partial-example",
-    "schema": "template",
-    "sourceCode": "{{#page}}\n{{>page extra=../extra}}\n{{/page}}",
-    "partials": {},
-    "partialTemplates": {},
-    "group": {
-      "groups": [
-        {
-          "attributes": [
-            {
-              "code": "page",
-              "type": "multi-ref",
-              "idProperty": "id",
-              "searchProperty": "name",
-              "url": "page",
-              "usage": "partial",
-              "typeProperty": "template",
-              "schemas": ["Ad"],
-              "editor": "multi-page-ref"
-            },
-            {
-              "code": "extra",
-              "type": "string",
-              "editor": "textarea"
-            }
-          ],
-          "label": "try out",
-          "editor": "listpane"
-        },
-        {
-          "attributes": [
-            {
-              "code": "name",
-              "type": "string",
-              "editor": "string"
-            },
-            {
-              "code": "template",
-              "visible": false,
-              "type": "string",
-              "editor": "string"
-            },
-            {
-              "code": "parent",
-              "required": true,
-              "type": "multi-ref",
-              "idProperty": "id",
-              "searchProperty": "name",
-              "url": "page",
-              "usage": "html",
-              "typeProperty": "template",
-              "schemas": [],
-              "query": {"template": {"$regex": ".*[fF]older.*"}},
-              "editor": "multi-page-ref"
-            },
-            {
-              "code": "id",
-              "disabled": true,
-              "type": "number",
-              "editor": "number"
-            }
-          ],
-          "label": "general",
-          "editor": "listpane"
-        },
-        {
-          "attributes": [
-            {
-              "code": "general",
-              "template": "tutorial",
-              "outer": true,
-              "type": "ref",
-              "editor": "template-ref"
-            }
-          ],
-          "label": "tutorial",
-          "editor": "listpane"
-        }
-      ],
-      "labelAttribute": "name",
-      "editor": "tab"
-    }
-  },
-  {
-    "name": "first-example",
-    "id": "first-example",
-    "schema": "template",
-    "sourceCode": "<p>{{{text}}}</p>\n",
-    "partials": {},
-    "partialTemplates": {},
-    "group": {
-      "groups": [
-        {
-          "attribute": {
-            "code": "text",
-            "updateInterval": "100",
-            "height": "200px",
-            "plugins": [
-              {"name": "undo"},
-              {"name": "redo"},
-              {"name": "bold"},
-              {"name": "italic"},
-              {"name": "underline"},
-              {"name": "strikethrough"},
-              {"name": "subscript"},
-              {"name": "superscript"},
-              {"name": "removeFormat"},
-              {"name": "insertOrderedList"},
-              {"name": "insertUnorderedList"},
-              {"name": "insertHorizontalRule"},
-              {"name": "indent"},
-              {"name": "outdent"},
-              {"name": "justifyLeft"},
-              {"name": "justifyCenter"},
-              {"name": "justifyRight"},
-              {"name": "createLink"},
-              {"name": "dijit/_editor/plugins/FullScreen"},
-              {"name": "dijit/_editor/plugins/AlwaysShowToolbar"}
-            ],
-            "type": "string",
-            "editor": "richtext"
-          },
-          "label": "try out",
-          "editor": "single"
-        },
-        {
-          "attributes": [
-            {
-              "code": "name",
-              "type": "string",
-              "editor": "string"
-            },
-            {
-              "code": "template",
-              "visible": false,
-              "type": "string",
-              "editor": "string"
-            },
-            {
-              "code": "parent",
-              "required": true,
-              "type": "multi-ref",
-              "idProperty": "id",
-              "searchProperty": "name",
-              "url": "page",
-              "usage": "html",
-              "typeProperty": "template",
-              "schemas": [],
-              "query": {"template": {"$regex": ".*[fF]older.*"}},
-              "editor": "multi-page-ref"
-            },
-            {
-              "code": "id",
-              "disabled": true,
-              "type": "number",
-              "editor": "number"
-            }
-          ],
-          "label": "general",
-          "editor": "listpane"
-        },
-        {
-          "attributes": [
-            {
-              "code": "general",
-              "required": true,
-              "template": "tutorial",
-              "outer": true,
-              "type": "ref",
-              "editor": "template-ref"
-            }
-          ],
-          "label": "tutorial",
-          "editor": "listpane"
-        }
-      ],
-      "labelAttribute": "name",
-      "editor": "tab"
-    }
-  },
-  {
-    "name": "folder",
-    "id": "folder",
-    "schema": "template",
-    "sourceCode": null,
-    "partials": {},
-    "partialTemplates": {},
-    "group": {
-      "attributes": [
-        {
-          "code": "id",
-          "disabled": true,
-          "type": "number",
-          "editor": "number"
-        },
-        {
-          "code": "name",
-          "type": "string",
-          "editor": "string"
-        },
-        {
-          "code": "parent",
-          "type": "multi-ref",
-          "idProperty": "id",
-          "searchProperty": "name",
-          "url": "page",
-          "usage": "link",
-          "typeProperty": "template",
-          "schemaUrlPrefix": "",
-          "schemas": [],
-          "query": {"template": {"$regex": ".*[fF]older.*"}},
-          "editor": "multi-page-ref"
-        },
-        {
-          "code": "template",
-          "type": "string",
-          "editor": "string",
-          "visible": false
-        }
-      ],
-      "editor": "listpane"
-    }
-  },
-  {
-    "name": "link-example",
-    "id": "link-example",
-    "schema": "template",
-    "sourceCode": "\n<script src=\"gform-app/controller/mock.js\"></script>\ngo to <a href=\"{{link link}}\">Documentation</a>.\n",
-    "partials": {},
-    "partialTemplates": {},
-    "group": {
-      "groups": [
-        {
-          "attributes": [
-            {
-              "code": "link",
-              "type": "multi-ref",
-              "idProperty": "id",
-              "searchProperty": "name",
-              "url": "page",
-              "usage": "link",
-              "typeProperty": "template",
-              "schemaUrlPrefix": "",
-              "schemas": ["bs-doc"],
-              "editor": "multi-page-ref"
-            }
-          ],
-          "label": "try out",
-          "editor": "listpane"
-        },
-        {
-          "attributes": [
-            {
-              "code": "name",
-              "type": "string",
-              "editor": "string"
-            },
-            {
-              "code": "template",
-              "visible": false,
-              "type": "string",
-              "editor": "string"
-            },
-            {
-              "code": "parent",
-              "required": true,
-              "type": "multi-ref",
-              "idProperty": "id",
-              "searchProperty": "name",
-              "url": "page",
-              "usage": "html",
-              "typeProperty": "template",
-              "schemaUrlPrefix": "",
-              "schemas": [],
-              "query": {"template": {"$regex": ".*[fF]older.*"}},
-              "editor": "multi-page-ref"
-            },
-            {
-              "code": "id",
-              "disabled": true,
-              "type": "number",
-              "editor": "number"
-            }
-          ],
-          "label": "general",
-          "editor": "listpane"
-        },
-        {
-          "attributes": [
-            {
-              "code": "general",
-              "template": "tutorial",
-              "outer": true,
-              "type": "ref",
-              "editor": "template-ref"
-            }
-          ],
-          "label": "tutorial",
-          "editor": "listpane"
-        }
-      ],
-      "editor": "tab"
-    }
-  },
-  {
-    "name": "multi-array-template-example",
-    "id": "multi-array-template-example",
-    "schema": "template",
-    "sourceCode": "<ul>\n{{#embedded}}\n    <li>\n    {{> (lookup . '__type__')}}\n    </li>\n{{/embedded}}\n</ul>",
-    "partials": {},
-    "partialTemplates": {},
-    "group": {
-      "detailGroup": {
-        "groups": [
-          {
-            "attributes": [
-              {
-                "code": "name",
-                "type": "string",
-                "editor": "string"
-              },
-              {
-                "code": "template",
-                "visible": false,
-                "type": "string",
-                "editor": "string"
-              },
-              {
-                "code": "parent",
-                "required": true,
-                "type": "multi-ref",
-                "idProperty": "id",
-                "searchProperty": "name",
-                "url": "page",
-                "usage": "html",
-                "typeProperty": "template",
-                "schemas": [],
-                "query": {"template": {"$regex": ".*[fF]older.*"}},
-                "editor": "multi-page-ref"
-              },
-              {
-                "code": "id",
-                "disabled": true,
-                "type": "number",
-                "editor": "number"
-              }
-            ],
-            "label": "general",
-            "editor": "listpane"
-          },
-          {
-            "attributes": [
-              {
-                "code": "general",
-                "template": "tutorial",
-                "outer": true,
-                "type": "ref",
-                "editor": "template-ref"
-              }
-            ],
-            "label": "tutorial",
-            "editor": "listpane"
-          }
-        ],
-        "editor": "tab"
-      },
-      "nodeAttributes": [
-        {
-          "code": "embedded",
-          "type": "array",
-          "element": {
-            "templates": [
-              "alert",
-              "paragraph",
-              "callout"
-            ],
-            "type": "ref",
-            "editor": "multi-template-ref"
-          },
-          "editor": "primitive-array"
-        }
-      ],
-      "labelAttribute": "name",
-      "editor": "tree"
-    }
-  },
-  {
-    "name": "multi-template-example",
-    "id": "multi-template-example",
-    "schema": "template",
-    "sourceCode": "{{#embedded}}\n{{> (lookup . '__type__')}}\n{{/embedded}}",
-    "partials": {},
-    "partialTemplates": {},
-    "group": {
-      "groups": [
-        {
-          "attribute": {
-            "code": "embedded",
-            "required": true,
-            "templates": [
-              "callout",
-              "alert",
-              "paragraph"
-            ],
-            "layout": true,
-            "type": "ref",
-            "editor": "multi-template-ref"
-          },
-          "label": "try out",
-          "editor": "single"
-        },
-        {
-          "attributes": [
-            {
-              "code": "name",
-              "type": "string",
-              "editor": "string"
-            },
-            {
-              "code": "template",
-              "visible": false,
-              "type": "string",
-              "editor": "string"
-            },
-            {
-              "code": "parent",
-              "required": true,
-              "type": "multi-ref",
-              "idProperty": "id",
-              "searchProperty": "name",
-              "url": "page",
-              "usage": "html",
-              "typeProperty": "template",
-              "schemas": [],
-              "query": {"template": {"$regex": ".*[fF]older.*"}},
-              "editor": "multi-page-ref"
-            },
-            {
-              "code": "id",
-              "disabled": true,
-              "type": "number",
-              "editor": "number"
-            }
-          ],
-          "label": "general",
-          "editor": "listpane"
-        },
-        {
-          "attributes": [
-            {
-              "code": "general",
-              "required": true,
-              "template": "tutorial",
-              "outer": true,
-              "type": "ref",
-              "editor": "template-ref"
-            }
-          ],
-          "label": "tutorial",
-          "editor": "listpane"
-        }
-      ],
-      "labelAttribute": "name",
-      "editor": "tab"
-    }
-  },
-  {
-    "name": "navbar",
-    "id": "navbar",
-    "schema": "template",
-    "sourceCode": "<nav class=\"navbar navbar-default\">\n <div class=\"container-fluid\">\n <!-- Brand and toggle get grouped for better mobile display -->\n <div class=\"navbar-header\">\n <button type=\"button\" class=\"navbar-toggle collapsed\" data-toggle=\"collapse\" data-target=\"#bs-example-navbar-collapse-1\">\n <span class=\"sr-only\">Toggle navigation</span>\n <span class=\"icon-bar\"></span>\n <span class=\"icon-bar\"></span>\n <span class=\"icon-bar\"></span>\n </button>\n <a class=\"navbar-brand\" href=\"#\">{{brand}}</a>\n </div>\n\n <!-- Collect the nav links, forms, and other content for toggling -->\n <div class=\"collapse navbar-collapse\" id=\"bs-example-navbar-collapse-1\">\n <ul class=\"nav navbar-nav\">\n {{#navItems}} \n <li {{#equals ../main/selectedNavItem label}}class=\"active\"{{/equals}}><a href=\"{{link page}}\">{{label}}</a></li>\n {{/navItems}}\n </ul>\n </div><!-- /.navbar-collapse -->\n </div><!-- /.container-fluid -->\n</nav>",
-    "partials": {},
-    "partialTemplates": {},
-    "group": {
-      "attributes": [
-        {
-          "code": "brand",
-          "type": "string",
-          "editor": "string"
-        },
-        {
-          "code": "navItems",
-          "type": "array",
-          "group": {
-            "attributes": [
-              {
-                "code": "label",
-                "type": "string",
-                "editor": "string"
-              },
-              {
-                "code": "page",
-                "type": "multi-ref",
-                "idProperty": "id",
-                "searchProperty": "name",
-                "url": "page",
-                "usage": "link",
-                "typeProperty": "template",
-                "schemaUrlPrefix": "",
-                "schemas": [],
-                "editor": "multi-page-ref"
-              }
-            ],
-            "editor": "listpane"
-          },
-          "editor": "array"
-        },
-        {
-          "code": "template",
-          "type": "string",
-          "editor": "string"
-        },
-        {
-          "code": "parent",
-          "type": "multi-ref",
-          "idProperty": "id",
-          "searchProperty": "name",
-          "url": "page",
-          "schemas": [],
-          "editor": "multi-ref"
-        },
-        {
-          "code": "name",
-          "type": "string",
-          "editor": "string"
-        },
-        {
-          "code": "id",
-          "type": "number",
-          "editor": "number"
-        }
-      ],
-      "editor": "listpane"
-    }
-  },
-  {
-    "name": "outer-example",
-    "id": "outer-example",
-    "schema": "template",
-    "sourceCode": "Just some static text!",
-    "partials": {},
-    "partialTemplates": {},
-    "group": {
-      "groups": [
-        {
-          "attributes": [
-            {
-              "code": "general",
-              "template": "tutorial",
-              "outer": true,
-              "type": "ref",
-              "editor": "template-ref"
-            }
-          ],
-          "label": "tutorial",
-          "editor": "listpane"
-        },
-        {
-          "attributes": [
-            {
-              "code": "name",
-              "type": "string",
-              "editor": "string"
-            },
-            {
-              "code": "template",
-              "visible": false,
-              "type": "string",
-              "editor": "string"
-            },
-            {
-              "code": "parent",
-              "required": true,
-              "type": "multi-ref",
-              "idProperty": "id",
-              "searchProperty": "name",
-              "url": "page",
-              "usage": "html",
-              "typeProperty": "template",
-              "schemas": [],
-              "query": {"template": {"$regex": ".*[fF]older.*"}},
-              "editor": "multi-page-ref"
-            },
-            {
-              "code": "id",
-              "disabled": true,
-              "type": "number",
-              "editor": "number"
-            }
-          ],
-          "label": "general",
-          "editor": "listpane"
-        }
-      ],
-      "labelAttribute": "name",
-      "editor": "tab"
-    }
-  },
-  {
-    "name": "page",
-    "id": "page",
-    "schema": "template",
-    "sourceCode": "Moinsen Hallo Ballo {{{text}}}{{../text}}",
-    "partials": {},
-    "partialTemplates": {},
-    "group": {
-      "groups": [
-        {
-          "attributes": [
-            {
-              "code": "name",
-              "type": "string",
-              "editor": "string"
-            },
-            {
-              "code": "id",
-              "disabled": true,
-              "type": "number",
-              "editor": "number"
-            },
-            {
-              "code": "xx",
-              "type": "array",
-              "element": {
-                "type": "string",
-                "editor": "string"
-              },
-              "editor": "primitive-array"
-            }
-          ],
-          "region": "top",
-          "editor": "listpane"
-        },
-        {
-          "groups": [
-            {
-              "attributes": [
-                {
-                  "code": "parent",
-                  "required": true,
-                  "type": "multi-ref",
-                  "idProperty": "id",
-                  "searchProperty": "name",
-                  "url": "page",
-                  "typeProperty": "template",
-                  "schemas": [],
-                  "editor": "multi-ref"
                 },
                 {
-                  "code": "main",
-                  "required": true,
-                  "template": "main",
-                  "outer": true,
-                  "type": "ref",
-                  "editor": "template-ref"
+                    "code": "parent",
+                    "required": true,
+                    "type": "multi-ref",
+                    "idProperty": "id",
+                    "searchProperty": "name",
+                    "url": "page",
+                    "usage": "html",
+                    "typeProperty": "template",
+                    "schemaUrlPrefix": "",
+                    "schemas": [],
+                    "query": {"template": {"$regex": ".*[fF]older.*"}},
+                    "editor": "multi-page-ref"
                 },
                 {
-                  "code": "template",
-                  "visible": false,
-                  "type": "string",
-                  "editor": "string"
-                }
-              ],
-              "label": "general",
-              "editor": "listpane"
-            },
-            {
-              "attribute": {
-                "code": "text",
-                "updateInterval": "100",
-                "height": "500px",
-                "plugins": [
-                  {"name": "undo"},
-                  {"name": "redo"},
-                  {"name": "bold"},
-                  {"name": "italic"},
-                  {"name": "underline"},
-                  {"name": "strikethrough"},
-                  {"name": "subscript"},
-                  {"name": "superscript"},
-                  {"name": "removeFormat"},
-                  {"name": "insertOrderedList"},
-                  {"name": "insertUnorderedList"},
-                  {"name": "insertHorizontalRule"},
-                  {"name": "indent"},
-                  {"name": "outdent"},
-                  {"name": "justifyLeft"},
-                  {"name": "justifyCenter"},
-                  {"name": "justifyRight"}
-                ],
-                "type": "string",
-                "editor": "richtext"
-              },
-              "label": "dfdf",
-              "editor": "single"
-            }
-          ],
-          "region": "center",
-          "editor": "tab"
-        }
-      ],
-      "editor": "verticalgroup"
-    }
-  },
-  {
-    "name": "bs-doc-tree",
-    "id": "test-tree",
-    "schema": "template",
-    "sourceCode": "\n<div class=\"container\"/>\n<div class=\"row\">\n    <div class=\"col-md-9\" style=\"position:relative\">\n        <h1>{{{headline}}}</h1>\n        <p>{{{text}}}</p>\n        {{#sections}}\n            <h2 id=\"nav_{{@index}}\" class=\"page-header\">{{add @index 1}}. {{{headline}}}</h2>\n            {{#blocks}}\n                {{>(lookup . '__type__')}}    \n            {{/blocks}}\n        {{/sections}}\n    </div>\n    <div class=\"col-md-3\">\n        <nav id=\"navigation\" class=\"affix\">\n            <ul class=\"nav\">\n            {{#sections}}\n                <li>\n                    <a href=\"#nav_{{@index}}\">{{headline}}</a>\n                </li>\n            {{/sections}}\n            </ul>\n        </nav>\n    </div>\n</div>\n",
-    "partials": {},
-    "partialTemplates": {},
-    "group": {
-      "detailGroup": {
-        "groups": [
-          {
-            "attributes": [
-              {
-                "code": "name",
-                "type": "string",
-                "editor": "string"
-              },
-              {
-                "code": "template",
-                "visible": false,
-                "type": "string",
-                "editor": "string"
-              },
-              {
-                "code": "parent",
-                "required": true,
-                "type": "multi-ref",
-                "idProperty": "id",
-                "searchProperty": "name",
-                "url": "page",
-                "usage": "html",
-                "typeProperty": "template",
-                "schemas": [],
-                "query": {"template": {"$regex": ".*[fF]older.*"}},
-                "editor": "multi-page-ref"
-              },
-              {
-                "code": "id",
-                "disabled": true,
-                "type": "number",
-                "editor": "number"
-              }
-            ],
-            "label": "page",
-            "editor": "listpane"
-          },
-          {
-            "attributes": [
-              {
-                "code": "main",
-                "template": "main",
-                "outer": true,
-                "type": "ref",
-                "editor": "template-ref"
-              }
-            ],
-            "label": "main",
-            "editor": "listpane"
-          },
-          {
-            "groups": [
-              {
-                "attributes": [
-                  {
-                    "code": "headline",
-                    "type": "string",
-                    "editor": "string"
-                  }
-                ],
-                "region": "top",
-                "editor": "listpane"
-              },
-              {
-                "attribute": {
-                  "code": "text",
-                  "updateInterval": "100",
-                  "height": "500px",
-                  "plugins": [
-                    {"name": "undo"},
-                    {"name": "redo"},
-                    {"name": "bold"},
-                    {"name": "italic"},
-                    {"name": "underline"},
-                    {"name": "strikethrough"},
-                    {"name": "subscript"},
-                    {"name": "superscript"},
-                    {"name": "removeFormat"},
-                    {"name": "insertOrderedList"},
-                    {"name": "insertUnorderedList"},
-                    {"name": "insertHorizontalRule"},
-                    {"name": "indent"},
-                    {"name": "outdent"},
-                    {"name": "justifyLeft"},
-                    {"name": "justifyCenter"},
-                    {"name": "justifyRight"},
-                    {"name": "createLink"},
-                    {"name": "dijit/_editor/plugins/FullScreen"},
-                    {"name": "dijit/_editor/plugins/AlwaysShowToolbar"},
-                    {"name": "dijit._editor.plugins.ViewSource"}
-                  ],
-                  "type": "string",
-                  "editor": "richtext"
-                },
-                "region": "center",
-                "editor": "single"
-              }
-            ],
-            "label": "content",
-            "editor": "verticalgroup"
-          }
-        ],
-        "editor": "tab"
-      },
-      "nodeAttributes": [
-        {
-          "code": "sections",
-          "type": "array",
-          "group": {
-            "detailGroup": {
-              "attributes": [
-                {
-                  "code": "headline",
-                  "type": "string",
-                  "editor": "string"
-                }
-              ],
-              "editor": "listpane"
-            },
-            "nodeAttributes": [
-              {
-                "code": "blocks",
-                "type": "array",
-                "element": {
-                  "templates": [
-                    "paragraph",
-                    "callout",
-                    "alert",
-                    "linklist"
-                  ],
-                  "type": "ref",
-                  "editor": "multi-template-ref"
-                },
-                "editor": "primitive-array"
-              }
-            ],
-            "editor": "tree"
-          },
-          "editor": "array"
-        }
-      ],
-      "editor": "tree"
-    }
-  },
-  {
-    "name": "test-tree-xx",
-    "id": "test-tree-xx",
-    "schema": "template",
-    "sourceCode": "{{#x}}\n{{z}}-{{y}}\n{{/x}}",
-    "partials": {},
-    "partialTemplates": {},
-    "group": {
-      "groups": [
-        {
-          "attributes": [
-            {
-              "code": "name",
-              "type": "string",
-              "editor": "string"
-            },
-            {
-              "code": "template",
-              "visible": false,
-              "type": "string",
-              "editor": "string"
-            },
-            {
-              "code": "parent",
-              "required": true,
-              "type": "multi-ref",
-              "idProperty": "id",
-              "searchProperty": "name",
-              "url": "page",
-              "usage": "html",
-              "typeProperty": "template",
-              "schemas": [],
-              "query": {"template": {"$regex": ".*[fF]older.*"}},
-              "editor": "multi-page-ref"
-            },
-            {
-              "code": "id",
-              "disabled": true,
-              "type": "number",
-              "editor": "number"
-            }
-          ],
-          "label": "general",
-          "editor": "listpane"
-        },
-        {
-          "attributes": [
-            {
-              "code": "multi",
-              "typeProperty": "type",
-              "type": "object",
-              "groups": [
-                {
-                  "attributes": [
-                    {
-                      "code": "dd",
-                      "type": "string",
-                      "editor": "string"
-                    }
-                  ],
-                  "editor": "listpane",
-                  "code": "A"
+                    "code": "id",
+                    "disabled": true,
+                    "type": "number",
+                    "editor": "number"
                 },
                 {
-                  "attributes": [
-                    {
-                      "code": "as",
-                      "type": "string",
-                      "editor": "string"
-                    }
-                  ],
-                  "editor": "listpane",
-                  "code": "B"
-                }
-              ],
-              "editor": "multi-object"
-            },
-            {
-              "code": "x",
-              "type": "object",
-              "group": {
-                "groups": [
-                  {
-                    "attributes": [
-                      {
-                        "code": "z",
-                        "type": "string",
-                        "editor": "textarea"
-                      }
-                    ],
-                    "editor": "listpane"
-                  },
-                  {
-                    "attributes": [
-                      {
-                        "code": "y",
-                        "type": "string",
-                        "editor": "textarea"
-                      }
-                    ],
-                    "editor": "listpane"
-                  }
-                ],
-                "editor": "listgroup"
-              },
-              "editor": "object"
-            }
-          ],
-          "label": "multi",
-          "editor": "listpane"
-        },
-        {
-          "attributes": [
-            {
-              "code": "sections",
-              "type": "array",
-              "group": {
-                "attributes": [
-                  {
                     "code": "text",
                     "type": "string",
                     "editor": "textarea"
-                  }
-                ],
-                "editor": "listpane"
-              },
-              "editor": "array"
-            }
-          ],
-          "label": "sections",
-          "editor": "listpane"
-        },
-        {
-          "attributes": [
-            {
-              "code": "multi-sections",
-              "typeProperty": "type",
-              "groups": [
+                }
+            ],
+            "editor": "listpane"
+        }
+    },
+    {
+        "name": "bs-doc",
+        "id": "bs-doc",
+        "schema": "template",
+        "sourceCode": "\n<div class=\"container\"/>\n<div class=\"row\">\n    <div class=\"col-md-9\" style=\"position:relative\">\n        <h1>{{{headline}}}</h1>\n        <p>{{{text}}}</p>\n        {{#sections}}\n            <h2 id=\"nav_{{@index}}\" class=\"page-header\">{{{headline}}}</h2>\n            {{#blocks}}\n                {{{.}}}    \n            {{/blocks}}\n        {{/sections}}\n    </div>\n    <div class=\"col-md-3\">\n        <nav id=\"navigation\" class=\"affix\">\n            <ul class=\"nav\">\n            {{#sections}}\n                <li>\n                    <a href=\"#nav_{{@index}}\">{{headline}}</a>\n                </li>\n            {{/sections}}\n            </ul>\n        </nav>\n    </div>\n</div>\n",
+        "partials": {},
+        "partialTemplates": {},
+        "group": {
+            "groups": [
                 {
-                  "attributes": [
-                    {
-                      "code": "text",
-                      "type": "string",
-                      "editor": "textarea"
-                    },
-                    {
-                      "code": "x",
-                      "type": "string",
-                      "editor": "textarea"
-                    }
-                  ],
-                  "editor": "listpane",
-                  "code": "A"
+                    "attributes": [
+                        {
+                            "code": "name",
+                            "type": "string",
+                            "editor": "string"
+                        },
+                        {
+                            "code": "template",
+                            "visible": false,
+                            "type": "string",
+                            "editor": "string"
+                        },
+                        {
+                            "code": "parent",
+                            "required": true,
+                            "type": "multi-ref",
+                            "idProperty": "id",
+                            "searchProperty": "name",
+                            "url": "page",
+                            "usage": "html",
+                            "typeProperty": "template",
+                            "schemaUrlPrefix": "",
+                            "schemas": [],
+                            "query": {"template": {"$regex": ".*[fF]older.*"}},
+                            "editor": "multi-page-ref"
+                        },
+                        {
+                            "code": "id",
+                            "disabled": true,
+                            "type": "number",
+                            "editor": "number"
+                        },
+                        {
+                            "code": "main",
+                            "template": "main",
+                            "outer": true,
+                            "type": "ref",
+                            "editor": "template-ref"
+                        }
+                    ],
+                    "label": "general",
+                    "editor": "listpane"
                 },
                 {
-                  "attributes": [
-                    {
-                      "code": "x",
-                      "type": "string",
-                      "editor": "textarea"
-                    }
-                  ],
-                  "editor": "listpane",
-                  "code": "B"
+                    "groups": [
+                        {
+                            "attributes": [
+                                {
+                                    "code": "headline",
+                                    "type": "string",
+                                    "editor": "string"
+                                }
+                            ],
+                            "region": "top",
+                            "editor": "listpane"
+                        },
+                        {
+                            "attribute": {
+                                "code": "text",
+                                "updateInterval": "100",
+                                "height": "500px",
+                                "plugins": [
+                                    {"name": "undo"},
+                                    {"name": "redo"},
+                                    {"name": "bold"},
+                                    {"name": "italic"},
+                                    {"name": "underline"},
+                                    {"name": "strikethrough"},
+                                    {"name": "subscript"},
+                                    {"name": "superscript"},
+                                    {"name": "removeFormat"},
+                                    {"name": "insertOrderedList"},
+                                    {"name": "insertUnorderedList"},
+                                    {"name": "insertHorizontalRule"},
+                                    {"name": "indent"},
+                                    {"name": "outdent"},
+                                    {"name": "justifyLeft"},
+                                    {"name": "justifyCenter"},
+                                    {"name": "justifyRight"},
+                                    {"name": "createLink"},
+                                    {"name": "dijit/_editor/plugins/FullScreen"},
+                                    {"name": "dijit/_editor/plugins/AlwaysShowToolbar"},
+                                    {"name": "dijit._editor.plugins.ViewSource"}
+                                ],
+                                "type": "string",
+                                "editor": "richtext"
+                            },
+                            "region": "center",
+                            "editor": "single"
+                        }
+                    ],
+                    "label": "headline",
+                    "editor": "verticalgroup"
+                },
+                {
+                    "attributes": [
+                        {
+                            "code": "sections",
+                            "type": "array",
+                            "group": {
+                                "attributes": [
+                                    {
+                                        "code": "headline",
+                                        "type": "string",
+                                        "editor": "string"
+                                    },
+                                    {
+                                        "code": "blocks",
+                                        "type": "array",
+                                        "element": {
+                                            "templates": [
+                                                "paragraph",
+                                                "callout",
+                                                "alert",
+                                                "linklist"
+                                            ],
+                                            "type": "ref",
+                                            "editor": "multi-template-ref"
+                                        },
+                                        "editor": "primitive-array"
+                                    }
+                                ],
+                                "editor": "listpane"
+                            },
+                            "editor": "array"
+                        }
+                    ],
+                    "label": "sections",
+                    "editor": "listpane"
                 }
-              ],
-              "editor": "multi-array"
-            }
-          ],
-          "label": "multi-sections",
-          "editor": "listpane"
+            ],
+            "editor": "tab"
         }
-      ],
-      "editor": "tab"
+    },
+    {
+        "name": "dashboard",
+        "id": "dashboard",
+        "schema": "template",
+        "sourceCode": "<html>\n   <link rel=\"stylesheet\" type=\"text/css\" href=\"bootstrap/dist/css/bootstrap.min.css\" />\n   <style>\n       .chart-wrapper {\n  background: #fff;\n  border: 1px solid #e2e2e2;\n  border-radius: 3px;\n  margin-bottom: 10px;\n}\n.chart-wrapper .chart-title {\n  border-bottom: 1px solid #d7d7d7;\n  color: #666;\n  font-size: 14px;\n  font-weight: 200;\n  padding: 7px 10px 4px;\n}\n\n.chart-wrapper .chart-stage {\n  /*min-height: 240px;*/\n  overflow: hidden;\n  padding: 5px 10px;\n  position: relative;\n}\n\n.chart-wrapper .chart-notes {\n  background: #fbfbfb;\n  border-top: 1px solid #e2e2e2;\n  color: #808080;\n  font-size: 12px;\n  padding: 8px 10px 5px;\n}\n   </style>\n</head>\n<body>\n {{#navbar}}\n    {{>navbar selectedNavItem=../selectedNavItem}}\n {{/navbar}}\n\n <div class=\"container-fluid\">\n {{#rows}}\n    <div class=\"row\">\n  {{#charts}}\n      <div class=\"col-sm-{{width}}\">\n        <div class=\"chart-wrapper\">\n          <div class=\"chart-title\">\n            {{{label}}}\n          </div>\n          <div class=\"chart-stage\">\n            <div id=\"{{concat @../index '-' @index}}\"></div>\n          </div>\n          <div class=\"chart-notes\">\n            {{{notes}}}\n          </div>\n        </div>\n      </div> \n    {{/charts}}\n </div>\n {{/rows}}\n \n    <hr>\n\n    <p class=\"small text-muted\">dashboard copied from demo by <a href=\"https://keen.io\">Keen IO</a></p>\n\n  </div>\n        \n </body>\n    \n  <script type=\"text/javascript\" src=\"http://keen.github.io/dashboards/assets/lib/jquery/dist/jquery.min.js\"></script>\n  <script type=\"text/javascript\" src=\"http://keen.github.io/dashboards/assets/lib/bootstrap/dist/js/bootstrap.min.js\"></script>\n\n  <script type=\"text/javascript\" src=\"http://keen.github.io/dashboards/assets/lib/holderjs/holder.js\"></script>\n  <script>\n    Holder.add_theme(\"white\", { background:\"#fff\", foreground:\"#a7a7a7\", size:10 });\n  </script>\n\n<script src=\"//cdn.jsdelivr.net/keen.js/3.2.5/keen.min.js\" type=\"text/javascript\"></script>\n  <script type=\"text/javascript\" src=\"http://keen.github.io/dashboards/assets/lib/keen-js/dist/keen.min.js\"></script>\n  <script type=\"text/javascript\" src=\"http://keen.github.io/dashboards/assets/js/meta.js\"></script>\n  <script type=\"text/javascript\" src=\"http://keen.github.io/dashboards/keen.dashboard.js\"></script>\n    <script>\nvar client = new Keen({\n  projectId: \"5368fa5436bf5a5623000000\",\n  readKey: \"3f324dcb5636316d6865ab0ebbbbc725224c7f8f3e8899c7733439965d6d4a2c7f13bf7765458790bd50ec76b4361687f51cf626314585dc246bb51aeb455c0a1dd6ce77a993d9c953c5fc554d1d3530ca5d17bdc6d1333ef3d8146a990c79435bb2c7d936f259a22647a75407921056\"\n});\nKeen.ready(function(){\n    \n     \n  {{#rows}}\n    {{#charts}}\n       {{#chart}}\n        {{>chart elementId=(concat @../index '-' @index)}}\n       {{/chart}}\n    {{/charts}}\n  {{/rows}}\n});\n</script>\n    <script src=\"gform-app/controller/mock.js\"></script>\n\n</html>\n",
+        "partials": {"navbar": 4},
+        "partialTemplates": {},
+        "group": {
+            "detailGroup": {
+                "attributes": [
+                    {
+                        "code": "name",
+                        "type": "string",
+                        "editor": "string"
+                    },
+                    {
+                        "code": "selectedNavItem",
+                        "type": "string",
+                        "editor": "string"
+                    },
+                    {
+                        "code": "template",
+                        "visible": false,
+                        "type": "string",
+                        "editor": "string"
+                    },
+                    {
+                        "code": "parent",
+                        "required": true,
+                        "type": "multi-ref",
+                        "idProperty": "id",
+                        "searchProperty": "name",
+                        "url": "page",
+                        "usage": "html",
+                        "typeProperty": "template",
+                        "schemas": [],
+                        "query": {"template": {"$regex": ".*[fF]older.*"}},
+                        "editor": "multi-page-ref"
+                    },
+                    {
+                        "code": "id",
+                        "disabled": true,
+                        "type": "number",
+                        "editor": "number"
+                    }
+                ],
+                "editor": "listpane"
+            },
+            "nodeAttributes": [
+                {
+                    "code": "rows",
+                    "type": "array",
+                    "group": {
+                        "detailGroup": {
+                            "attributes": [],
+                            "editor": "listpane"
+                        },
+                        "nodeAttributes": [
+                            {
+                                "code": "charts",
+                                "type": "array",
+                                "group": {
+                                    "groups": [
+                                        {
+                                            "attributes": [
+                                                {
+                                                    "code": "label",
+                                                    "type": "string",
+                                                    "editor": "string"
+                                                },
+                                                {
+                                                    "code": "width",
+                                                    "type": "number",
+                                                    "editor": "number"
+                                                }
+                                            ],
+                                            "label": "general",
+                                            "editor": "listpane"
+                                        },
+                                        {
+                                            "attributes": [
+                                                {
+                                                    "code": "chart",
+                                                    "required": true,
+                                                    "template": "chart",
+                                                    "type": "ref",
+                                                    "editor": "template-ref"
+                                                }
+                                            ],
+                                            "label": "chart",
+                                            "editor": "listpane"
+                                        },
+                                        {
+                                            "attribute": {
+                                                "code": "notes",
+                                                "updateInterval": "100",
+                                                "height": "500px",
+                                                "plugins": [
+                                                    {"name": "undo"},
+                                                    {"name": "redo"},
+                                                    {"name": "bold"},
+                                                    {"name": "italic"},
+                                                    {"name": "underline"},
+                                                    {"name": "strikethrough"},
+                                                    {"name": "subscript"},
+                                                    {"name": "superscript"},
+                                                    {"name": "removeFormat"},
+                                                    {"name": "insertOrderedList"},
+                                                    {"name": "insertUnorderedList"},
+                                                    {"name": "insertHorizontalRule"},
+                                                    {"name": "indent"},
+                                                    {"name": "outdent"},
+                                                    {"name": "justifyLeft"},
+                                                    {"name": "justifyCenter"},
+                                                    {"name": "justifyRight"},
+                                                    {"name": "createLink"},
+                                                    {"name": "dijit/_editor/plugins/FullScreen"},
+                                                    {"name": "dijit/_editor/plugins/AlwaysShowToolbar"}
+                                                ],
+                                                "type": "string",
+                                                "editor": "richtext"
+                                            },
+                                            "label": "notes",
+                                            "editor": "single"
+                                        }
+                                    ],
+                                    "editor": "tab"
+                                },
+                                "editor": "array"
+                            }
+                        ],
+                        "editor": "tree"
+                    },
+                    "editor": "array"
+                }
+            ],
+            "editor": "tree"
+        }
+    },
+    {
+        "name": "embed-example",
+        "id": "embed-example",
+        "schema": "template",
+        "sourceCode": "{{#teaser}}\n{{>teaser}}\n{{/teaser}}\n",
+        "partials": {},
+        "partialTemplates": {},
+        "group": {
+            "groups": [
+                {
+                    "attributes": [
+                        {
+                            "code": "teaser",
+                            "template": "Teaser",
+                            "type": "ref",
+                            "editor": "template-ref"
+                        }
+                    ],
+                    "label": "try out",
+                    "editor": "listpane"
+                },
+                {
+                    "attributes": [
+                        {
+                            "code": "name",
+                            "type": "string",
+                            "editor": "string"
+                        },
+                        {
+                            "code": "template",
+                            "visible": false,
+                            "type": "string",
+                            "editor": "string"
+                        },
+                        {
+                            "code": "parent",
+                            "required": true,
+                            "type": "multi-ref",
+                            "idProperty": "id",
+                            "searchProperty": "name",
+                            "url": "page",
+                            "usage": "html",
+                            "typeProperty": "template",
+                            "schemaUrlPrefix": "",
+                            "schemas": [],
+                            "query": {"template": {"$regex": ".*[fF]older.*"}},
+                            "editor": "multi-page-ref"
+                        },
+                        {
+                            "code": "id",
+                            "disabled": true,
+                            "type": "number",
+                            "editor": "number"
+                        }
+                    ],
+                    "label": "general",
+                    "editor": "listpane"
+                },
+                {
+                    "attributes": [
+                        {
+                            "code": "general",
+                            "template": "tutorial",
+                            "outer": true,
+                            "type": "ref",
+                            "editor": "template-ref"
+                        }
+                    ],
+                    "label": "tutorial",
+                    "editor": "listpane"
+                }
+            ],
+            "editor": "tab"
+        }
+    },
+    {
+        "name": "embed-navbar-example",
+        "id": "embed-navbar-example",
+        "schema": "template",
+        "sourceCode": "{{#navbar}}\n   {{>navbar selectedNavItem=../selectedNavItem}}\n{{/navbar}}",
+        "partials": {"navbar": 4},
+        "partialTemplates": {},
+        "group": {
+            "groups": [
+                {
+                    "attributes": [
+                        {
+                            "code": "selectedNavItem",
+                            "type": "string",
+                            "editor": "string"
+                        }
+                    ],
+                    "label": "try out",
+                    "editor": "listpane"
+                },
+                {
+                    "attributes": [
+                        {
+                            "code": "name",
+                            "type": "string",
+                            "editor": "string"
+                        },
+                        {
+                            "code": "template",
+                            "visible": false,
+                            "type": "string",
+                            "editor": "string"
+                        },
+                        {
+                            "code": "parent",
+                            "required": true,
+                            "type": "multi-ref",
+                            "idProperty": "id",
+                            "searchProperty": "name",
+                            "url": "page",
+                            "usage": "html",
+                            "typeProperty": "template",
+                            "schemas": [],
+                            "query": {"template": {"$regex": ".*[fF]older.*"}},
+                            "editor": "multi-page-ref"
+                        },
+                        {
+                            "code": "id",
+                            "disabled": true,
+                            "type": "number",
+                            "editor": "number"
+                        }
+                    ],
+                    "label": "general",
+                    "editor": "listpane"
+                },
+                {
+                    "attributes": [
+                        {
+                            "code": "general",
+                            "template": "tutorial",
+                            "outer": true,
+                            "type": "ref",
+                            "editor": "template-ref"
+                        }
+                    ],
+                    "label": "tutorial",
+                    "editor": "listpane"
+                }
+            ],
+            "labelAttribute": "name",
+            "editor": "tab"
+        }
+    },
+    {
+        "name": "embed-page-data-example",
+        "id": "embed-page-data-example",
+        "schema": "template",
+        "sourceCode": "\n{{page.text}}",
+        "partials": {},
+        "partialTemplates": {},
+        "group": {
+            "groups": [
+                {
+                    "attributes": [
+                        {
+                            "code": "page",
+                            "type": "multi-ref",
+                            "idProperty": "id",
+                            "searchProperty": "name",
+                            "url": "page",
+                            "usage": "data",
+                            "typeProperty": "template",
+                            "schemas": ["Ad"],
+                            "editor": "multi-page-ref"
+                        }
+                    ],
+                    "label": "try out",
+                    "editor": "listpane"
+                },
+                {
+                    "attributes": [
+                        {
+                            "code": "name",
+                            "type": "string",
+                            "editor": "string"
+                        },
+                        {
+                            "code": "template",
+                            "visible": false,
+                            "type": "string",
+                            "editor": "string"
+                        },
+                        {
+                            "code": "parent",
+                            "required": true,
+                            "type": "multi-ref",
+                            "idProperty": "id",
+                            "searchProperty": "name",
+                            "url": "page",
+                            "usage": "html",
+                            "typeProperty": "template",
+                            "schemas": [],
+                            "query": {"template": {"$regex": ".*[fF]older.*"}},
+                            "editor": "multi-page-ref"
+                        },
+                        {
+                            "code": "id",
+                            "disabled": true,
+                            "type": "number",
+                            "editor": "number"
+                        }
+                    ],
+                    "label": "general",
+                    "editor": "listpane"
+                },
+                {
+                    "attributes": [
+                        {
+                            "code": "general",
+                            "template": "tutorial",
+                            "outer": true,
+                            "type": "ref",
+                            "editor": "template-ref"
+                        }
+                    ],
+                    "label": "tutorial",
+                    "editor": "listpane"
+                }
+            ],
+            "editor": "tab"
+        }
+    },
+    {
+        "name": "embed-page-example",
+        "id": "embed-page-example",
+        "schema": "template",
+        "sourceCode": "\n{{{page}}}",
+        "partials": {},
+        "partialTemplates": {},
+        "group": {
+            "groups": [
+                {
+                    "attributes": [
+                        {
+                            "code": "page",
+                            "type": "multi-ref",
+                            "idProperty": "id",
+                            "searchProperty": "name",
+                            "url": "page",
+                            "usage": "html",
+                            "typeProperty": "template",
+                            "schemas": ["Ad"],
+                            "editor": "multi-page-ref"
+                        }
+                    ],
+                    "label": "try out",
+                    "editor": "listpane"
+                },
+                {
+                    "attributes": [
+                        {
+                            "code": "name",
+                            "type": "string",
+                            "editor": "string"
+                        },
+                        {
+                            "code": "template",
+                            "visible": false,
+                            "type": "string",
+                            "editor": "string"
+                        },
+                        {
+                            "code": "parent",
+                            "required": true,
+                            "type": "multi-ref",
+                            "idProperty": "id",
+                            "searchProperty": "name",
+                            "url": "page",
+                            "usage": "html",
+                            "typeProperty": "template",
+                            "schemas": [],
+                            "query": {"template": {"$regex": ".*[fF]older.*"}},
+                            "editor": "multi-page-ref"
+                        },
+                        {
+                            "code": "id",
+                            "disabled": true,
+                            "type": "number",
+                            "editor": "number"
+                        }
+                    ],
+                    "label": "general",
+                    "editor": "listpane"
+                },
+                {
+                    "attributes": [
+                        {
+                            "code": "general",
+                            "template": "tutorial",
+                            "outer": true,
+                            "type": "ref",
+                            "editor": "template-ref"
+                        }
+                    ],
+                    "label": "tutorial",
+                    "editor": "listpane"
+                }
+            ],
+            "editor": "tab"
+        }
+    },
+    {
+        "name": "embed-partial-example",
+        "id": "embed-partial-example",
+        "schema": "template",
+        "sourceCode": "{{#page}}\n{{>page extra=../extra}}\n{{/page}}",
+        "partials": {},
+        "partialTemplates": {},
+        "group": {
+            "groups": [
+                {
+                    "attributes": [
+                        {
+                            "code": "page",
+                            "type": "multi-ref",
+                            "idProperty": "id",
+                            "searchProperty": "name",
+                            "url": "page",
+                            "usage": "partial",
+                            "typeProperty": "template",
+                            "schemas": ["Ad"],
+                            "editor": "multi-page-ref"
+                        },
+                        {
+                            "code": "extra",
+                            "type": "string",
+                            "editor": "textarea"
+                        }
+                    ],
+                    "label": "try out",
+                    "editor": "listpane"
+                },
+                {
+                    "attributes": [
+                        {
+                            "code": "name",
+                            "type": "string",
+                            "editor": "string"
+                        },
+                        {
+                            "code": "template",
+                            "visible": false,
+                            "type": "string",
+                            "editor": "string"
+                        },
+                        {
+                            "code": "parent",
+                            "required": true,
+                            "type": "multi-ref",
+                            "idProperty": "id",
+                            "searchProperty": "name",
+                            "url": "page",
+                            "usage": "html",
+                            "typeProperty": "template",
+                            "schemas": [],
+                            "query": {"template": {"$regex": ".*[fF]older.*"}},
+                            "editor": "multi-page-ref"
+                        },
+                        {
+                            "code": "id",
+                            "disabled": true,
+                            "type": "number",
+                            "editor": "number"
+                        }
+                    ],
+                    "label": "general",
+                    "editor": "listpane"
+                },
+                {
+                    "attributes": [
+                        {
+                            "code": "general",
+                            "template": "tutorial",
+                            "outer": true,
+                            "type": "ref",
+                            "editor": "template-ref"
+                        }
+                    ],
+                    "label": "tutorial",
+                    "editor": "listpane"
+                }
+            ],
+            "labelAttribute": "name",
+            "editor": "tab"
+        }
+    },
+    {
+        "name": "first-example",
+        "id": "first-example",
+        "schema": "template",
+        "sourceCode": "<p>{{{text}}}</p>\n",
+        "partials": {},
+        "partialTemplates": {},
+        "group": {
+            "groups": [
+                {
+                    "attribute": {
+                        "code": "text",
+                        "updateInterval": "100",
+                        "height": "200px",
+                        "plugins": [
+                            {"name": "undo"},
+                            {"name": "redo"},
+                            {"name": "bold"},
+                            {"name": "italic"},
+                            {"name": "underline"},
+                            {"name": "strikethrough"},
+                            {"name": "subscript"},
+                            {"name": "superscript"},
+                            {"name": "removeFormat"},
+                            {"name": "insertOrderedList"},
+                            {"name": "insertUnorderedList"},
+                            {"name": "insertHorizontalRule"},
+                            {"name": "indent"},
+                            {"name": "outdent"},
+                            {"name": "justifyLeft"},
+                            {"name": "justifyCenter"},
+                            {"name": "justifyRight"},
+                            {"name": "createLink"},
+                            {"name": "dijit/_editor/plugins/FullScreen"},
+                            {"name": "dijit/_editor/plugins/AlwaysShowToolbar"}
+                        ],
+                        "type": "string",
+                        "editor": "richtext"
+                    },
+                    "label": "try out",
+                    "editor": "single"
+                },
+                {
+                    "attributes": [
+                        {
+                            "code": "name",
+                            "type": "string",
+                            "editor": "string"
+                        },
+                        {
+                            "code": "template",
+                            "visible": false,
+                            "type": "string",
+                            "editor": "string"
+                        },
+                        {
+                            "code": "parent",
+                            "required": true,
+                            "type": "multi-ref",
+                            "idProperty": "id",
+                            "searchProperty": "name",
+                            "url": "page",
+                            "usage": "html",
+                            "typeProperty": "template",
+                            "schemas": [],
+                            "query": {"template": {"$regex": ".*[fF]older.*"}},
+                            "editor": "multi-page-ref"
+                        },
+                        {
+                            "code": "id",
+                            "disabled": true,
+                            "type": "number",
+                            "editor": "number"
+                        }
+                    ],
+                    "label": "general",
+                    "editor": "listpane"
+                },
+                {
+                    "attributes": [
+                        {
+                            "code": "general",
+                            "required": true,
+                            "template": "tutorial",
+                            "outer": true,
+                            "type": "ref",
+                            "editor": "template-ref"
+                        }
+                    ],
+                    "label": "tutorial",
+                    "editor": "listpane"
+                }
+            ],
+            "labelAttribute": "name",
+            "editor": "tab"
+        }
+    },
+    {
+        "name": "folder",
+        "id": "folder",
+        "schema": "template",
+        "sourceCode": null,
+        "partials": {},
+        "partialTemplates": {},
+        "group": {
+            "attributes": [
+                {
+                    "code": "id",
+                    "disabled": true,
+                    "type": "number",
+                    "editor": "number"
+                },
+                {
+                    "code": "name",
+                    "type": "string",
+                    "editor": "string"
+                },
+                {
+                    "code": "parent",
+                    "type": "multi-ref",
+                    "idProperty": "id",
+                    "searchProperty": "name",
+                    "url": "page",
+                    "usage": "link",
+                    "typeProperty": "template",
+                    "schemaUrlPrefix": "",
+                    "schemas": [],
+                    "query": {"template": {"$regex": ".*[fF]older.*"}},
+                    "editor": "multi-page-ref"
+                },
+                {
+                    "code": "template",
+                    "type": "string",
+                    "editor": "string",
+                    "visible": false
+                }
+            ],
+            "editor": "listpane"
+        }
+    },
+    {
+        "name": "link-example",
+        "id": "link-example",
+        "schema": "template",
+        "sourceCode": "\n<script src=\"gform-app/controller/mock.js\"></script>\ngo to <a href=\"{{link link}}\">Documentation</a>.\n",
+        "partials": {},
+        "partialTemplates": {},
+        "group": {
+            "groups": [
+                {
+                    "attributes": [
+                        {
+                            "code": "link",
+                            "type": "multi-ref",
+                            "idProperty": "id",
+                            "searchProperty": "name",
+                            "url": "page",
+                            "usage": "link",
+                            "typeProperty": "template",
+                            "schemas": [],
+                            "editor": "multi-page-ref"
+                        }
+                    ],
+                    "label": "try out",
+                    "editor": "listpane"
+                },
+                {
+                    "attributes": [
+                        {
+                            "code": "name",
+                            "type": "string",
+                            "editor": "string"
+                        },
+                        {
+                            "code": "template",
+                            "visible": false,
+                            "type": "string",
+                            "editor": "string"
+                        },
+                        {
+                            "code": "parent",
+                            "required": true,
+                            "type": "multi-ref",
+                            "idProperty": "id",
+                            "searchProperty": "name",
+                            "url": "page",
+                            "usage": "html",
+                            "typeProperty": "template",
+                            "schemas": [],
+                            "query": {"template": {"$regex": ".*[fF]older.*"}},
+                            "editor": "multi-page-ref"
+                        },
+                        {
+                            "code": "id",
+                            "disabled": true,
+                            "type": "number",
+                            "editor": "number"
+                        }
+                    ],
+                    "label": "general",
+                    "editor": "listpane"
+                },
+                {
+                    "attributes": [
+                        {
+                            "code": "general",
+                            "template": "tutorial",
+                            "outer": true,
+                            "type": "ref",
+                            "editor": "template-ref"
+                        }
+                    ],
+                    "label": "tutorial",
+                    "editor": "listpane"
+                }
+            ],
+            "editor": "tab"
+        }
+    },
+    {
+        "name": "multi-array-template-example",
+        "id": "multi-array-template-example",
+        "schema": "template",
+        "sourceCode": "<ul>\n{{#embedded}}\n    <li>\n    {{> (lookup . '__type__')}}\n    </li>\n{{/embedded}}\n</ul>",
+        "partials": {},
+        "partialTemplates": {},
+        "group": {
+            "detailGroup": {
+                "groups": [
+                    {
+                        "attributes": [
+                            {
+                                "code": "name",
+                                "type": "string",
+                                "editor": "string"
+                            },
+                            {
+                                "code": "template",
+                                "visible": false,
+                                "type": "string",
+                                "editor": "string"
+                            },
+                            {
+                                "code": "parent",
+                                "required": true,
+                                "type": "multi-ref",
+                                "idProperty": "id",
+                                "searchProperty": "name",
+                                "url": "page",
+                                "usage": "html",
+                                "typeProperty": "template",
+                                "schemas": [],
+                                "query": {"template": {"$regex": ".*[fF]older.*"}},
+                                "editor": "multi-page-ref"
+                            },
+                            {
+                                "code": "id",
+                                "disabled": true,
+                                "type": "number",
+                                "editor": "number"
+                            }
+                        ],
+                        "label": "general",
+                        "editor": "listpane"
+                    },
+                    {
+                        "attributes": [
+                            {
+                                "code": "general",
+                                "template": "tutorial",
+                                "outer": true,
+                                "type": "ref",
+                                "editor": "template-ref"
+                            }
+                        ],
+                        "label": "tutorial",
+                        "editor": "listpane"
+                    }
+                ],
+                "editor": "tab"
+            },
+            "nodeAttributes": [
+                {
+                    "code": "embedded",
+                    "type": "array",
+                    "element": {
+                        "templates": [
+                            "alert",
+                            "paragraph",
+                            "callout"
+                        ],
+                        "type": "ref",
+                        "editor": "multi-template-ref"
+                    },
+                    "editor": "primitive-array"
+                }
+            ],
+            "labelAttribute": "name",
+            "editor": "tree"
+        }
+    },
+    {
+        "name": "multi-template-example",
+        "id": "multi-template-example",
+        "schema": "template",
+        "sourceCode": "{{#embedded}}\n{{> (lookup . '__type__')}}\n{{/embedded}}",
+        "partials": {},
+        "partialTemplates": {},
+        "group": {
+            "groups": [
+                {
+                    "attribute": {
+                        "code": "embedded",
+                        "required": true,
+                        "templates": [
+                            "callout",
+                            "alert",
+                            "paragraph"
+                        ],
+                        "layout": true,
+                        "type": "ref",
+                        "editor": "multi-template-ref"
+                    },
+                    "label": "try out",
+                    "editor": "single"
+                },
+                {
+                    "attributes": [
+                        {
+                            "code": "name",
+                            "type": "string",
+                            "editor": "string"
+                        },
+                        {
+                            "code": "template",
+                            "visible": false,
+                            "type": "string",
+                            "editor": "string"
+                        },
+                        {
+                            "code": "parent",
+                            "required": true,
+                            "type": "multi-ref",
+                            "idProperty": "id",
+                            "searchProperty": "name",
+                            "url": "page",
+                            "usage": "html",
+                            "typeProperty": "template",
+                            "schemas": [],
+                            "query": {"template": {"$regex": ".*[fF]older.*"}},
+                            "editor": "multi-page-ref"
+                        },
+                        {
+                            "code": "id",
+                            "disabled": true,
+                            "type": "number",
+                            "editor": "number"
+                        }
+                    ],
+                    "label": "general",
+                    "editor": "listpane"
+                },
+                {
+                    "attributes": [
+                        {
+                            "code": "general",
+                            "required": true,
+                            "template": "tutorial",
+                            "outer": true,
+                            "type": "ref",
+                            "editor": "template-ref"
+                        }
+                    ],
+                    "label": "tutorial",
+                    "editor": "listpane"
+                }
+            ],
+            "labelAttribute": "name",
+            "editor": "tab"
+        }
+    },
+    {
+        "name": "navbar",
+        "id": "navbar",
+        "schema": "template",
+        "sourceCode": "<nav class=\"navbar navbar-default\">\n <div class=\"container-fluid\">\n <!-- Brand and toggle get grouped for better mobile display -->\n <div class=\"navbar-header\">\n <button type=\"button\" class=\"navbar-toggle collapsed\" data-toggle=\"collapse\" data-target=\"#bs-example-navbar-collapse-1\">\n <span class=\"sr-only\">Toggle navigation</span>\n <span class=\"icon-bar\"></span>\n <span class=\"icon-bar\"></span>\n <span class=\"icon-bar\"></span>\n </button>\n <a class=\"navbar-brand\" href=\"#\">{{brand}}</a>\n </div>\n\n <!-- Collect the nav links, forms, and other content for toggling -->\n <div class=\"collapse navbar-collapse\" id=\"bs-example-navbar-collapse-1\">\n <ul class=\"nav navbar-nav\">\n {{#navItems}} \n <li {{#equals ../selectedNavItem label}}class=\"active\"{{/equals}}><a href=\"{{link page}}\">{{label}}</a></li>\n {{/navItems}}\n </div><!-- /.navbar-collapse -->\n </div><!-- /.container-fluid -->\n</nav>",
+        "partials": {},
+        "partialTemplates": {},
+        "group": {
+            "attributes": [
+                {
+                    "code": "brand",
+                    "type": "string",
+                    "editor": "string"
+                },
+                {
+                    "code": "navItems",
+                    "type": "array",
+                    "group": {
+                        "attributes": [
+                            {
+                                "code": "label",
+                                "type": "string",
+                                "editor": "string"
+                            },
+                            {
+                                "code": "page",
+                                "type": "multi-ref",
+                                "idProperty": "id",
+                                "searchProperty": "name",
+                                "url": "page",
+                                "usage": "link",
+                                "typeProperty": "template",
+                                "schemas": [],
+                                "editor": "multi-page-ref"
+                            }
+                        ],
+                        "editor": "listpane"
+                    },
+                    "editor": "array"
+                },
+                {
+                    "code": "template",
+                    "type": "string",
+                    "editor": "string"
+                },
+                {
+                    "code": "parent",
+                    "type": "multi-ref",
+                    "idProperty": "id",
+                    "searchProperty": "name",
+                    "url": "page",
+                    "schemas": [],
+                    "editor": "multi-ref"
+                },
+                {
+                    "code": "name",
+                    "type": "string",
+                    "editor": "string"
+                },
+                {
+                    "code": "id",
+                    "type": "number",
+                    "editor": "number"
+                }
+            ],
+            "editor": "listpane"
+        }
+    },
+    {
+        "name": "outer-example",
+        "id": "outer-example",
+        "schema": "template",
+        "sourceCode": "Just some static text!",
+        "partials": {},
+        "partialTemplates": {},
+        "group": {
+            "groups": [
+                {
+                    "attributes": [
+                        {
+                            "code": "general",
+                            "template": "tutorial",
+                            "outer": true,
+                            "type": "ref",
+                            "editor": "template-ref"
+                        }
+                    ],
+                    "label": "tutorial",
+                    "editor": "listpane"
+                },
+                {
+                    "attributes": [
+                        {
+                            "code": "name",
+                            "type": "string",
+                            "editor": "string"
+                        },
+                        {
+                            "code": "template",
+                            "visible": false,
+                            "type": "string",
+                            "editor": "string"
+                        },
+                        {
+                            "code": "parent",
+                            "required": true,
+                            "type": "multi-ref",
+                            "idProperty": "id",
+                            "searchProperty": "name",
+                            "url": "page",
+                            "usage": "html",
+                            "typeProperty": "template",
+                            "schemas": [],
+                            "query": {"template": {"$regex": ".*[fF]older.*"}},
+                            "editor": "multi-page-ref"
+                        },
+                        {
+                            "code": "id",
+                            "disabled": true,
+                            "type": "number",
+                            "editor": "number"
+                        }
+                    ],
+                    "label": "general",
+                    "editor": "listpane"
+                }
+            ],
+            "labelAttribute": "name",
+            "editor": "tab"
+        }
+    },
+    {
+        "name": "page",
+        "id": "page",
+        "schema": "template",
+        "sourceCode": "Moinsen Hallo Ballo {{{text}}}{{../text}}",
+        "partials": {},
+        "partialTemplates": {},
+        "group": {
+            "groups": [
+                {
+                    "attributes": [
+                        {
+                            "code": "name",
+                            "type": "string",
+                            "editor": "string"
+                        },
+                        {
+                            "code": "id",
+                            "disabled": true,
+                            "type": "number",
+                            "editor": "number"
+                        },
+                        {
+                            "code": "xx",
+                            "type": "array",
+                            "element": {
+                                "type": "string",
+                                "editor": "string"
+                            },
+                            "editor": "primitive-array"
+                        }
+                    ],
+                    "region": "top",
+                    "editor": "listpane"
+                },
+                {
+                    "groups": [
+                        {
+                            "attributes": [
+                                {
+                                    "code": "parent",
+                                    "required": true,
+                                    "type": "multi-ref",
+                                    "idProperty": "id",
+                                    "searchProperty": "name",
+                                    "url": "page",
+                                    "typeProperty": "template",
+                                    "schemas": [],
+                                    "editor": "multi-ref"
+                                },
+                                {
+                                    "code": "main",
+                                    "required": true,
+                                    "template": "main",
+                                    "outer": true,
+                                    "type": "ref",
+                                    "editor": "template-ref"
+                                },
+                                {
+                                    "code": "template",
+                                    "visible": false,
+                                    "type": "string",
+                                    "editor": "string"
+                                }
+                            ],
+                            "label": "general",
+                            "editor": "listpane"
+                        },
+                        {
+                            "attribute": {
+                                "code": "text",
+                                "updateInterval": "100",
+                                "height": "500px",
+                                "plugins": [
+                                    {"name": "undo"},
+                                    {"name": "redo"},
+                                    {"name": "bold"},
+                                    {"name": "italic"},
+                                    {"name": "underline"},
+                                    {"name": "strikethrough"},
+                                    {"name": "subscript"},
+                                    {"name": "superscript"},
+                                    {"name": "removeFormat"},
+                                    {"name": "insertOrderedList"},
+                                    {"name": "insertUnorderedList"},
+                                    {"name": "insertHorizontalRule"},
+                                    {"name": "indent"},
+                                    {"name": "outdent"},
+                                    {"name": "justifyLeft"},
+                                    {"name": "justifyCenter"},
+                                    {"name": "justifyRight"}
+                                ],
+                                "type": "string",
+                                "editor": "richtext"
+                            },
+                            "label": "dfdf",
+                            "editor": "single"
+                        }
+                    ],
+                    "region": "center",
+                    "editor": "tab"
+                }
+            ],
+            "editor": "verticalgroup"
+        }
+    },
+    {
+        "name": "bs-doc-tree",
+        "id": "test-tree",
+        "schema": "template",
+        "sourceCode": "\n<div class=\"container\"/>\n<div class=\"row\">\n    <div class=\"col-md-9\" style=\"position:relative\">\n        <h1>{{{headline}}}</h1>\n        <p>{{{text}}}</p>\n        {{#sections}}\n            <h2 id=\"nav_{{@index}}\" class=\"page-header\">{{add @index 1}}. {{{headline}}}</h2>\n            {{#blocks}}\n                {{>(lookup . '__type__')}}    \n            {{/blocks}}\n        {{/sections}}\n    </div>\n    <div class=\"col-md-3\">\n        <nav id=\"navigation\" class=\"affix\">\n            <ul class=\"nav\">\n            {{#sections}}\n                <li>\n                    <a href=\"#nav_{{@index}}\">{{headline}}</a>\n                </li>\n            {{/sections}}\n            </ul>\n        </nav>\n    </div>\n</div>\n",
+        "partials": {},
+        "partialTemplates": {},
+        "group": {
+            "detailGroup": {
+                "groups": [
+                    {
+                        "attributes": [
+                            {
+                                "code": "name",
+                                "type": "string",
+                                "editor": "string"
+                            },
+                            {
+                                "code": "template",
+                                "visible": false,
+                                "type": "string",
+                                "editor": "string"
+                            },
+                            {
+                                "code": "parent",
+                                "required": true,
+                                "type": "multi-ref",
+                                "idProperty": "id",
+                                "searchProperty": "name",
+                                "url": "page",
+                                "usage": "html",
+                                "typeProperty": "template",
+                                "schemas": ["folder"],
+                                "query": {"template": {"$regex": ".*[fF]older.*"}},
+                                "editor": "multi-page-ref"
+                            },
+                            {
+                                "code": "id",
+                                "disabled": true,
+                                "type": "number",
+                                "editor": "number"
+                            }
+                        ],
+                        "label": "page",
+                        "editor": "listpane"
+                    },
+                    {
+                        "attributes": [
+                            {
+                                "code": "main",
+                                "template": "main",
+                                "outer": true,
+                                "type": "ref",
+                                "editor": "template-ref"
+                            }
+                        ],
+                        "label": "main",
+                        "editor": "listpane"
+                    },
+                    {
+                        "groups": [
+                            {
+                                "attributes": [
+                                    {
+                                        "code": "headline",
+                                        "type": "string",
+                                        "editor": "string"
+                                    }
+                                ],
+                                "region": "top",
+                                "editor": "listpane"
+                            },
+                            {
+                                "attribute": {
+                                    "code": "text",
+                                    "updateInterval": "100",
+                                    "height": "500px",
+                                    "plugins": [
+                                        {"name": "undo"},
+                                        {"name": "redo"},
+                                        {"name": "bold"},
+                                        {"name": "italic"},
+                                        {"name": "underline"},
+                                        {"name": "strikethrough"},
+                                        {"name": "subscript"},
+                                        {"name": "superscript"},
+                                        {"name": "removeFormat"},
+                                        {"name": "insertOrderedList"},
+                                        {"name": "insertUnorderedList"},
+                                        {"name": "insertHorizontalRule"},
+                                        {"name": "indent"},
+                                        {"name": "outdent"},
+                                        {"name": "justifyLeft"},
+                                        {"name": "justifyCenter"},
+                                        {"name": "justifyRight"},
+                                        {"name": "createLink"},
+                                        {"name": "dijit/_editor/plugins/FullScreen"},
+                                        {"name": "dijit/_editor/plugins/AlwaysShowToolbar"},
+                                        {"name": "dijit._editor.plugins.ViewSource"}
+                                    ],
+                                    "type": "string",
+                                    "editor": "richtext"
+                                },
+                                "region": "center",
+                                "editor": "single"
+                            }
+                        ],
+                        "label": "content",
+                        "editor": "verticalgroup"
+                    }
+                ],
+                "editor": "tab"
+            },
+            "nodeAttributes": [
+                {
+                    "code": "sections",
+                    "type": "array",
+                    "group": {
+                        "detailGroup": {
+                            "attributes": [
+                                {
+                                    "code": "headline",
+                                    "type": "string",
+                                    "editor": "string"
+                                }
+                            ],
+                            "editor": "listpane"
+                        },
+                        "nodeAttributes": [
+                            {
+                                "code": "blocks",
+                                "type": "array",
+                                "element": {
+                                    "templates": [
+                                        "paragraph",
+                                        "callout",
+                                        "alert",
+                                        "linklist"
+                                    ],
+                                    "type": "ref",
+                                    "editor": "multi-template-ref"
+                                },
+                                "editor": "primitive-array"
+                            }
+                        ],
+                        "editor": "tree"
+                    },
+                    "editor": "array"
+                }
+            ],
+            "editor": "tree"
+        }
+    },
+    {
+        "name": "test-tree-xx",
+        "id": "test-tree-xx",
+        "schema": "template",
+        "sourceCode": "{{#x}}\n{{z}}-{{y}}\n{{/x}}",
+        "partials": {},
+        "partialTemplates": {},
+        "group": {
+            "groups": [
+                {
+                    "attributes": [
+                        {
+                            "code": "name",
+                            "type": "string",
+                            "editor": "string"
+                        },
+                        {
+                            "code": "template",
+                            "visible": false,
+                            "type": "string",
+                            "editor": "string"
+                        },
+                        {
+                            "code": "parent",
+                            "required": true,
+                            "type": "multi-ref",
+                            "idProperty": "id",
+                            "searchProperty": "name",
+                            "url": "page",
+                            "usage": "html",
+                            "typeProperty": "template",
+                            "schemas": [],
+                            "query": {"template": {"$regex": ".*[fF]older.*"}},
+                            "editor": "multi-page-ref"
+                        },
+                        {
+                            "code": "id",
+                            "disabled": true,
+                            "type": "number",
+                            "editor": "number"
+                        }
+                    ],
+                    "label": "general",
+                    "editor": "listpane"
+                },
+                {
+                    "attributes": [
+                        {
+                            "code": "multi",
+                            "typeProperty": "type",
+                            "type": "object",
+                            "groups": [
+                                {
+                                    "attributes": [
+                                        {
+                                            "code": "dd",
+                                            "type": "string",
+                                            "editor": "string"
+                                        }
+                                    ],
+                                    "editor": "listpane",
+                                    "code": "A"
+                                },
+                                {
+                                    "attributes": [
+                                        {
+                                            "code": "as",
+                                            "type": "string",
+                                            "editor": "string"
+                                        }
+                                    ],
+                                    "editor": "listpane",
+                                    "code": "B"
+                                }
+                            ],
+                            "editor": "multi-object"
+                        },
+                        {
+                            "code": "x",
+                            "type": "object",
+                            "group": {
+                                "groups": [
+                                    {
+                                        "attributes": [
+                                            {
+                                                "code": "z",
+                                                "type": "string",
+                                                "editor": "textarea"
+                                            }
+                                        ],
+                                        "editor": "listpane"
+                                    },
+                                    {
+                                        "attributes": [
+                                            {
+                                                "code": "y",
+                                                "type": "string",
+                                                "editor": "textarea"
+                                            }
+                                        ],
+                                        "editor": "listpane"
+                                    }
+                                ],
+                                "editor": "listgroup"
+                            },
+                            "editor": "object"
+                        }
+                    ],
+                    "label": "multi",
+                    "editor": "listpane"
+                },
+                {
+                    "attributes": [
+                        {
+                            "code": "sections",
+                            "type": "array",
+                            "group": {
+                                "attributes": [
+                                    {
+                                        "code": "text",
+                                        "type": "string",
+                                        "editor": "textarea"
+                                    }
+                                ],
+                                "editor": "listpane"
+                            },
+                            "editor": "array"
+                        }
+                    ],
+                    "label": "sections",
+                    "editor": "listpane"
+                },
+                {
+                    "attributes": [
+                        {
+                            "code": "multi-sections",
+                            "typeProperty": "type",
+                            "groups": [
+                                {
+                                    "attributes": [
+                                        {
+                                            "code": "text",
+                                            "type": "string",
+                                            "editor": "textarea"
+                                        },
+                                        {
+                                            "code": "x",
+                                            "type": "string",
+                                            "editor": "textarea"
+                                        }
+                                    ],
+                                    "editor": "listpane",
+                                    "code": "A"
+                                },
+                                {
+                                    "attributes": [
+                                        {
+                                            "code": "x",
+                                            "type": "string",
+                                            "editor": "textarea"
+                                        }
+                                    ],
+                                    "editor": "listpane",
+                                    "code": "B"
+                                }
+                            ],
+                            "editor": "multi-array"
+                        }
+                    ],
+                    "label": "multi-sections",
+                    "editor": "listpane"
+                }
+            ],
+            "editor": "tab"
+        }
     }
-  }
 ]

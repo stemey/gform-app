@@ -5,16 +5,23 @@ define([
 
 
     var initHb = function () {
+
+        function boolExpr(bool, options, ctx) {
+            if (options.fn) {
+                if (bool) {
+                    return options.fn(ctx);
+                }
+            } else {
+                return bool;
+            }
+        }
+
         // TODO extract helpers to custom and standard configuration folders
         Handlebars.registerHelper('equals', function (a, b, options) {
-            if (a == b) {
-                return options.fn(this);
-            }
+            return boolExpr(a == b,options,this);
         });
         Handlebars.registerHelper('gt', function (a, b, options) {
-            if (a > b) {
-                return options.fn(this);
-            }
+            return boolExpr(a > b,options,this);
         });
         Handlebars.registerHelper("add", function(lvalue, rvalue, options) {
             lvalue = parseFloat(lvalue);
@@ -50,9 +57,8 @@ define([
 
         });
         Handlebars.registerHelper('gte', function (a, b, options) {
-            if (a >= b) {
-                return options.fn(this);
-            }
+            return boolExpr(a >= b,options,this);
+
         });
         Handlebars.registerHelper('style-tag', function (styles, options) {
             return "<style>" + styles + "</style>"

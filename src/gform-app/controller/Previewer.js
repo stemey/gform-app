@@ -27,16 +27,13 @@ define([
             topic.subscribe("/modify/cancel", lang.hitch(this, "onModifyCancel"));
         },
         onPageFocus: function (evt) {
-            this.display(evt.store + "/" + evt.id);
+            this.onEvent(evt);
         },
         onModifyCancel: function (evt) {
-            var url = evt.store + "/" + evt.id;
-            if (this.url === url) {
-                this.display(url);
-            }
+            this.onEvent(evt);
         },
         onPageUpdated: function (evt) {
-            this.display(evt.store + "/" + evt.id);
+            this.onEvent(evt);
         },
         onPageDeleted: function (evt) {
             // TODO display nothing?
@@ -57,6 +54,12 @@ define([
             });
         },
         rendering: false,
+        onEvent: function (evt) {
+            if (evt && this.pageStore.name == evt.store) {
+                var url = evt.store + "/" + evt.id;
+                this.display(url);
+            }
+        },
         display: function (url) {
             console.log("render preview");
             try {
@@ -103,11 +106,10 @@ define([
             }
 
         },
-        displayById: function (id) {
-            this.display("/page/" + id);
-        },
         onModifyUpdate: function () {
-            this.display(this.url);
+            if (this.url) {
+                this.display(this.url);
+            }
         }
     });
 })

@@ -1,11 +1,12 @@
 define([
 
+        '../../controller/tools/Link',
         '../../cms/createValueFactory',
         '../../controller/gridactions/Delete',
         '../../controller/gridactions/OpenAsJson',
         '../../jcr/TemplateStore',
         '../../util/ToMongoQueryTransform', '../../util/LoadRichtextPlugins'
-    ], function (createValueFactory, Delete, OpenAsJson, TemplateStore, ToMongoQueryTransform) {
+    ], function (Link, createValueFactory, Delete, OpenAsJson, TemplateStore, ToMongoQueryTransform) {
 
 
 
@@ -160,6 +161,14 @@ define([
                                 {
                                     "factoryId": "gform-app/factory/SelectViewFactory",
                                     "label": "view"
+                                },
+                                {
+                                    "factoryId": "gform-app/factory/WidgetFactory",
+                                    "widgetClass": Link,
+                                    "label": "github",
+                                    "iconClass":"fa fa-github",
+                                    "style":"float:right;padding-right:10px;",
+                                    "url":"http://github.com/stemey/gform-app"
                                 }
 
                             ]
