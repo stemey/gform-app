@@ -24,6 +24,7 @@ define(['dojo/_base/lang',
 						{
 							"code": this.idProperty,
 							"type": this.idType,
+                            "editor":this.idType,
 							"disabled":!this._isAssignableId(model)
 						},
 						{

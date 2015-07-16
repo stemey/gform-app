@@ -41,7 +41,7 @@ define([
 		af.add({type: DiscardAndPreview})
 		af.add({type: Delete})
 		af.add({type: Close});
-		af.add({type: PreviewButton});
+		//af.add({type: PreviewButton});
 
 		ef.actionFactory = af;
 

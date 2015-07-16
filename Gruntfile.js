@@ -52,14 +52,10 @@ module.exports = function (grunt) {
                     }
                 },
                 files: [{
-                    src: path.join('src', 'mongodb.html'),
-                    dest: path.join('dist', 'mongodb.html')
-                }, {
-                    src: path.join('src', 'cms-jcr.html'),
-                    dest: path.join('dist', 'cms-jcr.html')
-                }, {
-                    src: path.join('src', 'cms.html'),
-                    dest: path.join('dist', 'cms.html')
+                    expand:true,
+                    cwd:'src',
+                    src: ['*.html'],
+                    dest: 'dist'
                 }]
             }
         },

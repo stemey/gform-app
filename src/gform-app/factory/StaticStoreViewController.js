@@ -13,7 +13,6 @@ define([
             return new ExtendedGridFactory();
         },
         start: function (container, ctx, config, promise) {
-            this.creator = new OnDemandViewCreator({ctx: ctx, container: container});
             this.promise = promise;
             this.factory = this.createGridFactory();
             this.config = config;
@@ -53,7 +52,7 @@ define([
                     return me.createView(meta, schema);
                 }
             }
-            this.creator.create(creator);
+            return new OnDemandViewCreator({ctx:this.ctx,container:this.container,creator:creator});
         },
         addStore: function (meta) {
             // TODO respect the order of the stores

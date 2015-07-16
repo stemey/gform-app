@@ -1,4 +1,5 @@
 define([
+        '../factory/ExtendedGridFactory',
         'gform-app/controller/tools/Link',
         '../mongodb/SchemaGenerator',
 		'../factory/tools/HelpFactory',
@@ -46,7 +47,7 @@ define([
 		"dijit/_editor/plugins/TextColor",
 		"dijit/_editor/plugins/ViewSource",
 		"dijit/_editor/plugins/Print"
-	], function (Link, SchemaGenerator, HelpFactory, SelectViewFactory, BrandFactory, createEditorFactory, DynamicResourceFactory, MetaSchemaGenerator, StaticSchemaGenerator, SchemaRegistryFactory, createSchemaEditorFactory, createCollectionEditorFactory, createMdbServerEditorFactory, MongoRest, JcrTemplateRest, StoreFactory, JsonRest, Delete, OpenAsJson, SchemaStore, TemplateStore, ToMongoQueryTransform) {
+	], function (ExtendedGridFactory, Link, SchemaGenerator, HelpFactory, SelectViewFactory, BrandFactory, createEditorFactory, DynamicResourceFactory, MetaSchemaGenerator, StaticSchemaGenerator, SchemaRegistryFactory, createSchemaEditorFactory, createCollectionEditorFactory, createMdbServerEditorFactory, MongoRest, JcrTemplateRest, StoreFactory, JsonRest, Delete, OpenAsJson, SchemaStore, TemplateStore, ToMongoQueryTransform) {
 
 
 		return function (config) {
@@ -234,6 +235,7 @@ define([
 									"storeId": "/mdbcollection",
 									"schemaStoreId": "/mdbschema",
 									"groupProperty": "db",
+                                    "factory":new ExtendedGridFactory(),
 									"gridConfig": {
 										"gridxQueryTransform": new ToMongoQueryTransform(),
 										"menuItems": [

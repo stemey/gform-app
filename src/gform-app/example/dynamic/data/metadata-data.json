@@ -1,12 +1,23 @@
 [
 	{
 		"id": 1,
-		"name": "test",
+		"name": "single schema store",
 		"store":"test",
-		"description":null,
+		"description":"An example store.",
 		"schema":{
 			"schemaType":"single-schema",
 			"schema":1
 		}
-	}
+	},
+    {
+        "id": 2,
+        "name": "multiple schema store",
+        "store":"test",
+        "description":"An example store.",
+        "schema":{
+            "schemaType":"multi-schema",
+            "typeProperty":"type",
+            "schemas":[1]
+        }
+    }
 ]

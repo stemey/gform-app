@@ -39,7 +39,7 @@ define([
             }
 
 
-            return  this.schemaGenerator.load(baseSchema, "gform/schema/", t, values);
+            return  this.schemaGenerator.load(baseSchema, "gform-app/example/cms/", t, values);
         }
     });
 

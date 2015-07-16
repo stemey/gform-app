@@ -11,7 +11,6 @@ define([
 	return declare([ContainerFactory], {
 		create: function (ctx, config) {
 			var container = new StackContainer();
-			var onDemandViewCreator = new OnDemandViewCreator({ctx:ctx, container: container});
 			container.set("style", {width: config.width || "200px", height: "100%"});
 			config.children.forEach(function (config) {
 				// TODO move to child
@@ -41,8 +40,8 @@ define([
 							return view;
 						}
 					}
-					onDemandViewCreator.create(creator);
-					d.resolve(creator);
+                    var onDemandViewCreator = new OnDemandViewCreator({creator:creator,ctx:ctx, container: container});
+                    d.resolve("done");
 				});
 			});
 

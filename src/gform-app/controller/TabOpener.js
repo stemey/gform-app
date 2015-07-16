@@ -91,6 +91,9 @@ define(['dojo/aspect',
         createSingle: function (param) {
             if (!this.opening) {
                 var evt = {store: param.url}
+                if (param.value) {
+                    evt.value=param.value;
+                }
                 if (Array.isArray(param.schemaUrls) && param.schemaUrls.length > 0) {
                     evt.schemaUrls = param.schemaUrls;
                 }
@@ -105,7 +108,7 @@ define(['dojo/aspect',
                 var schemaUrls;
                 if (param.schemaUrls && Array.isArray(param.schemaUrls) && param.schemaUrls.length>0) {
                     evt.schemaUrls = param.schemaUrls;
-                } 
+                }
                 topic.publish("/focus", evt);
             } else {
                 this.inherited(arguments);

@@ -53,6 +53,7 @@ define({
 			{ name: 'dijit', location: 'src/dijit' },
 			{ name: 'dojox', location: 'src/dojox' },
 			{ name: 'gform-app', location: 'src/gform-app' },
+            { name: 'gridx', location: 'src/gridx' },
             { name: 'gform', location: 'src/gform' },
             { name: 'mustache', location: 'src/mustache' },
             { name: 'handlebars', location: 'src/handlebars' }

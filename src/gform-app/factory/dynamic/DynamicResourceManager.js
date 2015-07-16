@@ -59,6 +59,7 @@ define([
 					topic.publish("/store/updated", {store: store.name});
 				});
 			})
+            /*
 			topic.subscribeStore("/updated", function (e) {
 				when(me.metaStore.get(e.id)).then(function (result) {
 					var store = me.updateMeta(result);
@@ -66,6 +67,7 @@ define([
 				})
 				// TODO his needs to be configurable
 			}, ["/mdbcollection"]);
+			*/
 
 
 		},

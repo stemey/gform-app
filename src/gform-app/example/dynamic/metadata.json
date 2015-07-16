@@ -48,7 +48,7 @@
 							"code": "schema",
 							"typeProperty": "schemaType",
 							"nullLabel": "no schema",
-							"groups": [
+                            "groups": [
 								{
 									"code": "multi-schema",
 									"label": "multiple schemas",

@@ -3,6 +3,7 @@
     "code": "attributes",
     "description":"An array of attributes.",
     "type": "array",
+    "uniqueItem":true,
     "element": {
         "type": "string",
         "editor": "attribute-ref",

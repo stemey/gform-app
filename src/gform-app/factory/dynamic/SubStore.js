@@ -1,8 +1,9 @@
 define([
-	'dojo/_base/lang',
+    'dojo/when',
+    'dojo/_base/lang',
 	'dojo/Deferred',
 	"dojo/_base/declare"
-], function (lang, Deferred, declare) {
+], function (when, lang, Deferred, declare) {
 
 
 	return new declare([], {
@@ -19,7 +20,7 @@ define([
 			var d = new Deferred();
 			var schemaStore=this.schemaStore;
 			var meta = this.meta;
-			p.then(function (results) {
+			when(p).then(function (results) {
 				var filtered = results.filter(function (e) {
 					var id = schemaStore.getIdentity(e);
 					return meta.schema.schemas.indexOf(id) >= 0;

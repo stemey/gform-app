@@ -10,13 +10,13 @@ applications built with gfom-app
  
 **mongomat**
 
-An admin ui for mongodb: [More](http://github.com/stemey/mongomat)
+An admin ui for mongodb ([More](http://github.com/stemey/mongomat))
 This is an example of the dynamic resources approach. Stores and schemas can be created and modified at runtime.
 
  
 **mongoose admin example**
 
-An example of how to create an admin ui for [mongoose](http://mongoosejs.com/): [More](http://github.com/stemey/mongoose-administration-example).
+An example of how to create an admin ui for [mongoose](http://mongoosejs.com/) ([More](http://github.com/stemey/mongoose-administration-example)).
 This is an example of the static resources approach. All stores and schemas are defined externally and do not
 change.
 
@@ -78,7 +78,7 @@ Test
 grunt test
 ```
 
-open in browser: node_modules/intern/client.html?config=src/gform-app/tests/intern
+open in browser: /node_modules/intern/client.html?config=src/gform-app/tests/intern
 
 
 Documentation
