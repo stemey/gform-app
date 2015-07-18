@@ -4,5 +4,5 @@
     "description": "An attribute.",
     "type": "string",
     "editor": "attribute-ref",
-    "required": "true"
+    "required": true
 }
