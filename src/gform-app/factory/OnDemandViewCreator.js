@@ -23,7 +23,6 @@ define([
                         throw "needs to return a widget";
                     }
                     this.container.addChild(this.widget);
-                    this.watchHandle.remove();
                 }
                 this.container.selectChild(this.widget);
             }

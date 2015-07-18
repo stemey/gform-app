@@ -173,9 +173,9 @@ define([
 				transformer: transformer
 			});
 			transformedSchemaStore.name = filterStore.name;
-			transformedSchemaStore.typeProperty = meta.schema.typeProperty;
-			transformedSchemaStore.idProperty = store.idProperty;
-			transformedSchemaStore.getIdentity = store.getIdentity.bind(store);
+			transformedSchemaStore.template = this.schemaStore.template;
+			transformedSchemaStore.idProperty = this.schemaStore.idProperty;
+			transformedSchemaStore.getIdentity = this.schemaStore.getIdentity.bind(this.schemaStore);
 			transformedSchemaStore.instanceStore = store.name;
 
 			this.ctx.addSchemaStore(transformedSchemaStore.name, transformedSchemaStore)

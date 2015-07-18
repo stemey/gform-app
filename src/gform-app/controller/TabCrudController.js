@@ -17,9 +17,9 @@ define(['dojo/_base/declare',
 		},
 		gotoTemplate: function(evt) {
 			var template = this.schemaSelector.get("value");
-			var templateStore = this.store.templateStore;
+			var templateStore =this.editor.ctx.getStore(this.store.templateStore);
 			if (template && this.editor.ctx && this.editor.ctx.opener ) {
-				this.editor.ctx.opener.openSingle({url:templateStore, typeProperty:templateStore.typeProperty,id:template});
+				this.editor.ctx.opener.openSingle({url:this.store.templateStore, typeProperty:templateStore.typeProperty,id:template});
 			}
 		},
 		getFallbackSchema: function () {
