@@ -12,7 +12,7 @@
     {
         "id": 2,
         "name": "multiple schema store",
-        "store":"test",
+        "store":"multi-test",
         "description":"An example store.",
         "schema":{
             "schemaType":"multi-schema",

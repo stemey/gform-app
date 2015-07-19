@@ -1,0 +1,12 @@
+[
+	{
+		"id": 1,
+		"text-list":["some","text","example"],
+        "type":"4"
+	},
+	{
+		"id": 2,
+		"text":"A long text",
+        "type":"3"
+	}
+]

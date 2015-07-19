@@ -114,9 +114,10 @@
                     "code": "text-list",
                     "type": "array",
                     "element": {
-                        "type": "string"
+                        "type": "string",
+                        "editor":"string"
                     },
-                    "editor": "primitive-arry"
+                    "editor": "primitive-array"
                 },
                 {
                     "code": "type",

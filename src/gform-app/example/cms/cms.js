@@ -149,10 +149,10 @@ define([
                                     "valueFactory": createPartialValueFactory,
                                     "includedStoreIds": ["partial"]
                                 },
-                                /* {
+                                {
                                  "factoryId": "gform-app/factory/ResetStoreFactory",
                                  "label": "reset store"
-                                 },*/
+                                },
                                 {
                                     "factoryId": "gform-app/factory/ToggleSizeFactory",
                                     "label": "full size",
