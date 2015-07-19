@@ -1,74 +1,74 @@
 [
-	{
-		"id":1,
-		"name": "person",
-		"group": {
-			"attributes": [
-				{
-					"code": "id",
-					"required": false,
-					"disabled": false,
-					"visible": true,
-					"mock": false,
-					"type": "number",
-					"editor": "number"
-				},
-				{
-					"code": "address",
-					"required": false,
-					"type": "object",
-					"editor": "schema-ref",
-					"schema_id":"2",
-					"schema_store":"schema"
-				},
-				{
-					"code": "name",
-					"required": false,
-					"intermediateChanges": true,
-					"type": "string",
-					"editor": "string"
-				},
-				{
-					"code": "friend",
-					"required": false,
-					"disabled": false,
-					"visible": true,
-					"mock": false,
-					"type": "multi-ref",
-					"editor": "multi-entity-ref",
-					"searchProperty": "name",
-					"entity_id": "1",
-					"store_id": "metadata",
-					"schemas": [
-						3
-					]
-				}
-			],
-			"editor": "listpane"
-		}
-	},
-	{
-		"id": 2,
-		"name": "address",
-		"group": {
-			"editor": "listpane",
-			"attributes": [
-				{
-					"code": "street",
-					"type": "string",
-					"editor": "string"
-				},
-				{
-					"code": "zip",
-					"type": "string",
-					"editor": "string"
-				}
-			]
-		}
-	},
+    {
+        "id": 1,
+        "name": "person",
+        "group": {
+            "attributes": [
+                {
+                    "code": "id",
+                    "required": false,
+                    "disabled": false,
+                    "visible": true,
+                    "mock": false,
+                    "type": "number",
+                    "editor": "number"
+                },
+                {
+                    "code": "address",
+                    "required": false,
+                    "type": "object",
+                    "editor": "schema-ref",
+                    "schema_id": "2",
+                    "schema_store": "schema"
+                },
+                {
+                    "code": "name",
+                    "required": false,
+                    "intermediateChanges": true,
+                    "type": "string",
+                    "editor": "string"
+                },
+                {
+                    "code": "friend",
+                    "required": false,
+                    "disabled": false,
+                    "visible": true,
+                    "mock": false,
+                    "type": "multi-ref",
+                    "editor": "multi-entity-ref",
+                    "searchProperty": "name",
+                    "entity_id": "1",
+                    "store_id": "metadata",
+                    "schemas": [
+                        3
+                    ]
+                }
+            ],
+            "editor": "listpane"
+        }
+    },
+    {
+        "id": 2,
+        "name": "address",
+        "group": {
+            "editor": "listpane",
+            "attributes": [
+                {
+                    "code": "street",
+                    "type": "string",
+                    "editor": "string"
+                },
+                {
+                    "code": "zip",
+                    "type": "string",
+                    "editor": "string"
+                }
+            ]
+        }
+    },
     {
         "id": 3,
-        "name": "test",
+        "name": "multi-1",
         "group": {
             "editor": "listpane",
             "attributes": [
@@ -89,7 +89,40 @@
                 {
                     "code": "type",
                     "type": "string",
-                    "editor": "string"
+                    "editor": "string",
+                    "visible":false
+                }
+            ]
+        }
+    },
+    {
+        "id": 4,
+        "name": "multi-2",
+        "group": {
+            "editor": "listpane",
+            "attributes": [
+                {
+                    "code": "id",
+                    "required": false,
+                    "disabled": false,
+                    "visible": true,
+                    "mock": false,
+                    "type": "number",
+                    "editor": "number"
+                },
+                {
+                    "code": "text-list",
+                    "type": "array",
+                    "element": {
+                        "type": "string"
+                    },
+                    "editor": "primitive-arry"
+                },
+                {
+                    "code": "type",
+                    "type": "string",
+                    "editor": "string",
+                    "visible":false
                 }
             ]
         }

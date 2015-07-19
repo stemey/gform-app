@@ -26,12 +26,12 @@ examples
 
 The following examples use localstorage to persist data. Check them out in the browser
 
-**static**
+**[static](http://toobop.net/gform-app/static.html)**
 
 A simple example a single store with a single static schema:
 
 
-**cms4apps**
+**[cms4apps](http://toobop.net/gform-app/cms.html)**
 
 A cms that uses handlebars for rendering.
 
@@ -44,7 +44,7 @@ the pages. This extra information can be mocked in the cms using extra data. For
 user are replaced by static mock data in the cms.
 
 
-**dynamic**
+**[dynamic](http://toobop.net/gform-app/dynamic.html)**
 
 An example of a dynamic resource factory, which provides a way to dynamically create new schemas and stores.
 

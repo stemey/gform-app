@@ -13,7 +13,6 @@ define([], function () {
             nameAttribute.code = "name";
             nameAttribute.type = "string";
             nameAttribute.editor = "string";
-            nameAttribute.visible = false;
             return nameAttribute;
         },
         createPartial: function (templateStore) {

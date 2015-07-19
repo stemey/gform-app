@@ -17,7 +17,7 @@
         "schema":{
             "schemaType":"multi-schema",
             "typeProperty":"type",
-            "schemas":[1]
+            "schemas":[3,4]
         }
     }
 ]
