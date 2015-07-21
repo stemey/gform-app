@@ -49,8 +49,15 @@ define([
 
                 templateSchema: store.template,
                 pageSearchProperty: config.pageSearchProperty || "name",
-                pageTypeProperty: instanceStore.typeProperty
+                pageTypeProperty: instanceStore.typeProperty,
+
+                sourceCodeStore:"file",
+                sourceCodeSchema:"file",
+                sourceCodeSearchProperty:"path",
+                sourceCodeIdProperty:"path"
             }
+
+
 
             var promise = this.schemaGenerator.load(baseSchema, "gform/schema/", t, values);
             when(promise).then(lang.hitch(this, "onTemplateSchemaLoaded", store));

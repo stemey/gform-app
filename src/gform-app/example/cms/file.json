@@ -1,0 +1,53 @@
+{
+    "id": "file",
+    "editor": "verticalgroup",
+    "groups": [
+        {
+            "editor": "columnsgroup",
+            "region": "top",
+            "attributes": [
+                {
+                    "code": "path",
+                    "type": "string",
+                    "required": true
+                },
+                {
+                    "type": "string",
+                    "code": "contentMode",
+                    "label": "content mode",
+                    "required": true,
+                    "values": [
+                        {
+                            "label": "handlebars",
+                            "value": "ace/mode/handlebars"
+                        },
+                        {
+                            "label": "jsx",
+                            "value": "ace/mode/jsx"
+                        },
+                        {
+                            "label": "css",
+                            "value": "ace/mode/css"
+                        },
+                        {
+                            "label": "js",
+                            "value": "ace/mode/javascript"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "editor": "single",
+            "region": "center",
+            "attribute": {
+                "decorator": "none",
+                "code": "content",
+                "editor": "acetext",
+                "type": "string",
+                "modeAttribute": "..contentMode",
+                "autoComplete": true
+            }
+        }
+    ]
+}

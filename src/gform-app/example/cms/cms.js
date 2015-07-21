@@ -14,6 +14,8 @@ define([
         // id of store and schema for templates must be /template. Fixed by template.json
         var TEMPLATE_STORE = TEMPLATE_SCHEMA = "/template";
         var PARTIAL_STORE = "partial";
+        var FILE_STORE = "file";
+        var FILE_SCHEMA = "file"
 
         var PAGE_STORE = "page";
 
@@ -38,6 +40,20 @@ define([
             return {
                 "storeRegistry": {
                     "stores": [
+                        {
+                            "factoryId": "gform-app/factory/DstoreFactory",
+                            "storeClass": "dstore/db/LocalStorage",
+                            "template": FILE_SCHEMA,
+                            "name": "file",
+                            "idProperty": "path",
+                            "idType": "string",
+                            "assignableId": true,
+                            "dstoreConfig": {
+                                "storeName": FILE_STORE
+                            },
+                            "initialDataUrl": "gform-app/example/cms/data/file-data.json",
+                            "createEditorFactory": "gform-app/example/cms/createFileEditorFactory"
+                        },
                         {
                             "factoryId": "gform-app/factory/DstoreFactory",
                             "storeClass": "dstore/db/LocalStorage",
@@ -101,6 +117,10 @@ define([
                         {
                             "factoryId": "gform-app/factory/schema/StaticSchemaGenerator",
                             "module": "gform-app/example/cms/fallbackSchema.json"
+                        },
+                        {
+                            "factoryId": "gform-app/factory/schema/StaticSchemaGenerator",
+                            "module": "gform-app/example/cms/file.json"
                         }
                     ]
                 },
@@ -122,6 +142,11 @@ define([
                             "store": {"region": "left", "width": "50%"},
                             "entity": {"region": "center", width: "100%"},
                             "preview": {"hidden": true, "region": "right"}
+                        },
+                        "file": {
+                            "store": {"region": "left", "width": "50%"},
+                            "entity": {"region": "center", width: "100%"},
+                            "preview": {"hidden": true, "region": "right"}
                         }
                     },
                     "views": [
@@ -136,7 +161,7 @@ define([
                                 {
                                     "factoryId": "gform-app/factory/SingleSchemaCreateFactory",
                                     "label": "add",
-                                    "includedStoreIds": ["page"]
+                                    "includedStoreIds": ["page","file"]
                                 },
                                 {
                                     "factoryId": "gform-app/factory/SingleSchemaCreateFactory",
@@ -266,6 +291,27 @@ define([
                                             "name": "name"
                                         }
                                     ]
+                                },
+                                {
+                                    "factoryId": "gform-app/factory/GridFactory",
+                                    "title": "files",
+                                    "storeId": FILE_STORE,
+                                    "gridxQueryTransform": new ToMongoQueryTransform(),
+                                    "menuItems": [
+                                        Delete, {type: OpenAsJson, fallbackSchema: "fallbackSchema"}
+                                    ],
+                                    "columns": [
+                                        {
+                                            "id": "path",
+                                            "field": "path",
+                                            "name": "path"
+                                        },
+                                        {
+                                            "id": "contentMode",
+                                            "field": "contentMode",
+                                            "name": "contentMode"
+                                        }
+                                    ]
                                 }]
                         },
                         {
@@ -281,6 +327,7 @@ define([
                                     "splitter": true,
                                     "rendererClass": "gform-app/preview/handlebars/Renderer",
                                     "pageStore": PAGE_STORE,
+                                    "fileStore": FILE_STORE,
                                     "urlProperty": "id"
                                 }
                             ]

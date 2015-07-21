@@ -1,85 +1,149 @@
 {
-  "id": "/template",
-  "description": "A template",
-  "editor": "tab",
-  "groups": [
-    {
-      "code": "general",
-      "label": "General",
-      "attributes": [
+    "id": "/template",
+    "description": "A template",
+    "editor": "tab",
+    "groups": [
         {
-          "code": "name",
-          "type": "string",
-          "required": true
+            "label": "General",
+            "attributes": [
+                {
+                    "code": "name",
+                    "type": "string",
+                    "required": true
+                },
+                {
+                    "code": {"$ref": "idProperty"},
+                    "type": {"$ref": "idType"},
+                    "disabled": {"$ref": "idDisabled"},
+                    "required": {"$ref": "idRequired"}
+                },
+                {
+                    "code": "description",
+                    "type": "string"
+                },
+                {
+                    "code": "schema",
+                    "type": "string",
+                    "required": true,
+                    "values": ["template"]
+                }
+            ]
         },
         {
-          "code": {"$ref": "idProperty"},
-          "type": {"$ref": "idType"},
-          "disabled": {"$ref": "idDisabled"},
-          "required":{"$ref": "idRequired"}
+            "label": "Template",
+            "editor": "single",
+            "attribute": {
+                "required": false,
+                "type": "object",
+                "code": "sourceCode",
+                "typeProperty":"sourceCodeOrigin",
+                "layout": true,
+                "required":true,
+                "groups": [
+                    {
+                        "code": "inline",
+                        "editor": "verticalgroup",
+                        "groups": [
+                            {
+                                "editor": "listpane",
+                                "region": "top",
+                                "attributes": [
+                                    {
+                                        "type": "string",
+                                        "code": "sourceCodeMode",
+                                        "label": "source mode",
+                                        "decorator": "inline",
+                                        "required": true,
+                                        "values": [
+                                            {
+                                                "label": "handlebars",
+                                                "value": "ace/mode/handlebars"
+                                            },
+                                            {
+                                                "label": "jsx",
+                                                "value": "ace/mode/jsx"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "editor": "single",
+                                "region": "center",
+                                "attribute": {
+                                    "decorator": "none",
+                                    "code": "sourceCode",
+                                    "editor": "acetext",
+                                    "type": "string",
+                                    "modeAttribute": "..sourceCodeMode",
+                                    "autoComplete": true
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "code":"external",
+                        "attributes": [
+                            {
+                                "code": "sourceRef",
+                                "type": "ref",
+                                "url": {"$ref": "sourceCodeStore"},
+                                "schemaUrl": {"$ref": "sourceCodeSchema"},
+                                "required": true,
+                                "idProperty":{"$ref":"sourceCodeIdProperty"},
+                                "searchProperty":{"$ref":"sourceCodeSearchProperty"}
+                            }
+                        ]
+                    }
+                ]
+            }
         },
         {
-          "code": "description",
-          "type": "string"
+            "label": "Partials",
+            "attributes": [
+                {
+                    "code": "files",
+                    "type": "map",
+                    "keyAttribute": {},
+                    "valueAttribute": {
+                        "type": "ref",
+                        "url": {"$ref": "sourceCodeStore"},
+                        "schemaUrl": {"$ref": "sourceCodeSchema"},
+                        "idProperty":{"$ref":"sourceCodeIdProperty"},
+                        "searchProperty":{"$ref":"sourceCodeSearchProperty"}
+                    }
+                },{
+                    "code": "partials",
+                    "description": "pages are added with data and template to the render context. <br>useful when all instances share he same data.",
+                    "type": "map",
+                    "keyAttribute": {},
+                    "valueAttribute": {
+                        "type": "ref",
+                        "typeProperty": "template",
+                        "idProperty": "identifier",
+                        "url": {"$ref": "pageStore"},
+                        "searchProperty": {"$ref": "pageSearchProperty"}
+                    }
+                },
+                {
+                    "code": "partialTemplates",
+                    "description": "templates are added to the render context.",
+                    "type": "map",
+                    "keyAttribute": {},
+                    "valueAttribute": {
+                        "type": "ref",
+                        "searchProperty": "name",
+                        "idProperty": "code",
+                        "converter": "refConverter",
+                        "url": {"$ref": "partialStore"}
+                    }
+                }
+            ]
         },
         {
-          "code": "schema",
-          "type": "string",
-          "required": true,
-          "values": ["template"]
+            "label": "Form",
+            "editor": "single",
+            "attribute": {"$ref": "../../gform-app/meta/group.json"}
         }
-      ]
-    },
-    {
-      "code": "template",
-      "label": "Template",
-      "editor": "single",
-      "attribute": {
-        "code": "sourceCode",
-        "editor": "acetext",
-        "height": "300px",
-        "type": "string",
-        "mode": "ace/mode/handlebars",
-        "autoComplete": true
-      }
-    },
-    {
-      "code": "partials",
-      "label": "Partials",
-      "attributes": [
-        {
-          "code": "partials",
-          "description":"pages are added with data and template to the render context. <br>useful when all instances share he same data.",
-          "type": "map",
-          "keyAttribute": {},
-          "valueAttribute": {
-            "type": "ref",
-            "typeProperty": "template",
-            "idProperty": "identifier",
-            "url": {"$ref": "pageStore"},
-            "searchProperty": {"$ref": "pageSearchProperty"}
-          }
-        },
-        {
-          "code": "partialTemplates",
-          "description":"templates are added to the render context.",
-          "type": "map",
-          "keyAttribute": {},
-          "valueAttribute": {
-            "type": "ref",
-            "searchProperty": "name",
-            "idProperty": "code",
-            "converter": "refConverter",
-            "url": {"$ref": "partialStore"}
-          }
-        }
-      ]
-    },
-    {
-      "code": "form",
-      "label": "Form",
-      "editor":"single",
-      "attribute": {"$ref": "../../gform-app/meta/group.json"}
-    }
-  ]
+    ]
 }

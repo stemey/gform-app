@@ -13,6 +13,7 @@ define([
     return declare([], {
         pageStore: null,
         templateStore: null,
+        fileStore: null,
         resolver: null,
         templateToSchemaTransformer: null,
         urlProperty: null,
@@ -153,7 +154,8 @@ define([
                  });*/
 
             }, this);
-        }, _handleTemplateRef: function (attribute, group, template, value, goon, ctx) {
+        },
+        _handleTemplateRef: function (attribute, group, template, value, goon, ctx) {
             if (!value) {
                 return;
             }
@@ -166,6 +168,10 @@ define([
             ctx.page[attribute.code] = value;
             if (value && template && template.partials) {
                 this.renderPartials(template.partials, ctx, ctx.page[attribute.code]);
+            }
+
+            if (template.files) {
+                this.loadFiles(template.files, ctx, newPage);
             }
             if (template && template.partialTemplates) {
                 Object.keys(template.partialTemplates).forEach(function (key) {
@@ -332,7 +338,7 @@ define([
                 var templateId = page[me.pageStore.typeProperty];
                 if (templateId) {
                     // TODO replace findByUrl by getById
-                    when(me.templateStore.get(templateId)).then(function (template) {
+                    when(me.loadTemplate(templateId)).then(function (template) {
                         me._renderPage(page, template, parentPage, checkPartial, renderPromise, error);
                     }).otherwise(error);
                 } else {
@@ -342,6 +348,35 @@ define([
 
             return renderPromise;
 
+        },
+        loadTemplate: function (id) {
+            var p = new Deferred();
+            var me = this;
+            // TODO don't modify loaded objects
+            when(this.templateStore.get(id)).then(function (result) {
+                if (!result.sourceCode) {
+                    p.resolve(result);
+                } else if (typeof result.sourceCode === "string") {
+                    p.resolve(result);
+                } else if (result.sourceCode.sourceCodeOrigin === "inline") {
+                    var template = {};
+                    lang.mixin(template,result);
+                    template.sourceCode=result.sourceCode.sourceCode;
+                    p.resolve(template);
+                } else {
+                    when(me.fileStore.get(result.sourceCode.sourceRef)).then(function (file) {
+                        var template = {};
+                        lang.mixin(template,result);
+                        template.sourceCode=file.content;
+                        p.resolve(file);
+                    }).otherwise(function (e) {
+                        p.reject(e);
+                    })
+                }
+            }).otherwise(function (e) {
+                p.reject(e);
+            })
+            return p.promise;
         },
         _renderPage: function (page, template, parentPage, checkPartial, renderPromise, error) {
             var me = this;
@@ -353,7 +388,7 @@ define([
             if (!checkPartial || template.partial) {
                 var includesPromise = me.renderIncludes(template, page);
                 when(includesPromise).then(function (ctx) {
-                    var partialPromises = [];
+                    //var partialPromises = [];
                     var newPage = ctx.page;
                     if (parentPage) {
                         newPage = {};
@@ -369,7 +404,7 @@ define([
                         var octx = {page: {}, promises: [], templates: {}};
                         visit(me, outerTemplate.group, newPage, octx);
                         octx.promises.forEach(function (p) {
-                            partialPromises.push(p);
+                            ctx.promises.push(p);
                         });
 
                     } else if (ctx.outer) {
@@ -381,12 +416,17 @@ define([
 
                     }
 
+
+                    if (template.files) {
+                        me.loadFiles(template.files, ctx, newPage);
+                    }
+
                     if (template.partialTemplates) {
                         Object.keys(template.partialTemplates).forEach(function (key) {
                             ctx.templates[key] = template.partialTemplates[key].sourceCode;
                         });
                     }
-                    when(all(partialPromises)).then(function () {
+                    when(all(ctx.promises)).then(function () {
                         if (outerTemplate) {
                             ctx.templates["inner"] = template.sourceCode;
                             if (ctx.outer) {
@@ -415,6 +455,17 @@ define([
             }
 
         },
+        loadFiles: function (files, ctx, page) {
+            if (files) {
+                Object.keys(files).forEach(function (key) {
+                    var promise = when(this.fileStore.get(files[key]));
+                    promise.then(function (result) {
+                        page[key] = result;
+                    })
+                    ctx.promises.push(promise);
+                }, this)
+            }
+        },
         tadCache: {},
         getTemplateAndData: function (pageUrl) {
             var me = this;
@@ -428,7 +479,7 @@ define([
             ////console.log(" get TemplateAndData " + pageUrl);
             when(me.findByUrl(pageUrl)).then(function (page) {
                 // TODO replace findByUrl by getById
-                when(me.templateStore.get(page.template)).then(function (template) {
+                when(me.loadTemplate(page.template)).then(function (template) {
                     var includesPromise = me.renderIncludes(template, page);
                     when(includesPromise).then(function (ctx) {
 
