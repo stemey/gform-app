@@ -1,13 +1,28 @@
 {
-  "name": "gform-app",
-  "version": "0.1.0",
-  "devDependencies": {
-    "grunt": "~0.4.1",
-    "grunt-contrib-clean": "~0.5.0",
-    "grunt-contrib-connect": "~0.5.0",
-    "grunt-contrib-copy": "~0.4.1",
-    "grunt-dojo": "~0.2.4",
-    "intern": "^2.2.2",
-    "load-grunt-tasks": "~0.1.0"
-  }
+    "name": "gform-app",
+    "version": "0.1.1",
+    "description": "A framework to rapidly create administrative uis such as database clients or cms.",
+    "keywords": [
+        "admin",
+        "schema",
+        "cms"
+    ],
+    "homepage": "http://github.com/stemey/gform-app",
+    "bugs": {"url": "http://github.com/stemey/gform-app"},
+    "license": {
+        "license": "Apache-2.0"
+    },
+    "repository": {
+        "type": "git",
+        "url": "http://github.com/stemey/gform-app.git"
+    },
+    "devDependencies": {
+        "grunt": "~0.4.1",
+        "grunt-contrib-clean": "~0.5.0",
+        "grunt-contrib-connect": "~0.5.0",
+        "grunt-contrib-copy": "~0.4.1",
+        "grunt-dojo": "~0.2.4",
+        "intern": "^2.2.2",
+        "load-grunt-tasks": "~0.1.0"
+    }
 }
