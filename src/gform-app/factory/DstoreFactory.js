@@ -1,10 +1,11 @@
 define([
-	'../util/tree/TreeMixin',
+    '../cms/PathStoreMixin',
+    '../util/tree/TreeMixin',
 	'./load',
 	'./StoreFactory',
 	'../util/DstoreAdapter',
 	"dojo/_base/declare"
-], function (TreeMixin, load, StoreFactory, DstoreAdapter, declare) {
+], function (PathStoreMixin, TreeMixin, load, StoreFactory, DstoreAdapter, declare) {
 
 
 	return declare([StoreFactory], {
@@ -16,7 +17,7 @@ define([
 				var Adapter=DstoreAdapter;
 				if (config.parentProperty) {
 					config.dstoreConfig.parentProperty = config.parentProperty;
-					Adapter = declare([DstoreAdapter,TreeMixin]);
+					Adapter = declare([DstoreAdapter,TreeMixin,PathStoreMixin]);
 				}
 				var store = new Adapter	(dstore);
 				store.idProperty = config.idProperty;

@@ -1,4 +1,5 @@
 define([
+    '../util/tree/PathObjectStoreModel',
     'dijit/tree/ObjectStoreModel',
     'dojo/_base/lang',
     'dijit/MenuItem',
@@ -12,7 +13,7 @@ define([
     "dojo/_base/declare",
     "dijit/layout/TabContainer",
     "dijit/layout/ContentPane"
-], function (ObjectStoreModel, lang, MenuItem, aspect, registry, Menu, ParentObjectStoreModel, topic, TreeStore, Tree, declare) {
+], function (PathObjectStoreModel, ObjectStoreModel, lang, MenuItem, aspect, registry, Menu, ParentObjectStoreModel, topic, TreeStore, Tree, declare) {
 
 
     return declare([], {
@@ -24,7 +25,7 @@ define([
             var realStore = store.mainStore ? store.mainStore : store.name;
             var model;
             if (config.gh) {
-                model = new ObjectStoreModel({store: store, root:{path:"src",content:""}});
+                model = new PathObjectStoreModel({store: store, root: {path: config.gh.root, content: ""}});
             } else if (config.osm) {
                 model = new ParentObjectStoreModel({store: store});
             } else {
@@ -47,7 +48,7 @@ define([
                 if (store.idProperty in node) {
                     try {
 
-                        var template = store.templateStore+"/"+node[store.typeProperty];//node.folder ? "jcr.folder" : undefined;
+                        var template = store.templateStore + "/" + node[store.typeProperty];//node.folder ? "jcr.folder" : undefined;
                         // TODO we should use the folders own template "base" from the server. Does not work right now.
                         topic.publish("/focus", {id: node[store.idProperty], store: realStore, source: this});
                     } catch (e) {
