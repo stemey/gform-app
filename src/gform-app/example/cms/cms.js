@@ -1,12 +1,17 @@
 define([
 
+        'gform/util/Resolver',
         '../../controller/tools/Link',
         '../../cms/createValueFactory',
         '../../controller/gridactions/Delete',
         '../../controller/gridactions/OpenAsJson',
         '../../jcr/TemplateStore',
-        '../../util/ToMongoQueryTransform', '../../util/LoadRichtextPlugins'
-    ], function (Link, createValueFactory, Delete, OpenAsJson, TemplateStore, ToMongoQueryTransform) {
+        '../../util/ToMongoQueryTransform',
+        "dojo/text!./binary.json",
+        "dojo/text!./text.json",
+        "dojo/text!../../file/types.json",
+        '../../util/LoadRichtextPlugins'
+    ], function (Resolver, Link, createValueFactory, Delete, OpenAsJson, TemplateStore, ToMongoQueryTransform, binarySchema, textSchema, types) {
 
 
 
@@ -15,9 +20,19 @@ define([
         var TEMPLATE_STORE = TEMPLATE_SCHEMA = "/template";
         var PARTIAL_STORE = "partial";
         var FILE_STORE = "file";
-        var FILE_SCHEMA = "file"
+        var FILE_SCHEMA_STORE = "fileSchemaStore";
 
         var PAGE_STORE = "page";
+
+        var textMappings = JSON.parse(types).types.filter(function (mapping) {
+            return mapping.type == "text" && mapping.ace;
+        }).map(function (mapping) {
+            return {label: mapping.name, value: mapping.ace};
+        });
+        var text = {};
+        new Resolver({values: {textMappings: textMappings}}).resolve(JSON.parse(textSchema)).then(function (schema) {
+            text = schema;
+        });
 
         var createTemplateValueFactory = function (ctx, store) {
             var instanceStore = ctx.getStore(store.instanceStore);
@@ -26,6 +41,7 @@ define([
         var createPartialValueFactory = function (ctx, store) {
             return createValueFactory.createPartial(store);
         }
+
 
         return function (config) {
 
@@ -36,15 +52,25 @@ define([
                 config.idProperty = "id";
                 config.idType = "number"
             }
+
+
             var baseUrl = config.baseUrl;
             return {
                 "storeRegistry": {
                     "stores": [
                         {
+                            "factoryId": "gform-app/factory/StoreFactory",
+                            "name": FILE_SCHEMA_STORE,
+                            "storeClass": "dojo/store/Memory",
+                            "idProperty": "id",
+                            "data": [text, JSON.parse(binarySchema)]
+                        },
+                        {
                             "factoryId": "gform-app/factory/DstoreFactory",
                             "storeClass": "dstore/db/LocalStorage",
-                            "template": FILE_SCHEMA,
+                            "templateStore": FILE_SCHEMA_STORE,
                             "name": "file",
+                            "typeProperty": "mediaType",
                             "idProperty": "path",
                             "idType": "string",
                             "assignableId": true,
@@ -105,6 +131,7 @@ define([
                     "factoryId": "gform-app/factory/schema/SchemaRegistryFactory",
                     "registryClass": "gform-app/SchemaRegistry",
                     "stores": [
+                        {id: FILE_SCHEMA_STORE},
                         {id: TEMPLATE_STORE, storeClass: TemplateStore, idProperty: config.idProperty},
                         {id: PARTIAL_STORE, storeClass: TemplateStore, idProperty: config.idProperty}
                     ],
@@ -112,15 +139,18 @@ define([
                         {
                             "factoryId": "gform-app/factory/schema/SchemaFactory",
                             "store": TEMPLATE_STORE,
-                            "partialStore": PARTIAL_STORE
+                            "partialStore": PARTIAL_STORE,
+                            "sourceRefQuery":{"contentMode":{"$regex":"handlebars"}},
+                            "sourceCodeModes":[
+                                {
+                                    "label": "handlebars",
+                                    "value": "ace/mode/handlebars"
+                                }
+                            ]
                         },
                         {
                             "factoryId": "gform-app/factory/schema/StaticSchemaGenerator",
                             "module": "gform-app/example/cms/fallbackSchema.json"
-                        },
-                        {
-                            "factoryId": "gform-app/factory/schema/StaticSchemaGenerator",
-                            "module": "gform-app/example/cms/file.json"
                         }
                     ]
                 },
@@ -161,7 +191,7 @@ define([
                                 {
                                     "factoryId": "gform-app/factory/SingleSchemaCreateFactory",
                                     "label": "add",
-                                    "includedStoreIds": ["page","file"]
+                                    "includedStoreIds": ["page", "file"]
                                 },
                                 {
                                     "factoryId": "gform-app/factory/SingleSchemaCreateFactory",
@@ -175,8 +205,8 @@ define([
                                     "includedStoreIds": ["partial"]
                                 },
                                 {
-                                 "factoryId": "gform-app/factory/ResetStoreFactory",
-                                 "label": "reset store"
+                                    "factoryId": "gform-app/factory/ResetStoreFactory",
+                                    "label": "reset store"
                                 },
                                 {
                                     "factoryId": "gform-app/factory/ToggleSizeFactory",
@@ -191,9 +221,9 @@ define([
                                     "factoryId": "gform-app/factory/WidgetFactory",
                                     "widgetClass": Link,
                                     "label": "github",
-                                    "iconClass":"fa fa-github",
-                                    "style":"float:right;padding-right:10px;",
-                                    "url":"http://github.com/stemey/gform-app"
+                                    "iconClass": "fa fa-github",
+                                    "style": "float:right;padding-right:10px;",
+                                    "url": "http://github.com/stemey/gform-app"
                                 }
 
                             ]

@@ -1,0 +1,71 @@
+{
+	"code": "file-ref",
+	"editor": "tab",
+	"groupLabel":"references",
+	"description": "",
+	"groups": [
+		{
+			"$ref": "../../../gform/schema/attributes/header.json"
+		},
+		{
+			"label": "reference",
+			"attributes": [
+				{
+					"code": "type",
+					"type": "string",
+					"visible": false,
+					"required": true,
+					"values": ["ref"]
+				},
+				{
+					"code": "editor",
+					"type": "string",
+					"visible": false,
+					"required": true,
+					"values": ["file-ref"]
+				},
+				{
+					"code": "searchProperty",
+					"description": "The property displayed and matched against the user input.",
+					"type": "string",
+					"required": true,
+                    "defaultValue":"path",
+                    "visible":false
+				},
+				{
+					"code": "url",
+					"required": true,
+					"type": "string",
+					"disabled": true,
+					"defaultValue":"file"
+				},
+                {
+                    "code": "query",
+                    "type": "any",
+                    "editor":"anyAce"
+                },{
+                    "code": "autoComplete",
+                    "type": "boolean",
+                    "defaultValue":"false",
+                    "editor":"boolean"
+                },
+                {
+                    "code": "queryExpr",
+                    "type": "string",
+                    "editor":"string",
+                    "defaultValue":"*${0}*",
+                    "description":"This expression defines how the user input is converted to a search term. <br> Examples: '/images/*${0}*' or '*${0}*.png. default is '*${0}*'"
+                },
+                {
+                    "code":"usage",
+                    "type":"string",
+                    "values":["ref","data","content"],
+                    "required":true
+                }
+			]
+		},
+		{
+			"$ref": "../../../gform/schema/attributes/messages.json"
+		}
+	]
+}

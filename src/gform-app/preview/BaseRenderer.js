@@ -19,6 +19,7 @@ define([
         urlProperty: null,
         needsToClonePage: true,
         constructor: function (kwArgs) {
+            lang.mixin(this, kwArgs);
             if (kwArgs) {
                 this.urlProperty = kwArgs.urlProperty || "url";
             }
@@ -35,10 +36,7 @@ define([
                 return page;
             }
         },
-        handlePageRef: function (attribute, value, ctx, idx, templateKey) {
-            if (!value) {
-                return;
-            }
+            handlePageRef: function (attribute, value, ctx, idx, templateKey) {
             if (!value) {
                 return;
             }
@@ -98,6 +96,23 @@ define([
                 });
             }
         },
+        handleFileRef: function (attribute, value, goon, ctx) {
+            if (!value) {
+                return;
+            }
+            if (attribute.usage && attribute.usage !== "ref") {
+                var p = this.fileStore.get(value);
+                ctx.promises.push(p);
+                when(p).then(function (data) {
+                    ctx.page[attribute.code] = attribute.usage==="data"? data : data.content;
+                }).otherwise(function (e) {
+                    ctx.errors.push({message: "error while getting file content for " + value, error: e});
+                });
+            } else {
+                ctx.page[attribute.code] = value;
+            }
+
+        },
         handleMultiTemplateRef: function (attribute, value, goon, ctx) {
             if (!value) {
                 return;
@@ -155,42 +170,51 @@ define([
 
             }, this);
         },
-        _handleTemplateRef: function (attribute, group, template, value, goon, ctx) {
+        _handleTemplateRef: function (_attribute, group, template, value, goon, ctx) {
             if (!value) {
                 return;
             }
+            var me = this;
+            this.loadSourceCode(_attribute.template).then(function (template) {
+                var attribute = {};
+                lang.mixin(attribute, _attribute);
+                attribute.template = template;
 
-            if (attribute.outer) {
-                ctx.outer = attribute;
-            } else {
-                ctx.templates[attribute.code] = template.sourceCode;
-            }
-            ctx.page[attribute.code] = value;
-            if (value && template && template.partials) {
-                this.renderPartials(template.partials, ctx, ctx.page[attribute.code]);
-            }
+                if (attribute.outer) {
+                    ctx.outer = attribute;
+                } else {
+                    ctx.templates[attribute.code] = template.sourceCode;
+                }
+                ctx.page[attribute.code] = value;
+                if (value && template && template.partials) {
+                    me.renderPartials(template.partials, ctx, ctx.page[attribute.code]);
+                }
 
-            if (template.files) {
-                this.loadFiles(template.files, ctx, newPage);
-            }
-            if (template && template.partialTemplates) {
-                Object.keys(template.partialTemplates).forEach(function (key) {
-                    ctx.templates[key] = template.partialTemplates[key].sourceCode;
-                });
-            }
-            var newCtx = {
-                page: ctx.page[attribute.code],
-                promises: ctx.promises,
-                templates: ctx.templates,
-                errors: ctx.errors
-            };
-            visit(this, group, newCtx.page, newCtx);
+                if (template && template.partialTemplates) {
+                    Object.keys(template.partialTemplates).forEach(function (key) {
+                        ctx.templates[key] = template.partialTemplates[key].sourceCode;
+                    });
+                }
+                var newCtx = {
+                    page: ctx.page[attribute.code],
+                    promises: ctx.promises,
+                    templates: ctx.templates,
+                    errors: ctx.errors
+                };
+                visit(me, group, newCtx.page, newCtx);
+            }).otherwise(function (e) {
+                error(e);
+            })
         },
         visit: function (attribute, value, goon, ctx) {
             var me = this;
             if (attribute.code === "template") {
                 // TODO make template property configurable
                 // nothing
+            } else if (attribute.editor === "query-ref") {
+                this.handleQueryRef(attribute, value, ctx);
+            } else if (attribute.editor === "file-ref") {
+                this.handleFileRef(attribute, value, goon, ctx);
             } else if (attribute.template && attribute.group) {
                 this.handleTemplateRef(attribute, value, goon, ctx);
             } else if (attribute.groups && attribute.templates) {
@@ -214,6 +238,13 @@ define([
                 }
                 goon(ctx);
             }
+        },
+        handleQueryRef: function(attribute, value, ctx) {
+            var p = when(this.pageStore.query(attribute.query));
+            p.then(function(results){
+                ctx.page[attribute.code]=results;
+            });
+            ctx.promises.push(p);
         },
         visitElement: function (type, value, goon, idx, ctx) {
             if (type.type == "ref" || type.type == "multi-ref") {
@@ -325,13 +356,9 @@ define([
                     this.pageCache[pageUrl] = renderPromise;
                 }
             }
-            var error = function (e) {
-                var errorPage = {}
-                renderPromise.resolve({
-                    errors: [
-                        {message: "error during rendering of " + pageUrl, error: e}
-                    ]
-                });
+            var error = function (ctx) {
+                renderPromise.resolve({message: "error during rendering of " + pageUrl, errors: ctx.errors}
+                );
             }
 
             when(me.findByUrl(pageUrl)).then(function (page) {
@@ -354,28 +381,40 @@ define([
             var me = this;
             // TODO don't modify loaded objects
             when(this.templateStore.get(id)).then(function (result) {
-                if (!result.sourceCode) {
-                    p.resolve(result);
-                } else if (typeof result.sourceCode === "string") {
-                    p.resolve(result);
-                } else if (result.sourceCode.sourceCodeOrigin === "inline") {
-                    var template = {};
-                    lang.mixin(template,result);
-                    template.sourceCode=result.sourceCode.sourceCode;
-                    p.resolve(template);
-                } else {
-                    when(me.fileStore.get(result.sourceCode.sourceRef)).then(function (file) {
-                        var template = {};
-                        lang.mixin(template,result);
-                        template.sourceCode=file.content;
-                        p.resolve(file);
-                    }).otherwise(function (e) {
-                        p.reject(e);
-                    })
-                }
+                me.loadSourceCode(result).then(function (r) {
+                    p.resolve(r)
+                }).otherwise(function (e) {
+                    p.reject(e);
+                }).otherwise(function (e) {
+                    p.reject(e);
+                })
             }).otherwise(function (e) {
                 p.reject(e);
             })
+            return p.promise;
+        },
+        loadSourceCode: function (result) {
+            var p = new Deferred();
+            var me = this;
+            if (!result.sourceCode) {
+                p.resolve(result);
+            } else if (typeof result.sourceCode === "string") {
+                p.resolve(result);
+            } else if (result.sourceCode.sourceCodeOrigin === "inline") {
+                var template = {};
+                lang.mixin(template, result);
+                template.sourceCode = result.sourceCode.sourceCode;
+                p.resolve(template);
+            } else {
+                when(me.fileStore.get(result.sourceCode.sourceRef)).then(function (file) {
+                    var template = {};
+                    lang.mixin(template, result);
+                    template.sourceCode = file.content;
+                    p.resolve(template);
+                }).otherwise(function (e) {
+                    p.reject(e);
+                })
+            }
             return p.promise;
         },
         _renderPage: function (page, template, parentPage, checkPartial, renderPromise, error) {

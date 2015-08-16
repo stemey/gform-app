@@ -1,8 +1,9 @@
 define([
     'gform/primitive/binary/MimeTypeHelper',
+    './BinaryConverter',
     'gform/createFullEditorFactory',
-    "dojo/text!../../file/types.json"
-], function (MimeTypeHelper, createFullEditorFactory, types) {
+    "dojo/text!../file/types.json"
+], function (MimeTypeHelper, BinaryConverter, createFullEditorFactory, types) {
 
 
     return function () {
@@ -12,7 +13,7 @@ define([
             mappings[e.ext]= e.mimetype;
         });
         ef.mimeTypeHelper = new MimeTypeHelper(mappings)
-        //ef.addConverterForType(BinaryConverter, "binary");
+        ef.addConverterForType(BinaryConverter, "binary");
         return ef;
     }
 

@@ -1,11 +1,12 @@
 define([
-	'./load',
+    'dojo/_base/lang',
+    './load',
 	'./ContainerFactory',
 	'../meta/TemplateSchemaTransformer',
 	'../controller/Previewer',
 	"dojo/_base/declare",
 	'../controller/CacheStore'
-], function (load, ContainerFactory, TemplateSchemaTransformer, Previewer, declare, CacheStore) {
+], function (lang, load, ContainerFactory, TemplateSchemaTransformer, Previewer, declare, CacheStore) {
 
 
 	return declare([ContainerFactory], {
@@ -20,12 +21,15 @@ define([
 				var previewer = new Previewer({pageStore: pageStore, urlProperty:config.urlProperty||"url"});
 				//aspect.after(pageStore, "onUpdate", lang.hitch(previewer, "refresh"));
 				var createRenderer = function () {
-					var renderer = new Renderer(config);
-					renderer.templateStore = templateStore;
-					renderer.pageStore = pageStore;
-                    renderer.fileStore = fileStore;
+                    var props= {};
+                    lang.mixin(props,config);
+                    props.templateStore = templateStore;
+                    props.pageStore = pageStore;
+                    props.fileStore = fileStore;
                     var templateToSchemaTransformer = new TemplateSchemaTransformer({ctx:ctx,store:templateStore});
-					renderer.templateToSchemaTransformer = templateToSchemaTransformer;
+                    props.templateToSchemaTransformer = templateToSchemaTransformer;
+
+					var renderer = new Renderer(props);
 					return renderer;
 				}
 				previewer.createRenderer = createRenderer;

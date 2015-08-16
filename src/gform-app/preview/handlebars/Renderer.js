@@ -4,7 +4,17 @@ define([
 ], function (BaseRenderer, declare) {
 
 
-    var initHb = function () {
+    var initHb = function (config) {
+
+        var markedRenderer = new marked.Renderer();
+        markedRenderer.link=function(href,title,text) {
+            return "<a title=\""+title+"\"href=\"{{link-path '"+href+"'}}\">"+text+"</a>";
+        };
+
+        // init marked;
+        marked.setOptions({
+            renderer: markedRenderer
+        });
 
         function boolExpr(bool, options, ctx) {
             if (options.fn) {
@@ -36,6 +46,9 @@ define([
             };
             return value;
         });
+        Handlebars.registerHelper("richtext", function(value, options) {
+            return Handlebars.compile(value)({});
+        });
         Handlebars.registerHelper("length", function(arrayValue, options) {
             return Array.isArray(arrayValue) ? arrayValue.length : 0;
         });
@@ -60,18 +73,62 @@ define([
             return boolExpr(a >= b,options,this);
 
         });
-        Handlebars.registerHelper('style-tag', function (styles, options) {
-            return "<style>" + styles + "</style>"
-        });
-        Handlebars.registerHelper('script-tag', function (script, options) {
-            return "<script>" + script + "</script>"
-        });
-        Handlebars.registerHelper('link', function (url, options) {
-            var param = url;
-            if (typeof url === "string") {
-                param = "'" + url + "'"
+        Handlebars.registerHelper('style-tag', function (styleRef, options) {
+
+            if (config.fileStore) {
+                var style=config.fileStore.get(styleRef);
+                // TODO is content property universal?
+                return "<style>" + style.content + "</style>"
+            } else {
+                return "<style src='"+styleRef+"'></style>"
             }
-            return "javascript:preview(" + url + ");";
+        });
+        Handlebars.registerHelper('script-tag', function (scriptRef, options) {
+            if (config.fileStore) {
+                var script=config.fileStore.get(scriptRef);
+                // TODO is content property universal?
+                return "<style>" + script.content + "</style>"
+            } else {
+                return "<style src='"+scriptRef+"'></style>"
+            }
+        });
+        Handlebars.registerHelper('image-src', function (imageRef, options) {
+            if (config.fileStore) {
+                var image=config.fileStore.get(imageRef);
+                if (!image) {
+                    return "did not find content for "+imageRef;
+                }else {
+                    // TODO is content property universal?
+                    return "data:image/png;base64," + image.content;
+                }
+            } else {
+                return imageRef;
+            }
+        });
+        Handlebars.registerHelper('link', function (id, options) {
+
+            if (typeof id === "string") {
+                id = "'" + id + "'"
+            }
+            return "javascript:preview(" + id + ");";
+        });
+
+        Handlebars.registerHelper('link-path', function (path, options) {
+            if (path.match(/^(|https|http|email):\/\/.*/)) {
+                return path;
+            }else {
+                // TODO merge with link
+                if (typeof path === "string") {
+                    path = "'" + path + "'"
+                }
+                return "javascript:previewByPath(" + path + ");";
+            }
+        });
+
+        Handlebars.registerHelper('markdown', function (md, options) {
+            var hbs =marked(md);
+            var html = Handlebars.compile(hbs)({});
+            return html;
         });
 
         Handlebars.registerHelper('formatCurrency', function (value, options) {
@@ -90,6 +147,9 @@ define([
 
 
     return declare([BaseRenderer], {
+        constructor: function(kwArgs) {
+            initHb(kwArgs);
+        },
         renderTemplate: function (code, ctx, partials) {
             Object.keys(partials).forEach(function (key) {
                 Handlebars.registerPartial(key, partials[key]);
