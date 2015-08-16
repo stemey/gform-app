@@ -1,0 +1,54 @@
+{
+    "id": "text",
+    "name":"text",
+    "group": {
+        "labelAttribute":"path",
+        "editor": "verticalgroup",
+        "groups": [
+            {
+                "editor": "columnsgroup",
+                "region": "top",
+                "attributes": [
+                    {
+                        "code": "mediaType",
+                        "type": "string",
+                        "required": true
+                    },
+                    {
+                        "code": "path",
+                        "type": "string",
+                        "required": true
+                    },
+                    {
+                        "code": "encoding",
+                        "type": "string"
+                    },
+                    {
+                        "code": "sha",
+                        "type": "string"
+                    },
+                    {
+                        "type": "string",
+                        "code": "contentMode",
+                        "label": "content mode",
+                        "required": true,
+                        "values": {"$ref":"textMappings"}
+                    }
+                ]
+            },
+            {
+                "editor": "single",
+                "region": "center",
+                "attribute": {
+                    "decorator": "none",
+                    "code": "content",
+                    "editor": "acetext",
+                    "type": "string",
+                    "modeAttribute": "..contentMode",
+                    "autoComplete": true
+                }
+            }
+        ]
+    }
+}
+

@@ -1,0 +1,35 @@
+{
+    "code": "acetext",
+    "editorDescription": "This is a text attribute.",
+    "groupLabel": "text",
+    "iconClass": "fa fa-file-text-o",
+    "editor": "listgroup",
+    "groups": [
+
+        {
+            "attributes": [
+                {
+                    "code": "mode",
+                    "type": "string",
+                    "required":true,
+                    "values": [
+                        {
+                            "label": "markdown",
+                            "value": "ace/mode/markdown"
+                        }
+                    ]
+                },
+                {
+                    "code": "type",
+                    "type": "string",
+                    "visible":false,
+                    "values":["string"]
+                }
+            ]
+        },
+        {
+            "$ref": "../../../gform/schema/attributes/header.json"
+        }
+    ]
+}
+

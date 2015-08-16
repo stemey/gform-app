@@ -48,6 +48,9 @@ define([
 		followPreviewLink: function (url) {
 			topic.publish("/page/navigate", {url: url})
 		},
+        followPreviewLinkByPath: function (path) {
+            topic.publish("/page/navigate", {path: path})
+        },
 
 		exportAsJson: function(store) {
 			when(this.appFactory.ctx.getStore(store).query({})).then(function(results) {

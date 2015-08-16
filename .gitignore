@@ -15,6 +15,9 @@ src/dstore
 src/components-font-awesome
 src/bootstrap
 src/jquery
+src/marked
+src/github-api
+src/
 .settings
 *~
 .idea

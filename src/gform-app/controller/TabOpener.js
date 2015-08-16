@@ -12,7 +12,7 @@ define(['dojo/aspect',
     return declare([SingleEditorTabOpener], {
         opening: false,
         closing: false,
-        factoryContext: null,
+        factoryContext: null,// TODO there is also ctx. Is there a difference?
         init: function () {
             topic.subscribe("/focus", lang.hitch(this, "onPageFocus"));
             topic.subscribe("/new", lang.hitch(this, "onNew"));
@@ -80,6 +80,8 @@ define(['dojo/aspect',
             }
         },
         createController: function (props, options) {
+           var view =  this.factoryContext.getView(props.store.templateStore);
+            props.showSelectButton = !!view;
             var controller = new TabCrudController(props);
             // if a schemaUrl was specified, than we don't set the schemaUrlPrefix to the templateStore.
             if (!options.schemaUrl && props.store.templateStore) {

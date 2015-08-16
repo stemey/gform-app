@@ -46,6 +46,13 @@ define([], function () {
             parentAttribute.required = true;
             attributes.push(parentAttribute);
 
+            var pathAttribute = {};
+            pathAttribute.code = "path";
+            parentAttribute.type = "string";
+            parentAttribute.editor = "multi-page-ref";
+            parentAttribute.disabled=true
+            attributes.push(parentAttribute);
+
 
             attributes.push({
                 code: instanceStore.idProperty,

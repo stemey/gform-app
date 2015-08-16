@@ -1,0 +1,35 @@
+[
+    {
+        "path": "src/data.html",
+        "content": "<h>text</h>",
+        "name": "data.html",
+        "type": "file"
+    },
+    {
+        "path": "src/scripts/data.js",
+        "content": "var x = 'vv';",
+        "name": "data.js",
+        "type": "file"
+    },
+    {
+        "path": "src",
+        "type": "dir",
+        "name": "src"
+    },
+    {
+        "path": "src/scripts",
+        "type": "dir",
+        "name": "scripts"
+    },
+    {
+        "path": "src/data.json",
+        "type": "file",
+        "name": "data.json"
+    },
+    {
+        "path": "src/screen.png",
+        "name":"screen.png",
+        "mediaType": "binary",
+        "content": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAC0AAAAcICAYAAACv5EAVAAAMF2lDQ…VzZwQGtNTnDKhBDQ7QY2Oa32QZGe/GrgwtBPqhEb7x/wUjgUUq/jBtrgAAAABJRU5ErkJggg==="
+    }
+]

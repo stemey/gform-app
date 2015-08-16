@@ -1,0 +1,13 @@
+{
+	"id": "/fallbackSchema",
+	"additionalProperties":{
+		"code":"entity"
+	},
+	"attributes": [
+		{
+			"code": "entity",
+			"type": "any",
+			"editor":"anyAce"
+		}
+	]
+}

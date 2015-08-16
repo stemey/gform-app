@@ -12,7 +12,7 @@ define([
         views: null,//{id: "documentation", label: "documentation"}],
         constructor: function (config) {
             this.storeRegistry = config.storeRegistry;
-            this.views=[];
+            this.views = [];
         },
         getStore: function (id) {
             return this.storeRegistry.get(id);
@@ -36,6 +36,16 @@ define([
         getViews: function () {
             return this.views;
         },
+        getView: function (storeId) {
+            var filtered = this.views.filter(function (view) {
+                return view.id == storeId;
+            });
+            if (filtered.length == 0) {
+                return null;
+            } else {
+                return filtered[0];
+            }
+        },
         addView: function (view) {
             this.views.push(view);
             topic.publish("/view/new", view);
@@ -55,7 +65,7 @@ define([
             if (views.length >= 1) {
                 var idx = this.views.indexOf(views[0]);
                 if (idx >= 0) {
-                    var view = this.views.splice(idx,1)[0];
+                    var view = this.views.splice(idx, 1)[0];
                     topic.publish("/view/deleted", view);
                 }
             }

@@ -21,17 +21,19 @@
     </style>
 
     <!-- required: dojo.js -->
+    <script type="text/javascript" src="underscore/underscore-min.js"></script>
+    <script type="text/javascript" src="github-api/github.js"></script>
     <script type="text/javascript" src="dojoConfig.js"></script>
     <script type="text/javascript" src="dojo/dojo.js"></script>
     <script type="text/javascript" src="gform-app/main.js"></script>
     <script>
-        require(['gform-app/example/github/github', "dojo/parser", "dojo/ready", "gform-app/controller/AppController"], function (github, parser) {
+        require(['gform-app/example/github/github', "dojo/parser", "dojo/io-query", "dojo/ready", "gform-app/controller/AppController"], function (github, parser, ioquery) {
             parser.parse();
             var appConfig = {
                 baseUrl: "../",
                 accessToken: "17ca53066a4d1703fba758b3b9d58c52d50152bc",
                 owner:"stemey",
-                repo:"gform-app"
+                repo:"cms-example-content"
             };
             window.appController.start(appConfig, github);
         })

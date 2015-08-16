@@ -54,16 +54,7 @@
                                         "label": "source mode",
                                         "decorator": "inline",
                                         "required": true,
-                                        "values": [
-                                            {
-                                                "label": "handlebars",
-                                                "value": "ace/mode/handlebars"
-                                            },
-                                            {
-                                                "label": "jsx",
-                                                "value": "ace/mode/jsx"
-                                            }
-                                        ]
+                                        "values": {"$ref":"sourceCodeModes"}
                                     }
                                 ]
                             },
@@ -91,7 +82,8 @@
                                 "schemaUrl": {"$ref": "sourceCodeSchema"},
                                 "required": true,
                                 "idProperty":{"$ref":"sourceCodeIdProperty"},
-                                "searchProperty":{"$ref":"sourceCodeSearchProperty"}
+                                "searchProperty":{"$ref":"sourceCodeSearchProperty"},
+                                "query":{"$ref":"sourceRefQuery"}
                             }
                         ]
                     }

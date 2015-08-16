@@ -1,0 +1,19 @@
+{
+    "id": "folder",
+    "name":"folder",
+    "group": {
+        "attributes": [
+            {
+                "code": "path",
+                "type": "string",
+                "required": true
+            },{
+                "code": "mediaType",
+                "type": "string",
+                "required": true
+            }
+
+        ]
+    }
+}
+

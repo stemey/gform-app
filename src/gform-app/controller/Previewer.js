@@ -43,7 +43,13 @@ define([
             //TODO move to general component or AppController
             var me = this;
             var query = {};
-            query[this.urlProperty] = evt.url;
+            if (!query.path) {
+                // a link using the path not the id
+                query.path=evt.path;
+            }else {
+                query[this.urlProperty] = evt.url;
+            }
+
             var page = this.pageStore.query(query);
             when(page).then(function (pageResults) {
                 var id = me.pageStore.getIdentity(pageResults[0]);

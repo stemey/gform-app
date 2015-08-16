@@ -21,7 +21,11 @@ define([
 						var store = ctx.getStore(storeConfig.id);
 						var props = {store: store, ctx: ctx};
 						lang.mixin(props, storeConfig);
-						var schemaStore = new storeConfig.storeClass(props);
+                        if (storeConfig.storeClass) {
+                            var schemaStore = new storeConfig.storeClass(props);
+                        }else {
+                            schemaStore=store;
+                        }
 						registry.registerStore(storeConfig.id, schemaStore);
 					});
 				}

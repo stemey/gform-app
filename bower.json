@@ -1,18 +1,19 @@
 {
-    "name": "gform-app",
-    "version": "0.1.0",
-    "private": true,
-    "dependencies": {
-        "handlebars": "components/handlebars.js#3.0.3",
-		"components-font-awesome":"font-awesome#4.3.0",
-        "gform": "stemey/dojo-generate-form#~0.24.3",
-        "gridx": "git://github.com/oria/gridx.git#~1.3.8",
-        "dojo": "~1.9.7",
-        "dijit": "~1.9.7",
-		"dstore": "~1.1.0",
-		"dojox": "~1.9.7",
-        "jquery": "~.11.2",
-        "ace-builds": "~1.1.3",
-        "util": "dojo-util#~1.9.7"
-    }
+  "name": "gform-app",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "handlebars": "components/handlebars.js#3.0.3",
+    "components-font-awesome": "font-awesome#4.3.0",
+    "gform": "stemey/dojo-generate-form#~0.24.3",
+    "gridx": "git://github.com/oria/gridx.git#~1.3.8",
+    "dojo": "~1.9.7",
+    "dijit": "~1.9.7",
+    "dstore": "~1.1.0",
+    "dojox": "~1.9.7",
+    "jquery": "~.11.2",
+    "ace-builds": "~1.1.3",
+    "util": "dojo-util#~1.9.7",
+    "marked": "chjj/marked#~0.3.5"
+  }
 }

@@ -14,7 +14,7 @@ define([
 
 	return declare([ContainerFactory], {
 		_load: function (store, config) {
-			//aspect.around(store, "put", lang.hitch(me, "onPageUpdated", store));
+			aspect.around(store, "put", lang.hitch(this, "onPageUpdated", store));
 			lang.mixin(store, config);
 
 			if (config.initialDataUrl) {
@@ -82,10 +82,15 @@ define([
 		},
 		onPageUpdated: function (store, superCall) {
 			var me = this;
-			return function (entity) {
+			return function (entity, options) {
 				var result = superCall.apply(this, arguments);
 				when(result).then(function () {
-					topic.publish("/updated", {store: store.name, id: store.getIdentity(entity), entity: entity})
+                    // filter out the add calls that delegate to put.
+                    if (options && options.overwrite) {
+                        topic.publish("/updated", {store: store.name, id: store.getIdentity(entity), entity: entity, oldEntity:options.old})
+                    } else if (!options) {
+					    topic.publish("/updated", {store: store.name, id: store.getIdentity(entity), entity: entity})
+                    }
 				});
 				return result;
 			}
