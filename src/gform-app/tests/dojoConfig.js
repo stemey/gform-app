@@ -8,7 +8,8 @@ var dojoConfig = {
 		'dojo',
 		'dijit',
 		'dojox',
-		'gform-app'
+		'gform-app',
+        'marked'
 	],
 	deps: [ 'gform-app/tests/ready' ]
 };

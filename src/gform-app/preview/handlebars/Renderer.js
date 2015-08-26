@@ -1,7 +1,8 @@
 define([
+    'marked/marked.min',
     '../BaseRenderer',
     "dojo/_base/declare"
-], function (BaseRenderer, declare) {
+], function (marked,BaseRenderer, declare) {
 
 
     var initHb = function (config) {
@@ -9,6 +10,10 @@ define([
         var markedRenderer = new marked.Renderer();
         markedRenderer.link=function(href,title,text) {
             return "<a title=\""+title+"\"href=\"{{link-path '"+href+"'}}\">"+text+"</a>";
+        };
+
+        markedRenderer.image=function(href,title,text) {
+            return "<img alt=\""+title+"\"src=\"{{image-path '"+href+"'}}\"></img>";
         };
 
         // init marked;
@@ -122,6 +127,20 @@ define([
                     path = "'" + path + "'"
                 }
                 return "javascript:previewByPath(" + path + ");";
+            }
+        });
+
+        Handlebars.registerHelper('image-path', function (path, options) {
+            if (config.fileStore) {
+                var images=config.fileStore.query({path:path});
+                if (!images || images.length==0) {
+                    return "did not find content for "+path;
+                }else {
+                    // TODO is content property universal?
+                    return "data:image/png;base64," + images[0].content;
+                }
+            } else {
+                return path;
             }
         });
 

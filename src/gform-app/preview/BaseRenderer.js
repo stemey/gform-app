@@ -1,4 +1,5 @@
 define([
+    'gform/list_primitive/QueryFactory',
     '../meta/Resolver',
     'dojo/_base/lang',
     "dojo/_base/declare",
@@ -7,7 +8,7 @@ define([
     "gform/schema/meta",
     "dojo/when",
     "dojo/promise/all"
-], function (Resolver, lang, declare, Deferred, visit, metaHelper, when, all) {
+], function (QueryFactory, Resolver, lang, declare, Deferred, visit, metaHelper, when, all) {
 
 
     return declare([], {
@@ -29,14 +30,14 @@ define([
 
             var page = this.pageStore.findByUrl(url);
             if (this.needsToClonePage && page && typeof page.then !== "function") {
-                // TODO also clone for pormise and cache OR simply improve rendering code to not modify original page
+                // TODO also clone for promise and cache OR simply improve rendering code to not modify original page
                 var clone = JSON.parse(JSON.stringify(page));
                 return clone;
             } else {
                 return page;
             }
         },
-            handlePageRef: function (attribute, value, ctx, idx, templateKey) {
+        handlePageRef: function (attribute, value, ctx, idx, templateKey) {
             if (!value) {
                 return;
             }
@@ -82,7 +83,7 @@ define([
                 }).otherwise(function (e) {
                     ctx.errors.push({message: "error while getting data for " + value, error: e});
                 });
-            } else {
+            } else if (attribute.usage === "html") {
                 //console.log("render page ref " + idx);
                 var p = this.renderInternally(value);
                 ctx.promises.push(p);
@@ -94,6 +95,8 @@ define([
                 }).otherwise(function (e) {
                     ctx.errors.push({message: "error during rendering of " + value, error: e});
                 });
+            } else {
+                ctx.page[idx] = value;
             }
         },
         handleFileRef: function (attribute, value, goon, ctx) {
@@ -104,7 +107,7 @@ define([
                 var p = this.fileStore.get(value);
                 ctx.promises.push(p);
                 when(p).then(function (data) {
-                    ctx.page[attribute.code] = attribute.usage==="data"? data : data.content;
+                    ctx.page[attribute.code] = attribute.usage === "data" ? data : data.content;
                 }).otherwise(function (e) {
                     ctx.errors.push({message: "error while getting file content for " + value, error: e});
                 });
@@ -123,18 +126,40 @@ define([
             var groups = attribute.groups.filter(function (group) {
                 return group.code == value.__type__
             });
+
+            var ps = [];
             attribute.templates.forEach(function (t) {
                 var id = t[this.templateStore.idProperty];
-                ctx.templates[id] = t.sourceCode;
+                var p = this.loadSourceCode(t);
+                ps.push(p);
+                p.then(function (result) {
+                    ctx.templates[id] = result.sourceCode;
+                })
             }, this)
-            if (templates.length > 0) {
-                var template = templates[0];
-                this._handleTemplateRef(attribute, groups[0], template, value, goon, ctx);
-            }
+            all(ps).then(function () {
+                if (templates.length > 0) {
+                    var template = templates[0];
+                    var me = this;
+                    p.then(function (loadedTemplate) {
+                        me._handleTemplateRef(attribute, groups[0], loadedTemplate, value, goon, ctx);
+                    }, function (e) {
+                        ctx.errors.push(e);
+                    });
+                }
+            }, function (e) {
+                ctx.errors.push(e);
+            })
 
         },
         handleTemplateRef: function (attribute, value, goon, ctx) {
-            this._handleTemplateRef(attribute, attribute.group, attribute.template, value, goon, ctx);
+            var p = this.loadSourceCode(attribute.template);
+            ctx.promises.push(p);
+            var me = this;
+            p.then(function (template) {
+                me._handleTemplateRef(attribute, attribute.group, template, value, goon, ctx);
+            }, function (e) {
+                ctx.errors.push(e);
+            });
         },
         renderPartials: function (partials, ctx, page) {
             Object.keys(partials).forEach(function (key) {
@@ -175,36 +200,35 @@ define([
                 return;
             }
             var me = this;
-            this.loadSourceCode(_attribute.template).then(function (template) {
-                var attribute = {};
-                lang.mixin(attribute, _attribute);
-                attribute.template = template;
+            //THIS is WRONG: only true for single template not multi template:
+            var attribute = {};
+            lang.mixin(attribute, _attribute);
+            attribute.template = template;
 
-                if (attribute.outer) {
-                    ctx.outer = attribute;
-                } else {
-                    ctx.templates[attribute.code] = template.sourceCode;
-                }
-                ctx.page[attribute.code] = value;
-                if (value && template && template.partials) {
-                    me.renderPartials(template.partials, ctx, ctx.page[attribute.code]);
-                }
+            if (attribute.outer) {
+                ctx.outer = attribute;
+            } else {
+                ctx.templates[attribute.code] = template.sourceCode;
+            }
+            ctx.page[attribute.code] = value;
+            if (value && template && template.partials) {
+                me.renderPartials(template.partials, ctx, ctx.page[attribute.code]);
+            }
 
-                if (template && template.partialTemplates) {
-                    Object.keys(template.partialTemplates).forEach(function (key) {
-                        ctx.templates[key] = template.partialTemplates[key].sourceCode;
-                    });
-                }
-                var newCtx = {
-                    page: ctx.page[attribute.code],
-                    promises: ctx.promises,
-                    templates: ctx.templates,
-                    errors: ctx.errors
-                };
-                visit(me, group, newCtx.page, newCtx);
-            }).otherwise(function (e) {
-                error(e);
-            })
+            if (template && template.partialTemplates) {
+                Object.keys(template.partialTemplates).forEach(function (key) {
+                    ctx.templates[key] = template.partialTemplates[key].sourceCode;
+                });
+            }
+            var newCtx = {
+                page: ctx.page[attribute.code],
+                promises: ctx.promises,
+                templates: ctx.templates,
+                errors: ctx.errors,
+                parent: ctx
+            };
+            visit(me, group, newCtx.page, newCtx);
+
         },
         visit: function (attribute, value, goon, ctx) {
             var me = this;
@@ -231,7 +255,8 @@ define([
                         page: ctx.page[attribute.code],
                         promises: ctx.promises,
                         templates: ctx.templates,
-                        errors: ctx.errors
+                        errors: ctx.errors,
+                        parent: ctx
                     };
                 } else {
                     ctx.page[attribute.code] = value;
@@ -239,10 +264,25 @@ define([
                 goon(ctx);
             }
         },
-        handleQueryRef: function(attribute, value, ctx) {
-            var p = when(this.pageStore.query(attribute.query));
-            p.then(function(results){
-                ctx.page[attribute.code]=results;
+        handleQueryRef: function (attribute, value, ctx) {
+            function createCtx(ctx) {
+                return {
+                    getValue: function () {
+                        return ctx.page;
+                    },
+                    getParent: function () {
+                        return ctx.parent != null ? createCtx(ctx.parent) : null;
+                    }
+                }
+            }
+
+            var qf = new QueryFactory({attribute: attribute, ctx: createCtx(ctx)});
+            var query = qf.create();
+            var p = when(this.pageStore.query(query, {sort: attribute.sort}));
+            p.then(function (results) {
+                ctx.page[attribute.code] = results;
+            }).otherwise(function (e) {
+                ctx.errors.push({message: e.message, error: e});
             });
             ctx.promises.push(p);
         },
@@ -255,7 +295,13 @@ define([
                     if (type.type_code) {
                         ctx.page[idx][type.type_code] = value[type.type_code];
                     }
-                    ctx = {page: ctx.page[idx], promises: ctx.promises, templates: ctx.templates, errors: ctx.errors};
+                    ctx = {
+                        page: ctx.page[idx],
+                        promises: ctx.promises,
+                        templates: ctx.templates,
+                        errors: ctx.errors,
+                        parent: ctx
+                    };
                     goon(ctx);
                 } else {
                     ctx.page[idx] = value;
@@ -270,7 +316,8 @@ define([
                 page: ctx.page[attribute.code],
                 promises: ctx.promises,
                 templates: ctx.templates,
-                errors: ctx.errors
+                errors: ctx.errors,
+                parent: ctx
             };
             if (attribute.template) {
                 // TODO we don't support partials and partialTemplates for array
@@ -279,8 +326,13 @@ define([
             if (attribute.templates) {
                 //this._renderMultiRefTemplateArray(attribute, value, ctx);
                 attribute.templates.forEach(function (template) {
+                    var p = this.loadSourceCode(template);
                     var id = template[this.templateStore.idProperty]
-                    ctx.templates[id] = template.sourceCode;
+                    p.then(function (result) {
+                        ctx.templates[id] = result.sourceCode;
+                    })
+                    ctx.promises.push(p);
+
                 }, this)
             }
             goon(ctx);
@@ -296,7 +348,7 @@ define([
             var ctx = {page: {}, promises: [], templates: {}, errors: []};
             var templatePromise = template;
             lang.mixin(ctx.page, page);
-            //console.log("renderIncludes p=" + page.url + "  t=" + template.name);
+            console.log("renderIncludes p=" + page.url + "  t=" + template.name);
             if (this.templateToSchemaTransformer) {
                 var id = this.templateStore.getIdentity(template);
                 var cached = this.tmpls[id];
@@ -314,10 +366,10 @@ define([
                     when(p).then(function (resolvedTemplateX) {
                         templatePromise.resolve(resolvedTemplateX);
                     }).otherwise(function (e) {
-                        //console.error("error during rendering " + e.stack);
+                        console.error("error during rendering " + e.stack);
                     });
                 }).otherwise(function (e) {
-                    //console.error("error during rendering " + e.stack);
+                    console.error("error during rendering " + e.stack);
                 });
             }
             var includesPromise = new Deferred();
@@ -327,10 +379,10 @@ define([
                 when(all(ctx.promises)).then(function () {
                     includesPromise.resolve(ctx);
                 }).otherwise(function (e) {
-                    //console.error("error during rendering " + e.stack);
+                    console.error("error during rendering " + e.stack);
                 });
             }).otherwise(function (e) {
-                //console.error("error during rendering " + e.stack);
+                console.error("error during rendering " + e.stack);
             });
             return includesPromise;
         },
@@ -419,7 +471,7 @@ define([
         },
         _renderPage: function (page, template, parentPage, checkPartial, renderPromise, error) {
             var me = this;
-            ////console.log("renderInternally p=" + page.url + "  t=" + template.name);
+            //console.log("renderInternally p=" + page.url + "  t=" + template.name);
             if (!template.sourceCode) {
                 renderPromise.resolve({noPage: true});
                 return;
@@ -481,12 +533,12 @@ define([
                         var html = me.renderTemplate(sourceCode, newPage, ctx.templates);
                         renderPromise.resolve({html: html, errors: ctx.errors});
                     }).otherwise(function (e) {
-                        //console.error("error during rendering " + e.stack);
+                        console.error("error during rendering " + e.stack);
                         ctx.errors.push({message: e.message, error: e});
                         error(ctx);
                     });
                 }).otherwise(function (e) {
-                    //console.error("error during rendering " + e.stack);
+                    console.error("error during rendering " + e.stack);
                     //alert("error during rendering " + e.stack);
                 });
             } else {
@@ -524,7 +576,7 @@ define([
 
                         renderPromise.resolve({template: template, page: ctx.page, templates: ctx.templates});
                     }).otherwise(function (e) {
-                        //console.error("error during rendering " + e.stack);
+                        console.error("error during rendering " + e.stack);
                     });
                 }).otherwise(function (e) {
                     var errors = [
@@ -544,7 +596,7 @@ define([
         getData: function (pageUrl) {
             var me = this;
             var renderPromise = new Deferred();
-            ////console.log("getData " + pageUrl);
+            //console.log("getData " + pageUrl);
             // TODO replace findByUrl by getById
             when(me.findByUrl("/page/" + pageUrl)).then(function (page) {
                 renderPromise.resolve({page: page});

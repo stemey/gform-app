@@ -56,7 +56,8 @@ define({
             { name: 'gridx', location: 'src/gridx' },
             { name: 'gform', location: 'src/gform' },
             { name: 'mustache', location: 'src/mustache' },
-            { name: 'handlebars', location: 'src/handlebars' }
+            { name: 'handlebars', location: 'src/handlebars' },
+            { name: 'marked', location: 'src/marked' }
 		]
 	},
 
