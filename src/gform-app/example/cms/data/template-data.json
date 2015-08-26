@@ -26,7 +26,7 @@
                     "idProperty": "id",
                     "searchProperty": "name",
                     "url": "page",
-                    "usage": "html",
+                    "usage": "link",
                     "typeProperty": "template",
                     "schemaUrlPrefix": "",
                     "schemas": [],
@@ -80,7 +80,7 @@
                             "idProperty": "id",
                             "searchProperty": "name",
                             "url": "page",
-                            "usage": "html",
+                            "usage": "link",
                             "typeProperty": "template",
                             "schemaUrlPrefix": "",
                             "schemas": [],
@@ -140,7 +140,7 @@
                                     {"name": "justifyLeft"},
                                     {"name": "justifyCenter"},
                                     {"name": "justifyRight"},
-                                    {"name": "createLink"},
+                                    {"name": "createCmsLink"},
                                     {"name": "dijit/_editor/plugins/FullScreen"},
                                     {"name": "dijit/_editor/plugins/AlwaysShowToolbar"},
                                     {"name": "dijit._editor.plugins.ViewSource"}
@@ -231,7 +231,7 @@
                         "idProperty": "id",
                         "searchProperty": "name",
                         "url": "page",
-                        "usage": "html",
+                        "usage": "link",
                         "typeProperty": "template",
                         "schemas": [],
                         "query": {"template": {"$regex": ".*[fF]older.*"}},
@@ -313,7 +313,7 @@
                                                     {"name": "justifyLeft"},
                                                     {"name": "justifyCenter"},
                                                     {"name": "justifyRight"},
-                                                    {"name": "createLink"},
+                                                    {"name": "createCmsLink"},
                                                     {"name": "dijit/_editor/plugins/FullScreen"},
                                                     {"name": "dijit/_editor/plugins/AlwaysShowToolbar"}
                                                 ],
@@ -369,6 +369,13 @@
                             "editor": "string"
                         },
                         {
+                            "code": "index",
+                            "type": "number",
+                            "editor": "number",
+                            "numberFormat": "#",
+                            "min": 0
+                        },
+                        {
                             "code": "template",
                             "visible": false,
                             "type": "string",
@@ -381,7 +388,7 @@
                             "idProperty": "id",
                             "searchProperty": "name",
                             "url": "page",
-                            "usage": "html",
+                            "usage": "link",
                             "typeProperty": "template",
                             "schemaUrlPrefix": "",
                             "schemas": [],
@@ -446,6 +453,13 @@
                             "editor": "string"
                         },
                         {
+                            "code": "index",
+                            "type": "number",
+                            "editor": "number",
+                            "numberFormat": "#",
+                            "min": 0
+                        },
+                        {
                             "code": "template",
                             "visible": false,
                             "type": "string",
@@ -458,7 +472,7 @@
                             "idProperty": "id",
                             "searchProperty": "name",
                             "url": "page",
-                            "usage": "html",
+                            "usage": "link",
                             "typeProperty": "template",
                             "schemas": [],
                             "query": {"template": {"$regex": ".*[fF]older.*"}},
@@ -529,6 +543,13 @@
                             "editor": "string"
                         },
                         {
+                            "code": "index",
+                            "type": "number",
+                            "editor": "number",
+                            "numberFormat": "#",
+                            "min": 0
+                        },
+                        {
                             "code": "template",
                             "visible": false,
                             "type": "string",
@@ -541,7 +562,7 @@
                             "idProperty": "id",
                             "searchProperty": "name",
                             "url": "page",
-                            "usage": "html",
+                            "usage": "link",
                             "typeProperty": "template",
                             "schemas": [],
                             "query": {"template": {"$regex": ".*[fF]older.*"}},
@@ -611,6 +632,13 @@
                             "editor": "string"
                         },
                         {
+                            "code": "index",
+                            "type": "number",
+                            "editor": "number",
+                            "numberFormat": "#",
+                            "min": 0
+                        },
+                        {
                             "code": "template",
                             "visible": false,
                             "type": "string",
@@ -623,7 +651,7 @@
                             "idProperty": "id",
                             "searchProperty": "name",
                             "url": "page",
-                            "usage": "html",
+                            "usage": "link",
                             "typeProperty": "template",
                             "schemas": [],
                             "query": {"template": {"$regex": ".*[fF]older.*"}},
@@ -698,6 +726,13 @@
                             "editor": "string"
                         },
                         {
+                            "code": "index",
+                            "type": "number",
+                            "editor": "number",
+                            "numberFormat": "#",
+                            "min": 0
+                        },
+                        {
                             "code": "template",
                             "visible": false,
                             "type": "string",
@@ -710,7 +745,7 @@
                             "idProperty": "id",
                             "searchProperty": "name",
                             "url": "page",
-                            "usage": "html",
+                            "usage": "link",
                             "typeProperty": "template",
                             "schemas": [],
                             "query": {"template": {"$regex": ".*[fF]older.*"}},
@@ -779,7 +814,7 @@
                             {"name": "justifyLeft"},
                             {"name": "justifyCenter"},
                             {"name": "justifyRight"},
-                            {"name": "createLink"},
+                            {"name": "createCmsLink"},
                             {"name": "dijit/_editor/plugins/FullScreen"},
                             {"name": "dijit/_editor/plugins/AlwaysShowToolbar"}
                         ],
@@ -797,6 +832,13 @@
                             "editor": "string"
                         },
                         {
+                            "code": "index",
+                            "type": "number",
+                            "editor": "number",
+                            "numberFormat": "#",
+                            "min": 0
+                        },
+                        {
                             "code": "template",
                             "visible": false,
                             "type": "string",
@@ -809,7 +851,7 @@
                             "idProperty": "id",
                             "searchProperty": "name",
                             "url": "page",
-                            "usage": "html",
+                            "usage": "link",
                             "typeProperty": "template",
                             "schemas": [],
                             "query": {"template": {"$regex": ".*[fF]older.*"}},
@@ -891,13 +933,105 @@
         }
     },
     {
+        "name": "image-example",
+        "id": "image-example",
+        "schema": "template",
+        "sourceCode": {
+            "sourceCodeMode": "ace/mode/handlebars",
+            "sourceCode": "<div>\n    <div class=\"thumbnail\">\n        <img src=\"{{image-src '/images/pikachu.jpeg'}}\"></img>\n    </div>\n    <div class=\"caption\">\n        <h3>static image</h3>\n    </div>\n</div>\n<br>\n<br>\n<br>\n<div>\n    <div class=\"thumbnail\">\n        <img src=\"{{image-src image}}\"></img>\n    </div>\n    <div class=\"caption\">\n        <h3>dynamic image</h3>\n    </div>\n</div>\n",
+            "sourceCodeOrigin": "inline"
+        },
+        "files": {},
+        "partials": {},
+        "partialTemplates": {},
+        "group": {
+            "groups": [
+                {
+                    "attribute": {
+                        "code": "image",
+                        "type": "ref",
+                        "editor": "file-ref",
+                        "searchProperty": "path",
+                        "url": "file",
+                        "autoComplete": false,
+                        "queryExpr": "/images/*${0}*",
+                        "usage": "ref"
+                    },
+                    "label": "try out",
+                    "editor": "single"
+                },
+                {
+                    "attributes": [
+                        {
+                            "code": "name",
+                            "type": "string",
+                            "editor": "string"
+                        },
+                        {
+                            "code": "template",
+                            "visible": false,
+                            "type": "string",
+                            "editor": "string"
+                        },
+                        {
+                            "code": "parent",
+                            "required": true,
+                            "type": "multi-ref",
+                            "idProperty": "id",
+                            "searchProperty": "name",
+                            "url": "page",
+                            "usage": "link",
+                            "typeProperty": "template",
+                            "schemas": [],
+                            "query": {"template": {"$regex": ".*[fF]older.*"}},
+                            "editor": "multi-page-ref"
+                        },
+                        {
+                            "code": "id",
+                            "disabled": true,
+                            "type": "number",
+                            "editor": "number"
+                        },
+                        {
+                            "code": "index",
+                            "min": 1,
+                            "numberFormat": "#",
+                            "type": "number",
+                            "editor": "number"
+                        }
+                    ],
+                    "label": "general",
+                    "editor": "listpane"
+                },
+                {
+                    "attributes": [
+                        {
+                            "code": "general",
+                            "required": true,
+                            "template": "tutorial",
+                            "outer": true,
+                            "type": "ref",
+                            "editor": "template-ref"
+                        }
+                    ],
+                    "label": "tutorial",
+                    "editor": "listpane"
+                }
+            ],
+            "labelAttribute": "name",
+            "editor": "tab"
+        }
+    },
+    {
         "name": "link-example",
         "id": "link-example",
         "schema": "template",
         "sourceCode": {
-            "sourceCodeOrigin": "inline",
-            "sourceCode": "\n<script src=\"gform-app/controller/mock.js\"></script>\ngo to <a href=\"{{link link}}\">Documentation</a>.\n"
+            "sourceCodeMode": "ace/mode/handlebars",
+            "sourceCode": "\n<script src=\"gform-app/controller/mock.js\"></script>\ngo to <a href=\"{{link link}}\">Documentation</a>.\n",
+            "sourceCodeOrigin": "inline"
         },
+        "files": {},
         "partials": {},
         "partialTemplates": {},
         "group": {
@@ -927,6 +1061,13 @@
                             "editor": "string"
                         },
                         {
+                            "code": "index",
+                            "min": 0,
+                            "numberFormat": "#",
+                            "type": "number",
+                            "editor": "number"
+                        },
+                        {
                             "code": "template",
                             "visible": false,
                             "type": "string",
@@ -939,7 +1080,7 @@
                             "idProperty": "id",
                             "searchProperty": "name",
                             "url": "page",
-                            "usage": "html",
+                            "usage": "link",
                             "typeProperty": "template",
                             "schemas": [],
                             "query": {"template": {"$regex": ".*[fF]older.*"}},
@@ -973,6 +1114,193 @@
         }
     },
     {
+        "name": "markdown-example",
+        "id": "markdown-example",
+        "schema": "template",
+        "sourceCode": {
+            "sourceCodeMode": "ace/mode/handlebars",
+            "sourceCode": "{{{markdown markdown}}}\n",
+            "sourceCodeOrigin": "inline"
+        },
+        "files": {},
+        "partials": {},
+        "partialTemplates": {},
+        "group": {
+            "groups": [
+                {
+                    "attribute": {
+                        "code": "markdown",
+                        "type": "ref",
+                        "editor": "file-ref",
+                        "searchProperty": "path",
+                        "url": "file",
+                        "queryExpr": "/markdown/*${0}*",
+                        "usage": "content"
+                    },
+                    "label": "try out",
+                    "editor": "single"
+                },
+                {
+                    "attributes": [
+                        {
+                            "code": "name",
+                            "type": "string",
+                            "editor": "string"
+                        },
+                        {
+                            "code": "template",
+                            "visible": false,
+                            "type": "string",
+                            "editor": "string"
+                        },
+                        {
+                            "code": "parent",
+                            "required": true,
+                            "type": "multi-ref",
+                            "idProperty": "id",
+                            "searchProperty": "name",
+                            "url": "page",
+                            "usage": "link",
+                            "typeProperty": "template",
+                            "schemas": [],
+                            "query": {"template": {"$regex": ".*[fF]older.*"}},
+                            "editor": "multi-page-ref"
+                        },
+                        {
+                            "code": "id",
+                            "disabled": true,
+                            "type": "number",
+                            "editor": "number"
+                        },
+                        {
+                            "code": "path",
+                            "disabled": true,
+                            "type": "string",
+                            "editor": "string"
+                        },
+                        {
+                            "code": "index",
+                            "min": 0,
+                            "numberFormat": "#",
+                            "type": "number",
+                            "editor": "number"
+                        }
+                    ],
+                    "label": "general",
+                    "editor": "listpane"
+                },
+                {
+                    "attributes": [
+                        {
+                            "code": "general",
+                            "required": true,
+                            "template": "tutorial",
+                            "outer": true,
+                            "type": "ref",
+                            "editor": "template-ref"
+                        }
+                    ],
+                    "label": "tutorial",
+                    "editor": "listpane"
+                }
+            ],
+            "labelAttribute": "name",
+            "editor": "tab"
+        }
+    },
+    {
+        "name": "markdown-example-embedded",
+        "id": "markdown-example-embedded",
+        "schema": "template",
+        "sourceCode": {
+            "sourceCodeMode": "ace/mode/handlebars",
+            "sourceCode": "{{{markdown markdown}}}\n",
+            "sourceCodeOrigin": "inline"
+        },
+        "files": {},
+        "partials": {},
+        "partialTemplates": {},
+        "group": {
+            "groups": [
+                {
+                    "attribute": {
+                        "mode": "ace/mode/markdown",
+                        "type": "string",
+                        "code": "markdown",
+                        "editor": "acetext"
+                    },
+                    "label": "try out",
+                    "editor": "single"
+                },
+                {
+                    "attributes": [
+                        {
+                            "code": "name",
+                            "type": "string",
+                            "editor": "string"
+                        },
+                        {
+                            "code": "template",
+                            "visible": false,
+                            "type": "string",
+                            "editor": "string"
+                        },
+                        {
+                            "code": "parent",
+                            "required": true,
+                            "type": "multi-ref",
+                            "idProperty": "id",
+                            "searchProperty": "name",
+                            "url": "page",
+                            "usage": "link",
+                            "typeProperty": "template",
+                            "schemas": [],
+                            "query": {"template": {"$regex": ".*[fF]older.*"}},
+                            "editor": "multi-page-ref"
+                        },
+                        {
+                            "code": "id",
+                            "disabled": true,
+                            "type": "number",
+                            "editor": "number"
+                        },
+                        {
+                            "code": "path",
+                            "disabled": true,
+                            "type": "string",
+                            "editor": "string"
+                        },
+                        {
+                            "code": "index",
+                            "min": 1,
+                            "numberFormat": "#",
+                            "type": "number",
+                            "editor": "number"
+                        }
+                    ],
+                    "label": "general",
+                    "editor": "listpane"
+                },
+                {
+                    "attributes": [
+                        {
+                            "code": "general",
+                            "required": true,
+                            "template": "tutorial",
+                            "outer": true,
+                            "type": "ref",
+                            "editor": "template-ref"
+                        }
+                    ],
+                    "label": "tutorial",
+                    "editor": "listpane"
+                }
+            ],
+            "labelAttribute": "name",
+            "editor": "tab"
+        }
+    },
+    {
         "name": "multi-array-template-example",
         "id": "multi-array-template-example",
         "schema": "template",
@@ -993,6 +1321,13 @@
                                 "editor": "string"
                             },
                             {
+                                "code": "index",
+                                "type": "number",
+                                "editor": "number",
+                                "numberFormat": "#",
+                                "min": 0
+                            },
+                            {
                                 "code": "template",
                                 "visible": false,
                                 "type": "string",
@@ -1005,7 +1340,7 @@
                                 "idProperty": "id",
                                 "searchProperty": "name",
                                 "url": "page",
-                                "usage": "html",
+                                "usage": "link",
                                 "typeProperty": "template",
                                 "schemas": [],
                                 "query": {"template": {"$regex": ".*[fF]older.*"}},
@@ -1093,6 +1428,13 @@
                             "editor": "string"
                         },
                         {
+                            "code": "index",
+                            "type": "number",
+                            "editor": "number",
+                            "numberFormat": "#",
+                            "min": 0
+                        },
+                        {
                             "code": "template",
                             "visible": false,
                             "type": "string",
@@ -1105,7 +1447,7 @@
                             "idProperty": "id",
                             "searchProperty": "name",
                             "url": "page",
-                            "usage": "html",
+                            "usage": "link",
                             "typeProperty": "template",
                             "schemas": [],
                             "query": {"template": {"$regex": ".*[fF]older.*"}},
@@ -1138,6 +1480,63 @@
             ],
             "labelAttribute": "name",
             "editor": "tab"
+        }
+    },
+    {
+        "name": "my",
+        "id": "my",
+        "description": "",
+        "schema": "template",
+        "sourceCode": {
+            "sourceRef": "/hbs/my.hbs",
+            "sourceCodeOrigin": "external"
+        },
+        "files": {},
+        "partials": {},
+        "partialTemplates": {},
+        "group": {
+            "attributes": [
+                {
+                    "code": "name",
+                    "type": "string",
+                    "editor": "string"
+                },
+                {
+                    "code": "template",
+                    "visible": false,
+                    "type": "string",
+                    "editor": "string"
+                },
+                {
+                    "code": "parent",
+                    "required": true,
+                    "type": "multi-ref",
+                    "idProperty": "id",
+                    "searchProperty": "name",
+                    "url": "page",
+                    "usage": "link",
+                    "typeProperty": "template",
+                    "schemas": [],
+                    "query": {"template": {"$regex": ".*[fF]older.*"}},
+                    "editor": "multi-page-ref"
+                },
+                {
+                    "code": "id",
+                    "disabled": true,
+                    "type": "number",
+                    "editor": "number"
+                },
+                {
+                    "code": "markdown",
+                    "type": "ref",
+                    "editor": "file-ref",
+                    "searchProperty": "path",
+                    "url": "file",
+                    "queryExpr": "/markdown/*${0}*",
+                    "usage": "content"
+                }
+            ],
+            "editor": "listpane"
         }
     },
     {
@@ -1244,6 +1643,13 @@
                             "editor": "string"
                         },
                         {
+                            "code": "index",
+                            "type": "number",
+                            "editor": "number",
+                            "numberFormat": "#",
+                            "min": 0
+                        },
+                        {
                             "code": "template",
                             "visible": false,
                             "type": "string",
@@ -1256,7 +1662,7 @@
                             "idProperty": "id",
                             "searchProperty": "name",
                             "url": "page",
-                            "usage": "html",
+                            "usage": "link",
                             "typeProperty": "template",
                             "schemas": [],
                             "query": {"template": {"$regex": ".*[fF]older.*"}},
@@ -1387,13 +1793,237 @@
         }
     },
     {
+        "name": "query-example",
+        "id": "query-example",
+        "schema": "template",
+        "sourceCode": {
+            "sourceCodeMode": "ace/mode/handlebars",
+            "sourceCode": "<h2>search result</h2>\n<p>search term is : {{term}}</p>\n<ul>\n    {{#pages}}\n        <li><a href=\"{{link id}}\">{{name}}</a></li>\n    {{/pages}}\n</ul>",
+            "sourceCodeOrigin": "inline"
+        },
+        "files": {},
+        "partials": {},
+        "partialTemplates": {},
+        "group": {
+            "groups": [
+                {
+                    "attributes": [
+                        {
+                            "code": "term",
+                            "description": "enter a search term or regular expression",
+                            "type": "string",
+                            "placeHolder": "",
+                            "editor": "textarea"
+                        },
+                        {
+                            "code": "pages",
+                            "type": "any",
+                            "editor": "query-ref",
+                            "store": "page",
+                            "query": {
+                                "script": "var search = this.getValue(\"/term\");\nreturnValue= {\"path\":{\"$regex\":search}}",
+                                "type": "dynamic"
+                            },
+                            "sort": [
+                                {
+                                    "attribute": "name",
+                                    "descending": false
+                                }
+                            ],
+                            "gridColumns": ["name"]
+                        }
+                    ],
+                    "label": "try out",
+                    "editor": "listpane"
+                },
+                {
+                    "attributes": [
+                        {
+                            "code": "name",
+                            "type": "string",
+                            "editor": "string"
+                        },
+                        {
+                            "code": "index",
+                            "min": 0,
+                            "numberFormat": "#",
+                            "type": "number",
+                            "editor": "number"
+                        },
+                        {
+                            "code": "template",
+                            "visible": false,
+                            "type": "string",
+                            "editor": "string"
+                        },
+                        {
+                            "code": "parent",
+                            "required": true,
+                            "type": "multi-ref",
+                            "idProperty": "id",
+                            "searchProperty": "name",
+                            "url": "page",
+                            "usage": "link",
+                            "typeProperty": "template",
+                            "schemas": [],
+                            "query": {"template": {"$regex": ".*[fF]older.*"}},
+                            "editor": "multi-page-ref"
+                        },
+                        {
+                            "code": "id",
+                            "disabled": true,
+                            "type": "number",
+                            "editor": "number"
+                        }
+                    ],
+                    "label": "general",
+                    "editor": "listpane"
+                },
+                {
+                    "attributes": [
+                        {
+                            "code": "general",
+                            "template": "tutorial",
+                            "outer": true,
+                            "type": "ref",
+                            "editor": "template-ref"
+                        }
+                    ],
+                    "label": "tutorial",
+                    "editor": "listpane"
+                }
+            ],
+            "labelAttribute": "name",
+            "editor": "tab"
+        }
+    },
+    {
+        "name": "richtext-example",
+        "id": "richtext-example",
+        "schema": "template",
+        "sourceCode": {
+            "sourceCodeMode": "ace/mode/handlebars",
+            "sourceCode": "{{{richtext text}}}\n",
+            "sourceCodeOrigin": "inline"
+        },
+        "files": {},
+        "partials": {},
+        "partialTemplates": {},
+        "group": {
+            "groups": [
+                {
+                    "attribute": {
+                        "code": "text",
+                        "updateInterval": "100",
+                        "height": "500px",
+                        "plugins": [
+                            {"name": "undo"},
+                            {"name": "redo"},
+                            {"name": "bold"},
+                            {"name": "italic"},
+                            {"name": "underline"},
+                            {"name": "strikethrough"},
+                            {"name": "subscript"},
+                            {"name": "superscript"},
+                            {"name": "removeFormat"},
+                            {"name": "insertOrderedList"},
+                            {"name": "insertUnorderedList"},
+                            {"name": "insertHorizontalRule"},
+                            {"name": "indent"},
+                            {"name": "outdent"},
+                            {"name": "justifyLeft"},
+                            {"name": "justifyCenter"},
+                            {"name": "justifyRight"},
+                            {"name": "dijit/_editor/plugins/FullScreen"},
+                            {"name": "dijit/_editor/plugins/AlwaysShowToolbar"},
+                            {"name": "dijit._editor.plugins.ViewSource"},
+                            {"name": "createCmsLink"},
+                            {"name": "insertCmsImage"}
+                        ],
+                        "type": "string",
+                        "editor": "richtext"
+                    },
+                    "label": "try out",
+                    "editor": "single"
+                },
+                {
+                    "attributes": [
+                        {
+                            "code": "name",
+                            "type": "string",
+                            "editor": "string"
+                        },
+                        {
+                            "code": "index",
+                            "min": 0,
+                            "numberFormat": "#",
+                            "type": "number",
+                            "editor": "number"
+                        },
+                        {
+                            "code": "template",
+                            "visible": false,
+                            "type": "string",
+                            "editor": "string"
+                        },
+                        {
+                            "code": "parent",
+                            "required": true,
+                            "type": "multi-ref",
+                            "idProperty": "id",
+                            "searchProperty": "name",
+                            "url": "page",
+                            "usage": "link",
+                            "typeProperty": "template",
+                            "schemas": [],
+                            "query": {"template": {"$regex": ".*[fF]older.*"}},
+                            "editor": "multi-page-ref"
+                        },
+                        {
+                            "code": "id",
+                            "disabled": true,
+                            "type": "number",
+                            "editor": "number"
+                        },
+                        {
+                            "code": "path",
+                            "disabled": true,
+                            "type": "string",
+                            "editor": "string"
+                        }
+                    ],
+                    "label": "general",
+                    "editor": "listpane"
+                },
+                {
+                    "attributes": [
+                        {
+                            "code": "general",
+                            "required": true,
+                            "template": "tutorial",
+                            "outer": true,
+                            "type": "ref",
+                            "editor": "template-ref"
+                        }
+                    ],
+                    "label": "tutorial",
+                    "editor": "listpane"
+                }
+            ],
+            "labelAttribute": "name",
+            "editor": "tab"
+        }
+    },
+    {
         "name": "bs-doc-tree",
         "id": "test-tree",
         "schema": "template",
         "sourceCode": {
-            "sourceCodeOrigin": "inline",
-            "sourceCode": "\n<div class=\"container\"/>\n<div class=\"row\">\n    <div class=\"col-md-9\" style=\"position:relative\">\n        <h1>{{{headline}}}</h1>\n        <p>{{{text}}}</p>\n        {{#sections}}\n            <h2 id=\"nav_{{@index}}\" class=\"page-header\">{{add @index 1}}. {{{headline}}}</h2>\n            {{#blocks}}\n                {{>(lookup . '__type__')}}    \n            {{/blocks}}\n        {{/sections}}\n    </div>\n    <div class=\"col-md-3\">\n        <nav id=\"navigation\" class=\"affix\">\n            <ul class=\"nav\">\n            {{#sections}}\n                <li>\n                    <a href=\"#nav_{{@index}}\">{{headline}}</a>\n                </li>\n            {{/sections}}\n            </ul>\n        </nav>\n    </div>\n</div>\n"
+            "sourceCodeMode": "ace/mode/handlebars",
+            "sourceCode": "\n<div class=\"container\"/>\n<div class=\"row\">\n    <div class=\"col-md-9\" style=\"position:relative\">\n        <h1>{{{headline}}}</h1>\n        <p>{{{text}}}</p>\n        {{#sections}}\n            <h2 id=\"nav_{{@index}}\" class=\"page-header\">{{add @index 1}}. {{{headline}}}</h2>\n            {{#blocks}}\n                {{>(lookup . '__type__')}}    \n            {{/blocks}}\n        {{/sections}}\n    </div>\n    <div class=\"col-md-3\">\n        <nav id=\"navigation\" class=\"affix\">\n            <ul class=\"nav\">\n            {{#sections}}\n                <li>\n                    <a href=\"#nav_{{@index}}\">{{headline}}</a>\n                </li>\n            {{/sections}}\n            </ul>\n        </nav>\n    </div>\n</div>\n",
+            "sourceCodeOrigin": "inline"
         },
+        "files": {},
         "partials": {},
         "partialTemplates": {},
         "group": {
@@ -1419,7 +2049,7 @@
                                 "idProperty": "id",
                                 "searchProperty": "name",
                                 "url": "page",
-                                "usage": "html",
+                                "usage": "link",
                                 "typeProperty": "template",
                                 "schemas": ["folder"],
                                 "query": {"template": {"$regex": ".*[fF]older.*"}},
@@ -1484,7 +2114,7 @@
                                         {"name": "justifyLeft"},
                                         {"name": "justifyCenter"},
                                         {"name": "justifyRight"},
-                                        {"name": "createLink"},
+                                        {"name": "createCmsLink"},
                                         {"name": "dijit/_editor/plugins/FullScreen"},
                                         {"name": "dijit/_editor/plugins/AlwaysShowToolbar"},
                                         {"name": "dijit._editor.plugins.ViewSource"}
@@ -1504,8 +2134,6 @@
             },
             "nodeAttributes": [
                 {
-                    "code": "sections",
-                    "type": "array",
                     "group": {
                         "detailGroup": {
                             "attributes": [
@@ -1526,7 +2154,8 @@
                                         "paragraph",
                                         "callout",
                                         "alert",
-                                        "linklist"
+                                        "linklist",
+                                        "tutorial-links"
                                     ],
                                     "type": "ref",
                                     "editor": "multi-template-ref"
@@ -1536,6 +2165,8 @@
                         ],
                         "editor": "tree"
                     },
+                    "code": "sections",
+                    "type": "array",
                     "editor": "array"
                 }
             ],
@@ -1574,7 +2205,7 @@
                             "idProperty": "id",
                             "searchProperty": "name",
                             "url": "page",
-                            "usage": "html",
+                            "usage": "link",
                             "typeProperty": "template",
                             "schemas": [],
                             "query": {"template": {"$regex": ".*[fF]older.*"}},

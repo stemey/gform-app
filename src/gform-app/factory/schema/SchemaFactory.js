@@ -29,7 +29,7 @@ define([
             t.replace("gform/schema/group/properties/attribute.json", "gform-app/meta/group-attribute.json");
             t.replace("gform/schema/group/properties/attributes.json", "gform-app/meta/group-attributes.json");
             t.replace("gform/schema/attributes/properties/group.json", "gform-app/meta/group.json");
-            t.replace("gform/schema/attributes/properties/group.json", "gform-app/meta/group.json");
+            t.replace("gform/schema/attributes/properties/groups.json", "gform-app/meta/groups.json");
             t.replace("gform/schema/group.json", "gform-app/factory/schema/group.json");
 
             var baseSchema = JSON.parse(templateSchema)

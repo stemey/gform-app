@@ -24,7 +24,7 @@
                 "attributes": [{
                     "code": "content",
                     "type": "binary",
-                    "fileNameAttribute":"..path"
+                    "fileNameAttribute":".path"
                 }]
             }
         ]

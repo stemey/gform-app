@@ -7,6 +7,7 @@ require(['dijit/_editor/plugins/FullScreen',
     "dijit/_editor/plugins/AlwaysShowToolbar",
     "dijit/_editor/plugins/LinkDialog",
     "gform-app/cms/LinkDialog",
+    "gform-app/cms/ImageDialog",
     "dijit/_editor/plugins/Print",
     "dijit/_editor/plugins/ToggleDir"
 

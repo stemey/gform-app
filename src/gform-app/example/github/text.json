@@ -44,7 +44,7 @@
                     "code": "content",
                     "editor": "acetext",
                     "type": "string",
-                    "modeAttribute": "..contentMode",
+                    "modeAttribute": ".contentMode",
                     "autoComplete": true
                 }
             }

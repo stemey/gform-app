@@ -24,7 +24,7 @@ define([
 				includedStoreIds: config.includedStoreIds,
 				ctx:ctx,
 				onClick: function () {
-					["page","/template","partial"].forEach(function(storeId) {
+					["page","/template","partial","file"].forEach(function(storeId) {
 						var store = ctx.getStore(storeId);
 						if (store.resetData) {
 							store.resetData();

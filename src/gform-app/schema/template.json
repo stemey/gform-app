@@ -66,7 +66,7 @@
                                     "code": "sourceCode",
                                     "editor": "acetext",
                                     "type": "string",
-                                    "modeAttribute": "..sourceCodeMode",
+                                    "modeAttribute": ".sourceCodeMode",
                                     "autoComplete": true
                                 }
                             }

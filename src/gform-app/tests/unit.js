@@ -1,6 +1,5 @@
 define([
-
-		//'./BorderContainer',
+        //'./BorderContainer',
         './StoreViewController',
         './TemplateRefArrayResolver',
 		'./MultiTemplateRefResolver',

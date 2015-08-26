@@ -160,7 +160,10 @@
                             "code": "dijit/_editor/plugins/AlwaysShowToolbar"
                         },
                         {
-                            "code": "dijit._editor.plugins.LinkDialog "
+                            "code": "dijit._editor.plugins.LinkDialog"
+                        },
+                        {
+                            "code": "insertCmsImage"
                         },
                         {
                             "code": "dijit._editor.plugins.ToggleDir"

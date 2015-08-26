@@ -107,7 +107,7 @@ define([
                                     "factoryId": "gform-app/factory/SingleSchemaCreateFactory",
                                     "label": "add",
                                     "iconClass": "fa fa-plus"
-                                },
+                                }
                             ]
                         },
                         {

@@ -33,7 +33,9 @@ define([
             this.onEvent(evt);
         },
         onPageUpdated: function (evt) {
-            this.onEvent(evt);
+            if (this.url && evt.url === this.url) {
+                this.display(this.url);
+            }
         },
         onPageDeleted: function (evt) {
             // TODO display nothing?
@@ -43,11 +45,13 @@ define([
             //TODO move to general component or AppController
             var me = this;
             var query = {};
-            if (!query.path) {
+            if (evt.path) {
                 // a link using the path not the id
-                query.path=evt.path;
-            }else {
+                query.path = evt.path;
+            } else if (evt.url) {
                 query[this.urlProperty] = evt.url;
+            } else {
+                return;
             }
 
             var page = this.pageStore.query(query);
