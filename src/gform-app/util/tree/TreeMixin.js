@@ -9,7 +9,7 @@ define([
 			var query ={}
 			query[parentProperty]=id;
 			// TODO configure name property
-			return this.query(query,{sort:[{attribute:"name", descending: false}]});
+			return this.query(query,{sort:[{attribute:"index", descending: false},{attribute:"name", descending: false}]});
 		}	});
 
 });

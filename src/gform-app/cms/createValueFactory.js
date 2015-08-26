@@ -53,6 +53,14 @@ define([], function () {
             parentAttribute.disabled=true
             attributes.push(parentAttribute);
 
+            var indexAttribute = {};
+            indexAttribute.code = "path";
+            indexAttribute.type = "number";
+            indexAttribute.editor = "number";
+            indexAttribute.min=1
+            indexAttribute.format="#";
+            attributes.push(indexAttribute);
+
 
             attributes.push({
                 code: instanceStore.idProperty,
