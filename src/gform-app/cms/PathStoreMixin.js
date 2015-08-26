@@ -9,7 +9,7 @@ define([
         initializing:false,
         _getPath: function (item) {
             if (item.parent) {
-                return this.get(item.parent).path + "/" + encodeURIComponent(item.name);
+                return this.get(item.parent).path + "/" + item.name;
             } else {
                 // TODO always assume root to be "/"?
                 return "";
@@ -35,7 +35,7 @@ define([
             when(this.query({})).then(function(results) {
                 me.initializing=true;
                 results.forEach(function(item) {
-                    me.put(me._convert(item));
+                    me.put(me._convert(item), {internal:true});
                 });
                 me.initializing=false;
             })

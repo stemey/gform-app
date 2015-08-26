@@ -24,6 +24,7 @@ define([
             var me = this;
             var realStore = store.mainStore ? store.mainStore : store.name;
             var model;
+            // TODO improve the StoreModel selection
             if (config.gh) {
                 model = new PathObjectStoreModel({store: store, root: {path: config.gh.root, content: ""}});
             } else if (config.osm) {
