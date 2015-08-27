@@ -67,7 +67,7 @@ define([
                         },
                         {
                             "factoryId": "gform-app/factory/DstoreFactory",
-                            "storeClass": "dstore/db/LocalStorage",
+                            "storeClass": "gform-app/util/LocalStorage",
                             "templateStore": FILE_SCHEMA_STORE,
                             "name": "file",
                             "typeProperty": "mediaType",
@@ -75,6 +75,7 @@ define([
                             "idType": "string",
                             "assignableId": true,
                             "dstoreConfig": {
+                                "version": "1.1",
                                 "storeName": FILE_STORE
                             },
                             "initialDataUrl": "gform-app/example/cms/data/file-data.json",
@@ -82,7 +83,7 @@ define([
                         },
                         {
                             "factoryId": "gform-app/factory/DstoreFactory",
-                            "storeClass": "dstore/db/LocalStorage",
+                            "storeClass": "gform-app/util/LocalStorage",
                             "template": TEMPLATE_SCHEMA,
                             "name": TEMPLATE_STORE,
                             "idProperty": config.idProperty,
@@ -90,6 +91,7 @@ define([
                             "idType": "string",
                             "assignableId": true,
                             "dstoreConfig": {
+                                "version": "1.1",
                                 "storeName": TEMPLATE_STORE
                             },
                             "initialDataUrl": "gform-app/example/cms/data/template-data.json",
@@ -97,13 +99,14 @@ define([
                         },
                         {
                             "factoryId": "gform-app/factory/DstoreFactory",
-                            "storeClass": "dstore/db/LocalStorage",
+                            "storeClass": "gform-app/util/LocalStorage",
                             "template": TEMPLATE_SCHEMA,
                             "name": PARTIAL_STORE,
                             "idProperty": config.idProperty,
                             "idType": "string",
                             "assignableId": true,
                             "dstoreConfig": {
+                                "version": "1.1",
                                 "storeName": PARTIAL_STORE
                             },
                             "initialDataUrl": "gform-app/example/cms/data/partial-data.json",
@@ -111,7 +114,7 @@ define([
                         },
                         {
                             "factoryId": "gform-app/factory/DstoreFactory",
-                            "storeClass": "dstore/db/LocalStorage",
+                            "storeClass": "gform-app/util/LocalStorage",
                             "templateStore": TEMPLATE_STORE,
                             "name": PAGE_STORE,
                             "previewerId": "handlebars",
@@ -121,6 +124,7 @@ define([
                             "idProperty": config.idProperty,
                             "initialDataUrl": "gform-app/example/cms/data/page-data.json",
                             "dstoreConfig": {
+                                "version": "1.1",
                                 "storeName": PAGE_STORE
                             },
                             "createEditorFactory": "gform-app/example/cms/createPageEditorFactory"
@@ -140,8 +144,8 @@ define([
                             "factoryId": "gform-app/factory/schema/SchemaFactory",
                             "store": TEMPLATE_STORE,
                             "partialStore": PARTIAL_STORE,
-                            "sourceRefQuery":{"contentMode":{"$regex":"handlebars"}},
-                            "sourceCodeModes":[
+                            "sourceRefQuery": {"contentMode": {"$regex": "handlebars"}},
+                            "sourceCodeModes": [
                                 {
                                     "label": "handlebars",
                                     "value": "ace/mode/handlebars"
