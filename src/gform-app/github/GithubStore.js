@@ -23,25 +23,26 @@ define([
             }).getRepo(kwArgs.owner, kwArgs.repo);
             if (kwArgs.cacheDirectives) {
                 this.cache = new Memory();
-            }
-            this.loadCache();
-            this.after("remove", function (result, id) {
-                if (this.isDirectory(id)) {
-                    this.loadCache();
-                }else{
-                    this.cache.remove(id);
-                }
-            }, this);
-            this.after("put", function (result, item, options) {
+                this.loadCache();
+                this.after("remove", function (result, id) {
+                    if (this.isDirectory(id)) {
+                        this.loadCache();
+                    } else {
+                        this.cache.remove(id);
+                    }
+                }, this);
+                this.after("put", function (result, item, options) {
                     if (this.isDirectory(item.path)) {
                         this.loadCache();
-                    }else {
+                    } else {
                         if (options && options.old) {
                             this.cache.remove(options.old.path);
                         }
                         this.cache.put(item);
                     }
-            }, this);
+                }, this);
+            }
+
         },
 
         getChildren: function (parentItem) {
@@ -57,7 +58,8 @@ define([
             })
             return d.promise;
         },
-        isDirectory: function(path) {
+        isDirectory: function (path) {
+            // TODO incorrect for files without extension. use github's type.
             return path.indexOf(".") < 0;
         },
         get: function (id, options) {
@@ -82,7 +84,7 @@ define([
         },
         put: function (item, options) {
             if (options && !("overwrite" in options)) {
-                options.overwrite=true;
+                options.overwrite = true;
             }
             if (options.old && item.path != options.old.path) {
                 var d = new Deferred();
@@ -99,7 +101,6 @@ define([
                 if (!item.message) {
                     item.message = "changes by gform-app github client";
                 }
-
                 return this.inherited(arguments, [this.convertFromItem(item), options]);
             }
         },
@@ -116,7 +117,7 @@ define([
             data.message = "delete by gform-app github client";
             data.path = id;
             options = options || {};
-            if (this.isDirectory(id)) {
+            if (options.old.mediaType === "folder") {
                 // is a directory
                 var d = new Deferred();
                 this.repository.deleteDir('master', id, function (err) {
@@ -136,19 +137,19 @@ define([
                 });
             }
         },
-        convertToCacheIdtem: function(item) {
+        convertToCachedItem: function (item) {
             var o = {};
             if (this.cacheDirectives.included) {
-                o[path]=item[path];
-                this.cacheDirectives.included.forEach(function(key) {
-                    o[key]=item.content[key];
+                o.path = item.path;
+                this.cacheDirectives.included.forEach(function (key) {
+                    o[key] = item.content[key];
                 })
             } else {
-                var excluded=this.cacheDirectives.excluded || [];
-                Object.keys(item.content).filter(function(key) {
-                    return excluded.indexOf(key)<0
-                }).forEach(function(key) {
-                    o[key]=item.content[key];
+                var excluded = this.cacheDirectives.excluded || [];
+                Object.keys(item.content).filter(function (key) {
+                    return excluded.indexOf(key) < 0
+                }).forEach(function (key) {
+                    o[key] = item.content[key];
                 })
             }
             return o;
@@ -166,7 +167,7 @@ define([
                 }
                 all(newData).then(function (results) {
                     var newResults = results.map(function (e) {
-                        return me.convertToCacheIdtem(e);
+                        return me.convertToCachedItem(e);
                     });
                     me.cache.setData(newResults);
                 })
@@ -189,9 +190,9 @@ define([
             })
             return newQ;
         },
-        query: function (q) {
+        query: function (q, options) {
             if (this.cache) {
-                var results = this.cache.query(this.convertToLocalQuery(q));
+                var results = this.cache.query(this.convertToLocalQuery(q), options);
                 results.total = when(results.length);
                 return results;
             } else {

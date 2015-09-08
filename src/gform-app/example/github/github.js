@@ -37,6 +37,7 @@ define([
                     "factoryId": "gform-app/factory/StoreFactory",
                     "name": "github",
                     "storeClass": "gform-app/github/GithubStore",
+                    "cacheDirectives":{included:[]},
                     "owner": config.owner,
                     "repo": config.repo,
                     "idProperty": "path",

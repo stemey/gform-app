@@ -30,7 +30,11 @@ define([
         },
         convertFromItem: function (item) {
             var newItem = {};
-            lang.mixin(newItem, item);
+            newItem.message=item.message;
+            if (item.sha) {
+                newItem.sha = item.sha;
+            }
+
             newItem.path = this.expandPath(item.path);
             if (!newItem.name) {
                 newItem.name = this.getName(newItem.path);
