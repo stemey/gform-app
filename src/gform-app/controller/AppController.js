@@ -28,6 +28,13 @@ define([
 
 
 		},
+        display: function(el) {
+            var loadingScreen = query('.loadingScreen')[0];
+            this.domNode.style.display = "block";
+            loadingScreen.style.display = 'none';
+            el.placeAt(this.domNode);
+            el.startup();
+        },
 		start: function (gformAppConfig, factory) {
 			var hash = location.search.length>1 ? ioQuery.queryToObject(location.search.substring(1)) : {};
 			lang.mixin(gformAppConfig, hash);
@@ -35,14 +42,10 @@ define([
 			var appConfig = factory(config);
 			this.appFactory = new AppFactory(appConfig);
 			var promise = this.appFactory.create();
-			var loadingScreen = query('.loadingScreen')[0];
 			var me = this;
 			promise.then(function (container) {
-				me.domNode.style.display = "block";
-				loadingScreen.style.display = 'none';
-				container.placeAt(me.domNode);
-				container.startup();
-				me.appFactory.afterAttached();
+                me.display(container);
+                me.appFactory.afterAttached();
 			})
 		},
 		followPreviewLink: function (url) {

@@ -58,6 +58,11 @@ define([
                             return g.code == type;
                         })[0];
                         missingTypeProperty=meta.typeProperty;
+                        if (!single) {
+                            throw new Error("no type property matches  "+type+ " types "+meta.groups.map(function(g) {
+                                    return g.code;
+                                }).join(", "));
+                        }
                     }
                     var me = this;
                     this.visitor.visitElement(single, el, function (newCtx) {

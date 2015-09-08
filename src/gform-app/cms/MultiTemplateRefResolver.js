@@ -1,4 +1,4 @@
-define([
+define("gform-app/cms/MultiTemplateRefResolver", [
     'dojo/_base/lang',
     "dojo/_base/declare"
 ], function (lang, declare) {
@@ -17,15 +17,16 @@ define([
                 //obj.type="object";
                 obj.groups = [];
                 obj.templates.forEach(function (template, idx) {
+                    var idProperty = this.templateStore.idProperty;
                     var cb = function (value) {
-                        value.group.code = value.id;
+                        value.group.code = value[idProperty];
                         obj.groups.push(value.group);
                         obj.templates.push(value);
                         //value.group.template=value;
                         //obj.type = "object";
                         //delete obj.editor;
                     }
-                    refs.push({store: this.templateStore, id: template, setter: cb});
+                    refs.push({store: this.templateStore.name, id: template, setter: cb});
                 },this)
                 obj.templates=[];
                 obj.typeProperty="__type__";

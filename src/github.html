@@ -27,16 +27,65 @@
     <script type="text/javascript" src="dojo/dojo.js"></script>
     <script type="text/javascript" src="gform-app/main.js"></script>
     <script>
-        require(['gform-app/example/github/github', "dojo/parser", "dojo/io-query", "dojo/ready", "gform-app/controller/AppController"], function (github, parser, ioquery) {
-            parser.parse();
-            var appConfig = {
-                baseUrl: "../",
-                accessToken: "17ca53066a4d1703fba758b3b9d58c52d50152bc",
-                owner:"stemey",
-                repo:"cms-example-content"
-            };
-            window.appController.start(appConfig, github);
-        })
+        require(['dojo/query',
+                'gform-app/github/Login',
+                'dojo/_base/url',
+                'dojo/io-query',
+                'dojo/text!./github-cfg.json',
+                'gform-app/github/Starter',
+                'gform-app/example/github/github', "dojo/parser", "dojo/ready", "gform-app/controller/AppController", "gform-app/github/Login"],
+            function (query, Login, Url, ioQuery, cfg, Starter, github, parser) {
+
+
+                var authorize = function (config) {
+                    new Starter(config).authorize().then(function (result) {
+                        if (result.redirectUri) {
+                            window.location.href = result.redirectUri;
+                        } else {
+                            parser.parse();
+                            config.baseUrl = config.baseUrl || "../";
+                            config.accessToken = result.accessToken;
+                            window.appController.start(config, github);
+                        }
+                    });
+                }
+
+                var config = JSON.parse(cfg);
+
+
+                var url = new Url(window.location.href);
+                var queryParams = url.query;
+                var params={};
+                if (queryParams) {
+                    params = ioQuery.queryToObject(queryParams);
+                    if (params.repo && params.owner) {
+                        config.repo = params.repo;
+                        config.owner = params.owner;
+                    }
+                }
+
+                if (!config.repo) {
+                    var login = new Login();
+                    var dom = query(".login")[0];
+                    query(".loadingScreen")[0].style.display = "none";
+                    dom.style.display = "block";
+                    login.callback = function (cfg) {
+                        params.owner = cfg.owner;
+                        params.repo = cfg.repo;
+                        window.location.href = url.path + "?" + ioQuery.objectToQuery(params) + (url.fragment ? "#" + url.fragment : "");
+                    }
+                    login.placeAt(dom);
+                    login.startup();
+                    window.login = login;
+                } else {
+                    if (window.login) {
+                        window.login.destroy();
+                    }
+                    authorize(config)
+                }
+
+
+            })
     </script>
 
 
@@ -50,6 +99,8 @@
         <div style="text-align:center;margin-top:20%;font-size:30pt"><i style="font-size:90px"
                                                                         class="fa fa-spinner fa-pulse"></i></div>
     </div>
+</div>
+<div class="login" style="display:none">
 </div>
 
 

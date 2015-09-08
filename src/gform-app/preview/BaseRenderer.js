@@ -1,4 +1,4 @@
-define([
+define("gform-app/preview/BaseRenderer", [
     'gform/list_primitive/QueryFactory',
     '../meta/Resolver',
     'dojo/_base/lang',
@@ -136,11 +136,11 @@ define([
                     ctx.templates[id] = result.sourceCode;
                 })
             }, this)
-            all(ps).then(function () {
+            var me = this;
+            all(ps).then(function (loadedTemplates) {
                 if (templates.length > 0) {
                     var template = templates[0];
-                    var me = this;
-                    p.then(function (loadedTemplate) {
+                    loadedTemplates.forEach(function (loadedTemplate) {
                         me._handleTemplateRef(attribute, groups[0], loadedTemplate, value, goon, ctx);
                     }, function (e) {
                         ctx.errors.push(e);
@@ -408,8 +408,8 @@ define([
                     this.pageCache[pageUrl] = renderPromise;
                 }
             }
-            var error = function (ctx) {
-                renderPromise.resolve({message: "error during rendering of " + pageUrl, errors: ctx.errors}
+            var error = function (error) {
+                renderPromise.resolve({message: "error during rendering of " + pageUrl, errors: [error]}
                 );
             }
 
@@ -598,7 +598,7 @@ define([
             var renderPromise = new Deferred();
             //console.log("getData " + pageUrl);
             // TODO replace findByUrl by getById
-            when(me.findByUrl("/page/" + pageUrl)).then(function (page) {
+            when(me.findByUrl( pageUrl)).then(function (page) {
                 renderPromise.resolve({page: page});
             }).otherwise(function (e) {
                 var errors = [

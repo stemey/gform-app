@@ -5,8 +5,14 @@ define([
 	'./when',
     './MemoryStore',
     'intern!bdd',
-    'intern/chai!assert'
-], function (lang, handlebars, Renderer, when, MemoryStore, bdd, assert) {
+    'intern/chai!assert',
+    'marked/marked.min'
+], function (lang, handlebars, Renderer, when, MemoryStore, bdd, assert, marked) {
+    if (typeof window === "undefined") {
+        global.marked=marked;
+    } else {
+        window.marked=marked;
+    }
     bdd.describe('Renderer', function () {
         var renderer;
 

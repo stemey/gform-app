@@ -136,8 +136,8 @@ define([
                     "registryClass": "gform-app/SchemaRegistry",
                     "stores": [
                         {id: FILE_SCHEMA_STORE},
-                        {id: TEMPLATE_STORE, storeClass: TemplateStore, idProperty: config.idProperty},
-                        {id: PARTIAL_STORE, storeClass: TemplateStore, idProperty: config.idProperty}
+                        {id: TEMPLATE_STORE, storeClass: TemplateStore, idProperty: config.idProperty, partialStore: PARTIAL_STORE},
+                        {id: PARTIAL_STORE, storeClass: TemplateStore, idProperty: config.idProperty, partialStore: PARTIAL_STORE}
                     ],
                     "schemaGenerators": [
                         {
@@ -361,6 +361,7 @@ define([
                                     "splitter": true,
                                     "rendererClass": "gform-app/preview/handlebars/Renderer",
                                     "pageStore": PAGE_STORE,
+                                    "partialStore": PARTIAL_STORE,
                                     "fileStore": FILE_STORE,
                                     "urlProperty": "id"
                                 }

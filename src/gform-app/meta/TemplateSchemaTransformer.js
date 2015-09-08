@@ -1,4 +1,4 @@
-define([
+define("gform-app/meta/TemplateSchemaTransformer", [
     '../cms/MultiTemplateRefArrayResolver',
     '../cms/TemplateRefArrayResolver',
     '../cms/MultiTemplateRefResolver',
@@ -26,17 +26,17 @@ define([
             this.idProperty = store.idProperty;
             this.idType = store.idType;
             this.baseUrl = store.target;
-            this.templateStore="partial";
+            this.partialStore=kwArgs.partialStore;
         },
         transform: function (schema, skipResolve) {
             var d = new Deferred();
             var resolver = new SchemaResolver(this.ctx);
-            resolver.addResolver(new MultiTemplateRefArrayResolver({templateStore:this.templateStore}));
+            resolver.addResolver(new MultiTemplateRefArrayResolver({templateStore:this.partialStore}));
             resolver.addResolver(new MultiEntityRefResolver({idProperty: this.idProperty}))
             resolver.addResolver(new SchemaRefResolver())
-            resolver.addResolver(new TemplateRefResolver({templateStore:this.templateStore}))
-            resolver.addResolver(new TemplateRefArrayResolver({templateStore:this.templateStore}))
-            resolver.addResolver(new MultiTemplateRefResolver({templateStore:this.templateStore}));
+            resolver.addResolver(new TemplateRefResolver({templateStore:this.partialStore.name}))
+            resolver.addResolver(new TemplateRefArrayResolver({templateStore:this.partialStore.name}))
+            resolver.addResolver(new MultiTemplateRefResolver({templateStore:this.partialStore}));
             // TODO schemaResolver modifies input so we need to clone here
             var clonedSchema = JSON.parse(JSON.stringify(schema));
             //var resolver = new Resolver();

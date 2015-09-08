@@ -10,6 +10,7 @@ define([
 
         constructor: function (kwArgs) {
             lang.mixin(this, kwArgs);
+
         },
         transformer: null,
         store:null,

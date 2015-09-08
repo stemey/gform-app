@@ -39,6 +39,7 @@ module.exports = function (grunt) {
                 files: [
                     // includes files within path
                     {expand: true, cwd:'src', src: ['handlebars/**/*'], dest: 'dist'},
+                    {expand: true, cwd:'src', src: ['marked/**/*'], dest: 'dist'},
                     {expand: true,  cwd:'src', src: ['bootstrap/**/*'], dest: 'dist'},
                     {expand: true,  cwd:'src', src: ['jquery/**/*'], dest: 'dist'}
                     ]

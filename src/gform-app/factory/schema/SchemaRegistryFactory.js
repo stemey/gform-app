@@ -19,8 +19,8 @@ define([
 				if (config.stores) {
 					config.stores.forEach(function (storeConfig) {
 						var store = ctx.getStore(storeConfig.id);
-						var props = {store: store, ctx: ctx};
-						lang.mixin(props, storeConfig);
+                        var props = {store: store, ctx: ctx};
+                        lang.mixin(props, storeConfig);
                         if (storeConfig.storeClass) {
                             var schemaStore = new storeConfig.storeClass(props);
                         }else {

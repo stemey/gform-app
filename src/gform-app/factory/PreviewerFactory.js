@@ -17,6 +17,7 @@ define([
 				var pageStore = new CacheStore(ctx.getStore(config.pageStore));
                 var fileStore = new CacheStore(ctx.getStore(config.fileStore));
                 var templateStore = ctx.getStore(pageStore.store.templateStore);
+                var partialStore = ctx.getStore(config.partialStore);
 
 				var previewer = new Previewer({pageStore: pageStore, urlProperty:config.urlProperty||"url"});
 				//aspect.after(pageStore, "onUpdate", lang.hitch(previewer, "refresh"));
@@ -26,7 +27,8 @@ define([
                     props.templateStore = templateStore;
                     props.pageStore = pageStore;
                     props.fileStore = fileStore;
-                    var templateToSchemaTransformer = new TemplateSchemaTransformer({ctx:ctx,store:templateStore});
+                    props.preview=true;
+                    var templateToSchemaTransformer = new TemplateSchemaTransformer({ctx:ctx,store:templateStore, partialStore:partialStore});
                     props.templateToSchemaTransformer = templateToSchemaTransformer;
 
 					var renderer = new Renderer(props);
