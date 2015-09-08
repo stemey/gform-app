@@ -1,0 +1,21 @@
+<div>
+    <style>
+        .login .field {
+            margin-bottom:10px;
+            margin-top:3px;
+        }
+    </style>
+    <div>
+        <label>User</label><br>
+        <span class="field" data-dojo-attach-point="user" data-dojo-props="required:true"
+              data-dojo-type="dijit/form/ValidationTextBox"></span>
+    </div>
+    <div>
+        <label>Repository</label><br>
+        <span class="field" data-dojo-attach-point="repo" data-dojo-props="required:true"
+              data-dojo-type="dijit/form/ValidationTextBox"></span>
+    </div>
+    <div>
+        <span data-dojo-attach-event="click:login" data-dojo-type="dijit/form/Button">login</span>
+    </div>
+</div>

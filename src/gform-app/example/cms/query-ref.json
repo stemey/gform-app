@@ -1,0 +1,109 @@
+{
+    "code": "query-ref",
+    "editor": "tab",
+    "groupLabel": "references",
+    "description": "",
+    "groups": [
+        {
+            "$ref": "../../../gform/schema/attributes/header.json"
+        },
+        {
+            "label": "query",
+            "attributes": [
+                {
+                    "code": "type",
+                    "type": "string",
+                    "visible": false,
+                    "required": true,
+                    "values": ["any"]
+                },
+                {
+                    "code": "editor",
+                    "type": "string",
+                    "visible": false,
+                    "required": true,
+                    "values": ["query-ref"]
+                },
+                {
+                    "code": "store",
+                    "description": "The store id.",
+                    "type": "string",
+                    "defaultValue": "page",
+                    "required": true
+                },
+                {
+                    "code": "query",
+                    "type": "object",
+                    "typeProperty": "type",
+                    "required": true,
+                    "groups": [
+                        {
+                            "code": "dynamic",
+                            "editorDescription": "a dynamically generated query",
+                            "attributes": [
+                                {
+                                    "code": "script",
+                                    "description": "a script generating a mongodb-like query supporting $regex and $in.<br> the script's last assignment is the query.<br> example: <code>returnValue = {path:'/tutorial'}</code>",
+                                    "required": true,
+                                    "type": "string",
+                                    "mode": "ace/mode/javascript",
+                                    "editor": "acetext"
+                                }
+                            ]
+                        },
+                        {
+                            "code": "static",
+                            "editorDescription": "a static query",
+                            "attributes": [
+                                {
+                                    "code": "value",
+                                    "description": "a mongodb-like query supporting $regex and $in",
+                                    "required": true,
+                                    "type": "any",
+                                    "editor": "anyAce"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "code": "sort",
+                    "type": "array",
+                    "editor": "table",
+                    "attributes": [
+                        {
+                            "code": "attribute",
+                            "type": "string",
+                            "required": true
+                        },
+                        {
+                            "code": "descending",
+                            "type": "boolean"
+                        }
+                    ],
+                    "defaultValue": [
+                        {
+                            "attribute": "name",
+                            "descending": false
+                        }
+                    ]
+                },
+                {
+                    "code": "gridColumns",
+                    "label": "attributes in grid",
+                    "type": "array",
+                    "element": {
+                        "type": "string",
+                        "required": true
+                    },
+                    "defaultValue": [
+                        "name"
+                    ]
+                }
+            ]
+        },
+        {
+            "$ref": "../../../gform/schema/attributes/messages.json"
+        }
+    ]
+}

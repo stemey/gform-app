@@ -17,7 +17,6 @@ src/bootstrap
 src/jquery
 src/marked
 src/github-api
-src/
 .settings
 *~
 .idea
