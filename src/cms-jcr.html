@@ -24,9 +24,10 @@
 	<script type="text/javascript" src="dojoConfig.js"></script>
 	<script type="text/javascript" src="dojo/dojo.js"></script>
 	<script>
-		require(['gform-app/config/cms-jcr', "dojo/parser", "dojo/ready", "gform-app/controller/AppController"], function (cms	, parser) {
+		require(['dojo/_base/url','gform-app/config/cms-jcr', "dojo/parser", "dojo/ready", "gform-app/controller/AppController"], function (Url,cms	, parser) {
 			parser.parse();
 			var appConfig = {baseUrl: "../"};
+            var url = new Url(location.href);
 			window.appController.start(appConfig, cms);
 		})
 	</script>

@@ -1,0 +1,83 @@
+{
+    "types":[
+        {
+            "name":"json",
+            "ext":"json",
+            "type":"text",
+            "ace":"ace/mode/json",
+            "mimetype":"application/json"
+        },
+        {
+            "name": "handlebars",
+            "ext":"hbs",
+            "type":"text",
+            "ace": "ace/mode/handlebars",
+            "mimetype":"text/html"
+        },
+        {
+            "name": "jsx",
+            "ext":"jsx",
+            "type":"text",
+            "ace": "ace/mode/jsx",
+            "mimetype":"text/html"
+        },
+        {
+            "name":"css",
+            "type":"text",
+            "ext": "css",
+            "ace": "ace/mode/css",
+            "mimetype":"text/css"
+        },
+        {
+            "name":"javascript",
+            "type":"text",
+            "ext": "js",
+            "ace": "ace/mode/javascript",
+            "mimetype":"text/javascript"
+        },
+        {
+            "name": "html",
+            "ext":"html",
+            "type":"text",
+            "ace": "ace/mode/html",
+            "mimetype":"text/html"
+
+        },
+        {
+            "name": "png",
+            "ext":"png",
+            "type":"binary",
+            "mimetype":"image/png"
+        },
+        {
+            "name": "jpg",
+            "ext":"jpg",
+            "type":"binary",
+            "mimetype":"image/jpg"
+        },{
+            "name": "jpeg",
+            "ext":"jpeg",
+            "type":"binary",
+            "mimetype":"image/jpeg"
+        },
+        {
+            "name": "gif",
+            "ext":"gif",
+            "type":"binary",
+            "mimetype":"image/gif"
+        },
+        {
+            "name": "pdf",
+            "ext":"pdf",
+            "type":"binary",
+            "mimetype":"application/pdf"
+        },
+        {
+            "name": "markdown",
+            "ext":"md",
+            "type":"text",
+            "ace": "ace/mode/markdown",
+            "mimetype":"text/markdown"
+        }
+    ]
+}

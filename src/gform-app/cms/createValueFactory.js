@@ -25,6 +25,9 @@ define([], function () {
             var template = this._createTemplate();
             var attributes = template.group.attributes;
 
+
+            var pathIsId=instanceStore.idProperty=="path";
+
             attributes.push(this._createNameAttribute());
 
             var typeAttribute = {};
@@ -43,18 +46,21 @@ define([], function () {
             parentAttribute.type = "multi-ref";
             parentAttribute.editor = "multi-page-ref";
             parentAttribute.query={template:{$regex:".*[fF]older.*"}}
-            parentAttribute.required = true;
+            parentAttribute.required = !pathIsId;
+            parentAttribute.disabled=pathIsId;
             attributes.push(parentAttribute);
 
-            var pathAttribute = {};
-            pathAttribute.code = "path";
-            parentAttribute.type = "string";
-            parentAttribute.editor = "multi-page-ref";
-            parentAttribute.disabled=true
-            attributes.push(parentAttribute);
+            if (!pathIsId) {
+                var pathAttribute = {};
+                pathAttribute.code = "path";
+                pathAttribute.type = "string";
+                pathAttribute.editor = "multi-page-ref";
+                pathAttribute.disabled = true
+                attributes.push(pathAttribute);
+            }
 
             var indexAttribute = {};
-            indexAttribute.code = "path";
+            indexAttribute.code = "index";
             indexAttribute.type = "number";
             indexAttribute.editor = "number";
             indexAttribute.min=1
@@ -67,7 +73,7 @@ define([], function () {
                 "editor": instanceStore.idType || "string",
                 type: instanceStore.idType || "string",
                 required: false,
-                disabled: true
+                disabled: false
             });
 
             return template;

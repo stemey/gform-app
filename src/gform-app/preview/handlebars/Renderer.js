@@ -20,6 +20,10 @@ define([
             renderer: markedRenderer
         });
 
+        var escapeString = function(value) {
+            return "\""+value.replace("\"","\\\"")+"\"";
+        }
+
         function boolExpr(bool, options, ctx) {
             if (options.fn) {
                 if (bool) {
@@ -82,6 +86,10 @@ define([
             return boolExpr(a >= b, options, this);
 
         });
+        Handlebars.registerHelper('lib-path', function (source, options) {
+            var del = (source.substring(0, 1) == "/") ? "" : "/";
+            return config.libBasePath + del + source;
+        });
         Handlebars.registerHelper('style-tag', function (styleRef, options) {
 
             if (config.preview) {
@@ -98,7 +106,7 @@ define([
                 // TODO is content property universal?
                 return "<style>" + script.content + "</style>"
             } else {
-                return "<style src='" + scriptRef + "'></style>"
+                return "<style src='" + config.assetBasePath + scriptRef + "'></style>"
             }
         });
         Handlebars.registerHelper('image-src', function (imageRef, options) {
@@ -116,13 +124,17 @@ define([
         });
         Handlebars.registerHelper('link', function (id, options) {
 
-            if (config.preview) {
+            if (!id) {
+                return "undefined";
+            } else if (config.preview) {
                 if (typeof id === "string") {
-                    id = "'" + id + "'"
+                    id = escapeString(id);
                 }
                 return "javascript:preview(" + id + ");";
             } else {
-                return config.pageBasePath + id + config.linkExtension;
+                var idx = id.lastIndexOf(".");
+                path = idx > 0 ? id.substring(0, idx) : id;
+                return config.pageBasePath + path + config.linkExtension;
             }
         });
 
@@ -133,17 +145,19 @@ define([
                 // TODO merge with link
                 if (config.preview) {
                     if (typeof path === "string") {
-                        path = "'" + path + "'"
+                        path = escapeString(path);
                     }
                     return "javascript:previewByPath(" + path + ");";
                 } else {
-                    return config.pageBasePath + path + config.linkExtension;
+                    var idx = path.lastIndexOf(".");
+                    var realPath = idx > 0 ? path.substring(0, idx) : path;
+                    return config.pageBasePath + realPath + config.linkExtension;
                 }
             }
         });
 
         Handlebars.registerHelper('image-path', function (path, options) {
-            if (config.fileStore) {
+            if (config.preview) {
                 var images = config.fileStore.query({path: path});
                 if (!images || images.length == 0) {
                     return "did not find content for " + path;
@@ -152,7 +166,7 @@ define([
                     return "data:image/png;base64," + images[0].content;
                 }
             } else {
-                return path;
+                return config.assetBasePath + path;
             }
         });
 

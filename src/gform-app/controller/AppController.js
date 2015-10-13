@@ -1,5 +1,5 @@
 define([
-	'dojo/when',
+    'dojo/when',
 	'../config',
 	'dojo/io-query',
 	'dojo/_base/lang',
@@ -49,7 +49,7 @@ define([
 			})
 		},
 		followPreviewLink: function (url) {
-			topic.publish("/page/navigate", {url: url})
+            topic.publish("/page/navigate", {url: url});
 		},
         followPreviewLinkByPath: function (path) {
             topic.publish("/page/navigate", {path: path})

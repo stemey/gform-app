@@ -10,14 +10,11 @@ define([
                 return this.get(url);
             }else{
                 // TODO should always start with /
-                var path = url.match(/^\/?[^\/]+\/(.*)/);
-                if (path!=null && path.length>=2) {
-                    var id = path[1];
+                if (url.substring(0,this.name.length+1)==this.name+"/") {
+                    return this.get(url.substring(this.name.length+1));
                 } else {
-                    throw new Error("cannot find "+url);
+                    return this.get(url);
                 }
-
-                return this.get(id);
             }
         }
 

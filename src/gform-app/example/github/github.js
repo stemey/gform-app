@@ -27,7 +27,6 @@ define([
                     "typeProperty": "mediaType",
                     "createEditorFactory": "gform-app/github/createFileEditorFactory",
                     "idProperty": "path",
-                    "typeProperty": "mediaType",
                     "changeableId": true,
                     "root": "src"
                 }

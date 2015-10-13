@@ -63,7 +63,7 @@ var profile = {
 		},
 
 		'gform-app/cms': {
-			include:["gform-app/example/cms/cms"],
+			include:["gform-app/cms/cms"],
 			exclude:['ace/ace','gform-app/main']
 		}
 

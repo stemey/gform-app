@@ -13,18 +13,16 @@ define([
         },
         createEntity: function (entity) {
             var me = this;
-            var parentId = this.getParentId(entity);
-            var parent = this.childrenCache[parentId]
-            if (parent) {
-                var item = {};
-                item[this.store.idProperty]=parentId;
-                when(this.store.getChildren(item), function (result) {
-                    me.onChildrenChange(item, result);
-                })
-            }
+            var parent = this.getVisibleAncestor(entity);
+            var item = {};
+            //item[this.store.idProperty]=parent[this.store.idProperty];
+            when(me.store.getChildren(parent), function (result) {
+                me.onChildrenChange(parent, result);
+            })
         },
         updateEntity: function (entity, oldEntity) {
-            if (oldEntity && entity.parent !== this.getParentId(oldEntity)) {
+            // TODO should we only check parent??
+            if (oldEntity && entity.path !== oldEntity.path) {
                 this.deleteEntity(this.store.getIdentity(oldEntity));
                 this.createEntity(entity);
             } else {
@@ -33,7 +31,7 @@ define([
         },
         deleteEntity: function (id) {
             var item = {};
-            item[this.store.idProperty]=id;
+            item[this.store.idProperty] = id;
             this.onDelete(item);
         }
     });

@@ -1,5 +1,9 @@
 define([
         //'./BorderContainer',
+        './store/FileConverter',
+        './store/FileStore',
+        './store/JsonConverter'/*,
+        './createValueFactory',
         './StoreViewController',
         './TemplateRefArrayResolver',
 		'./MultiTemplateRefResolver',
@@ -10,7 +14,7 @@ define([
 		'./TreeStore',
 		'./RequiredAttributes',
 		'./SchemaResolver',
-		'./DynamicResourceManager'
+		'./DynamicResourceManager'*/
 	], function () {
 	}
 );

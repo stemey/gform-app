@@ -1,9 +1,9 @@
 define([
-	'../../controller/actions/Duplicate',
-	'../../controller/actions/Preview',
-	'../../util/identityConverter',
-	'../../controller/actions/CreateInstance',
-	'../../controller/actions/Save',
+	'../controller/actions/Duplicate',
+	'../controller/actions/Preview',
+	'../util/identityConverter',
+	'../controller/actions/CreateInstance',
+	'../controller/actions/Save',
 	'gform/controller/actions/Close',
 	'gform/controller/actions/Discard',
 	'gform/controller/actions/Delete',
@@ -14,7 +14,7 @@ define([
 	'gform/special/formbuilder/RepeatedFormAttributeFactory',
 	'gform/primitive/refConverter',
 	'gform/primitive/nullablePrimitiveConverter',
-	'../../dynamicstore/RequiredAttributes',
+	'../dynamicstore/RequiredAttributes',
 	'./TemplateAttributes',
 	'gform/createFullEditorFactory'
 ], function (Duplicate, Preview, identityConverter, CreateInstance, Save, Close, Discard, Delete, ActionFactory, FormValidator, AttributeRefFactory, FormAttributeFactory, RepeatedFormAttributeFactory, refConverter, converter, RequiredAttributes, TemplateAttributes, createFullEditorFactory) {

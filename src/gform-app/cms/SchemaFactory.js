@@ -4,7 +4,7 @@ define([
     'dojo/_base/lang',
     'dojo/when',
     "dojo/_base/declare",
-    "dojo/text!../../schema/template.json"
+    "dojo/text!../schema/template.json"
 ], function (SchemaGenerator, Deferred, lang, when, declare, templateSchema) {
 
     /**
@@ -24,7 +24,7 @@ define([
             this.deferred = new Deferred();
             this.requiredAttribute = config.requiredAttribute;
             var t = this.schemaGenerator.createTransformer();
-            t.replace("gform/schema/attributes.json", "gform-app/example/cms/attributes.json");
+            t.replace("gform/schema/attributes.json", "gform-app/cms/schema/attributes.json");
             t.replace("gform/schema/attributes/header.json", "gform-app/meta/header.json");
             t.replace("gform/schema/group/properties/attribute.json", "gform-app/meta/group-attribute.json");
             t.replace("gform/schema/group/properties/attributes.json", "gform-app/meta/group-attributes.json");
@@ -41,7 +41,7 @@ define([
                 idProperty: store.idProperty,
                 idType: store.idType || "string",
                 idRequired: store.assignableId,
-                idDisabled: !store.assignableId,
+                idDisabled: !(store.assignableId || !store.changeableId),
                 templateStore: store.name,
 
                 partialStore: partialStore.name,

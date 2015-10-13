@@ -1,7 +1,7 @@
 define([
-    'gform/primitive/binary/MimeTypeHelper',
+    '../../gform/primitive/binary/MimeTypeHelper',
     'gform/createFullEditorFactory',
-    "dojo/text!../../file/types.json"
+    "dojo/text!./schema/types.json"
 ], function (MimeTypeHelper, createFullEditorFactory, types) {
 
 

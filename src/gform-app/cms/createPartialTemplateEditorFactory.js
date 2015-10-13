@@ -1,8 +1,8 @@
 define([
-	'../../controller/actions/Duplicate',
+	'../controller/actions/Duplicate',
 	'./createTemplateEditorFactory',
-	'../../controller/actions/Preview',
-	'../../controller/actions/Save',
+	'../controller/actions/Preview',
+	'../controller/actions/Save',
 	'gform/controller/actions/Close',
 	'gform/controller/actions/Discard',
 	'gform/controller/actions/Delete',

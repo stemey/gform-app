@@ -108,7 +108,7 @@ define([
 		}, addStartupListener: function (grid, store) {
 			aspect.after(grid, "startup", function () {
 				grid.connect(grid, 'onRowClick', function (e) {
-					var id = grid.select.row.getSelected();
+					var id = grid.select.row.getSelected()[0];
 					topic.publish("/focus", {store: store.name, id: id, source: this})
 				});
 			});

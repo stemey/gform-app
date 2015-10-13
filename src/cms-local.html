@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html style="width:100%;height:100%">
+<head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <title>cms4apps</title>
+
+
+    <link rel="stylesheet" href="dijit/themes/claro/claro.css"/>
+    <link rel="stylesheet" href="gform/resources/gform.css"/>
+    <link rel="stylesheet" href="gform-app/css/app.css"/>
+    <link rel="stylesheet" href="dojox/layout/resources/ToggleSplitter.css"/>
+    <link rel='stylesheet' href="gridx/resources/claro/Gridx.css"/>
+    <link rel="stylesheet" href="dojox/form/resources/CheckedMultiSelect.css"/>
+    <link rel="stylesheet" href="components-font-awesome/css/font-awesome.min.css">
+
+    <style type="text/css">
+        #grid {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+
+    <!-- required: dojo.js -->
+    <script type="text/javascript" src="handlebars/handlebars.js"></script>
+    <script type="text/javascript" src="marked/marked.min.js"></script>
+    <script type="text/javascript" src="dojoConfig.js"></script>
+    <script type="text/javascript" src="dojo/dojo.js"></script>
+    <script type="text/javascript" src="gform-app/main.js"></script>
+    <script type="text/javascript" src="gform-app/cms.js"></script>
+    <script>
+        require(['dojo/_base/url','gform-app/cms/cms-file', "dojo/parser", "dojo/ready", "gform-app/controller/AppController"], function (Url, cmsfile, parser) {
+            parser.parse();
+            var path = new Url(location.href).path;
+            var basePath = path.substring(0,path.lastIndexOf("/"));
+            var appConfig = {baseUrl: "../", libBasePath: basePath};
+            window.appController.start(appConfig, cmsfile);
+        })
+    </script>
+
+
+</head>
+<body class="claro" style="width:100%;height:100%">
+<div data-dojo-type="gform-app/controller/AppController" style="display:none">
+
+</div>
+<div class="loadingScreen" style="width:100%;height:100%">
+    <div style="margin-top:10%">
+        <div style="text-align:center;margin-top:20%;font-size:30pt"><i style="font-size:90px"
+                                                                        class="fa fa-spinner fa-pulse"></i></div>
+    </div>
+</div>
+
+
+</body>
+</html>

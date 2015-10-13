@@ -1,17 +1,18 @@
 define([
 
         'gform/util/Resolver',
-        '../../controller/tools/Link',
-        '../../cms/createValueFactory',
-        '../../controller/gridactions/Delete',
-        '../../controller/gridactions/OpenAsJson',
-        '../../jcr/TemplateStore',
-        '../../util/ToMongoQueryTransform',
-        "dojo/text!./binary.json",
-        "dojo/text!./text.json",
-        "dojo/text!../../file/types.json",
-        '../../util/LoadRichtextPlugins'
-    ], function (Resolver, Link, createValueFactory, Delete, OpenAsJson, TemplateStore, ToMongoQueryTransform, binarySchema, textSchema, types) {
+        '../controller/tools/Link',
+        './createValueFactory',
+        '../controller/gridactions/Delete',
+        '../controller/gridactions/OpenAsJson',
+        '../jcr/TemplateStore',
+        '../util/ToMongoQueryTransform',
+        "dojo/text!./schema/binary.json",
+        "dojo/text!./schema/folder.json",
+        "dojo/text!./schema/text.json",
+        "dojo/text!./schema/types.json",
+        './LoadRichtextPlugins'
+    ], function (Resolver, Link, createValueFactory, Delete, OpenAsJson, TemplateStore, ToMongoQueryTransform, binarySchema, folderSchema, textSchema, types) {
 
 
 
@@ -43,7 +44,7 @@ define([
         }
 
 
-        return function (config) {
+        return function (config, stores) {
 
             if (!config) {
                 config = {}
@@ -54,94 +55,41 @@ define([
             }
 
 
+            stores.push({
+                "factoryId": "gform-app/factory/StoreFactory",
+                "name": FILE_SCHEMA_STORE,
+                "storeClass": "dojo/store/Memory",
+                "idProperty": "id",
+                "data": [text, JSON.parse(binarySchema), JSON.parse(folderSchema)]
+            });
+
+
             var baseUrl = config.baseUrl;
             return {
                 "storeRegistry": {
-                    "stores": [
-                        {
-                            "factoryId": "gform-app/factory/StoreFactory",
-                            "name": FILE_SCHEMA_STORE,
-                            "storeClass": "dojo/store/Memory",
-                            "idProperty": "id",
-                            "data": [text, JSON.parse(binarySchema)]
-                        },
-                        {
-                            "factoryId": "gform-app/factory/DstoreFactory",
-                            "storeClass": "gform-app/util/LocalStorage",
-                            "templateStore": FILE_SCHEMA_STORE,
-                            "name": "file",
-                            "typeProperty": "mediaType",
-                            "idProperty": "path",
-                            "idType": "string",
-                            "assignableId": true,
-                            "dstoreConfig": {
-                                "version": "1.1",
-                                "storeName": FILE_STORE
-                            },
-                            "initialDataUrl": "gform-app/example/cms/data/file-data.json",
-                            "createEditorFactory": "gform-app/example/cms/createFileEditorFactory"
-                        },
-                        {
-                            "factoryId": "gform-app/factory/DstoreFactory",
-                            "storeClass": "gform-app/util/LocalStorage",
-                            "template": TEMPLATE_SCHEMA,
-                            "name": TEMPLATE_STORE,
-                            "idProperty": config.idProperty,
-                            "instanceStore": "page",
-                            "idType": "string",
-                            "assignableId": true,
-                            "dstoreConfig": {
-                                "version": "1.1",
-                                "storeName": TEMPLATE_STORE
-                            },
-                            "initialDataUrl": "gform-app/example/cms/data/template-data.json",
-                            "createEditorFactory": "gform-app/example/cms/createTemplateEditorFactory"
-                        },
-                        {
-                            "factoryId": "gform-app/factory/DstoreFactory",
-                            "storeClass": "gform-app/util/LocalStorage",
-                            "template": TEMPLATE_SCHEMA,
-                            "name": PARTIAL_STORE,
-                            "idProperty": config.idProperty,
-                            "idType": "string",
-                            "assignableId": true,
-                            "dstoreConfig": {
-                                "version": "1.1",
-                                "storeName": PARTIAL_STORE
-                            },
-                            "initialDataUrl": "gform-app/example/cms/data/partial-data.json",
-                            "createEditorFactory": "gform-app/example/cms/createPartialTemplateEditorFactory"
-                        },
-                        {
-                            "factoryId": "gform-app/factory/DstoreFactory",
-                            "storeClass": "gform-app/util/LocalStorage",
-                            "templateStore": TEMPLATE_STORE,
-                            "name": PAGE_STORE,
-                            "previewerId": "handlebars",
-                            "typeProperty": "template",
-                            "parentProperty": "parent",
-                            "idType": "number",// used by createValueFactory
-                            "idProperty": config.idProperty,
-                            "initialDataUrl": "gform-app/example/cms/data/page-data.json",
-                            "dstoreConfig": {
-                                "version": "1.1",
-                                "storeName": PAGE_STORE
-                            },
-                            "createEditorFactory": "gform-app/example/cms/createPageEditorFactory"
-                        }
-                    ]
+                    "stores": stores
                 },
                 "schemaRegistry": {
                     "factoryId": "gform-app/factory/schema/SchemaRegistryFactory",
                     "registryClass": "gform-app/SchemaRegistry",
                     "stores": [
                         {id: FILE_SCHEMA_STORE},
-                        {id: TEMPLATE_STORE, storeClass: TemplateStore, idProperty: config.idProperty, partialStore: PARTIAL_STORE},
-                        {id: PARTIAL_STORE, storeClass: TemplateStore, idProperty: config.idProperty, partialStore: PARTIAL_STORE}
+                        {
+                            id: TEMPLATE_STORE,
+                            storeClass: TemplateStore,
+                            idProperty: config.idProperty,
+                            partialStore: PARTIAL_STORE
+                        },
+                        {
+                            id: PARTIAL_STORE,
+                            storeClass: TemplateStore,
+                            idProperty: config.idProperty,
+                            partialStore: PARTIAL_STORE
+                        }
                     ],
                     "schemaGenerators": [
                         {
-                            "factoryId": "gform-app/factory/schema/SchemaFactory",
+                            "factoryId": "gform-app/cms/SchemaFactory",
                             "store": TEMPLATE_STORE,
                             "partialStore": PARTIAL_STORE,
                             "sourceRefQuery": {"contentMode": {"$regex": "handlebars"}},
@@ -154,13 +102,13 @@ define([
                         },
                         {
                             "factoryId": "gform-app/factory/schema/StaticSchemaGenerator",
-                            "module": "gform-app/example/cms/fallbackSchema.json"
+                            "module": "gform-app/cms/schema/fallbackSchema.json"
                         }
                     ]
                 },
                 "resourceFactories": [],
                 "view": {
-                    "startPath": "/entity/page/0.43755838507786393",
+                    "startPath": config.startPath,
                     "layouts": {
                         "standard": {
                             "store": {"region": "left", "width": "20%"},
@@ -247,7 +195,8 @@ define([
                                         {
                                             "factoryId": "gform-app/factory/TreeFactory",
                                             "title": "tree",
-                                            "osm": true,
+                                            // for local storage "osm": true,
+                                            storeModel: config.storeModel,
                                             "storeId": "page",
                                             "labelAttribute": "name",
                                             "menuItems": [
@@ -327,26 +276,45 @@ define([
                                     ]
                                 },
                                 {
-                                    "factoryId": "gform-app/factory/GridFactory",
-                                    "title": "files",
-                                    "storeId": FILE_STORE,
-                                    "gridxQueryTransform": new ToMongoQueryTransform(),
-                                    "menuItems": [
-                                        Delete, {type: OpenAsJson, fallbackSchema: "fallbackSchema"}
-                                    ],
-                                    "columns": [
+                                    "factoryId": "gform-app/factory/TabFactory",
+                                    "storeId": "file",
+                                    "children": [
                                         {
-                                            "id": "path",
-                                            "field": "path",
-                                            "name": "path"
+                                            "factoryId": "gform-app/factory/TreeFactory",
+                                            "title": "tree",
+                                            // for local storage "osm": true,
+                                            storeModel: config.storeModel,
+                                            "storeId": FILE_STORE,
+                                            "labelAttribute": "name",
+                                            "menuItems": [
+                                                Delete, {type: OpenAsJson, fallbackSchema: "fallbackSchema"}
+                                            ]
+
                                         },
                                         {
-                                            "id": "contentMode",
-                                            "field": "contentMode",
-                                            "name": "contentMode"
+                                            "factoryId": "gform-app/factory/GridFactory",
+                                            "title": "files",
+                                            "storeId": FILE_STORE,
+                                            "gridxQueryTransform": new ToMongoQueryTransform(),
+                                            "menuItems": [
+                                                Delete, {type: OpenAsJson, fallbackSchema: "fallbackSchema"}
+                                            ],
+                                            "columns": [
+                                                {
+                                                    "id": "path",
+                                                    "field": "path",
+                                                    "name": "path"
+                                                },
+                                                {
+                                                    "id": "contentMode",
+                                                    "field": "contentMode",
+                                                    "name": "contentMode"
+                                                }
+                                            ]
                                         }
                                     ]
-                                }]
+                                }
+                            ]
                         },
                         {
                             "region": "center",
@@ -363,7 +331,8 @@ define([
                                     "pageStore": PAGE_STORE,
                                     "partialStore": PARTIAL_STORE,
                                     "fileStore": FILE_STORE,
-                                    "urlProperty": "id"
+                                    "urlProperty": "path",
+                                    "libBasePath":config.libBasePath
                                 }
                             ]
                         },

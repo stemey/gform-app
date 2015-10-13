@@ -14,7 +14,7 @@ define([
 
 	return declare([ContainerFactory], {
 		_load: function (store, config) {
-			aspect.around(store, "put", lang.hitch(this, "onPageUpdated", store));
+           aspect.around(store, "put", lang.hitch(this, "onPageUpdated", store));
 			lang.mixin(store, config);
 
 			if (config.initialDataUrl) {
@@ -73,7 +73,7 @@ define([
 		create: function (config) {
 			var me = this;
 			return load([config.storeClass], function (storeClass) {
-				if (config.parentProperty) {
+				if (config.treeMixin) {
 					storeClass = declare([storeClass,TreeMixin]);
 				}
 				var store = new storeClass(config);

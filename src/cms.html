@@ -28,10 +28,10 @@
 	<script type="text/javascript" src="gform-app/main.js"></script>
 	<script type="text/javascript" src="gform-app/cms.js"></script>
 	<script>
-		require(['gform-app/example/cms/cms', "dojo/parser", "dojo/ready", "gform-app/controller/AppController"], function (cms, parser) {
+		require(['gform-app/cms/cms-ls', "dojo/parser", "dojo/ready", "gform-app/controller/AppController"], function (cmsls, parser) {
 			parser.parse();
 			var appConfig = {baseUrl: "../"};
-			window.appController.start(appConfig, cms);
+			window.appController.start(appConfig, cmsls);
 		})
 	</script>
 

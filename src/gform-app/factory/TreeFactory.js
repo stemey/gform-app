@@ -25,13 +25,14 @@ define([
             var realStore = store.mainStore ? store.mainStore : store.name;
             var model;
             // TODO improve the StoreModel selection
-            if (config.gh) {
-                model = new PathObjectStoreModel({store: store, root: {path: config.gh.root, content: ""}});
-            } else if (config.osm) {
-                model = new ParentObjectStoreModel({store: store});
-            } else {
+            if (!config.storeModel) {
                 model = new TreeStore({store: store});
+            } else if (config.storeModel.type == "osm") {
+                model = new ParentObjectStoreModel({store: store});
+            } else if (config.storeModel.type == "gh") {
+                model = new PathObjectStoreModel({store: store, root: config.storeModel.root});
             }
+
             topic.subscribeStore("/added", function (evt) {
                 model.createEntity(evt.entity);
             }, realStore);
