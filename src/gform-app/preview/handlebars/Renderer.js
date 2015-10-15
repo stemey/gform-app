@@ -74,7 +74,7 @@ define([
             if (config.preview) {
                 return "<script src='gform-app/controller/mock.js'></script>"
             } else {
-                return false;
+                return "";
             }
         });
         Handlebars.registerHelper('debug', function (a, b, options) {
@@ -97,7 +97,7 @@ define([
                 // TODO is content property universal?
                 return "<style>" + style.content + "</style>"
             } else {
-                return "<style src='" + config.assetBasePath + styleRef + "'></style>"
+                return "<link rel='stylesheet' href='" + config.assetBasePath + styleRef + "'></style>"
             }
         });
         Handlebars.registerHelper('script-tag', function (scriptRef, options) {
@@ -122,7 +122,7 @@ define([
                 return config.assetBasePath + imageRef;
             }
         });
-        Handlebars.registerHelper('link', function (id, options) {
+        Handlebars.registerHelper('link', function (id, fragment, options) {
 
             if (!id) {
                 return "undefined";
@@ -134,11 +134,11 @@ define([
             } else {
                 var idx = id.lastIndexOf(".");
                 path = idx > 0 ? id.substring(0, idx) : id;
-                return config.pageBasePath + path + config.linkExtension;
+                return config.pageBasePath + path + config.linkExtension+(typeof fragment === "undefined"?"#"+fragment:"");
             }
         });
 
-        Handlebars.registerHelper('link-path', function (path, options) {
+        Handlebars.registerHelper('link-path', function (path, fragment, options) {
             if (path.match(/^(|https|http|email):\/\/.*/)) {
                 return path;
             } else {
@@ -151,7 +151,7 @@ define([
                 } else {
                     var idx = path.lastIndexOf(".");
                     var realPath = idx > 0 ? path.substring(0, idx) : path;
-                    return config.pageBasePath + realPath + config.linkExtension;
+                    return config.pageBasePath + realPath + config.linkExtension+(typeof fragment === "undefined"?"#"+fragment:"");
                 }
             }
         });
