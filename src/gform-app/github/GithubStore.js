@@ -17,10 +17,7 @@ define([
             this.headers["Authorization"] = "token " + kwArgs.accessToken;
             this.target = "https://api.github.com/repos/" + kwArgs.owner + "/" + kwArgs.repo + "/contents/";
 
-            this.repository = new Github({
-                token: kwArgs.accessToken,
-                auth: "oauth"
-            }).getRepo(kwArgs.owner, kwArgs.repo);
+            this.initGithub(kwArgs);
             if (kwArgs.cacheDirectives) {
                 this.cache = new Memory();
                 this.loadCache();
@@ -44,7 +41,13 @@ define([
             }
 
         },
+        initGithub: function (kwArgs) {
+            this.repository = new Github({
+                token: kwArgs.accessToken,
+                auth: "oauth"
+            }).getRepo(kwArgs.owner, kwArgs.repo);
 
+        },
         getChildren: function (parentItem) {
             var d = new Deferred();
             var me = this;
@@ -62,11 +65,14 @@ define([
             // TODO incorrect for files without extension. use github's type.
             return path.indexOf(".") < 0;
         },
+        _xhrGet: function(id, options) {
+            throw new Error("not implemented yet");
+        },
         get: function (id, options) {
             id = this.expandPath(id);
             var d = new Deferred();
             var me = this;
-            this.inherited(arguments, [id]).then(function (item) {
+            this._xhrGet(id, options).then(function (item) {
                 if (Array.isArray(item)) {
                     if (!options || !options.array) {
                         d.resolve({path: id, name: me.getName(id), mediaType: "folder"});

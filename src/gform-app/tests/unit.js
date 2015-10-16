@@ -1,8 +1,10 @@
 define([
         //'./BorderContainer',
+        './store/GithubStore',
+        /*
         './store/FileConverter',
         './store/FileStore',
-        './store/JsonConverter'/*,
+        './store/JsonConverter',
         './createValueFactory',
         './StoreViewController',
         './TemplateRefArrayResolver',
