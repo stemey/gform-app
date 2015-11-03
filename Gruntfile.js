@@ -41,7 +41,8 @@ module.exports = function (grunt) {
                     {expand: true, cwd:'src', src: ['handlebars/**/*'], dest: 'dist'},
                     {expand: true, cwd:'src', src: ['marked/**/*'], dest: 'dist'},
                     {expand: true,  cwd:'src', src: ['bootstrap/**/*'], dest: 'dist'},
-                    {expand: true,  cwd:'src', src: ['jquery/**/*'], dest: 'dist'}
+                    {expand: true,  cwd:'src', src: ['jquery/**/*'], dest: 'dist'},
+                    {expand: true,  cwd:'src', src: ['highlight/**/*'], dest: 'dist'}
                     ]
             },
             index: {

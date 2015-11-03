@@ -12,6 +12,8 @@ src/gform
 src/handlebars
 src/ace-builds
 src/dstore
+src/underscore
+src/highlight
 src/components-font-awesome
 src/bootstrap
 src/jquery
