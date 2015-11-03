@@ -11,11 +11,16 @@ define([
 		create: function (ctx, config) {
 			var me = this;
 			var Button = new declare("ToggleSizeButton", [ToggleButton, StoreSensitiveMixin], {});
-			return new Button({
-				ctx: ctx, includedStoreIds: config.includedStoreIds, label: config.label, onClick: function () {
+			var button = new Button({
+				iconClass:config.expandIconClass, ctx: ctx, includedStoreIds: config.includedStoreIds, label: config.label, onClick: function () {
 					topic.publish("/previewer/toggle");
 				}
 			});
+            var handle = topic.subscribe("/container/toggle", function(evt) {
+                button.set("iconClass",evt.fullSize?config.compressIconClass:config.expandIconClass)
+            })
+            button.own(handle);
+            return button;
 		}
 	});
 
