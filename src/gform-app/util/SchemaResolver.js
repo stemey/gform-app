@@ -108,9 +108,10 @@ define([
 		loadFromStore: function(ref,deferred) {
 			var me = this;
 			when(this.ctx.getStore(ref.store).get(ref.id)).then(function(value) {
+                var value = JSON.parse(JSON.stringify(value));
 				var p = me.resolveMore(value);
 				p.then(function() {
-					deferred.resolve(value);
+                    deferred.resolve(value);
 				});
 
 			},function(e) {
