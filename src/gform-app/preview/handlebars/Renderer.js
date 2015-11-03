@@ -1,10 +1,14 @@
 define([
+    '../plantuml/PlantumlRenderer',
     '../BaseRenderer',
     "dojo/_base/declare"
-], function (BaseRenderer, declare) {
+], function (PlantumlRenderer, BaseRenderer, declare) {
 
 
     var initHb = function (config) {
+
+
+        var plantumlRenderer = new PlantumlRenderer();
 
         var markedRenderer = new marked.Renderer();
         markedRenderer.link = function (href, title, text) {
@@ -15,9 +19,26 @@ define([
             return "<img alt=\"" + title + "\"src=\"{{image-path '" + href + "'}}\"></img>";
         };
 
+        markedRenderer.table= function(header, body) {
+            // TODO this is the bootstrap table
+            return '<table class="table table-bordered table-striped">\n'
+                + '<thead>\n'
+                + header
+                + '</thead>\n'
+                + '<tbody>\n'
+                + body
+                + '</tbody>\n'
+                + '</table>\n';
+        }
+
         // init marked;
         marked.setOptions({
-            renderer: markedRenderer
+            renderer: markedRenderer,
+            gfm:true,
+            tables:true,
+            highlight: function (code) {
+               return hljs.highlightAuto(code).value;
+            }
         });
 
         var escapeString = function(value) {
@@ -33,7 +54,13 @@ define([
                 return bool;
             }
         }
-
+        Handlebars.registerHelper('plantuml', function (source,  options) {
+            if (!source || source==="") {
+                return "";
+            }
+            var src=plantumlRenderer.render(source);
+            return src;
+        });
         // TODO extract helpers to custom and standard configuration folders
         Handlebars.registerHelper('equals', function (a, b, options) {
             return boolExpr(a == b, options, this);
@@ -47,12 +74,18 @@ define([
 
             return lvalue + rvalue;
         });
+        Handlebars.registerHelper("pathClass", function (a, options) {
+           if (a && config.preview) {
+               return "c4a_path_" + a.replace(/\./g, "_");
+           } else{
+               return "";
+           }
+        });
         Handlebars.registerHelper("concat", function () {
             var value = "";
             for (var i = 0; i < arguments.length - 1; i++) {
                 value += arguments[i];
-            }
-            ;
+            };
             return value;
         });
         Handlebars.registerHelper("richtext", function (value, options) {
@@ -171,9 +204,13 @@ define([
         });
 
         Handlebars.registerHelper('markdown', function (md, options) {
-            var hbs = marked(md);
-            var html = Handlebars.compile(hbs)({});
-            return html;
+            if (md) {
+                var hbs = marked(md);
+                var html = Handlebars.compile(hbs)({});
+                return html;
+            } else {
+                return "";
+            }
         });
 
         Handlebars.registerHelper('formatCurrency', function (value, options) {
