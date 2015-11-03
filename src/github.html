@@ -37,6 +37,8 @@
             function (query, Login, Url, ioQuery, cfg, Starter, github, parser) {
 
 
+                document.domain="github.com";
+
                 var authorize = function (config) {
                     new Starter(config).authorize().then(function (result) {
                         if (result.redirectUri) {

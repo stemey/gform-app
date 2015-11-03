@@ -4,6 +4,7 @@
     "groupLabel": "text",
     "iconClass": "fa fa-file-text-o",
     "editor": "listgroup",
+    "labelAttribute":"code",
     "groups": [
 
         {

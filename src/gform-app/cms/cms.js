@@ -143,18 +143,21 @@ define([
                                 {
                                     "factoryId": "gform-app/factory/SingleSchemaCreateFactory",
                                     "label": "add",
-                                    "includedStoreIds": ["page", "file"]
+                                    "includedStoreIds": ["page", "file"],
+                                    "iconClass": "fa fa-plus"
                                 },
                                 {
                                     "factoryId": "gform-app/factory/SingleSchemaCreateFactory",
                                     "label": "add",
                                     "valueFactory": createTemplateValueFactory,
-                                    "includedStoreIds": ["/template"]
+                                    "includedStoreIds": ["/template"],
+                                    "iconClass": "fa fa-plus"
                                 }, {
                                     "factoryId": "gform-app/factory/SingleSchemaCreateFactory",
                                     "label": "add",
                                     "valueFactory": createPartialValueFactory,
-                                    "includedStoreIds": ["partial"]
+                                    "includedStoreIds": ["partial"],
+                                    "iconClass": "fa fa-plus"
                                 },
                                 {
                                     "factoryId": "gform-app/factory/ResetStoreFactory",
@@ -163,7 +166,9 @@ define([
                                 {
                                     "factoryId": "gform-app/factory/ToggleSizeFactory",
                                     "label": "full size",
-                                    "includedStoreIds": ["page"]
+                                    "includedStoreIds": ["page"],
+                                    "expandIconClass": "fa fa-expand",
+                                    "compressIconClass": "fa fa-compress"
                                 },
                                 {
                                     "factoryId": "gform-app/factory/SelectViewFactory",
