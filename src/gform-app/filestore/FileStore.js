@@ -16,9 +16,6 @@ define([
             this.initCache(true);
         },
         converter:null,
-        getChildren: function (parentItem) {
-            return when(this.query({parent: parentItem.path},{sort:[{attribute:"index"},{attribute:"name"}]}));
-        },
         get: function (id, options) {
             if (!this.cacheDirectives) {
                 return this.cache.get(id, options);
@@ -34,10 +31,6 @@ define([
                 return d;
             }
         },
-        jsonContent: false,
-        getFromCache: true,
-        folderType: "folder",
-        fileType: "file",
         createPath: function (id, type) {
             return this.target + this.key + "/" + (type ? type + "/" : "") + this.baseDir + id;
         },
@@ -105,52 +98,8 @@ define([
             request.del(path);
 
         },
-        getType: function(item) {
-            if(!item.content) {
-                return this.folderType
-            }else
-            if (this.jsonContent) {
-                return item.content[this.typeProperty];
-            } else {
-                var mappings = mappings[this.getSuffix(item.path)]
-                return mappings.mediaType;
-
-            }
-        },
         convertToCachedItem: function(internal) {
             return this.converter.toCache(internal);
-        },
-        convertToCachedItemXX: function (item) {
-            var o = {};
-            var id = item[this.idProperty];
-            o[this.idProperty] = id;
-            o.name = item.name;
-            o[this.typeProperty] = this.getType(item);
-            o.parent = this.getParentPath(item.path);
-            if (!this.jsonContent) {
-                if (item.content) {
-                    o.content = item.content;
-                }
-                return o;
-            } else if (!item.content) {
-                return o;
-            } else {
-                if (this.cacheDirectives && this.cacheDirectives.included) {
-                    this.cacheDirectives.included.forEach(function (key) {
-                        o[key] = item.content[key];
-                    })
-                } else if (this.cacheDirectives && this.cacheDirectives.excluded) {
-                    var excluded = this.cacheDirectives.excluded || [];
-                    Object.keys(item.content).filter(function (key) {
-                        return excluded.indexOf(key) < 0
-                    }).forEach(function (key) {
-                        o[key] = item.content[key];
-                    })
-                } else {
-                    lang.mixin(o, item.content);
-                }
-            }
-            return o;
         },
         loadFileRefs: function (fileRefs, path) {
             var me = this;

@@ -15,19 +15,25 @@ define([
         getRedirectToGithub: function (state) {
             var query = {
                     client_id: this.clientId,
-                    redirect_uri: this.redirectUri,
-                    scope: this.scopes.join(","),
-                    state: state
+                    //redirect_uri: this.redirectUri,
+                    scope: this.scopes.join(",")
+                //,
+                  //  state: state
             };
             return "https://github.com/login/oauth/authorize?" + ioQuery.objectToQuery(query);
         },
-        getAccessToken: function (state, code) {
+        getAccessToken: function (code, state) {
             data = {
                 "client_id": this.clientId,
                 "client_secret": this.clientSecret,
+                //redirect_uri: this.redirectUri,
                 "code": code
             };
             return request.post("https://github.com/login/oauth/access_token", {
+                headers: {
+                    "Content-Type":"application/x-www-form-urlencoded",
+                    "X-Requested-With":false
+                },
                 data: data
             })
         }

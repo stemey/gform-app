@@ -24,7 +24,8 @@ define([
                 var url = new Url(window.location.href);
                 var code = url.query ? ioQuery.queryToObject(url.query).code : null;
                 if (code) {
-                    var p = this.oauth.getAccessToken(code);
+                    var params = JSON.parse(window.sessionStorage.getItem("config"));
+                    var p = this.oauth.getAccessToken(code, params.state);
                     p.then(function (access_token) {
                         window.sessionStorage.setItem(TOKEN_KEY, access_token)
                         deferred.resolve({accessToken: access_token});

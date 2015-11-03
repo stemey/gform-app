@@ -1,45 +1,35 @@
 define([
-    'dojo/when',
-    'dojo/store/Memory',
-    '../util/AopStoreMixin',
+    '../filestore/AbstractTreeStore',
     'dojo/promise/all',
     'dojo/request/xhr',
-    './Converter',
     'dojo/_base/lang',
     'dojo/Deferred',
-    "dojo/_base/declare",
-    "dojo/store/JsonRest"//
-], function (when, Memory, AopStoreMixin, all, xhr, Converter, lang, Deferred, declare, JsonRest) {
+    "dojo/_base/declare"
+], function (AbstractTreeStore, all, xhr, lang, Deferred, declare) {
 
 
-    return declare([JsonRest, Converter, AopStoreMixin], {
+    return declare([AbstractTreeStore], {
+        converter:null,
+        headers:null,
+        root:null,
         constructor: function (kwArgs) {
+            lang.mixin(this,kwArgs);
+            this.headers={};
             this.headers["Authorization"] = "token " + kwArgs.accessToken;
             this.target = "https://api.github.com/repos/" + kwArgs.owner + "/" + kwArgs.repo + "/contents/";
 
             this.initGithub(kwArgs);
-            if (kwArgs.cacheDirectives) {
-                this.cache = new Memory();
-                this.loadCache();
-                this.after("remove", function (result, id) {
-                    if (this.isDirectory(id)) {
-                        this.loadCache();
-                    } else {
-                        this.cache.remove(id);
-                    }
-                }, this);
-                this.after("put", function (result, item, options) {
-                    if (this.isDirectory(item.path)) {
-                        this.loadCache();
-                    } else {
-                        if (options && options.old) {
-                            this.cache.remove(options.old.path);
-                        }
-                        this.cache.put(item);
-                    }
-                }, this);
+        },
+        expandPath: function (path) {
+            if (!this.root || this.root == "") {
+                return path;
+            } else if (path.startsWith("/")) {
+                return this.root + path;
+            } else if (path === "") {
+                return this.root;
+            } else {
+                return this.root + "/" + path;
             }
-
         },
         initGithub: function (kwArgs) {
             this.repository = new Github({
@@ -48,24 +38,8 @@ define([
             }).getRepo(kwArgs.owner, kwArgs.repo);
 
         },
-        getChildren: function (parentItem) {
-            var d = new Deferred();
-            var me = this;
-            this.get(parentItem.path, {array: true}).then(function (items) {
-                var newItems = items.map(function (item) {
-                    return me.convertToItem(item);
-                });
-                d.resolve(newItems);
-            }).otherwise(function (e) {
-                d.reject(e);
-            })
-            return d.promise;
-        },
-        isDirectory: function (path) {
-            // TODO incorrect for files without extension. use github's type.
-            return path.indexOf(".") < 0;
-        },
         _xhrGet: function(id, options) {
+            // TODO implement headers
             throw new Error("not implemented yet");
         },
         get: function (id, options) {
@@ -80,7 +54,7 @@ define([
                         d.resolve(item);
                     }
                 } else {
-                    d.resolve(me.convertToItem(item));
+                    d.resolve(me.converter.toInternal(item));
                 }
 
             }).otherwise(function (e) {
@@ -107,7 +81,7 @@ define([
                 if (!item.message) {
                     item.message = "changes by gform-app github client";
                 }
-                return this.inherited(arguments, [this.convertFromItem(item), options]);
+                return this.inherited(arguments, [this.converter.toExternal(item), options]);
             }
         },
         remove: function (id, options) {
@@ -144,21 +118,7 @@ define([
             }
         },
         convertToCachedItem: function (item) {
-            var o = {};
-            if (this.cacheDirectives.included) {
-                o.path = item.path;
-                this.cacheDirectives.included.forEach(function (key) {
-                    o[key] = item.content[key];
-                })
-            } else {
-                var excluded = this.cacheDirectives.excluded || [];
-                Object.keys(item.content).filter(function (key) {
-                    return excluded.indexOf(key) < 0
-                }).forEach(function (key) {
-                    o[key] = item.content[key];
-                })
-            }
-            return o;
+           this.converter.toCache(item);
         },
         loadCache: function () {
             var me = this;
@@ -173,39 +133,15 @@ define([
                 }
                 all(newData).then(function (results) {
                     var newResults = results.map(function (e) {
-                        return me.convertToCachedItem(e);
+                        return me.converter.toCache(me.converter.toInternal());
                     });
                     me.cache.setData(newResults);
                 })
             });
 
 
-        },
-        convertToLocalQuery: function (q) {
-            var newQ = {};
-            Object.keys(q).forEach(function (key) {
-                var val = q[key];
-                var isObject = typeof val == "object";
-                if (isObject && "$in" in val) {
-                    newQ[key] = new RegExp(val.$in.join("|"));
-                } else if (isObject && "$regex" in val) {
-                    newQ[key] = new RegExp(val.$regex);
-                } else {
-                    newQ[key] = val;
-                }
-            })
-            return newQ;
-        },
-        query: function (q, options) {
-            if (this.cache) {
-                var results = this.cache.query(this.convertToLocalQuery(q), options);
-                results.total = when(results.length);
-                return results;
-            } else {
-                // TODO source and path query on github
-
-            }
         }
+
 
 
     });

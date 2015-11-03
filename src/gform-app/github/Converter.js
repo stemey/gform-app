@@ -60,12 +60,12 @@ define([
             }
             return suffix;
         },
-        convertToItem: function (result) {
+        toInternal: function (result) {
             var newItem = {};
             lang.mixin(newItem, result);
             delete newItem.content;
             if (result.type === "dir") {
-                newItem.mediaType = "folder"
+                newItem[this.typeProperty] = this.folderType;
             } else {
                 delete newItem.content;
                 if (result.content) {

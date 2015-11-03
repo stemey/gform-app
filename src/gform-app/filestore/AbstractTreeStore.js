@@ -9,6 +9,9 @@ define([
 
     return declare([], {
         parentProperty:"parent",
+        folderType: "folder",
+        fileType: "file",
+        jsonContent: false,
         loadCache: function () {
 
         },
@@ -91,6 +94,9 @@ define([
             })
             return newQ;
         },
+        getChildren: function (parentItem) {
+            return when(this.query({parent: parentItem.path},{sort:[{attribute:"index"},{attribute:"name"}]}));
+        },
         query: function (q, options) {
             if (this.cache) {
                 var results = this.cache.query(this.convertToLocalQuery(q), options);
@@ -98,6 +104,18 @@ define([
                 return results;
             } else {
                 // TODO source and path query on github
+
+            }
+        },
+        getType: function(item) {
+            if(!item.content) {
+                return this.folderType
+            }else
+            if (this.jsonContent) {
+                return item.content[this.typeProperty];
+            } else {
+                var mappings = mappings[this.getSuffix(item.path)]
+                return mappings.mediaType;
 
             }
         }

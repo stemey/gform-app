@@ -17,8 +17,12 @@ define([
         pathProperty: "path",
         defaultMapping:{mediaType: "binary"},
         mappings: mappings,
+        encoded:false,
         constructor: function (kwArgs) {
             lang.mixin(this, kwArgs)
+        },
+        isEncoded: function(external) {
+            return this.encoding==="base64" || this.encoded;
         },
         getName: function (path) {
             var parts = path.match(/\/([^\/\.]+)(\.[^.]+)?$/);
@@ -42,6 +46,7 @@ define([
             internal.name = this.getName(external.path);
             internal.parent = this.getParentPath(external.path);
             if (external.content) {
+                internal.content = this.isEncoded() ? atob(external.content) : external.content;
                 internal.content = external.content;
                 var extension = this.getExtension(external.path);
                 var mapping = this.mappings[extension];
@@ -69,7 +74,7 @@ define([
             if (internal[this.typeProperty] == this.folderType) {
                 external.path=internal.path;
             } else {
-                external.content = internal.content;
+                this.isEncoded() ? btoa(internal.content) : internal.content;
                 external.path = internal[this.pathProperty];
             }
             return external;

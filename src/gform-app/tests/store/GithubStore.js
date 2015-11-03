@@ -1,9 +1,10 @@
 define([
+    '../../filestore/FileConverter',
     './MockGithubStore',
     'dojo/_base/Deferred',
     'intern!bdd',
     'intern/chai!assert'
-], function (MockGithubStore, Deferred, bdd, assert) {
+], function (FileConverter, MockGithubStore, Deferred, bdd, assert) {
 
 
     bdd.describe('GithubStore', function () {
@@ -11,24 +12,28 @@ define([
 
         bdd.beforeEach(function () {
             store = new MockGithubStore({
-                idProperty: "path"
+                converter: new FileConverter({
+                    folderType: "__folder",
+                    typeProperty: "__type"
+                }),
+                idProperty: "path",
+                typeProperty: "__type"
             });
-
 
 
         });
 
         var mockData = {
-            "/page.html":{
-                type:"file",
-                content:"content",
-                path:"/page.html"
+            "/page.html": {
+                type: "file",
+                content: "content",
+                path: "/page.html"
             },
-            "/sub":[
+            "/sub": [
                 {
-                    type:"file",
-                    content:"content",
-                    path:"/sub/x.html"
+                    type: "file",
+                    content: "content",
+                    path: "/sub/x.html"
                 }
             ]
         }
@@ -56,7 +61,7 @@ define([
             return assertPromise(p, function (item) {
                 assert.equal(item.path, "/page.html");
                 assert.equal(item.content, "content");
-                assert.equal(item.mediaType, "text");
+                assert.equal(item.__type, "text");
                 assert.equal(item.name, "page.html");
             });
 
@@ -69,7 +74,7 @@ define([
             var p = store.get("/sub");
             return assertPromise(p, function (item) {
                 assert.equal(item.path, "/sub");
-                assert.equal(item.mediaType, "folder");
+                assert.equal(item.__type, "__folder");
                 assert.equal(item.name, "sub");
             });
 
@@ -79,15 +84,14 @@ define([
             store.mockData = mockData;
             store.loadCache();
 
-            var p = store.getChildren({path:"/sub"});
+            var p = store.getChildren({path: "/sub"});
             return assertPromise(p, function (items) {
                 assert.equal(items[0].path, "/sub/x.html");
-                assert.equal(items[0].mediaType, "text");
+                assert.equal(items[0].__type, "text");
                 assert.equal(items[0].name, "x.html");
             });
 
         });
-
 
 
     });

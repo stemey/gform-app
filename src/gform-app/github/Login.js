@@ -16,6 +16,7 @@ define([
                 var config = {};
                 config.owner = this.user.get("value");
                 config.repo = this.repo.get("value");
+                window.sessionStorage.setItem("config", JSON.stringify(config));
                 this.callback(config);
             }
         }
