@@ -24,10 +24,14 @@ define([
 		postCreate: function () {
 			this.inherited(arguments);
 
+
 			window.appController = this;
 
 
 		},
+        subscribe : function(topicId,cb) {
+            topic.subscribe(topicId, cb);
+        },
         display: function(el) {
             var loadingScreen = query('.loadingScreen')[0];
             this.domNode.style.display = "block";

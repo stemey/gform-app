@@ -210,7 +210,9 @@ define("gform-app/preview/BaseRenderer", [
             } else {
                 ctx.templates[attribute.code] = template.sourceCode;
             }
+            var path= this.createPath(ctx,attribute.code);
             ctx.page[attribute.code] = value;
+            value._c4a_path=path;
             if (value && template && template.partials) {
                 me.renderPartials(template.partials, ctx, ctx.page[attribute.code]);
             }
@@ -221,6 +223,7 @@ define("gform-app/preview/BaseRenderer", [
                 });
             }
             var newCtx = {
+                path:path,
                 page: ctx.page[attribute.code],
                 promises: ctx.promises,
                 templates: ctx.templates,
@@ -247,11 +250,13 @@ define("gform-app/preview/BaseRenderer", [
                 this.handlePageRef(attribute, value, ctx, attribute.code, attribute.code);
             } else {
                 if (metaHelper.isComplex(attribute)) {
-                    ctx.page[attribute.code] = {};
+                    var path=this.createPath(ctx, attribute.code);
+                    ctx.page[attribute.code] = {_c4a_path:path};
                     if (attribute.typeProperty) {
                         ctx.page[attribute.code][attribute.typeProperty] = value[attribute.typeProperty];
                     }
                     ctx = {
+                        path:path,
                         page: ctx.page[attribute.code],
                         promises: ctx.promises,
                         templates: ctx.templates,
@@ -291,11 +296,13 @@ define("gform-app/preview/BaseRenderer", [
                 var p = this.handlePageRef(type, value, ctx, idx, ctx.arrayCode);
             } else {
                 if (metaHelper.isComplex(type)) {
-                    ctx.page[idx] = {};
+                    var path = this.createPath(ctx, idx);
+                    ctx.page[idx] = {_c4a_path:path};
                     if (type.type_code) {
                         ctx.page[idx][type.type_code] = value[type.type_code];
                     }
                     ctx = {
+                        path:path,
                         page: ctx.page[idx],
                         promises: ctx.promises,
                         templates: ctx.templates,
@@ -309,9 +316,18 @@ define("gform-app/preview/BaseRenderer", [
 
             }
         },
+        createPath: function(parentCtx, idx) {
+            if (parentCtx && parentCtx.path) {
+                return parentCtx.path+"."+idx;
+            } else {
+                return idx;
+            }
+        },
         visitArray: function (attribute, value, goon, ctx) {
             ctx.page[attribute.code] = [];
+            var path = this.createPath(ctx, attribute.code);
             ctx = {
+                path:path,
                 arrayCode: attribute.code,
                 page: ctx.page[attribute.code],
                 promises: ctx.promises,
